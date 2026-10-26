@@ -1,0 +1,25 @@
+Labeling.method	n_conditions
+LFQ	544
+TMT10	477
+TMT11	313
+SILAC	292
+TMT	113
+label-free	82
+iTRAQ	46
+NA	24
+SIDL	12
+dimethyl	8
+Normalized Spectral Abundance Factor	6
+SILAC; iTRAQ	3
+TMT MS2	2
+TMT MS3	2
+iTRAQ; mTRAQ	2
+unknown	2
+Super-SILAC	2
+methyl esterification; SILAC	1
+SILAC; mTRAQ	1
+TMT; label-free	1
+TMT; iTRAQ; label-free	1
+HRM-DIA	1
+SIDL; label-free	1
+Methyl esterification	1

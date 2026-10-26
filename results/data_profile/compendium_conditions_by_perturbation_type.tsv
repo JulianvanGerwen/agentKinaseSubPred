@@ -1,0 +1,8 @@
+perturbation_type	n_conditions
+drug/inhibitor (incl. kinase inhibitors, antibodies)	1217
+ligand/cytokine/growth-factor stimulation	272
+other/unclear	136
+baseline / sample-type contrast (cell line, tissue, tumour)	111
+genetic (KO/KD/si/sh/mutant/overexpression)	85
+physical/genotoxic stress	73
+infection	43

@@ -1,0 +1,15 @@
+kin_organism	chicken	cow	dog	ferret	frog	guinea pig	hamster	human	marmoset	mouse	papillomavirus	pig	quail	rabbit	rat	sheep	starfish	torpedo	turkey	TOTAL
+bacteria	0	0	0	0	0	0	0	2	0	0	0	0	0	0	0	0	0	0	0	2
+chicken	36	0	0	0	0	0	0	12	0	11	0	0	0	0	25	0	0	0	0	84
+cow	5	78	0	0	0	0	5	115	0	25	0	4	2	16	155	0	0	0	0	405
+dog	0	0	2	0	0	0	0	0	0	0	0	0	0	2	0	0	0	0	0	4
+frog	0	0	0	0	2	0	0	8	0	0	0	0	0	0	0	0	0	0	0	10
+hamster	0	0	0	0	0	0	1	2	0	0	0	0	0	0	0	0	0	0	0	3
+herpesvirus	0	0	0	0	0	0	0	14	0	0	0	0	0	0	0	0	0	0	0	14
+human	118	267	34	2	16	2	16	14724	2	2426	1	24	3	130	1282	4	1	2	8	19062
+mouse	10	4	0	0	0	0	1	328	0	2334	0	1	0	6	121	0	0	0	0	2805
+no information	0	0	0	0	0	0	0	8	0	0	0	0	0	0	2	0	0	0	0	10
+pig	0	1	0	0	0	3	0	7	0	0	0	7	0	0	4	0	0	0	0	22
+rabbit	0	2	0	0	0	0	0	9	0	3	0	0	0	37	13	0	0	0	0	64
+rat	10	29	3	0	0	0	2	292	0	88	0	3	0	9	983	0	0	0	0	1419
+TOTAL	179	381	39	2	18	5	25	15521	2	4887	1	39	5	200	2585	4	1	2	8	23904

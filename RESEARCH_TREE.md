@@ -21,9 +21,20 @@ User notes: PSP full downloads will be provided by user; CPTAC/others: try to fe
   - [x] 0.1 git, PROMPT.md, .gitignore (data/ never committed)
   - [x] 0.2 Python env (.venv from requirements.txt; torch 2.6 cu124, 4 GPUs visible)
 - [~] 1. Literature (LITERATURE.md) — 4 parallel agents -> docs/lit/0{1..4}_*.md
-  - [ ] 1.1 Prior methods & benchmarks (Cantley atlas, Phosformer, Petsalaki MCP 2025, others)
-  - [ ] 1.2 Kinase–substrate annotation sources & quality
-  - [ ] 1.3 Phosphoproteomics sources (compendium, CPTAC, inhibitor/decryptM, kinobeads)
+  - [x] 1.1 Prior methods & benchmarks -> docs/lit/01_methods_benchmarks.md
+    - [!] Phosformer: random pair split; 51% of test-positive peptides are training positives under another kinase → reported 0.885 AUROC is inflated. Code CC BY-NC-ND, no train script → reimplement architecture for retraining.
+    - [!] SELPHI2.0 (Petsalaki): RF, 45 features (~5 kinase-specific); CV over pairs; coreg features leak (KSEA activities from same PSP substrates). Apache-2.0. Retrain with fold-aware features.
+    - [!] Cantley PSSMs (303 S/T + 78 Y) via kinase-library package; percentiles vs Ochoa reference, not PSP-trained; priming supported (pS/pT/pY rows).
+    - [!] KolossuS (ESM-2 15B, bioRxiv 2025): PSP AUROC 0.755 S/T / 0.838 Y on phylogeny-aware split — realistic bar for sequence-only. LinkPhinder 0.97 random→0.53 independent.
+    - Recommended: protein-cluster splits w/ orthologs merged; tiers unseen-protein / unseen-kinase-cluster / both; macro per-kinase AUPRC + per-site Hit@k.
+  - [x] 1.2 KS annotation sources -> docs/lit/02_ks_annotation_sources.md
+    - [!] PSP is core. 40% in-vitro-only / 25% in-vivo-only / 35% both. In-vivo-only enriched for indirect (TK→S/T: 69% in-vivo-only). Map sites by 15-mer to canonical, never by number (893 isoform rows).
+    - [!] Extra curated labels: SIGNOR (unreachable directly: connection fails; use OmniPath copy), UniProt ECO:0000269 (~960 new pairs), OmniPath curated non-PSP rows (~5.8k). Sugiyama 2019 in vitro → features only (Müller-Dott 2025: hurts when added as labels).
+    - Decision: treat as PU learning; negatives from observed phosphosites matched on residue; pre-register easy and hard negative sets.
+  - [x] 1.3 Phosphoproteomics sources -> docs/lit/03_phosphoproteomics_sources.md
+    - [!] Compendium = 1,937 contrasts/178 PMIDs/189,962 sites, 4.6% dense; contains decryptM (790 contrasts, 41% of columns) + Hijazi (183). Study-structured → need study-aware aggregation.
+    - [!] CPTAC 10 cohorts public on LinkedOmics S3 (no login); benchmarKIN Zenodo 12566560.
+    - [!] Leakage: CoPheeMap trained on PSP; SELPHI2.0 splits on pairs and uses Hijazi as both feature and test; Ochoa functional score trained on PSP → ablate.
   - [ ] 1.4 Other modalities (PPI, localisation, co-expression, structure, PLMs)
 - [~] 2. Data profiling of provided data (agent -> docs/data_profile.md, src/ksp/io_psp.py)
 - [ ] 3. DESIGN.md + review rounds (≤3)

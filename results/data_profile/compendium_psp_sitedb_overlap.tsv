@@ -1,0 +1,7 @@
+psp_site_set	n_sites	n_in_compendium	frac_in_compendium	n_in_compendium_ge10_conditions	n_in_compendium_ge100_conditions
+all human STY sites	240698	104160	0.4327	72838	30600
+LT>=1 or MS_total>=2	114275	76407	0.6686	60039	28936
+LT>=1	15432	7136	0.4624	5747	3314
+KS-annotated (HMR pooled)	12132	5957	0.491	4870	2903
+no KS annotation (dark)	228566	98203	0.4296	67968	27697
+dark & LT>=1 or MS_total>=2	102743	70591	0.6871	55237	26039

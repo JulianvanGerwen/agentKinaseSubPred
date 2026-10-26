@@ -1,0 +1,205 @@
+Sample	n_conditions
+A549	165
+ARH-77	102
+Ramos	102
+SU-DHL-4	102
+MCF7	87
+RPE1	66
+U937	62
+HL60	61
+NTERA2	61
+HeLa	57
+HeLa013	54
+RPMI8226	50
+K562	49
+PC-9	45
+CRC patient-derived organoid	42
+A431	40
+HEK293	35
+HepG2	33
+BT-474	32
+BOEC	28
+SK-BR-3	28
+MDA-MB-175-VII	27
+WiDr	24
+HCT 116	23
+U2OS	20
+NL-550	16
+MCF-7	16
+THP-1	14
+Jurkat	13
+COLO 205	13
+A549-ACE2	12
+HeLa S3	12
+T47D	11
+HFF	11
+UACC257	10
+SH-SY5Y	10
+MDA-MB-231	10
+A-549	10
+H9	10
+AT59RM	9
+KYSE-520	9
+MOLT-4	9
+HUES 9	8
+OVCAR-5	6
+A2058	6
+10min	6
+TIG-3	6
+WM239A	6
+HNSCC	6
+A-431	6
+isolated CD4+ T	6
+Platelet-rich plasma	6
+59M	5
+P31/FUJ	5
+Kasumi-1	5
+Jurkat E6.1	5
+blood	5
+Jurkat(HIV expressing)	5
+ARPE-19	5
+MM1.S	5
+HAP1	4
+BT20	4
+HCC1937	4
+MDAMB415	4
+K-562	4
+liver	4
+breast cancer	4
+SCC-9	4
+HaCaT	4
+J.gamma1	4
+U2Os	3
+HELA-Fucci	3
+A-498	3
+KG-1	3
+hTERT-RPE1	3
+ovarian cancer	3
+basal breast cancer	3
+luminal breast cancer	3
+A-375	3
+MCF-10A	3
+Daudi	3
+NHA	3
+HT22	3
+NB4	3
+Rhabdomyosarcoma	3
+SK-N-BE(2)	3
+NB1	3
+HEp-2	3
+HEK-293	3
+BTB549_HA-FGFR1c	2
+BTB549_HA-FGFR2b	2
+BTB549_HA-FGFR4	2
+C2bbe1	2
+COLO205	2
+HT115	2
+LOVO	2
+MDST	2
+NCIH747	2
+RKO	2
+SNU61	2
+SW48	2
+SW837	2
+SW948	2
+T84	2
+WM3682	2
+GTL16 R3 Resistant	2
+GTL-16	2
+DFC	2
+NCI-H1975	2
+HeLa Kyoto	2
+Hep-G2	2
+PaSC	2
+NCI-H929	2
+DG-75	2
+NCI-H1299	2
+HMT-3909S13	2
+A-204	2
+medulloblastomas	2
+CLB-Bar	2
+CLB-Ge1	2
+SK-N-AS	2
+AML Bone Marrow aspirate	2
+HT29	1
+CCRF-CEM	1
+Glioblastoma initiating cell	1
+SW620;SW480	1
+colorectal cancer	1
+AML;GMPB	1
+P31/FUJ;Kasumi-1	1
+AML	1
+GMPB	1
+CD4+T cell	1
+NCI-H2228	1
+HaCaT;SCC-9	1
+pancreas	1
+breast cancer stem cells	1
+HL-60	1
+brain	1
+NCI-H3255	1
+muscle	1
+GB-2	1
+AT34 ABR	1
+NFF	1
+Akata(EBV+)	1
+Kit225	1
+A-427	1
+HCT 116; HCT 8	1
+NB-1643	1
+NB-1	1
+NCI-H358	1
+HEK293T	1
+End1 nuclear	1
+End1/E6E7	1
+iPSC A1	1
+human islet	1
+IMR-32	1
+Kelly	1
+Caf 10	1
+Human Fibrolamellar carcinoma & normal liver	1
+VM-CUB-1;TERT-NHUC A	1
+SW780;TERT-NHUC A	1
+RT-112;TERT-NHUC A	1
+UM-UC-3;TERT-NHUC A	1
+T24;TERT-NHUC A	1
+J82;TERT-NHUC A	1
+mammary epithelial cells	1
+NCI-H1155	1
+Karpas-299	1
+LNCaP C4-2; 22Rv1	1
+DU145; 22Rv1	1
+EF-1 mutated NEPC; 22Rv1	1
+LNCaP; 22Rv1	1
+NCI-H660; 22Rv1	1
+PARCB mutated NEPC; 22Rv1	1
+PC-3; 22Rv1	1
+VCaP; 22Rv1	1
+DU145; LNCaP C4-2	1
+EF-1 mutated NEPC; LNCaP C4-2	1
+LNCaP; LNCaP C4-2	1
+NCI-H660; LNCaP C4-2	1
+PARCB mutated NEPC; LNCaP C4-2	1
+PC-3; LNCaP C4-2	1
+VCaP; LNCaP C4-2	1
+EF-1 mutated NEPC; DU145	1
+LNCaP; DU145	1
+NCI-H660; DU145	1
+PARCB mutated NEPC; DU145	1
+PC-3; DU145	1
+VCaP; DU145	1
+LNCaP; EF-1 mutated NEPC	1
+NCI-H660; EF-1 mutated NEPC	1
+PARCB mutated NEPC; EF-1 mutated NEPC	1
+PC-3; EF-1 mutated NEPC	1
+VCaP; EF-1 mutated NEPC	1
+NCI-H660; LNCaP	1
+PARCB mutated NEPC; LNCaP	1
+PC-3; LNCaP	1
+VCaP; LNCaP	1
+PARCB mutated NEPC; NCI-H660	1
+PC-3; NCI-H660	1
+VCaP; NCI-H660	1
+PC-3; PARCB mutated NEPC	1
+VCaP; PARCB mutated NEPC	1
+VCaP; PC-3	1

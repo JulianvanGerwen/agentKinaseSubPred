@@ -1,0 +1,446 @@
+kin_human_gene	n_pairs_human_only	n_pairs_hmr	n_pairs_all_species	n_pairs_hmr_in_vivo	n_pairs_hmr_in_vitro	n_substrate_proteins_hmr	pkinfam_group	pkinfam_group_short	human_kin_acc	in_pkinfam	uniprot_gene_of_acc	uniprot_kw0418_pkdomain	uniprot_kw0418	uniprot_human_gene	protein_kinase
+PRKACA	634	1054	1246	602	863	541	AGC Ser/Thr protein kinase family	AGC	P17612	True	PRKACA	True	True	True	True
+PRKCA	503	804	870	411	610	399	AGC Ser/Thr protein kinase family	AGC	P17252	True	PRKCA	True	True	True	True
+SRC	623	800	837	576	504	375	Tyr protein kinase family	Tyr	P12931	True	SRC	True	True	True	True
+CDK1	694	796	804	393	683	400	CMGC Ser/Thr protein kinase family	CMGC	P06493	True	CDK1	True	True	True	True
+MAPK1	462	778	790	412	620	384	CMGC Ser/Thr protein kinase family	CMGC	P28482	True	MAPK1	True	True	True	True
+CSNK2A1	590	775	823	331	688	373	Other	Other	P68400	True	CSNK2A1	True	True	True	True
+MAPK3	400	567	580	400	361	298	CMGC Ser/Thr protein kinase family	CMGC	P27361	True	MAPK3	True	True	True	True
+GSK3B	382	522	530	397	379	235	CMGC Ser/Thr protein kinase family	CMGC	P49841	True	GSK3B	True	True	True	True
+CDK2	435	497	499	173	453	265	CMGC Ser/Thr protein kinase family	CMGC	P24941	True	CDK2	True	True	True	True
+AKT1	379	472	474	371	370	324	AGC Ser/Thr protein kinase family	AGC	P31749	True	AKT1	True	True	True	True
+CAMK2A	154	377	395	144	323	157	CAMK Ser/Thr protein kinase family	CAMK	Q9UQM7	True	CAMK2A	True	True	True	True
+PLK1	328	360	372	225	306	164	Other	Other	P53350	True	PLK1	True	True	True	True
+MAPK14	246	352	354	235	261	188	CMGC Ser/Thr protein kinase family	CMGC	Q16539	True	MAPK14	True	True	True	True
+CDK5	169	344	346	253	262	179	CMGC Ser/Thr protein kinase family	CMGC	Q00535	True	CDK5	True	True	True	True
+ATM	323	339	339	300	156	185	Atypical: PI3/PI4-kinase family	Atypical-PI3/PI4-kinase	Q13315	True	ATM	False	True	True	True
+ABL1	227	279	283	237	142	138	Tyr protein kinase family	Tyr	P00519	True	ABL1	True	True	True	True
+PRKAA1	184	275	277	181	225	169	CAMK Ser/Thr protein kinase family	CAMK	Q13131	True	PRKAA1	True	True	True	True
+MAPK8	162	245	247	180	194	121	CMGC Ser/Thr protein kinase family	CMGC	P45983	True	MAPK8	True	True	True	True
+FYN	152	231	234	142	132	112	Tyr protein kinase family	Tyr	P06241	True	FYN	True	True	True	True
+AURKB	219	230	232	94	221	120	Other	Other	Q96GD4	True	AURKB	True	True	True	True
+MTOR	141	226	226	190	109	113	Atypical: PI3/PI4-kinase family	Atypical-PI3/PI4-kinase	P42345	True	MTOR	False	True	True	True
+CHEK1	202	214	214	64	208	155	CAMK Ser/Thr protein kinase family	CAMK	O14757	True	CHEK1	True	True	True	True
+PRKCD	136	181	195	111	133	118	AGC Ser/Thr protein kinase family	AGC	Q05655	True	PRKCD	True	True	True	True
+CSNK1A1	148	178	183	72	155	77	CK1 Ser/Thr protein kinase family	CK1	P48729	True	CSNK1A1	True	True	True	True
+PRKCB	96	163	170	73	126	87	AGC Ser/Thr protein kinase family	AGC	P05771	True	PRKCB	True	True	True	True
+PRKDC	146	152	152	68	129	65	Atypical: PI3/PI4-kinase family	Atypical-PI3/PI4-kinase	P78527	True	PRKDC	False	True	True	True
+AURKA	140	144	146	97	130	80	Other	Other	O14965	True	AURKA	True	True	True	True
+LYN	98	141	141	83	89	67	Tyr protein kinase family	Tyr	P07948	True	LYN	True	True	True	True
+CSNK1D	94	137	138	61	104	35	CK1 Ser/Thr protein kinase family	CK1	P48730	True	CSNK1D	True	True	True	True
+LCK	98	131	133	71	92	64	Tyr protein kinase family	Tyr	P06239	True	LCK	True	True	True	True
+EGFR	101	128	133	77	94	69	Tyr protein kinase family	Tyr	P00533	True	EGFR	True	True	True	True
+ATR	124	126	126	103	53	82	Atypical: PI3/PI4-kinase family	Atypical-PI3/PI4-kinase	Q13535	True	ATR	False	True	True	True
+PRKCZ	97	125	132	84	89	69	AGC Ser/Thr protein kinase family	AGC	Q05513	True	PRKCZ	True	True	True	True
+TBK1	90	125	125	90	85	53	Other	Other	Q9UHD2	True	TBK1	True	True	True	True
+RPS6KA1	78	118	118	83	100	74	AGC Ser/Thr protein kinase family	AGC	Q15418	True	RPS6KA1	True	True	True	True
+GSK3A	75	115	141	71	74	56	CMGC Ser/Thr protein kinase family	CMGC	P49840	True	GSK3A	True	True	True	True
+GRK2	79	112	120	70	51	38	AGC Ser/Thr protein kinase family	AGC	P25098	True	GRK2	True	True	True	True
+PRKCE	70	111	125	67	77	67	AGC Ser/Thr protein kinase family	AGC	Q02156	True	PRKCE	True	True	True	True
+PAK1	81	108	109	81	91	63	STE Ser/Thr protein kinase family	STE	Q13153	True	PAK1	True	True	True	True
+MAPKAPK2	79	103	109	54	94	61	CAMK Ser/Thr protein kinase family	CAMK	P49137	True	MAPKAPK2	True	True	True	True
+LRRK2	85	103	107	44	84	37	TKL Ser/Thr protein kinase family	TKL	Q5S007	True	LRRK2	True	True	True	True
+IKBKB	85	103	104	79	71	46	Other	Other	O14920	True	IKBKB	True	True	True	True
+PRKD1	82	102	103	79	76	65	CAMK Ser/Thr protein kinase family	CAMK	Q15139	True	PRKD1	True	True	True	True
+AKT2	81	102	104	82	77	60	AGC Ser/Thr protein kinase family	AGC	P31751	True	AKT2	True	True	True	True
+ULK1	77	98	98	64	75	44	Other	Other	O75385	True	ULK1	True	True	True	True
+SYK	69	96	96	74	57	46	Tyr protein kinase family	Tyr	P43405	True	SYK	True	True	True	True
+MAPK9	66	94	94	49	74	55	CMGC Ser/Thr protein kinase family	CMGC	P45984	True	MAPK9	True	True	True	True
+PRKAA2	53	88	88	84	42	57	CAMK Ser/Thr protein kinase family	CAMK	P54646	True	PRKAA2	True	True	True	True
+PRKG1	57	87	126	49	66	53	AGC Ser/Thr protein kinase family	AGC	Q13976	True	PRKG1	True	True	True	True
+ROCK1	72	86	93	71	63	45	AGC Ser/Thr protein kinase family	AGC	Q13464	True	ROCK1	True	True	True	True
+CDK4	80	85	85	48	66	36	CMGC Ser/Thr protein kinase family	CMGC	P11802	True	CDK4	True	True	True	True
+JAK2	45	82	83	69	55	41	Tyr protein kinase family	Tyr	O60674	True	JAK2	True	True	True	True
+PIM1	73	81	81	64	55	44	CAMK Ser/Thr protein kinase family	CAMK	P11309	True	PIM1	True	True	True	True
+CHEK2	78	78	84	42	72	36	CAMK Ser/Thr protein kinase family	CAMK	O96017	True	CHEK2	True	True	True	True
+SGK1	54	77	78	55	59	41	AGC Ser/Thr protein kinase family	AGC	O00141	True	SGK1	True	True	True	True
+RPS6KA3	57	75	77	54	60	54	AGC Ser/Thr protein kinase family	AGC	P51812	True	RPS6KA3	True	True	True	True
+RPS6KB1	56	72	74	61	52	46	AGC Ser/Thr protein kinase family	AGC	P23443	True	RPS6KB1	True	True	True	True
+CAMK2B	10	72	72	19	67	20	CAMK Ser/Thr protein kinase family	CAMK	Q13554	True	CAMK2B	True	True	True	True
+TTK	68	68	68	34	50	15	Other	Other	P33981	True	TTK	True	True	True	True
+INSR	45	67	73	17	62	26	Tyr protein kinase family	Tyr	P06213	True	INSR	True	True	True	True
+CSNK1E	54	67	68	60	32	28	CK1 Ser/Thr protein kinase family	CK1	P49674	True	CSNK1E	True	True	True	True
+HIPK2	60	65	65	47	41	26	CMGC Ser/Thr protein kinase family	CMGC	Q9H2X6	True	HIPK2	True	True	True	True
+DYRK1A	41	64	65	41	53	33	CMGC Ser/Thr protein kinase family	CMGC	Q13627	True	DYRK1A	True	True	True	True
+PRKCG	37	64	67	29	52	37	AGC Ser/Thr protein kinase family	AGC	P05129	True	PRKCG	True	True	True	True
+CHUK	49	63	63	42	52	38	Other	Other	O15111	True	CHUK	True	True	True	True
+CDK9	58	58	60	36	42	24	CMGC Ser/Thr protein kinase family	CMGC	P50750	True	CDK9	True	True	True	True
+PRKCI	49	58	58	39	39	37	AGC Ser/Thr protein kinase family	AGC	P41743	True	PRKCI	True	True	True	True
+CDK6	50	58	58	29	46	20	CMGC Ser/Thr protein kinase family	CMGC	Q00534	True	CDK6	True	True	True	True
+PRKCQ	45	58	61	35	38	38	AGC Ser/Thr protein kinase family	AGC	Q04759	True	PRKCQ	True	True	True	True
+TRPM7	55	57	57	7	55	7	Atypical: Alpha-type protein kinase family	Atypical-Alpha-type	Q96QT4	True	TRPM7	True	True	True	True
+CDK7	53	57	57	24	50	28	CMGC Ser/Thr protein kinase family	CMGC	P50613	True	CDK7	True	True	True	True
+STK4	44	55	55	27	48	30	STE Ser/Thr protein kinase family	STE	Q13043	True	STK4	True	True	True	True
+CAMK1	17	53	54	26	42	27	CAMK Ser/Thr protein kinase family	CAMK	Q14012	True	CAMK1	True	True	True	True
+DYRK2	46	51	52	21	44	21	CMGC Ser/Thr protein kinase family	CMGC	Q92630	True	DYRK2	True	True	True	True
+PDPK1	35	50	51	33	42	30	AGC Ser/Thr protein kinase family	AGC	O15530	True	PDPK1	True	True	True	True
+CDC7	49	50	50	19	40	13	Other	Other	O00311	True	CDC7	True	True	True	True
+PTK2	30	49	54	44	23	32	Tyr protein kinase family	Tyr	Q05397	True	PTK2	True	True	True	True
+IKBKE	42	49	49	34	44	28	Other	Other	Q14164	True	IKBKE	True	True	True	True
+MAP3K7	43	49	49	31	36	32	STE Ser/Thr protein kinase family	STE	O43318	True	MAP3K7	True	True	True	True
+MAPK12	32	48	48	28	39	24	CMGC Ser/Thr protein kinase family	CMGC	P53778	True	MAPK12	True	True	True	True
+PAK2	41	48	56	27	42	26	STE Ser/Thr protein kinase family	STE	Q13177	True	PAK2	True	True	True	True
+STK11	42	47	47	29	44	27	CAMK Ser/Thr protein kinase family	CAMK	Q15831	True	STK11	True	True	True	True
+ROCK2	24	45	45	30	33	32	AGC Ser/Thr protein kinase family	AGC	O75116	True	ROCK2	True	True	True	True
+MAPK13	28	44	47	16	43	14	CMGC Ser/Thr protein kinase family	CMGC	O15264	True	MAPK13	True	True	True	True
+MET	29	43	43	26	36	15	Tyr protein kinase family	Tyr	P08581	True	MET	True	True	True	True
+MARK2	29	43	43	35	35	24	CAMK Ser/Thr protein kinase family	CAMK	Q7KZI7	True	MARK2	True	True	True	True
+ZAP70	36	42	42	28	35	14	Tyr protein kinase family	Tyr	P43403	True	ZAP70	True	True	True	True
+FGFR1	29	41	41	28	26	17	Tyr protein kinase family	Tyr	P11362	True	FGFR1	True	True	True	True
+MAPK11	35	40	40	23	31	26	CMGC Ser/Thr protein kinase family	CMGC	Q15759	True	MAPK11	True	True	True	True
+PDGFRB	32	40	40	20	32	16	Tyr protein kinase family	Tyr	P09619	True	PDGFRB	True	True	True	True
+HCK	31	39	39	20	32	18	Tyr protein kinase family	Tyr	P08631	True	HCK	True	True	True	True
+STK3	36	38	38	13	33	17	STE Ser/Thr protein kinase family	STE	Q13188	True	STK3	True	True	True	True
+NEK2	38	38	38	22	29	18	NEK Ser/Thr protein kinase family	NEK	P51955	True	NEK2	True	True	True	True
+CAMK2D	21	38	38	23	29	24	CAMK Ser/Thr protein kinase family	CAMK	Q13557	True	CAMK2D	True	True	True	True
+MAP2K1	21	37	39	32	22	20	STE Ser/Thr protein kinase family	STE	Q02750	True	MAP2K1	True	True	True	True
+PLK4	32	37	37	30	31	12	Other	Other	O00444	True	PLK4	True	True	True	True
+GRK3	18	37	37	37	2	10	AGC Ser/Thr protein kinase family	AGC	P35626	True	GRK3	True	True	True	True
+MELK	26	37	37	26	32	15	CAMK Ser/Thr protein kinase family	CAMK	Q14680	True	MELK	True	True	True	True
+MAPK10	14	35	35	6	35	21	CMGC Ser/Thr protein kinase family	CMGC	P53779	True	MAPK10	True	True	True	True
+BTK	28	35	35	26	26	16	Tyr protein kinase family	Tyr	Q06187	True	BTK	True	True	True	True
+IRAK4	35	35	35	9	34	5	TKL Ser/Thr protein kinase family	TKL	Q9NWZ3	True	IRAK4	True	True	True	True
+RET	34	35	35	19	30	16	Tyr protein kinase family	Tyr	P07949	True	RET	True	True	True	True
+PTK2B	17	35	35	33	15	18	Tyr protein kinase family	Tyr	Q14289	True	PTK2B	True	True	True	True
+ABL2	22	34	34	25	23	19	Tyr protein kinase family	Tyr	P42684	True	ABL2	True	True	True	True
+YES1	25	34	34	20	22	21	Tyr protein kinase family	Tyr	P07947	True	YES1	True	True	True	True
+JAK3	34	34	34	15	30	11	Tyr protein kinase family	Tyr	P52333	True	JAK3	True	True	True	True
+RPS6KA5	22	34	34	21	33	23	AGC Ser/Thr protein kinase family	AGC	O75582	True	RPS6KA5	True	True	True	True
+MAPK7	25	33	33	21	30	15	CMGC Ser/Thr protein kinase family	CMGC	Q13164	True	MAPK7	True	True	True	True
+IGF1R	30	33	33	22	27	12	Tyr protein kinase family	Tyr	P08069	True	IGF1R	True	True	True	True
+PLK3	30	33	33	14	31	21	Other	Other	Q9H4B4	True	PLK3	True	True	True	True
+JAK1	19	31	31	26	11	17	Tyr protein kinase family	Tyr	P23458	True	JAK1	True	True	True	True
+CDKL5	28	31	31	28	13	27	CMGC Ser/Thr protein kinase family	CMGC	O76039	True	CDKL5	True	True	True	True
+CDK8	16	31	31	23	19	10	CMGC Ser/Thr protein kinase family	CMGC	P49336	True	CDK8	True	True	True	True
+PRKG2	15	30	36	15	19	15	AGC Ser/Thr protein kinase family	AGC	Q13237	True	PRKG2	True	True	True	True
+LATS1	28	30	30	25	20	17	AGC Ser/Thr protein kinase family	AGC	O95835	True	LATS1	True	True	True	True
+FER	21	30	31	25	14	16	Tyr protein kinase family	Tyr	P16591	True	FER	True	True	True	True
+GRK5	23	29	29	21	15	12	AGC Ser/Thr protein kinase family	AGC	P34947	True	GRK5	True	True	True	True
+MAP3K5	27	29	29	20	22	14	STE Ser/Thr protein kinase family	STE	Q99683	True	MAP3K5	True	True	True	True
+LATS2	27	28	28	25	16	19	AGC Ser/Thr protein kinase family	AGC	Q9NRM7	True	LATS2	True	True	True	True
+MAP3K8	25	28	28	14	21	20	STE Ser/Thr protein kinase family	STE	P41279	True	MAP3K8	True	True	True	True
+BUB1	28	28	28	2	28	5	Other	Other	O43683	True	BUB1	True	True	True	True
+PAK4	22	28	28	23	23	24	STE Ser/Thr protein kinase family	STE	O96013	True	PAK4	True	True	True	True
+AKT3	20	28	28	21	14	21	AGC Ser/Thr protein kinase family	AGC	Q9Y243	True	AKT3	True	True	True	True
+NLK	24	27	27	19	18	12	CMGC Ser/Thr protein kinase family	CMGC	Q9UBE8	True	NLK	True	True	True	True
+NEK6	25	26	26	8	24	16	NEK Ser/Thr protein kinase family	NEK	Q9HC98	True	NEK6	True	True	True	True
+DAPK1	24	26	26	15	25	16	CAMK Ser/Thr protein kinase family	CAMK	P53355	True	DAPK1	True	True	True	True
+EIF2AK2	23	26	26	21	18	11	Other	Other	P19525	True	EIF2AK2	True	True	True	True
+ERBB2	18	26	26	22	14	10	Tyr protein kinase family	Tyr	P04626	True	ERBB2	True	True	True	True
+PKN1	12	25	25	9	23	13	AGC Ser/Thr protein kinase family	AGC	Q16512	True	PKN1	True	True	True	True
+NTRK1	22	25	25	18	11	9	Tyr protein kinase family	Tyr	P04629	True	NTRK1	True	True	True	True
+PINK1	21	25	25	22	14	19	Other	Other	Q9BXM7	True	PINK1	True	True	True	True
+SRPK1	19	23	25	6	23	7	CMGC Ser/Thr protein kinase family	CMGC	Q96SB4	True	SRPK1	True	True	True	True
+DAPK3	22	23	26	11	22	14	CAMK Ser/Thr protein kinase family	CAMK	O43293	True	DAPK3	True	True	True	True
+PIM2	15	23	23	16	20	18	CAMK Ser/Thr protein kinase family	CAMK	Q9P1W9	True	PIM2	True	True	True	True
+PTK6	17	23	23	18	15	12	Tyr protein kinase family	Tyr	Q13882	True	PTK6	True	True	True	True
+MAP3K14	15	22	22	12	16	10	STE Ser/Thr protein kinase family	STE	Q99558	True	MAP3K14	True	True	True	True
+FGR	13	22	22	10	14	13	Tyr protein kinase family	Tyr	P09769	True	FGR	True	True	True	True
+CSNK2A2	21	22	22	12	16	13	Other	Other	P19784	True	CSNK2A2	True	True	True	True
+PRKD2	20	21	21	18	9	18	CAMK Ser/Thr protein kinase family	CAMK	Q9BZL6	True	PRKD2	True	True	True	True
+TNK2	14	21	21	17	10	12	Tyr protein kinase family	Tyr	Q07912	True	TNK2	True	True	True	True
+NTRK2	11	21	21	13	13	8	Tyr protein kinase family	Tyr	Q16620	True	NTRK2	True	True	True	True
+BCR/ABL	18	21	21	18	6	12			A9UF07	False		False	False	False	False
+SIK2	12	20	20	10	19	11	CAMK Ser/Thr protein kinase family	CAMK	Q9H0K1	True	SIK2	True	True	True	True
+IRAK1	14	20	20	4	19	6	TKL Ser/Thr protein kinase family	TKL	P51617	True	IRAK1	True	True	True	True
+BRAF	20	20	20	12	16	10	TKL Ser/Thr protein kinase family	TKL	P15056	True	BRAF	True	True	True	True
+LRRK1	20	20	20	13	20	4	TKL Ser/Thr protein kinase family	TKL	Q38SD2	True	LRRK1	True	True	True	True
+BMX	19	20	20	10	12	9	Tyr protein kinase family	Tyr	P51813	True	BMX	True	True	True	True
+BLK	14	19	19	8	16	12	Tyr protein kinase family	Tyr	P51451	True	BLK	True	True	True	True
+MAP2K4	16	19	19	12	18	6	STE Ser/Thr protein kinase family	STE	P45985	True	MAP2K4	True	True	True	True
+PRKCH	16	19	19	10	13	11	AGC Ser/Thr protein kinase family	AGC	P24723	True	PRKCH	True	True	True	True
+OXSR1	18	19	19	8	18	7	STE Ser/Thr protein kinase family	STE	O95747	True	OXSR1	True	True	True	True
+CAMK4	11	19	21	13	16	15	CAMK Ser/Thr protein kinase family	CAMK	Q16566	True	CAMK4	True	True	True	True
+AXL	18	18	18	17	5	14	Tyr protein kinase family	Tyr	P30530	True	AXL	True	True	True	True
+TYK2	10	18	18	11	13	10	Tyr protein kinase family	Tyr	P29597	True	TYK2	True	True	True	True
+MARK1	13	18	18	7	13	6	CAMK Ser/Thr protein kinase family	CAMK	Q9P0L2	True	MARK1	True	True	True	True
+CLK2	11	18	18	6	18	4	CMGC Ser/Thr protein kinase family	CMGC	P49760	True	CLK2	True	True	True	True
+RAF1	13	18	18	14	10	9	TKL Ser/Thr protein kinase family	TKL	P04049	True	RAF1	True	True	True	True
+STK38	10	18	18	8	13	9	AGC Ser/Thr protein kinase family	AGC	Q15208	True	STK38	True	True	True	True
+ALK	16	18	18	13	8	11	Tyr protein kinase family	Tyr	Q9UM73	True	ALK	True	True	True	True
+CLK1	14	17	17	13	15	7	CMGC Ser/Thr protein kinase family	CMGC	P49759	True	CLK1	True	True	True	True
+CDK3	16	17	17	15	13	11	CMGC Ser/Thr protein kinase family	CMGC	Q00526	True	CDK3	True	True	True	True
+VRK1	17	17	17	15	16	10	CK1 Ser/Thr protein kinase family	CK1	Q99986	True	VRK1	True	True	True	True
+SIK1	3	17	17	15	14	10	CAMK Ser/Thr protein kinase family	CAMK	P57059	True	SIK1	True	True	True	True
+VRK2	15	17	17	9	14	10	CK1 Ser/Thr protein kinase family	CK1	Q86Y07	True	VRK2	True	True	True	True
+GRK6	12	17	17	16	3	8	AGC Ser/Thr protein kinase family	AGC	P43250	True	GRK6	True	True	True	True
+TGFBR2	16	17	18	10	7	4	TKL Ser/Thr protein kinase family	TKL	P37173	True	TGFBR2	True	True	True	True
+PLK2	15	17	17	11	14	12	Other	Other	Q9NYY3	True	PLK2	True	True	True	True
+RIPK3	8	16	16	14	6	10	TKL Ser/Thr protein kinase family	TKL	Q9Y572	True	RIPK3	True	True	True	True
+ITK	15	16	16	9	12	12	Tyr protein kinase family	Tyr	Q08881	True	ITK	True	True	True	True
+CSK	11	16	16	9	11	11	Tyr protein kinase family	Tyr	P41240	True	CSK	True	True	True	True
+MAPKAPK5	14	16	16	6	15	10	CAMK Ser/Thr protein kinase family	CAMK	Q8IW41	True	MAPKAPK5	True	True	True	True
+DYRK1B	13	16	17	9	13	12	CMGC Ser/Thr protein kinase family	CMGC	Q9Y463	True	DYRK1B	True	True	True	True
+STK39	13	16	16	8	13	7	STE Ser/Thr protein kinase family	STE	Q9UEW8	True	STK39	True	True	True	True
+CSNK2B	13	16	16	14	11	12			P67870	False	CSNK2B	False	False	True	False
+STK26	13	15	15	7	13	9	STE Ser/Thr protein kinase family	STE	Q9P289	True	STK26	True	True	True	True
+TEC	9	15	15	8	8	7	Tyr protein kinase family	Tyr	P42680	True	TEC	True	True	True	True
+PIM3	9	15	15	6	14	9	CAMK Ser/Thr protein kinase family	CAMK	Q86V86	True	PIM3	True	True	True	True
+PKM	12	15	15	12	11	11			P14618	False	PKM	False	True	True	False
+WNK1	10	14	14	10	11	8	Other	Other	Q9H4A3	True	WNK1	True	True	True	True
+GRK4	12	14	14	5	9	3	AGC Ser/Thr protein kinase family	AGC	P32298	True	GRK4	True	True	True	True
+BRSK1	10	14	14	5	13	8	CAMK Ser/Thr protein kinase family	CAMK	Q8TDC3	True	BRSK1	True	True	True	True
+KIT	14	14	14	7	9	4	Tyr protein kinase family	Tyr	P10721	True	KIT	True	True	True	True
+FAM20C	10	14	14	9	8	10			Q8IXL6	False	FAM20C	False	True	True	False
+EEF2K	13	13	15	8	12	5	Atypical: Alpha-type protein kinase family	Atypical-Alpha-type	O00418	True	EEF2K	True	True	True	True
+ULK2	12	13	13	9	6	8	Other	Other	Q8IYT8	True	ULK2	True	True	True	True
+STK24	11	13	13	6	11	13	STE Ser/Thr protein kinase family	STE	Q9Y6E0	True	STK24	True	True	True	True
+PAK5	12	13	13	13	6	9	STE Ser/Thr protein kinase family	STE	Q9P286	True	PAK5	True	True	True	True
+MKNK1	10	13	13	7	11	7	CAMK Ser/Thr protein kinase family	CAMK	Q9BUB5	True	MKNK1	True	True	True	True
+MAP3K1	7	13	13	10	6	8	STE Ser/Thr protein kinase family	STE	Q13233	True	MAP3K1	True	True	True	True
+FLT3	13	13	14	4	10	7	Tyr protein kinase family	Tyr	P36888	True	FLT3	True	True	True	True
+MAP3K11	12	13	13	10	11	8	STE Ser/Thr protein kinase family	STE	Q16584	True	MAP3K11	True	True	True	True
+EPHA2	12	12	12	12	5	4	Tyr protein kinase family	Tyr	P29317	True	EPHA2	True	True	True	True
+PRKAB1	11	12	12	6	9	9			Q9Y478	False	PRKAB1	False	False	True	False
+MAPK15	12	12	12	6	12	3	CMGC Ser/Thr protein kinase family	CMGC	Q8TD08	True	MAPK15	True	True	True	True
+MARK3	10	12	12	3	11	9	CAMK Ser/Thr protein kinase family	CAMK	P27448	True	MARK3	True	True	True	True
+MAP4K4	12	12	12	10	10	10	STE Ser/Thr protein kinase family	STE	O95819	True	MAP4K4	True	True	True	True
+NEK1	11	12	12	5	10	6	NEK Ser/Thr protein kinase family	NEK	Q96PY6	True	NEK1	True	True	True	True
+TAOK1	8	12	12	5	12	5	STE Ser/Thr protein kinase family	STE	Q7L7X3	True	TAOK1	True	True	True	True
+AURKC	10	12	12	8	10	6	Other	Other	Q9UQB9	True	AURKC	True	True	True	True
+MAP2K7	9	11	11	7	7	4	STE Ser/Thr protein kinase family	STE	O14733	True	MAP2K7	True	True	True	True
+TLK1	11	11	11	7	11	5	Other	Other	Q9UKI8	True	TLK1	True	True	True	True
+MAP2K6	10	11	11	8	6	6	STE Ser/Thr protein kinase family	STE	P52564	True	MAP2K6	True	True	True	True
+NUAK1	11	11	11	9	9	7	CAMK Ser/Thr protein kinase family	CAMK	O60285	True	NUAK1	True	True	True	True
+MERTK	11	11	11	11	5	7	Tyr protein kinase family	Tyr	Q12866	True	MERTK	True	True	True	True
+MAP3K3	8	11	11	10	3	5	STE Ser/Thr protein kinase family	STE	Q99759	True	MAP3K3	True	True	True	True
+PBK	11	11	11	11	11	7	STE Ser/Thr protein kinase family	STE	Q96KB5	True	PBK	True	True	True	True
+SRPK2	4	11	11	8	10	5	CMGC Ser/Thr protein kinase family	CMGC	P78362	True	SRPK2	True	True	True	True
+PRKACB	8	11	11	11	4	8	AGC Ser/Thr protein kinase family	AGC	P22694	True	PRKACB	True	True	True	True
+FGFR3	11	11	11	5	8	8	Tyr protein kinase family	Tyr	P22607	True	FGFR3	True	True	True	True
+RPS6KB2	9	11	11	7	7	8	AGC Ser/Thr protein kinase family	AGC	Q9UBS0	True	RPS6KB2	True	True	True	True
+MST1R	7	10	10	9	1	4	Tyr protein kinase family	Tyr	Q04912	True	MST1R	True	True	True	True
+KDR	7	10	10	9	7	3	Tyr protein kinase family	Tyr	P35968	True	KDR	True	True	True	True
+PAK3	0	10	15	3	10	6	STE Ser/Thr protein kinase family	STE	O75914	True	PAK3	True	True	True	True
+TGFBR1	10	10	10	9	8	6	TKL Ser/Thr protein kinase family	TKL	P36897	True	TGFBR1	True	True	True	True
+FGFR2	8	10	10	6	7	9	Tyr protein kinase family	Tyr	P21802	True	FGFR2	True	True	True	True
+STK38L	6	10	10	9	3	6	AGC Ser/Thr protein kinase family	AGC	Q9Y2H1	True	STK38L	True	True	True	True
+CDK14	10	10	10	5	7	4	CMGC Ser/Thr protein kinase family	CMGC	O94921	True	CDK14	True	True	True	True
+MAP4K1	7	9	9	4	7	8	STE Ser/Thr protein kinase family	STE	Q92918	True	MAP4K1	True	True	True	True
+MAP2K3	7	9	9	7	5	5	STE Ser/Thr protein kinase family	STE	P46734	True	MAP2K3	True	True	True	True
+PAK6	9	9	9	6	7	7	STE Ser/Thr protein kinase family	STE	Q9NQU5	True	PAK6	True	True	True	True
+ILK	7	9	12	4	8	8	TKL Ser/Thr protein kinase family	TKL	Q13418	True	ILK	False	False	True	True
+FES	4	9	9	4	8	6	Tyr protein kinase family	Tyr	P07332	True	FES	True	True	True	True
+CAMK2G	7	9	9	4	6	8	CAMK Ser/Thr protein kinase family	CAMK	Q13555	True	CAMK2G	True	True	True	True
+CSNK1G2	7	9	9	9	4	7	CK1 Ser/Thr protein kinase family	CK1	P78368	True	CSNK1G2	True	True	True	True
+PRKAG2	9	9	9	3	6	7			Q9UGJ0	False	PRKAG2	False	False	True	False
+WNK4	5	9	9	7	3	4	Other	Other	Q96J92	True	WNK4	True	True	True	True
+SLK	6	9	9	9	3	6	STE Ser/Thr protein kinase family	STE	Q9H2G2	True	SLK	True	True	True	True
+CDK13	9	9	9	7	5	5	CMGC Ser/Thr protein kinase family	CMGC	Q14004	True	CDK13	True	True	True	True
+SGK3	9	9	9	4	8	7	AGC Ser/Thr protein kinase family	AGC	Q96BR1	True	SGK3	True	True	True	True
+CAMKK2	6	9	9	7	7	7	Other	Other	Q96RR4	True	CAMKK2	True	True	True	True
+CAMKK1	7	9	9	3	9	6	Other	Other	Q8N5S9	True	CAMKK1	True	True	True	True
+MINK1	6	8	8	3	7	6	STE Ser/Thr protein kinase family	STE	Q8N4C8	True	MINK1	True	True	True	True
+MAP4K3	8	8	8	7	8	7	STE Ser/Thr protein kinase family	STE	Q8IVH8	True	MAP4K3	True	True	True	True
+CSF1R	4	8	8	4	7	1	Tyr protein kinase family	Tyr	P07333	True	CSF1R	True	True	True	True
+CSNK1G1	8	8	8	4	6	5	CK1 Ser/Thr protein kinase family	CK1	Q9HCP0	True	CSNK1G1	True	True	True	True
+FRK	5	8	8	5	4	6	Tyr protein kinase family	Tyr	P42685	True	FRK	True	True	True	True
+FLT1	7	8	8	4	6	4	Tyr protein kinase family	Tyr	P17948	True	FLT1	True	True	True	True
+PDK4	5	8	8	6	4	3	Atypical: PDK/BCKDK protein kinase family	Atypical-PDK/BCKDK	Q16654	True	PDK4	False	True	True	True
+EPHA4	4	8	8	2	8	4	Tyr protein kinase family	Tyr	P54764	True	EPHA4	True	True	True	True
+STK17B	0	8	8	1	8	3	CAMK Ser/Thr protein kinase family	CAMK	O94768	True	STK17B	True	True	True	True
+UHMK1	7	8	10	8	8	6	Other	Other	Q8TAS1	True	UHMK1	True	True	True	True
+GRK1	4	8	16	8	3	5	AGC Ser/Thr protein kinase family	AGC	Q15835	True	GRK1	True	True	True	True
+MARK4	1	8	8	8	0	3	CAMK Ser/Thr protein kinase family	CAMK	Q96L34	True	MARK4	True	True	True	True
+EPHB1	1	8	8	7	2	5	Tyr protein kinase family	Tyr	P54762	True	EPHB1	True	True	True	True
+EPHB2	4	8	8	5	5	6	Tyr protein kinase family	Tyr	P29323	True	EPHB2	True	True	True	True
+RPS6KA2	6	8	8	4	7	6	AGC Ser/Thr protein kinase family	AGC	Q15349	True	RPS6KA2	True	True	True	True
+RIPK1	6	8	8	4	5	4	TKL Ser/Thr protein kinase family	TKL	Q13546	True	RIPK1	True	True	True	True
+TTBK2	8	8	8	2	8	3	CK1 Ser/Thr protein kinase family	CK1	Q6IQ55	True	TTBK2	True	True	True	True
+MAP3K10	8	8	8	5	8	3	STE Ser/Thr protein kinase family	STE	Q02779	True	MAP3K10	True	True	True	True
+TTBK1	7	7	36	4	7	1	CK1 Ser/Thr protein kinase family	CK1	Q5TCY1	True	TTBK1	True	True	True	True
+MAP3K20	7	7	7	7	7	4	STE Ser/Thr protein kinase family	STE	Q9NYL2	True	MAP3K20	True	True	True	True
+MAP4K2	7	7	7	5	5	7	STE Ser/Thr protein kinase family	STE	Q12851	True	MAP4K2	True	True	True	True
+MKNK2	6	7	7	5	3	5	CAMK Ser/Thr protein kinase family	CAMK	Q9HBH9	True	MKNK2	True	True	True	True
+PDK1	6	7	7	4	6	2	Atypical: PDK/BCKDK protein kinase family	Atypical-PDK/BCKDK	Q15118	True	PDK1	False	True	True	True
+PDGFRA	6	7	7	3	4	4	Tyr protein kinase family	Tyr	P16234	True	PDGFRA	True	True	True	True
+MAP3K2	3	7	7	7	4	6	STE Ser/Thr protein kinase family	STE	Q9Y2U5	True	MAP3K2	True	True	True	True
+PGK1	7	7	7	7	5	6			P00558	False	PGK1	False	True	True	False
+CDK12	7	7	7	6	4	3	CMGC Ser/Thr protein kinase family	CMGC	Q9NYV4	True	CDK12	True	True	True	True
+WNK3	4	7	7	6	1	4	Other	Other	Q9BYP7	True	WNK3	True	True	True	True
+NEK7	7	7	7	2	5	3	NEK Ser/Thr protein kinase family	NEK	Q8TDX7	True	NEK7	True	True	True	True
+PIK3CA	5	6	9	5	2	5	Atypical: PI3/PI4-kinase family	Atypical-PI3/PI4-kinase	P42336	True	PIK3CA	False	True	True	True
+EIF2AK3	4	6	6	5	5	3	Other	Other	Q9NZJ5	True	EIF2AK3	True	True	True	True
+DCLK1	1	6	6	3	5	3	CAMK Ser/Thr protein kinase family	CAMK	O15075	True	DCLK1	True	True	True	True
+NPM/ALK	5	6	6	5	3	5			AAA58698	False		False	False	False	False
+NEK9	6	6	6	4	6	5	NEK Ser/Thr protein kinase family	NEK	Q8TD19	True	NEK9	True	True	True	True
+PASK	5	6	7	2	4	4	CAMK Ser/Thr protein kinase family	CAMK	Q96RG2	True	PASK	True	True	True	True
+MYLK3	4	6	6	3	3	5	CAMK Ser/Thr protein kinase family	CAMK	Q32MK0	True	MYLK3	True	True	True	True
+MAPK6	6	6	6	4	6	6	CMGC Ser/Thr protein kinase family	CMGC	Q16659	True	MAPK6	True	True	True	True
+MAPKAPK3	3	6	6	4	2	5	CAMK Ser/Thr protein kinase family	CAMK	Q16644	True	MAPKAPK3	True	True	True	True
+TSSK4	1	6	6	4	6	5	CAMK Ser/Thr protein kinase family	CAMK	Q6SA08	True	TSSK4	True	True	True	True
+BMPR1B	6	6	6	6	3	2	TKL Ser/Thr protein kinase family	TKL	O00238	True	BMPR1B	True	True	True	True
+ARAF	6	6	6	3	5	3	TKL Ser/Thr protein kinase family	TKL	P10398	True	ARAF	True	True	True	True
+MAP3K6	5	6	6	6	1	4	STE Ser/Thr protein kinase family	STE	O95382	True	MAP3K6	True	True	True	True
+MYO3A	5	6	6	0	6	1	STE Ser/Thr protein kinase family	STE	Q8NEV4	True	MYO3A	True	True	True	True
+BRSK2	6	6	6	4	4	5	CAMK Ser/Thr protein kinase family	CAMK	Q8IWQ3	True	BRSK2	True	True	True	True
+RPS6KA4	6	6	6	5	3	5	AGC Ser/Thr protein kinase family	AGC	O75676	True	RPS6KA4	True	True	True	True
+RIPK2	6	6	6	2	6	1	TKL Ser/Thr protein kinase family	TKL	O43353	True	RIPK2	True	True	True	True
+SMG1	6	6	6	4	5	2	Atypical: PI3/PI4-kinase family	Atypical-PI3/PI4-kinase	Q96Q15	True	SMG1	False	True	True	True
+CDC42BPA	5	6	6	1	6	3	AGC Ser/Thr protein kinase family	AGC	Q5VT25	True	CDC42BPA	True	True	True	True
+CDK19	6	6	6	6	5	3	CMGC Ser/Thr protein kinase family	CMGC	Q9BWU1	True	CDK19	True	True	True	True
+STK36	0	6	6	4	3	3	Other	Other		True		True	True	True	True
+PRKD3	6	6	6	5	2	5	CAMK Ser/Thr protein kinase family	CAMK	O94806	True	PRKD3	True	True	True	True
+DYRK3	3	6	6	4	5	6	CMGC Ser/Thr protein kinase family	CMGC	O43781	True	DYRK3	True	True	True	True
+STK25	5	5	5	4	5	3	STE Ser/Thr protein kinase family	STE	O00506	True	STK25	True	True	True	True
+ULK3	5	5	5	1	4	2	Other	Other	Q6PHR2	True	ULK3	True	True	True	True
+RPS6KA6	4	5	5	4	3	5	AGC Ser/Thr protein kinase family	AGC	Q9UK32	True	RPS6KA6	True	True	True	True
+CILK1	3	5	5	4	3	5	CMGC Ser/Thr protein kinase family	CMGC	Q9UPZ9	True	CILK1	True	True	True	True
+CASK	5	5	5	0	5	2	CAMK Ser/Thr protein kinase family	CAMK	O14936	True	CASK	True	True	True	True
+CDK16	4	5	5	5	4	5	CMGC Ser/Thr protein kinase family	CMGC	Q00536	True	CDK16	True	True	True	True
+SIK3	0	5	5	1	4	2	CAMK Ser/Thr protein kinase family	CAMK	Q9Y2K2	True	SIK3	True	True	True	True
+SRMS	5	5	5	2	4	4	Tyr protein kinase family	Tyr	Q9H3Y6	True	SRMS	True	True	True	True
+MYO3B	0	5	5	0	5	1	STE Ser/Thr protein kinase family	STE		True		True	True	True	True
+MUSK	0	5	5	0	5	1	Tyr protein kinase family	Tyr		True		True	True	True	True
+MYLK	5	5	19	2	5	3	CAMK Ser/Thr protein kinase family	CAMK	Q15746	True	MYLK	True	True	True	True
+ALPK3	5	5	5	0	5	1	Atypical: Alpha-type protein kinase family	Atypical-Alpha-type	Q96L96	True	ALPK3	True	True	True	True
+TAOK2	5	5	5	3	4	3	STE Ser/Thr protein kinase family	STE	Q9UL54	True	TAOK2	True	True	True	True
+TRPM6	5	5	5	2	5	4	Atypical: Alpha-type protein kinase family	Atypical-Alpha-type	Q9BX84	True	TRPM6	True	True	True	True
+EIF2AK4	5	5	5	3	4	3	Other	Other	Q9P2K8	True	EIF2AK4	True	True	True	True
+PIK3C2A	2	5	5	5	0	4	Atypical: PI3/PI4-kinase family	Atypical-PI3/PI4-kinase	O00443	True	PIK3C2A	False	True	True	True
+PIK3CG	5	5	5	2	5	3	Atypical: PI3/PI4-kinase family	Atypical-PI3/PI4-kinase	P48736	True	PIK3CG	False	True	True	True
+PDK3	4	5	5	2	4	2	Atypical: PDK/BCKDK protein kinase family	Atypical-PDK/BCKDK	Q15120	True	PDK3	False	True	True	True
+TNIK	5	5	5	5	5	4	STE Ser/Thr protein kinase family	STE	Q9UKE5	True	TNIK	True	True	True	True
+MAP3K12	2	5	5	1	5	3	STE Ser/Thr protein kinase family	STE	Q12852	True	MAP3K12	True	True	True	True
+PDK2	5	5	5	1	5	2	Atypical: PDK/BCKDK protein kinase family	Atypical-PDK/BCKDK	Q15119	True	PDK2	False	True	True	True
+NEK11	4	4	4	3	4	2	NEK Ser/Thr protein kinase family	NEK	Q8NG66	True	NEK11	True	True	True	True
+BCKDK	0	4	4	1	4	3	Atypical: PDK/BCKDK protein kinase family	Atypical-PDK/BCKDK	O14874	True	BCKDK	False	True	True	True
+JMJD6	1	4	4	4	4	2			Q6NYC1	False	JMJD6	False	False	True	False
+MOS	2	4	4	0	4	2	Other	Other	P00540	True	MOS	True	True	True	True
+HIPK1	4	4	4	2	3	3	CMGC Ser/Thr protein kinase family	CMGC	Q86Z02	True	HIPK1	True	True	True	True
+SGK2	4	4	4	1	4	3	AGC Ser/Thr protein kinase family	AGC	Q9HBY8	True	SGK2	True	True	True	True
+STK16	4	4	5	1	4	2	Other	Other	O75716	True	STK16	True	True	True	True
+STK10	4	4	4	3	4	4	STE Ser/Thr protein kinase family	STE	O94804	True	STK10	True	True	True	True
+CDK11A	4	4	4	4	4	2	CMGC Ser/Thr protein kinase family	CMGC	Q9UQ88	True	CDK11A	True	True	True	True
+MYLK2	1	4	5	3	1	3	CAMK Ser/Thr protein kinase family	CAMK	Q9H1R3	True	MYLK2	True	True	True	True
+NME1	2	4	4	2	4	2			P15531	False	NME1	False	True	True	False
+GTF2F1	4	4	4	0	4	2			P35269	False	GTF2F1	False	False	True	False
+TAF1	4	4	4	4	4	3			P21675	False	TAF1	True	True	True	True
+ACVRL1	4	4	4	2	2	1	TKL Ser/Thr protein kinase family	TKL	P37023	True	ACVRL1	True	True	True	True
+PKDCC	0	4	4	4	0	2	Other	Other	Q504Y2	True	PKDCC	True	True	True	True
+PNCK	4	4	4	4	4	3	CAMK Ser/Thr protein kinase family	CAMK	Q6P2M8	True	PNCK	True	True	True	True
+CSNK1G3	4	4	4	4	0	3	CK1 Ser/Thr protein kinase family	CK1	Q9Y6M4	True	CSNK1G3	True	True	True	True
+DCAF1	3	4	4	4	2	4			Q9Y4B6	False	DCAF1	False	True	True	False
+ERBB4	4	4	4	0	4	2	Tyr protein kinase family	Tyr	Q15303	True	ERBB4	True	True	True	True
+WEE1	4	4	4	2	4	4	Other	Other	P30291	True	WEE1	True	True	True	True
+TYRO3	2	4	4	4	1	3	Tyr protein kinase family	Tyr	Q06418	True	TYRO3	True	True	True	True
+EIF2AK1	2	4	4	2	2	2	Other	Other	Q9BQI3	True	EIF2AK1	True	True	True	True
+EPHA3	0	3	3	0	3	1	Tyr protein kinase family	Tyr		True		True	True	True	True
+PIK3CD	1	3	3	2	1	2	Atypical: PI3/PI4-kinase family	Atypical-PI3/PI4-kinase	O00329	True	PIK3CD	False	True	True	True
+AAK1	2	3	3	3	1	2	Other	Other	Q2M2I8	True	AAK1	True	True	True	True
+CIT	3	3	3	2	3	2	AGC Ser/Thr protein kinase family	AGC	O14578	True	CIT	True	True	True	True
+RIPK4	0	3	3	2	3	1	TKL Ser/Thr protein kinase family	TKL		True		True	True	True	True
+CDK18	3	3	3	0	3	1	CMGC Ser/Thr protein kinase family	CMGC	Q07002	True	CDK18	True	True	True	True
+WNK2	3	3	3	2	1	2	Other	Other	Q9Y3S1	True	WNK2	True	True	True	True
+MASTL	2	3	3	2	2	2	AGC Ser/Thr protein kinase family	AGC	Q96GX5	True	MASTL	True	True	True	True
+GAK	3	3	3	1	3	2	Other	Other	O14976	True	GAK	True	True	True	True
+HIPK3	1	3	3	3	2	2	CMGC Ser/Thr protein kinase family	CMGC	Q9H422	True	HIPK3	True	True	True	True
+NUAK2	3	3	3	2	1	2	CAMK Ser/Thr protein kinase family	CAMK	Q9H093	True	NUAK2	True	True	True	True
+HUNK	3	3	3	3	3	3	CAMK Ser/Thr protein kinase family	CAMK	P57058	True	HUNK	True	True	True	True
+NEK3	3	3	3	0	3	3	NEK Ser/Thr protein kinase family	NEK	P51956	True	NEK3	True	True	True	True
+MATK	3	3	3	3	0	2	Tyr protein kinase family	Tyr	P42679	True	MATK	True	True	True	True
+MAST4	1	3	3	3	0	3	AGC Ser/Thr protein kinase family	AGC	O15021	True	MAST4	True	True	True	True
+CDC42BPB	3	3	3	3	0	2	AGC Ser/Thr protein kinase family	AGC	Q9Y5S2	True	CDC42BPB	True	True	True	True
+DAPK2	3	3	3	1	3	3	CAMK Ser/Thr protein kinase family	CAMK	Q9UIK4	True	DAPK2	True	True	True	True
+CLK4	3	3	3	2	1	3	CMGC Ser/Thr protein kinase family	CMGC	Q9HAZ1	True	CLK4	True	True	True	True
+EPHA8	1	3	3	1	2	2	Tyr protein kinase family	Tyr	P29322	True	EPHA8	True	True	True	True
+FGFR4	3	3	3	2	2	3	Tyr protein kinase family	Tyr	P22455	True	FGFR4	True	True	True	True
+PKN2	3	3	3	1	3	2	AGC Ser/Thr protein kinase family	AGC	Q16513	True	PKN2	True	True	True	True
+TLK2	2	3	3	1	2	2	Other	Other	Q86UE8	True	TLK2	True	True	True	True
+NEK5	1	3	3	3	0	1	NEK Ser/Thr protein kinase family	NEK	Q6P3R8	True	NEK5	True	True	True	True
+BLVRA	3	3	3	1	3	2			P53004	False	BLVRA	False	False	True	False
+BCR	3	3	3	0	3	3			P11274	False	BCR	False	True	True	False
+TESK1	1	3	3	2	3	3	TKL Ser/Thr protein kinase family	TKL	Q15569	True	TESK1	True	True	True	True
+LMTK2	3	3	3	1	2	3	Tyr protein kinase family	Tyr	Q8IWU2	True	LMTK2	True	True	True	True
+LIMK2	3	3	3	2	2	3	TKL Ser/Thr protein kinase family	TKL	P53671	True	LIMK2	True	True	True	True
+MAP2K2	3	3	4	3	2	2	STE Ser/Thr protein kinase family	STE	P36507	True	MAP2K2	True	True	True	True
+TEK	2	3	3	1	3	1	Tyr protein kinase family	Tyr	Q02763	True	TEK	True	True	True	True
+TGM2	2	2	2	0	2	1			P21980	False	TGM2	False	False	True	False
+MAK	2	2	2	2	2	1	CMGC Ser/Thr protein kinase family	CMGC	P20794	True	MAK	True	True	True	True
+LIMK1	2	2	2	1	2	2	TKL Ser/Thr protein kinase family	TKL	P53667	True	LIMK1	True	True	True	True
+MAP2K5	2	2	2	2	2	1	STE Ser/Thr protein kinase family	STE	Q13163	True	MAP2K5	True	True	True	True
+TXK	2	2	2	0	2	1	Tyr protein kinase family	Tyr	P42681	True	TXK	True	True	True	True
+TAOK3	0	2	2	1	1	2	STE Ser/Thr protein kinase family	STE	Q9H2K8	True	TAOK3	True	True	True	True
+BMP2K	2	2	2	2	1	2	Other	Other	Q9NSY1	True	BMP2K	True	True	True	True
+CDK10	2	2	2	0	2	1	CMGC Ser/Thr protein kinase family	CMGC	Q15131	True	CDK10	True	True	True	True
+CDK11B	2	2	2	2	2	2	CMGC Ser/Thr protein kinase family	CMGC	P21127	True	CDK11B	True	True	True	True
+PRKX	2	2	2	1	2	2	AGC Ser/Thr protein kinase family	AGC	P51817	True	PRKX	True	True	True	True
+PKMYT1	2	2	2	2	2	1	Other	Other	Q99640	True	PKMYT1	True	True	True	True
+PIK3R1	2	2	2	2	0	2			P27986	False	PIK3R1	False	False	True	False
+PHKG2	0	2	2	0	2	1	CAMK Ser/Thr protein kinase family	CAMK		True		True	True	True	True
+CKB	2	2	5	2	2	2			P12277	False	CKB	False	True	True	False
+PKN3	2	2	2	0	2	2	AGC Ser/Thr protein kinase family	AGC	Q6P5Z2	True	PKN3	True	True	True	True
+EPHB3	1	2	2	2	0	2	Tyr protein kinase family	Tyr	P54753	True	EPHB3	True	True	True	True
+DDR1	2	2	2	0	2	1	Tyr protein kinase family	Tyr	Q08345	True	DDR1	True	True	True	True
+STYK1	2	2	2	2	0	1	Tyr protein kinase family	Tyr	Q6J9G0	True	STYK1	True	True	True	True
+NEK10	1	2	2	2	1	2	NEK Ser/Thr protein kinase family	NEK	Q6ZWH5	True	NEK10	True	True	True	True
+MAP4K5	1	2	2	2	1	1	STE Ser/Thr protein kinase family	STE	Q9Y4K4	True	MAP4K5	True	True	True	True
+MAPK4	2	2	2	2	0	2	CMGC Ser/Thr protein kinase family	CMGC	P31152	True	MAPK4	True	True	True	True
+PCK1	2	2	2	2	2	2			P35558	False	PCK1	False	True	True	False
+MAP3K4	2	2	2	2	1	2	STE Ser/Thr protein kinase family	STE	Q9Y6R4	True	MAP3K4	True	True	True	True
+HASPIN	2	2	2	2	2	2	Other	Other	Q8TF76	True	HASPIN	True	True	True	True
+TNNI3K	0	2	2	2	2	1	TKL Ser/Thr protein kinase family	TKL	Q59H18	True	TNNI3K	True	True	True	True
+CDKL2	1	2	2	2	0	2	CMGC Ser/Thr protein kinase family	CMGC	Q92772	True	CDKL2	True	True	True	True
+ACVR1B	2	2	2	2	2	1	TKL Ser/Thr protein kinase family	TKL	P36896	True	ACVR1B	True	True	True	True
+CDK20	2	2	2	2	2	2	CMGC Ser/Thr protein kinase family	CMGC	Q8IZL9	True	CDK20	True	True	True	True
+SBK1	0	1	1	1	1	1	Other	Other	Q52WX2	True	SBK1	True	True	True	True
+NEK8	1	1	1	1	0	1	NEK Ser/Thr protein kinase family	NEK	Q86SG6	True	NEK8	True	True	True	True
+GRK7	1	1	1	0	1	1	AGC Ser/Thr protein kinase family	AGC	Q8WTQ7	True	GRK7	True	True	True	True
+MAST3	1	1	1	1	1	1	AGC Ser/Thr protein kinase family	AGC	O60307	True	MAST3	True	True	True	True
+HSPA5	1	1	1	0	1	1			P11021	False	HSPA5	False	False	True	False
+MAP3K21	1	1	1	1	0	1	STE Ser/Thr protein kinase family	STE	Q5TCX8	True	MAP3K21	True	True	True	True
+NTRK3	0	1	1	0	1	1	Tyr protein kinase family	Tyr	Q16288	True	NTRK3	True	True	True	True
+HIPK4	0	1	1	0	1	1	CMGC Ser/Thr protein kinase family	CMGC	Q8NE63	True	HIPK4	True	True	True	True
+OBSCN	1	1	1	1	1	1	CAMK Ser/Thr protein kinase family	CAMK	Q5VST9	True	OBSCN	True	True	True	True
+KSR1	1	1	1	1	1	1	TKL Ser/Thr protein kinase family	TKL	Q8IVT5	True	KSR1	True	True	True	True
+LTK	1	1	1	1	0	1	Tyr protein kinase family	Tyr	P29376	True	LTK	True	True	True	True
+MAP3K13	1	1	1	1	1	1	STE Ser/Thr protein kinase family	STE	O43283	True	MAP3K13	True	True	True	True
+MLKL	1	1	1	1	0	1	Other	Other	Q8NB16	True	MLKL	False	False	True	True
+TESK2	0	1	1	1	1	1	TKL Ser/Thr protein kinase family	TKL		True		True	True	True	True
+CAMK1G	1	1	1	1	1	1	CAMK Ser/Thr protein kinase family	CAMK	Q96NX5	True	CAMK1G	True	True	True	True
+BRD4	1	1	1	1	1	1			O60885	False	BRD4	False	False	True	False
+BAZ1B	1	1	1	1	1	1			Q9UIG0	False	BAZ1B	False	True	True	False
+TIE1	0	1	1	1	1	1	Tyr protein kinase family	Tyr		True		True	True	True	True
+TNK1	1	1	1	1	0	1	Tyr protein kinase family	Tyr	Q13470	True	TNK1	True	True	True	True
+TP53RK	1	1	1	1	1	1	Other	Other	Q96S44	True	TP53RK	True	True	True	True
+TRIB2	1	1	1	1	1	1	CAMK Ser/Thr protein kinase family	CAMK	Q92519	True	TRIB2	False	False	True	True
+TTN	0	1	1	0	1	1	CAMK Ser/Thr protein kinase family	CAMK	Q8WZ42	True	TTN	True	True	True	True
+TSSK3	0	1	1	0	1	1	CAMK Ser/Thr protein kinase family	CAMK		True		True	True	True	True
+TSSK1B	1	1	1	1	1	1	CAMK Ser/Thr protein kinase family	CAMK	Q9BXA7	True	TSSK1B	True	True	True	True
+KHK	1	1	1	1	1	1			P50053	False	KHK	False	True	True	False
+PFKP	1	1	1	0	1	1			Q01813	False	PFKP	False	True	True	False
+PFKFB3	1	1	1	1	0	1			Q16875	False	PFKFB3	False	True	True	False
+PHKA1	1	1	4	0	1	1			P46020	False	PHKA1	False	False	True	False
+ENPP3	1	1	1	0	1	1			O14638	False	ENPP3	False	False	True	False
+STK33	1	1	1	1	1	1	CAMK Ser/Thr protein kinase family	CAMK	Q9BYT3	True	STK33	True	True	True	True
+CERT1	1	1	1	0	1	1			Q9Y5P4	False	CERT1	False	False	True	False
+DYRK4	1	1	1	0	1	1	CMGC Ser/Thr protein kinase family	CMGC	Q9NR20	True	DYRK4	True	True	True	True
+DMPK	1	1	1	1	1	1	AGC Ser/Thr protein kinase family	AGC	Q09013	True	DMPK	True	True	True	True
+PIP4K2A	1	1	1	1	0	1			P48426	False	PIP4K2A	False	True	True	False
+FLT4	1	1	1	1	1	1	Tyr protein kinase family	Tyr	P35916	True	FLT4	True	True	True	True
+CSNK1A1L	1	1	1	1	0	1	CK1 Ser/Thr protein kinase family	CK1	Q8N752	True	CSNK1A1L	True	True	True	True
+CLK3	1	1	1	1	1	1	CMGC Ser/Thr protein kinase family	CMGC	P49761	True	CLK3	True	True	True	True
+EPHA7	1	1	1	1	0	1	Tyr protein kinase family	Tyr	Q15375	True	EPHA7	True	True	True	True
+EPHA1	1	1	1	1	1	1	Tyr protein kinase family	Tyr	P21709	True	EPHA1	True	True	True	True
+PIK3CB	1	1	1	0	1	1	Atypical: PI3/PI4-kinase family	Atypical-PI3/PI4-kinase	P42338	True	PIK3CB	False	True	True	True
+EPHA5	1	1	1	1	1	1	Tyr protein kinase family	Tyr	P54756	True	EPHA5	True	True	True	True
+ERN1	1	1	1	0	1	1	Other	Other	O75460	True	ERN1	True	True	True	True
+EPHA6	1	1	1	1	0	1	Tyr protein kinase family	Tyr	Q9UF33	True	EPHA6	True	True	True	True
+PMVK	1	1	1	1	1	1			Q15126	False	PMVK	False	True	True	False
+RIOK1	1	1	1	1	0	1	Atypical: RIO-type Ser/Thr kinase family	Atypical-RIO-type	Q9BRS2	True	RIOK1	True	True	True	True
+VRK3	1	1	1	1	1	1	CK1 Ser/Thr protein kinase family	CK1	Q8IV63	True	VRK3	False	False	True	True
+STK19	1	1	1	1	1	1			P49842	False	WHR1	False	False	False	False
+CDK15	1	1	1	1	1	1	CMGC Ser/Thr protein kinase family	CMGC	Q96Q40	True	CDK15	True	True	True	True
+RIOK3	1	1	1	1	1	1	Atypical: RIO-type Ser/Thr kinase family	Atypical-RIO-type	O14730	True	RIOK3	True	True	True	True
+ROR1	1	1	1	1	1	1	Tyr protein kinase family	Tyr	Q01973	True	ROR1	False	False	True	True
+PRPF4B	1	1	1	1	1	1			Q13523	True	PRP4K	True	False	False	True
+STK17A	1	1	1	0	1	1	CAMK Ser/Thr protein kinase family	CAMK	Q9UEE5	True	STK17A	True	True	True	True
+SPEG	0	1	1	1	0	1	CAMK Ser/Thr protein kinase family	CAMK		True		True	True	True	True
+WEE2	0	1	1	1	0	1	Other	Other		True		True	True	True	True
+ADCK5	1	1	1	1	0	1	Atypical: ADCK protein kinase family	Atypical-ADCK	Q3MIX3	True	ADCK5	True	True	True	True
+ALPK1	1	1	1	1	1	1	Atypical: Alpha-type protein kinase family	Atypical-Alpha-type	Q96QP1	True	ALPK1	True	True	True	True
+AK2	1	1	1	1	0	1			P54819	False	AK2	False	True	True	False
+AATK	1	1	1	1	1	1	Tyr protein kinase family	Tyr	Q6ZMQ8	True	AATK	True	True	True	True
+KSR2	0	0	4	0	0	0	TKL Ser/Thr protein kinase family	TKL	Q6VAB6	True	KSR2	True	True	True	True
+PHKG1	0	0	17	0	0	0	CAMK Ser/Thr protein kinase family	CAMK	Q16816	True	PHKG1	True	True	True	True
+EPHB6	0	0	4	0	0	0	Tyr protein kinase family	Tyr		True		False	False	True	True

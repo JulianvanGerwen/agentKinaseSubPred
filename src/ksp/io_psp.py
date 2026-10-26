@@ -268,3 +268,90 @@ def check_windows_against_sequences(sites: pd.DataFrame, seqs: dict, acc_col: st
     o = pd.DataFrame(rec, index=sites.index, columns=["seq_found", "pos_in_range", "centre_match", "window_match",
                                                       "window_identity", "status", "shifted_pos"])
     return pd.concat([sites, o], axis=1)
+
+
+# ---------------------------------------------------------------------------------------------
+# Phosphorylation_site_dataset and Regulatory_sites (same container format: 3 preamble lines, tab, latin1)
+# ---------------------------------------------------------------------------------------------
+DEFAULT_SITES_PATH = DEFAULT_PATH.parent / "Phosphorylation_site_dataset"
+DEFAULT_REG_PATH = DEFAULT_PATH.parent / "Regulatory_sites"
+_MOD = re.compile(r"^([A-Za-z])(\d+)-(\w+)$")
+
+
+def _read_psp_table(path) -> pd.DataFrame:
+    raw = pd.read_csv(path, sep="\t", skiprows=N_PREAMBLE, encoding="latin1", dtype=str, keep_default_na=False)
+    raw = raw.loc[:, [c for c in raw.columns if not c.startswith("Unnamed")]]
+    raw.columns = [c.strip() for c in raw.columns]
+    return raw.apply(lambda c: c.str.strip())
+
+
+def _parse_common(raw: pd.DataFrame) -> pd.DataFrame:
+    d = pd.DataFrame(index=raw.index)
+    d["gene"] = raw["GENE"]
+    d["gene_uc"] = raw["GENE"].str.upper()
+    d["protein"] = raw["PROTEIN"]
+    d["acc_full"] = raw["ACC_ID"]
+    d["acc"], d["isoform"] = _split_acc(raw["ACC_ID"])
+    d["organism"] = raw["ORGANISM"]
+    d["mod_rsd"] = raw["MOD_RSD"]
+    m = raw["MOD_RSD"].str.extract(_MOD)
+    d["residue"] = m[0].str.upper()
+    d["position"] = pd.to_numeric(m[1], errors="coerce").astype("Int64")
+    d["mod_type"] = m[2]  # 'p' phospho, 'ub', 'ac', 'm1', 'sm', 'ga', 'gl', 'sc', ...
+    d["site_grp_id"] = pd.to_numeric(raw["SITE_GRP_ID"], errors="coerce").astype("Int64")
+    w = raw["SITE_+/-7_AA"]
+    d["window_raw"] = w
+    d["window"] = w.str.upper()
+    d["domain"] = raw.get("DOMAIN", "")
+    for c in ["LT_LIT", "MS_LIT", "MS_CST"]:
+        d[c.lower()] = pd.to_numeric(raw[c].replace("", "0"), errors="coerce").fillna(0).astype(int)
+    d["is_sty"] = d["residue"].isin(["S", "T", "Y"])
+    return d
+
+
+def load_psp_sites(path: str | Path = DEFAULT_SITES_PATH) -> pd.DataFrame:
+    """PhosphoSitePlus Phosphorylation_site_dataset (all organisms). Columns: gene, gene_uc, protein, acc_full,
+    acc, isoform, organism, mod_rsd, residue, position, mod_type ('p'), site_grp_id, window_raw, window, domain,
+    lt_lit (# low-throughput refs), ms_lit (# HTP MS refs), ms_cst (# CST in-house MS records), cst_cat,
+    ambiguous (bool), is_sty, hu_chr_loc, mw_kd."""
+    raw = _read_psp_table(path)
+    d = _parse_common(raw)
+    d["cst_cat"] = raw.get("CST_CAT#", "")
+    d["ambiguous"] = raw["Ambiguous_Site"].eq("1")
+    d["hu_chr_loc"] = raw.get("HU_CHR_LOC", "")
+    d["mw_kd"] = pd.to_numeric(raw.get("MW_kD"), errors="coerce")
+    return d
+
+
+def site_evidence_mask(sites: pd.DataFrame, min_lt: int = 1, min_ms: int = 2, ms_cols=("ms_lit", "ms_cst"),
+                       drop_ambiguous: bool = False) -> pd.Series:
+    """Evidence filter: (lt_lit >= min_lt) OR (sum of ms_cols >= min_ms). Default '>=1 LT or >=2 MS records'.
+    ASSUMPTION: MS_LIT and MS_CST counts are additive evidence (CST in-house records count like references)."""
+    ms = sum(sites[c] for c in ms_cols)
+    m = (sites.lt_lit >= min_lt) | (ms >= min_ms)
+    if drop_ambiguous:
+        m &= ~sites.ambiguous
+    return m
+
+
+def load_psp_regulatory(path: str | Path = DEFAULT_REG_PATH) -> pd.DataFrame:
+    """PhosphoSitePlus Regulatory_sites (all PTM types, all organisms). Adds prot_type, gene_id, on_function,
+    on_process, on_prot_interact, on_other_interact, pmids (list), notes to the common site columns."""
+    raw = _read_psp_table(path)
+    d = _parse_common(raw)
+    for src, dst in [("PROT_TYPE", "prot_type"), ("GENE_ID", "gene_id"), ("ON_FUNCTION", "on_function"),
+                     ("ON_PROCESS", "on_process"), ("ON_PROT_INTERACT", "on_prot_interact"),
+                     ("ON_OTHER_INTERACT", "on_other_interact"), ("NOTES", "notes")]:
+        d[dst] = raw.get(src, "")
+    d["pmids"] = raw["PMIDs"].map(lambda s: [p.strip() for p in s.split(";") if p.strip()])
+    return d
+
+
+def human_sites_from_site_dataset(sites: pd.DataFrame, phospho_only: bool = True) -> pd.DataFrame:
+    """Human sites from Phosphorylation_site_dataset formatted for map_substrates_to_human(extra_human_sites=...)."""
+    h = sites[(sites.organism == "human") & sites.site_grp_id.notna()]
+    if phospho_only:
+        h = h[h.mod_type.eq("p")]
+    return (h.rename(columns={"acc_full": "sub_acc_full", "acc": "sub_acc", "isoform": "sub_isoform",
+                              "gene": "sub_gene"})
+            [["site_grp_id", "sub_acc_full", "sub_acc", "sub_isoform", "sub_gene", "residue", "position", "window"]])

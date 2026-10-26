@@ -1,0 +1,17 @@
+dataset	acc_type	status	n_sites	n_relocatable_exact_elsewhere
+Kinase_Substrate_Dataset human sites	canonical	centre_mismatch	64	64
+Kinase_Substrate_Dataset human sites	canonical	exact	9810	0
+Kinase_Substrate_Dataset human sites	canonical	no_sequence	17	0
+Kinase_Substrate_Dataset human sites	canonical	pos_out_of_range	1	1
+Kinase_Substrate_Dataset human sites	isoform	centre_mismatch	2	2
+Kinase_Substrate_Dataset human sites	isoform	exact	536	0
+Kinase_Substrate_Dataset human sites	isoform	no_sequence	3	0
+Phosphorylation_site_dataset human STY sites	canonical	centre_mismatch	909	898
+Phosphorylation_site_dataset human STY sites	canonical	centre_only	89	75
+Phosphorylation_site_dataset human STY sites	canonical	exact	230079	0
+Phosphorylation_site_dataset human STY sites	canonical	no_sequence	756	0
+Phosphorylation_site_dataset human STY sites	canonical	pos_out_of_range	23	23
+Phosphorylation_site_dataset human STY sites	isoform	centre_mismatch	38	33
+Phosphorylation_site_dataset human STY sites	isoform	centre_only	8	3
+Phosphorylation_site_dataset human STY sites	isoform	exact	8759	0
+Phosphorylation_site_dataset human STY sites	isoform	no_sequence	37	0

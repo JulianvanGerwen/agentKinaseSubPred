@@ -50,22 +50,21 @@ def read_annotations(path=DEFAULT_DIR / "human_tsv" / "UP000005640_annotations.t
 
 
 def parse_pkinfam(path=DEFAULT_DIR / "pkinfam" / "pkinfam.txt", species: str = "HUMAN") -> pd.DataFrame:
-    """Parse UniProt pkinfam.txt (protein kinase family classification, Hanks/Manning based).
-    Returns rows (entry_name, acc, group, family) for the given species suffix.
-    'group' = the top-level '===' underlined section title; 'family' = most recent subfamily line."""
+    """Parse UniProt pkinfam.txt ("Human and mouse protein kinases: classification and index").
+    Sections are titled between '====' lines (e.g. 'AGC Ser/Thr protein kinase family',
+    'Atypical: PI3/PI4-kinase family'); rows are 'GENE  ENTRY_HUMAN (ACC) ENTRY_MOUSE (ACC)'.
+    Returns columns gene, gene_uc, entry_name, acc, group (section title), group_short (e.g. 'AGC', 'Atypical: PI3/PI4')."""
     lines = _open(path).read().splitlines()
-    rows, group, family = [], None, None
-    pat = re.compile(r"(\w+_" + species + r")\s+\((\w+)\s*\)")
+    rows, group = [], None
+    row = re.compile(r"^(\S+)\s+(\w+_" + species + r")\s+\((\w+)\s*\)")
     for i, ln in enumerate(lines):
-        nxt = lines[i + 1] if i + 1 < len(lines) else ""
-        if nxt.startswith("====") and ln.strip() and not ln.startswith("="):
-            group, family = ln.strip(), None
+        if 0 < i < len(lines) - 1 and lines[i - 1].startswith("====") and lines[i + 1].startswith("===="):
+            group = ln.strip()
             continue
-        if group is None:
-            continue
-        s = ln.strip()
-        if s and not pat.search(ln) and not s.startswith("=") and not s.startswith("-") and "(" not in s:
-            family = s
-        for m in pat.finditer(ln):
-            rows.append((m.group(1), m.group(2), group, family))
-    return pd.DataFrame(rows, columns=["entry_name", "acc", "group", "family"]).drop_duplicates("acc")
+        m = row.match(ln)
+        if m and group:
+            rows.append((m.group(1), m.group(1).upper(), m.group(2), m.group(3), group))
+    df = pd.DataFrame(rows, columns=["gene", "gene_uc", "entry_name", "acc", "group"]).drop_duplicates("acc")
+    df["group_short"] = df.group.map(lambda g: "Atypical-" + g.split(":", 1)[1].split()[0] if g.startswith("Atypical:")
+                                     else g.split()[0])
+    return df

@@ -1,0 +1,7 @@
+evidence	human_row	n_pairs
+both	False	1375
+both	True	5763
+in_vitro_only	False	1958
+in_vitro_only	True	5763
+in_vivo_only	False	1379
+in_vivo_only	True	3481

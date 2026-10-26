@@ -1,0 +1,32 @@
+kin_human_gene	n_pairs_human_only	n_pairs_hmr	n_pairs_all_species	n_pairs_hmr_in_vivo	n_pairs_hmr_in_vitro	n_substrate_proteins_hmr	pkinfam_group	pkinfam_group_short	human_kin_acc	in_pkinfam	uniprot_gene_of_acc	uniprot_kw0418_pkdomain	uniprot_kw0418	uniprot_human_gene	protein_kinase
+BCR/ABL	18	21	21	18	6	12			A9UF07	False		False	False	False	False
+CSNK2B	13	16	16	14	11	12			P67870	False	CSNK2B	False	False	True	False
+PKM	12	15	15	12	11	11			P14618	False	PKM	False	True	True	False
+FAM20C	10	14	14	9	8	10			Q8IXL6	False	FAM20C	False	True	True	False
+PRKAB1	11	12	12	6	9	9			Q9Y478	False	PRKAB1	False	False	True	False
+PRKAG2	9	9	9	3	6	7			Q9UGJ0	False	PRKAG2	False	False	True	False
+PGK1	7	7	7	7	5	6			P00558	False	PGK1	False	True	True	False
+NPM/ALK	5	6	6	5	3	5			AAA58698	False		False	False	False	False
+JMJD6	1	4	4	4	4	2			Q6NYC1	False	JMJD6	False	False	True	False
+NME1	2	4	4	2	4	2			P15531	False	NME1	False	True	True	False
+GTF2F1	4	4	4	0	4	2			P35269	False	GTF2F1	False	False	True	False
+DCAF1	3	4	4	4	2	4			Q9Y4B6	False	DCAF1	False	True	True	False
+BLVRA	3	3	3	1	3	2			P53004	False	BLVRA	False	False	True	False
+BCR	3	3	3	0	3	3			P11274	False	BCR	False	True	True	False
+TGM2	2	2	2	0	2	1			P21980	False	TGM2	False	False	True	False
+PIK3R1	2	2	2	2	0	2			P27986	False	PIK3R1	False	False	True	False
+CKB	2	2	5	2	2	2			P12277	False	CKB	False	True	True	False
+PCK1	2	2	2	2	2	2			P35558	False	PCK1	False	True	True	False
+HSPA5	1	1	1	0	1	1			P11021	False	HSPA5	False	False	True	False
+BRD4	1	1	1	1	1	1			O60885	False	BRD4	False	False	True	False
+BAZ1B	1	1	1	1	1	1			Q9UIG0	False	BAZ1B	False	True	True	False
+KHK	1	1	1	1	1	1			P50053	False	KHK	False	True	True	False
+PFKP	1	1	1	0	1	1			Q01813	False	PFKP	False	True	True	False
+PFKFB3	1	1	1	1	0	1			Q16875	False	PFKFB3	False	True	True	False
+PHKA1	1	1	4	0	1	1			P46020	False	PHKA1	False	False	True	False
+ENPP3	1	1	1	0	1	1			O14638	False	ENPP3	False	False	True	False
+CERT1	1	1	1	0	1	1			Q9Y5P4	False	CERT1	False	False	True	False
+PIP4K2A	1	1	1	1	0	1			P48426	False	PIP4K2A	False	True	True	False
+PMVK	1	1	1	1	1	1			Q15126	False	PMVK	False	True	True	False
+STK19	1	1	1	1	1	1			P49842	False	WHR1	False	False	False	False
+AK2	1	1	1	1	0	1			P54819	False	AK2	False	True	True	False

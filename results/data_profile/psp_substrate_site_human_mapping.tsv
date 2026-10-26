@@ -1,0 +1,19 @@
+sub_organism	none	sequence	site_grp_id_ks	site_grp_id_sitedb	total_sites
+mouse	279	716	1079	1128	3202
+rat	142	425	597	546	1710
+cow	25	50	83	92	250
+chicken	23	23	47	52	145
+rabbit	19	18	45	41	123
+pig	1	7	13	10	31
+dog	3	7	12	5	27
+hamster	1	7	6	9	23
+frog	3	0	10	1	14
+quail	0	0	4	1	5
+sheep	0	0	2	2	4
+turkey	0	2	0	2	4
+guinea pig	0	4	0	0	4
+marmoset	2	0	0	0	2
+torpedo	2	0	0	0	2
+ferret	0	0	0	1	1
+papillomavirus	1	0	0	0	1
+starfish	1	0	0	0	1

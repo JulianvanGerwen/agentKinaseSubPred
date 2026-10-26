@@ -1,0 +1,167 @@
+{
+ "n_conditions": 1937,
+ "n_unique_condition_text": 1329,
+ "n_pmids": 178,
+ "n_samples_celltypes": 204,
+ "source_counts": {
+  "This study": 1437,
+  "qPTM": 461,
+  "Ochoa2016": 39
+ },
+ "pmid_36926954_share": 0.408,
+ "n_sites": 189962,
+ "n_site_ids_not_matching_ACC_POS_Mn": 0,
+ "multiplicity_suffix_counts": {
+  "1": 189962
+ },
+ "n_proteins": 19233,
+ "n_isoform_accs": 0,
+ "residue_counts": {
+  "S": 133604,
+  "T": 42354,
+  "Y": 14004
+ },
+ "windows_with_lowercase": 0,
+ "windows_with_padding": 4098,
+ "windows_non_15": 0,
+ "n_acc_pos_duplicates": 0,
+ "n_nonmissing": 17032346,
+ "matrix_density": 0.0463,
+ "sites_with_0_values": 0,
+ "sites_with_ge10_conditions": 102467,
+ "sites_with_ge50_conditions": 48689,
+ "sites_with_ge100_conditions": 32758,
+ "sites_with_ge500_conditions": 9743,
+ "log2fc_quantiles": {
+  "q0.001": -6.715,
+  "q0.01": -2.438,
+  "q0.5": 0.0,
+  "q0.99": 2.522,
+  "q0.999": 6.464
+ },
+ "log2fc_exact_zero_frac": 0.0005,
+ "log2fc_abs_gt1_frac": 0.1195,
+ "condition_sd_quantiles": {
+  "q0.05": 0.225,
+  "q0.5": 0.626,
+  "q0.95": 1.424
+ },
+ "kinhib_shape_kinases_x_inhibitors": [
+  420,
+  60
+ ],
+ "kinhib_values": [
+  0,
+  1
+ ],
+ "kinhib_kinases_with_ge1_inhibitor": 307,
+ "kinhib_inhibitors_with_0_targets": [
+  "U73122"
+ ],
+ "hijazi_conditions": 183,
+ "hijazi_cell_lines": {
+  "HL60": 61,
+  "MCF7": 61,
+  "NTERA2": 61
+ },
+ "hijazi_unique_treatments": 61,
+ "hijazi_treatments_not_in_kinhib": [
+  "Edelfosine"
+ ],
+ "kinhib_inhibitors_not_in_hijazi_conditions": [],
+ "kinhib_inhibitors_matched_in_other_studies": [
+  "AZD6244",
+  "AZD8055",
+  "CHIR99021",
+  "CX4945",
+  "Dasatinib",
+  "GDC0941",
+  "Go6983",
+  "JNKIN8",
+  "KN62",
+  "KN93",
+  "Ku0063794",
+  "MK2206",
+  "PD153035",
+  "PF4708671",
+  "SP600125",
+  "Tofacitinib",
+  "Torin1"
+ ],
+ "kinhib_row_names_not_in_pkinfam": [
+  "ADCK3",
+  "ADCK4",
+  "ADRBK1",
+  "ADRBK2",
+  "BCR/ABL",
+  "CABC1",
+  "CDC2L2",
+  "GSG2",
+  "ICK",
+  "KIAA0999",
+  "MGC42105",
+  "MST4",
+  "PAK7",
+  "PI4KB",
+  "PIK3C2B",
+  "PIK3C2G",
+  "PIK3C3",
+  "PIK3R1",
+  "PIKFYVE",
+  "PIP4K2A",
+  "PIP4K2B",
+  "PIP4K2C",
+  "PIP5K1A",
+  "PIP5K1C",
+  "PRKY",
+  "PRPF4B",
+  "Q6ZSR9",
+  "SGK110",
+  "ZAK"
+ ],
+ "kinhib_targeted_kinases_in_pkinfam": 286,
+ "pkinfam_human_kinases_with_ge1_kinhib_inhibitor": 286,
+ "pkinfam_human_kinases_total": 512,
+ "psp_human_sites_in_compendium_window_identical": 4537,
+ "psp_human_sites_in_compendium_window_compared": 4538,
+ "compendium_sites_in_psp_sitedb": 104160,
+ "compendium_sites_in_psp_sitedb_frac": 0.5483,
+ "compendium_sites_with_ks_hmr": 5957,
+ "compendium_sites_not_in_psp": 85802,
+ "compendium_sites_not_in_psp_but_window_in_psp": 10741,
+ "compendium_sites_not_in_psp_median_conditions": 5.0,
+ "compendium_sites_in_psp_median_conditions": 30.0,
+ "compendium_window_exact_frac": 0.9881,
+ "compendium_window_status": {
+  "exact": 187705,
+  "centre_mismatch": 1204,
+  "no_sequence": 868,
+  "centre_only": 135,
+  "pos_out_of_range": 50
+ },
+ "compendium_accs_not_in_UP000005640": 193,
+ "compendium_accs_swissprot": 16153,
+ "compendium_accs_trembl": 2887,
+ "swissprot_distinct_STY_15mers_incl_isoforms": 1873184,
+ "compendium_sites_on_swissprot_canonical": 178381,
+ "compendium_frac_of_swissprot_canonical_STY": 0.0954,
+ "psp_hmr_sites_frac_of_swissprot_canonical_STY": 0.00706,
+ "proteome_sty_universe": {
+  "Swiss-Prot canonical": {
+   "n_sequences": 20416,
+   "STY": 1870491
+  },
+  "Swiss-Prot canonical + isoforms": {
+   "n_sequences": 42547,
+   "STY": 4046421
+  },
+  "UP000005640 all canonical (SP+TrEMBL)": {
+   "n_sequences": 147520,
+   "STY": 11196211
+  },
+  "UP000005640 all incl. isoforms": {
+   "n_sequences": 169651,
+   "STY": 13372141
+  }
+ }
+}

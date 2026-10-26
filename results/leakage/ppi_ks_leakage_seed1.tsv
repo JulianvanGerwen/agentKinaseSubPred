@@ -1,0 +1,23 @@
+# seed=1; n_KS=7653 n_RAND=7688 n_SHUF=7627
+feature	frac_KS	frac_RAND	frac_SHUF	ratio_KS_SHUF
+STRING_full>0:experimental	0.5565	0.0957	0.1954	2.8
+STRING_full>0:database	0.1739	0.0120	0.0233	7.5
+STRING_full>0:textmining	0.7435	0.1561	0.3223	2.3
+STRING_full>0:coexpression	0.5757	0.1219	0.2528	2.3
+STRING_full_combined>=400	0.4430	0.0354	0.0809	5.5
+STRING_physical>0:experimental	0.3363	0.0181	0.0375	9.0
+STRING_physical>0:database	0.0608	0.0025	0.0060	10.1
+STRING_physical>0:textmining	0.1675	0.0091	0.0261	6.4
+STRING_physical_combined>=400	0.1959	0.0078	0.0208	9.4
+BioGRID:any_physical	0.3460	0.0044	0.0540	6.4
+BioGRID:biochem_activity	0.2027	0.0004	0.0080	25.3
+BioGRID:physical_excl_biochem	0.2687	0.0043	0.0494	5.4
+BioGRID:HTP_only_excl_biochem	0.1188	0.0035	0.0362	3.3
+Screen:BioPlex3_293T	0.0149	0.0004	0.0028	5.4
+Screen:BioPlex3_HCT116	0.0082	0.0001	0.0016	5.2
+Screen:HuRI	0.0033	0.0003	0.0007	5.0
+Screen:OpenCell	0.0111	0.0001	0.0016	7.1
+# conditional (KS pairs only): frac with STRING_physical experimental>0, by BioGRID evidence class
+# cond:biogrid_biochem_only	n=592	frac_STRINGphys_exp>0=0.8986
+# cond:biogrid_other_physical	n=2056	frac_STRINGphys_exp>0=0.8769
+# cond:no_biogrid_record	n=5005	frac_STRINGphys_exp>0=0.0478

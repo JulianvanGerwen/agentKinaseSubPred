@@ -52,6 +52,8 @@ def main():
     ap.add_argument("--cache", default="cache")
     ap.add_argument("--uniprot", default="external/uniprot")
     ap.add_argument("--min-identity", type=int, default=11)
+    ap.add_argument("--sites", default=str(io_psp.DEFAULT_SITES_PATH), help="PSP Phosphorylation_site_dataset ('' to skip)")
+    ap.add_argument("--regulatory", default=str(io_psp.DEFAULT_REG_PATH), help="PSP Regulatory_sites ('' to skip)")
     a = ap.parse_args()
     out = Path(a.out)
     out.mkdir(parents=True, exist_ok=True)
@@ -78,7 +80,7 @@ def main():
     w(res, "residue")
     nonsty = d[~d.is_sty][["kin_gene", "kin_organism", "sub_gene", "sub_organism", "mod_rsd", "window_raw",
                            "in_vivo", "in_vitro"]]
-    w(nonsty, "nonsty_rows")  # small; documents the junk rows dropped
+    nonsty.to_csv(Path(a.cache) / "psp_nonsty_rows.tsv", sep="\t", index=False)  # row-level PSP -> cache (not committed)
     S["n_rows_non_sty"] = int((~d.is_sty).sum())
     dd = d[d.is_sty].copy()
 
@@ -106,7 +108,6 @@ def main():
         ann["gene_uc"] = ann["Gene Names (primary)"].str.upper()
         rev = ann[ann.Reviewed.eq("reviewed")]
         acc2gene = dict(zip(ann.Entry, ann.gene_uc))
-        pk = pk.merge(ann[["Entry", "gene_uc"]], left_on="acc", right_on="Entry", how="left")
         pk_genes = set(pk.gene_uc.dropna()) - {""}
         kw = rev[rev["Keyword ID"].str.contains("KW-0418")]
         kw_pkdom = kw[kw["Domain [FT]"].str.contains("Protein kinase", case=False)]
@@ -145,8 +146,19 @@ def main():
     S["nonhuman_kinase_rows_mapped_via_kinase_name"] = int((nhk.kin_human_mapped & nhk.kin_gene_from_name).sum())
 
     # ---------------- 6. substrate -> human ----------------
-    m = io_psp.map_substrates_to_human(dk)
-    m["map_method"] = np.where(m.sub_organism.eq("human"), "self", np.where(m.sub_human_mapped, "site_grp_id", "none"))
+    # SITE_GRP_ID mapping, (a) to human sites present in the KS dataset, (b) additionally to all human sites of
+    # Phosphorylation_site_dataset (if available), (c) sequence fallback (UniProt) for what remains
+    ks_sgids = set(io_psp.human_site_table(dk).site_grp_id.dropna().astype(int))
+    have_sites = bool(a.sites) and Path(a.sites).exists()
+    if have_sites:
+        psd = io_psp.load_psp_sites(a.sites)
+        m = io_psp.map_substrates_to_human(dk, extra_human_sites=io_psp.human_sites_from_site_dataset(psd))
+    else:
+        psd = None
+        m = io_psp.map_substrates_to_human(dk)
+    in_ks = m.site_grp_id.isin(ks_sgids)
+    m["map_method"] = np.where(m.sub_organism.eq("human"), "self",
+                               np.where(~m.sub_human_mapped, "none", np.where(in_ks, "site_grp_id_ks", "site_grp_id_sitedb")))
     if have_up:
         canon = fa[(fa.isoform == "") & fa.db.eq("sp")].copy()
         canon["gene_uc"] = canon.acc.map(acc2gene).fillna(canon.gene.str.upper())
@@ -165,18 +177,19 @@ def main():
         m = m.drop(columns=["seq_h_sub_acc_full", "seq_h_sub_acc", "seq_h_position"])
     m["h_position"] = m.h_position.astype("Int64")
     # residue consistency of SITE_GRP_ID mapping
-    sg = m[m.map_method.eq("site_grp_id")]
+    sg = m[m.map_method.str.startswith("site_grp_id")]
     S["sgid_mapped_rows_residue_changed"] = int((sg.residue != sg.h_residue).sum())
     # site-level mapping table (unique non-human sites)
     sites = m[m.sub_organism != "human"].sort_values("map_method").groupby(["sub_organism", "sub_acc_full", "position"]).agg(
-        method=("map_method", lambda x: "site_grp_id" if (x == "site_grp_id").any() else ("sequence" if (x == "sequence").any() else "none")),
+        method=("map_method", lambda x: next((k for k in ["site_grp_id_ks", "site_grp_id_sitedb", "sequence"] if (x == k).any()), "none")),
         n_human_targets=("h_sub_acc_full", "nunique")).reset_index()
     tab = sites.groupby(["sub_organism", "method"]).size().unstack(fill_value=0)
     tab["total_sites"] = tab.sum(1)
     tab = tab.sort_values("total_sites", ascending=False)
     w(tab, "substrate_site_human_mapping", index=True)
     S["nonhuman_unique_sites"] = int(len(sites))
-    S["nonhuman_unique_sites_mapped_sgid"] = int((sites.method == "site_grp_id").sum())
+    S["nonhuman_unique_sites_mapped_sgid_to_ks_human_site"] = int((sites.method == "site_grp_id_ks").sum())
+    S["nonhuman_unique_sites_mapped_sgid_to_sitedb_human_site_only"] = int((sites.method == "site_grp_id_sitedb").sum())
     S["nonhuman_unique_sites_mapped_sequence_fallback"] = int((sites.method == "sequence").sum())
     S["nonhuman_sites_sgid_mapping_to_gt1_human_site"] = int((sites.n_human_targets > 1).sum())
     # human gene of mapped substrate
@@ -190,7 +203,8 @@ def main():
         "H_kin__H_sub": (ok.kin_organism.eq("human")) & ok.sub_organism.eq("human"),
         "any_kin__H_sub": ok.sub_organism.eq("human"),
         "HMR_kin__HMR_sub": ok.kin_organism.isin(HMR) & ok.sub_organism.isin(HMR),
-        "HMR_kin__HMR_sub_sgid_only": ok.kin_organism.isin(HMR) & ok.sub_organism.isin(HMR) & ok.map_method.isin(["self", "site_grp_id"]),
+        "HMR_kin__HMR_sub_sgid_ks_only": ok.kin_organism.isin(HMR) & ok.sub_organism.isin(HMR) & ok.map_method.isin(["self", "site_grp_id_ks"]),
+        "HMR_kin__HMR_sub_sgid_ks+sitedb": ok.kin_organism.isin(HMR) & ok.sub_organism.isin(HMR) & ok.map_method.isin(["self", "site_grp_id_ks", "site_grp_id_sitedb"]),
         "all_kin__all_sub": pd.Series(True, index=ok.index),
     }
     evs = {"any": None, "in_vivo": "in_vivo", "in_vitro": "in_vitro", "in_vivo_only_rows": "vivo_only", "in_vitro_only_rows": "vitro_only"}
@@ -253,9 +267,12 @@ def main():
     if have_up:
         g2pk = pk.dropna(subset=["gene_uc"]).drop_duplicates("gene_uc").set_index("gene_uc")
         kin["pkinfam_group"] = kin.index.map(g2pk["group"])
-        kin["pkinfam_family"] = kin.index.map(g2pk["family"])
-        kin["in_pkinfam"] = kin.index.isin(pk_genes)
-        kin["uniprot_kw0418_pkdomain"] = kin.index.isin(set(kw_pkdom.gene_uc))
+        kin["pkinfam_group_short"] = kin.index.map(g2pk["group_short"])
+        hacc = dk[dk.kin_organism.eq("human")].groupby("kin_human_gene").kin_acc.agg(lambda v: v.value_counts().index[0])
+        kin["human_kin_acc"] = kin.index.map(hacc)
+        kin["in_pkinfam"] = kin.index.isin(pk_genes) | kin.human_kin_acc.isin(set(pk.acc))
+        kin["uniprot_gene_of_acc"] = kin.human_kin_acc.map(acc2gene)
+        kin["uniprot_kw0418_pkdomain"] = kin.index.isin(set(kw_pkdom.gene_uc)) | kin.human_kin_acc.isin(set(kw_pkdom.Entry))
         kin["uniprot_kw0418"] = kin.index.isin(set(kw.gene_uc))
         kin["uniprot_human_gene"] = kin.index.isin(set(rev.gene_uc))
         kin["protein_kinase"] = kin.in_pkinfam | kin.uniprot_kw0418_pkdomain
@@ -278,9 +295,9 @@ def main():
 
     # ---------------- 10. family distribution ----------------
     if have_up:
-        fam = kin.assign(pkinfam_group=kin.pkinfam_group.fillna("(not in pkinfam)")).groupby("pkinfam_group").agg(
+        fam = kin.assign(pkinfam_group_short=kin.pkinfam_group_short.fillna("(not in pkinfam)")).groupby("pkinfam_group_short").agg(
             n_kinases=("n_pairs_hmr", lambda s: int((s > 0).sum())), n_pairs_hmr=("n_pairs_hmr", "sum"))
-        tot_pk = pk.drop_duplicates("acc").groupby("group").size().rename("n_human_kinases_in_pkinfam")
+        tot_pk = pk.drop_duplicates("acc").groupby("group_short").size().rename("n_human_kinases_in_pkinfam")
         fam = fam.join(tot_pk, how="outer").fillna(0).astype(int).sort_values("n_pairs_hmr", ascending=False)
         w(fam, "kinase_group_counts", index=True)
         S["uniprot_human_protein_kinases_with_ge1_hmr_pair"] = int(kin[kin.protein_kinase & (kin.n_pairs_hmr > 0)].shape[0])
@@ -313,6 +330,107 @@ def main():
 
     # ---------------- 13. window: other phospho residues ----------------
     w(dd.n_other_phos_in_window.value_counts().sort_index().rename_axis("n_other_lowercase_in_window").rename("n_rows").reset_index(), "window_other_phos")
+
+    # ---------------- 14. Phosphorylation_site_dataset: human site universe ----------------
+    ks_hmr_sites = set(zip(hmr.h_sub_acc_full, hmr.h_position.astype(int)))
+    ks_all_sites = set(zip(ok.h_sub_acc_full, ok.h_position.astype(int)))
+    ks_hh_sites = set(zip(hh.h_sub_acc_full, hh.h_position.astype(int)))
+    if psd is not None:
+        S["sitedb_rows"] = int(len(psd))
+        S["sitedb_rows_by_organism_top"] = psd.organism.value_counts().head(5).to_dict()
+        S["sitedb_rows_non_sty"] = int((~psd.is_sty).sum())
+        hu = psd[(psd.organism == "human") & psd.is_sty].drop_duplicates(["acc_full", "position"]).copy()
+        hu["key"] = list(zip(hu.acc_full, hu.position.astype(int)))
+        hu["ks_hh"] = hu.key.isin(ks_hh_sites)
+        hu["ks_hmr"] = hu.key.isin(ks_hmr_sites)
+        hu["ks_any"] = hu.key.isin(ks_all_sites)
+        hu["ms_total"] = hu.ms_lit + hu.ms_cst
+        S["sitedb_human_sty_sites"] = int(len(hu))
+        S["sitedb_human_isoform_acc_sites"] = int(hu.isoform.ne("").sum())
+        S["sitedb_human_ambiguous_sites"] = int(hu.ambiguous.sum())
+        S["sitedb_human_sites_with_0_evidence_counts"] = int(((hu.lt_lit + hu.ms_total) == 0).sum())
+        defs = {
+            "all": pd.Series(True, index=hu.index),
+            "LT>=1": hu.lt_lit >= 1,
+            "MS_total>=1": hu.ms_total >= 1,
+            "MS_total>=2": hu.ms_total >= 2,
+            "MS_LIT>=2 (no CST)": hu.ms_lit >= 2,
+            "LT>=1 or MS_total>=2 [default]": io_psp.site_evidence_mask(hu),
+            "LT>=1 or MS_LIT>=2": io_psp.site_evidence_mask(hu, ms_cols=("ms_lit",)),
+            "LT>=1 or MS_total>=5": io_psp.site_evidence_mask(hu, min_ms=5),
+            "LT>=1 or MS_total>=2, non-ambiguous": io_psp.site_evidence_mask(hu, drop_ambiguous=True),
+            "only 1 MS record, no LT": (hu.lt_lit == 0) & (hu.ms_total == 1),
+        }
+        rows = []
+        for k_, msk in defs.items():
+            x = hu[msk]
+            r = dict(definition=k_, n_sites=len(x), n_proteins=x.acc.nunique())
+            for res_ in "STY":
+                r[res_] = int((x.residue == res_).sum())
+            r["n_with_ks_human_only"] = int(x.ks_hh.sum())
+            r["n_with_ks_hmr_pooled"] = int(x.ks_hmr.sum())
+            r["frac_dark_hmr"] = round(1 - x.ks_hmr.mean(), 4) if len(x) else np.nan
+            for res_ in "STY":
+                xr = x[x.residue == res_]
+                r[f"frac_dark_hmr_{res_}"] = round(1 - xr.ks_hmr.mean(), 4) if len(xr) else np.nan
+            rows.append(r)
+        w(pd.DataFrame(rows), "sitedb_human_universe")
+        # KS sites that are absent from the site dataset
+        hu_keys = set(hu.key)
+        S["ks_hmr_sites_in_sitedb"] = int(sum(k_ in hu_keys for k_ in ks_hmr_sites))
+        S["ks_hmr_sites_total"] = len(ks_hmr_sites)
+        # evidence distribution of KS vs non-KS sites
+        w(hu.groupby("ks_hmr")[["lt_lit", "ms_lit", "ms_cst"]].describe(percentiles=[0.5, 0.9]).T, "sitedb_evidence_ks_vs_dark", index=True)
+        hu.drop(columns="key").to_parquet(Path(a.cache) / "psp_human_sites.parquet", index=False)
+
+    # ---------------- 15. Regulatory_sites ----------------
+    if a.regulatory and Path(a.regulatory).exists():
+        rg = io_psp.load_psp_regulatory(a.regulatory)
+        S["regulatory_rows"] = int(len(rg))
+        S["regulatory_columns"] = ["GENE", "PROTEIN", "PROT_TYPE", "ACC_ID", "GENE_ID", "HU_CHR_LOC", "ORGANISM", "MOD_RSD",
+                                   "SITE_GRP_ID", "SITE_+/-7_AA", "DOMAIN", "ON_FUNCTION", "ON_PROCESS", "ON_PROT_INTERACT",
+                                   "ON_OTHER_INTERACT", "PMIDs", "LT_LIT", "MS_LIT", "MS_CST", "NOTES"]
+        w(pd.crosstab(rg.organism, rg.mod_type, margins=True, margins_name="TOTAL").sort_values("TOTAL", ascending=False), "regulatory_organism_x_mod", index=True)
+        rp = rg[(rg.organism == "human") & rg.mod_type.eq("p")].copy()
+        rp["key"] = list(zip(rp.acc_full, rp.position.astype("Int64").fillna(-1).astype(int)))
+        rp = rp.drop_duplicates("key")
+        S["regulatory_human_phospho_sites"] = int(len(rp))
+        for col in ["on_function", "on_process", "on_prot_interact", "on_other_interact"]:
+            S[f"regulatory_human_phospho_with_{col}"] = int(rp[col].ne("").sum())
+        S["regulatory_human_phospho_with_ks_hmr"] = int(rp.key.isin(ks_hmr_sites).sum())
+        S["regulatory_human_phospho_frac_with_ks_hmr"] = round(float(rp.key.isin(ks_hmr_sites).mean()), 3)
+        S["regulatory_human_phospho_residues"] = rp.residue.value_counts().to_dict()
+        terms = rp.on_function.str.split(";").explode().str.strip()
+        w(terms[terms.ne("")].value_counts().rename_axis("on_function_term").rename("n_human_phosphosites").reset_index(), "regulatory_on_function_terms")
+        # all regulatory phospho sites (all species) mapped to human via SITE_GRP_ID would add more; report sgids
+        S["regulatory_phospho_site_groups_all_species"] = int(rg[rg.mod_type.eq("p")].site_grp_id.nunique())
+        rp.drop(columns=["key"]).to_parquet(Path(a.cache) / "psp_regulatory_human_phospho.parquet", index=False)
+
+    # ---------------- 16. PSP 15-mers vs UniProt sequence ----------------
+    if have_up:
+        seqs = dict(zip(fa.acc_full, fa.seq))
+        sp_accs = set(fa.acc[fa.db == "sp"])
+        ks_h = dd[dd.sub_organism == "human"].drop_duplicates(["sub_acc_full", "position"])
+        chk = io_psp.check_windows_against_sequences(ks_h, seqs)
+        chk["acc_type"] = np.where(chk.sub_isoform.ne(""), "isoform", "canonical")
+        chk["shift"] = (chk.shifted_pos.astype("Float64") - chk.position.astype("Float64"))
+        t = chk.groupby(["acc_type", "status"]).agg(n_sites=("status", "size"),
+                                                    n_relocatable_exact_elsewhere=("shifted_pos", lambda v: int(v.notna().sum()))).reset_index()
+        t.insert(0, "dataset", "Kinase_Substrate_Dataset human sites")
+        tabs = [t]
+        S["ks_human_sites_window_exact_frac"] = round(float((chk.status == "exact").mean()), 4)
+        S["ks_human_sites_window_status"] = chk.status.value_counts().to_dict()
+        S["ks_human_no_sequence_accs_in_swissprot_base"] = int(chk[chk.status == "no_sequence"].sub_acc.isin(sp_accs).sum())
+        S["ks_human_mismatch_shift_examples"] = chk.loc[chk["shift"].notna(), "shift"].value_counts().head(8).to_dict()
+        if psd is not None:
+            c2 = io_psp.check_windows_against_sequences(hu.rename(columns={"acc_full": "sub_acc_full"}), seqs)
+            c2["acc_type"] = np.where(c2.isoform.ne(""), "isoform", "canonical")
+            t2 = c2.groupby(["acc_type", "status"]).agg(n_sites=("status", "size"),
+                                                        n_relocatable_exact_elsewhere=("shifted_pos", lambda v: int(v.notna().sum()))).reset_index()
+            t2.insert(0, "dataset", "Phosphorylation_site_dataset human STY sites")
+            tabs.append(t2)
+            S["sitedb_human_window_exact_frac"] = round(float((c2.status == "exact").mean()), 4)
+        w(pd.concat(tabs), "window_vs_uniprot")
 
     json.dump(S, open(out / "psp_summary.json", "w"), indent=1, default=str)
     pd.Series({k: (json.dumps(v) if isinstance(v, (list, dict)) else v) for k, v in S.items()}).rename_axis("metric").rename("value").reset_index().to_csv(out / "psp_summary.tsv", sep="\t", index=False)

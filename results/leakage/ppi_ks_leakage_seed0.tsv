@@ -17,3 +17,7 @@ Screen:BioPlex3_293T	0.0149	0.0004	0.0029	5.2
 Screen:BioPlex3_HCT116	0.0082	0.0000	0.0010	7.9
 Screen:HuRI	0.0033	0.0001	0.0000	inf
 Screen:OpenCell	0.0111	0.0003	0.0018	6.1
+# conditional (KS pairs only): frac with STRING_physical experimental>0, by BioGRID evidence class
+# cond:biogrid_biochem_only	n=592	frac_STRINGphys_exp>0=0.8986
+# cond:biogrid_other_physical	n=2056	frac_STRINGphys_exp>0=0.8769
+# cond:no_biogrid_record	n=5005	frac_STRINGphys_exp>0=0.0478

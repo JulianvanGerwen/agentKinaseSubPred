@@ -1,0 +1,4 @@
+set	n_sites	n_sites_isoform_acc	n_in_compendium	frac	n_in_compendium_ge10_conditions	n_in_compendium_ge100_conditions	median_conditions_if_present	n_pairs	n_pairs_site_in_compendium	n_kinases_with_ge1_pair_in_compendium	n_kinases_with_ge5_pairs_in_compendium
+PSP human kinase x human substrate	10212	512	4866	0.476	3958	2378	92.0	14681	7500	364	201
+PSP HMR pooled (human-mapped)	13206	768	6079	0.46	4913	2908	86.0	19719	9842	384	229
+PSP all species pooled (human-mapped)	13606	797	6251	0.459	5038	2970	84.0	20473	10163	387	231
