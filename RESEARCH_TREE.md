@@ -100,4 +100,4 @@ Status: literature (4 reviews), data profiling, two acquisition waves (~12.6 GB)
     - Decision A26: hub-site stratum added (reporting only); relabelling A-loop cross-kinase labels rejected.
   - [x] 5.8 Independent audit → docs/audit/audit_cv_r1.md: all numbers reproduce exactly; no leakage. A24 values: R2 full M1 0.773 / M3 0.312; R3 final M1 0.754. M4 & 1–4-label claims NOT trusted pre-A24 (pooling inflation). R2 canary stores for folds 0/3 stale → rebuild. Matched-kinase M2 rule added (A27).
   - [~] 5.9 R5 fine-tuned ESM cross-encoder (GPUs 1–3; hard stop 00:30)
-  - [~] 5.10 Downstream benchmarKIN harness
+  - [x] 5.10 Downstream benchmarKIN harness → docs/downstream.md: reproduces Müller-Dott 2025 (PSP z-score perturbation AUROC 0.782 vs 0.79; tumour 0.664 vs 0.662; PSP+KinLib 0.650/0.583 vs 0.65/0.58). Cantley-only top-N 0.50–0.64; shuffled 0.52. DEV-only PSP ≈ full PSP. Needs clean-variant predictions (no bench studies, no CPTAC features).
