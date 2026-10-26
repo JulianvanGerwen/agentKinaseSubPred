@@ -122,13 +122,10 @@ if __name__ == "__main__":
             r = bench_cross(mid, Lk, batch=bs)
             out["results"].append(r)
             print(json.dumps(r), flush=True)
-    for mid in ["facebook/esm2_t12_35M_UR50D", "facebook/esm2_t30_150M_UR50D"]:
-        r = bench_sub_encoder(mid)
-        out["results"].append(r)
-        print(json.dumps(r), flush=True)
-        r = bench_sub_encoder(mid, train=False, batch=4096)
-        out["results"].append(r)
-        print(json.dumps(r), flush=True)
+    for mid, tb in [("facebook/esm2_t12_35M_UR50D", 1024), ("facebook/esm2_t30_150M_UR50D", 256)]:
+        for r in (bench_sub_encoder(mid, batch=tb), bench_sub_encoder(mid, train=False, batch=2048)):
+            out["results"].append(r)
+            print(json.dumps(r), flush=True)
     for m_kin in (8, 16, 32):
         r = bench_maxsim(m_kin=m_kin)
         out["results"].append(r)

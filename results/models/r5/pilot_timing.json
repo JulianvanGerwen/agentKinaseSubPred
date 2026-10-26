@@ -1,0 +1,115 @@
+{
+ "gpu": "NVIDIA GeForce RTX 4090",
+ "n_eval_pairs_per_fold": 21300000,
+ "results": [
+  {
+   "model": "facebook/esm2_t12_35M_UR50D",
+   "mode": "infer",
+   "seq_len": 334,
+   "batch": 64,
+   "s_per_batch": 0.039,
+   "pairs_per_s": 1641.5,
+   "gpu_h_per_fold": 3.6,
+   "peak_gb": 0.48
+  },
+  {
+   "model": "facebook/esm2_t12_35M_UR50D",
+   "mode": "infer",
+   "seq_len": 334,
+   "batch": 256,
+   "s_per_batch": 0.185,
+   "pairs_per_s": 1384.1,
+   "gpu_h_per_fold": 4.27,
+   "peak_gb": 1.68
+  },
+  {
+   "model": "facebook/esm2_t30_150M_UR50D",
+   "mode": "infer",
+   "seq_len": 334,
+   "batch": 64,
+   "s_per_batch": 0.143,
+   "pairs_per_s": 447.4,
+   "gpu_h_per_fold": 13.22,
+   "peak_gb": 0.82
+  },
+  {
+   "model": "facebook/esm2_t30_150M_UR50D",
+   "mode": "infer",
+   "seq_len": 334,
+   "batch": 256,
+   "s_per_batch": 0.6181,
+   "pairs_per_s": 414.2,
+   "gpu_h_per_fold": 14.28,
+   "peak_gb": 2.43
+  },
+  {
+   "model": "facebook/esm2_t12_35M_UR50D",
+   "mode": "train",
+   "seq_len": 31,
+   "batch": 1024,
+   "s_per_batch": 0.1842,
+   "sites_per_s": 5560.4,
+   "peak_gb": 10.56
+  },
+  {
+   "model": "facebook/esm2_t12_35M_UR50D",
+   "mode": "infer",
+   "seq_len": 31,
+   "batch": 2048,
+   "s_per_batch": 0.1266,
+   "sites_per_s": 16172.9,
+   "peak_gb": 1.57
+  },
+  {
+   "model": "facebook/esm2_t30_150M_UR50D",
+   "mode": "train",
+   "seq_len": 31,
+   "batch": 256,
+   "s_per_batch": 0.1389,
+   "sites_per_s": 1843.7,
+   "peak_gb": 10.15
+  },
+  {
+   "model": "facebook/esm2_t30_150M_UR50D",
+   "mode": "infer",
+   "seq_len": 31,
+   "batch": 2048,
+   "s_per_batch": 0.4324,
+   "sites_per_s": 4736.3,
+   "peak_gb": 2.66
+  },
+  {
+   "op": "maxsim",
+   "sites_per_batch": 4096,
+   "K": 516,
+   "m_kin": 8,
+   "d": 64,
+   "s_per_batch": 0.0025,
+   "pairs_per_s": 858793740.0,
+   "gpu_h_per_fold": 0.0,
+   "peak_gb": 1.04
+  },
+  {
+   "op": "maxsim",
+   "sites_per_batch": 4096,
+   "K": 516,
+   "m_kin": 16,
+   "d": 64,
+   "s_per_batch": 0.0049,
+   "pairs_per_s": 435726521.0,
+   "gpu_h_per_fold": 0.0,
+   "peak_gb": 2.05
+  },
+  {
+   "op": "maxsim",
+   "sites_per_batch": 4096,
+   "K": 516,
+   "m_kin": 32,
+   "d": 64,
+   "s_per_batch": 0.0096,
+   "pairs_per_s": 219602713.0,
+   "gpu_h_per_fold": 0.0,
+   "peak_gb": 4.07
+  }
+ ]
+}
