@@ -513,3 +513,11 @@ GPU allocation:
       - M2 does not fall by more than 0.003 against β = 0;
       - the 5–19-label-bin M2 improves.
       This deliberately favours harmonious performance across kinases (PROMPT), at a bounded cost to the macro endpoint.
+- **A33. Label variant and training regime: final decision** (2026-10-27 00:10; `docs/regimes_labels.md`). The default stays: **L2 labels with the global R2 model.**
+  - **L2+ext** meets the A32-style rule on seed 0 only: ΔM1 +0.0058. Seeds 1 and 2 give −0.004 and +0.002, a mean of +0.001. Its M2 is positive on all three seeds (+0.026 / +0.018 / +0.002).
+  - **Why L2+ext is not adopted:**
+    1. DESIGN §16 (round-2 change) pre-registered external curated pairs as **ablation only**, so that the external-curated TEST stratum stays independent. That rule takes precedence.
+    2. The M1 gain does not replicate across seeds.
+    3. A rebuild of TEST and T3 (about 2.5 h) is not justified by a gain within noise.
+  - **Other variants:** L1, L2_vitro and L2_vivo are all worse on M2 (pooling mouse and rat labels helps M2 by +0.029). Per-kinase models (−0.012), per-group models (−0.007) and partial pooling (+0.0002, with λ selected at 300, i.e. essentially global) are not adopted.
+  - **Side finding, recorded as a follow-up (not explored, because CV closed at 01:00):** per-kinase ridge intercepts lift R2 M2 to 0.232.

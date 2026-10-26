@@ -1,0 +1,50 @@
+{
+ "run_id": "regime_perkinase_lr_N20_qmap_cv5__20261026-231144__s0",
+ "name": "regime_perkinase_lr_N20_qmap_cv5",
+ "git_hash": "2609ef5d477404e56850b28ff0c1e28d3c09faf0",
+ "config": {
+  "regime": "per-kinase",
+  "model": "lr",
+  "n_min": 20,
+  "fallback": "global R2 r2_final_s0_cv5__20261026-181435__s0",
+  "m2_score": "qmap",
+  "seed": 0
+ },
+ "seed": 0,
+ "split": "cv",
+ "notes": "pooled 5-fold OOF of []; per-kinase lr N>=20, else global; M2 score qmap",
+ "inputs": [],
+ "host": "eu-g6-076",
+ "python": "3.12.3",
+ "platform": "Linux-5.15.0-198-generic-x86_64-with-glibc2.39",
+ "argv": [
+  "scripts/models/regime_perkinase_eval.py",
+  "--folds",
+  "0",
+  "1",
+  "2",
+  "3",
+  "4"
+ ],
+ "pid": 444996,
+ "started": "2026-10-26 23:11:44 CET",
+ "n_rows": {
+  "predictions": 106457574
+ },
+ "outputs": {
+  "predictions": {
+   "path": "cache/runs/regime_perkinase_lr_N20_qmap_cv5__20261026-231144__s0/predictions.parquet",
+   "sha256": "83969bd2682772e15aee1fa96af44598ac562e7867966cfc7f4629ef63b6f48c"
+  },
+  "metrics": {
+   "path": "results/runs/regime_perkinase_lr_N20_qmap_cv5__20261026-231144__s0/metrics.json",
+   "sha256": "da574dc50bc5862d43135bf5bcd81b40f138226f0c9be3fc1a317f72e09ada6d"
+  }
+ },
+ "fallbacks": {},
+ "fold_runs": [],
+ "status": "ok",
+ "error": null,
+ "runtime_s": 360.67,
+ "finished": "2026-10-26 23:17:45 CET"
+}
