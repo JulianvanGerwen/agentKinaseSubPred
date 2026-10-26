@@ -1,0 +1,96 @@
+{
+ "run_id": "r2_full_f3__20261026-161712__s0",
+ "name": "r2_full_f3",
+ "git_hash": "581e25c4b597e00d27eff31a5ae6a0bc6e2149f1",
+ "config": {
+  "groups": [
+   "F1",
+   "F0",
+   "F2a",
+   "F3",
+   "F4",
+   "F6a",
+   "F6b",
+   "F6c",
+   "F5",
+   "F7"
+  ],
+  "ratio": 50,
+  "hard": 0.5,
+  "alpha": 0.5,
+  "objective": "binary",
+  "num_leaves": 127,
+  "learning_rate": 0.03,
+  "min_data_in_leaf": 100,
+  "feature_fraction": 0.8,
+  "bagging_fraction": 0.8,
+  "lambda_l2": 1.0,
+  "max_bin": 255,
+  "max_rounds": 3000,
+  "es_rounds": 100,
+  "refit": true,
+  "clean": false,
+  "comp_know": false,
+  "seed": 0,
+  "variant": "L2",
+  "miss_only": false,
+  "min_rounds": 50,
+  "es_metric": "mixed"
+ },
+ "seed": 0,
+ "split": "cv",
+ "notes": "folds=[3]; ",
+ "inputs": [],
+ "host": "eu-g6-076",
+ "python": "3.12.3",
+ "platform": "Linux-5.15.0-198-generic-x86_64-with-glibc2.39",
+ "argv": [
+  "scripts/models/r2_run.py",
+  "--name",
+  "r2_full_f3",
+  "--folds",
+  "3",
+  "--stage",
+  "final_s0",
+  "--no-register",
+  "--set",
+  "num_leaves=127",
+  "learning_rate=0.03"
+ ],
+ "pid": 254229,
+ "started": "2026-10-26 16:17:12 CET",
+ "n_rows": {
+  "predictions": 21304940
+ },
+ "outputs": {
+  "predictions": {
+   "path": "cache/runs/r2_full_f3__20261026-161712__s0/predictions.parquet",
+   "sha256": "32053840b875c89210dd8adff3748162483ba66e742a8a57769c0db62e9fe4c8"
+  },
+  "metrics": {
+   "path": "results/runs/r2_full_f3__20261026-161712__s0/metrics.json",
+   "sha256": "c06249c66ab03f355bf24e7e6e6a696bbcc17fd36e3f0760c96b78494e2a53e0"
+  }
+ },
+ "fallbacks": {},
+ "fold_logs": {
+  "3": {
+   "n_train_rows": 499086,
+   "n_pos": 9786,
+   "n_val_rows": 99817,
+   "best_iteration": 376,
+   "inner_val_metric": 0.8441127285862949,
+   "t_gather_train_s": 5.7,
+   "t_train_es_s": 43.5,
+   "t_refit_s": 25.7,
+   "n_features": 172,
+   "t_predict_s": 86.3,
+   "n_pred_rows": 21304940,
+   "t_fold_s": 172.0
+  }
+ },
+ "status": "ok",
+ "error": null,
+ "runtime_s": 208.37,
+ "finished": "2026-10-26 16:20:40 CET"
+}

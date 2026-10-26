@@ -111,6 +111,35 @@ v2. The v1 stores are archived in `cache/r2/xfit/cv_canaryv1/`.
 Real-kinase features are unaffected, except for a possible tiny shift in F2a's internally tuned α/β, which are tuned
 over all kinases including canaries. Stage-(a) selection therefore stands. Every run after stage (a) uses v2.
 
+The chosen configuration re-run with v2 gives fold-0 M1 0.7537 (0.7591 with v1). A small perturbation of the F2a
+features alone moves fold-0 M1 by 0.005, which is a useful noise floor for the search.
+
+**Stages (b)–(d)**, fold 0, canary v2. Base: leaves 127, lr 0.03, α 0.5, 1:50, 50% hard, binary.
+
+| stage | config | M1 | M2 | M3 | neg canary E-hard |
+|---|---|---|---|---|---|
+| b | **α 0.5 (base)** | **0.7537** | 0.223 | 0.262 | 0.635 |
+| b | α 0 | 0.7498 | 0.159 | 0.266 | 0.573 |
+| b | α 1 | 0.7487 | 0.225 | 0.263 | 0.593 |
+| c | 1:20, 25% hard | 0.7468 | 0.195 | 0.285 | 0.592 |
+| c | 1:20, 50% hard | 0.7496 | 0.168 | 0.265 | 0.590 |
+| c | 1:50, 25% hard | 0.7425 | 0.202 | 0.254 | 0.574 |
+| c | 1:50, 75% hard (extra arm) | 0.7507 | 0.193 | 0.263 | 0.604 |
+| c | 1:200, 25% hard | 0.7415 | 0.203 | 0.274 | 0.588 |
+| c | 1:200, 50% hard | 0.7460 | 0.201 | 0.274 | 0.631 |
+| d | lambdarank grouped by kinase (≤1000-row queries) | 0.7535 | 0.086 | 0.261 | 0.598 |
+| d | site-grouped lambdarank (M2 objective) | 0.7297 | 0.189 | 0.184 | 0.400 |
+| d | site-grouped, 600 fixed rounds | identical: inner NDCG@5 peaks before round 50 | | | |
+
+Decision: keep the base configuration (binary, α 0.5, 1:50, 50% hard). Nothing beat it on M1 by more than the noise
+floor.
+- The site-grouped objective does not beat the binary model on M2 (0.189 vs 0.223), so M2 will use the calibrated
+  cross-kinase assignment score of the binary model (A20, §7).
+- lambdarank by kinase matches M1, but its scores are not comparable across kinases (M2 collapses).
+
+Configurations tried on fold 0: 7 (a) + 1 (a, v2 rerun) + 2 (b) + 6 (c) + 3 (d) = 19, plus one label-free
+control.
+
 ## 5. Ablation curve and leakage alarms
 (filled as run)
 
@@ -148,5 +177,55 @@ larger trees learn from the canaries' training labels. It is not label leakage. 
 Selection policy: the official A5 gate stays binding. A configuration that fails it is reported, but it is not
 selected unless the PI accepts this diagnostic.
 
-## 6. Results
-(filled as run)
+### 5.2 Canary v2 results and diagnosis (fold 0; for PI / core-infra)
+| run | neg canary E-hard (gated ≤ 0.57) | neg E-all | pos canary |
+|---|---|---|---|
+| full model, chosen config (α 0.5) | **0.635** (fails) | 0.802 | 0.999 |
+| same, α 0 | 0.573 (fails marginally) | 0.756 | 0.999 |
+| same, α 1 | 0.593 (fails) | 0.760 | 0.999 |
+| **label-free control**: F0 (site) + F7 (kinase descriptors) only | **0.539** (passes) | 0.734 | 0.810 |
+
+How the diagnosis was done:
+- Stratifying the E-hard AUROC by the number of labelled (E-hard-eligible) sites per protein does not remove the
+  excess (0.627).
+- Univariate AUROCs of the canary's own feature columns, canary positives vs E-hard negatives (11 negative
+  canaries):
+  - cross-fitted F3-label (proximity of the site's protein to the canary's training substrate proteins) scores
+    0.39, i.e. 0.61 inverted: canary positives sit on proteins *less* central than E-hard sites;
+  - site structure and ESM features reach 0.59 (RSA, SASA, several ESM PCs).
+
+So canary-v2 positives and E-hard negatives are different populations even without labels. The v2 sampler picks
+proteins first, then 1–4 labelled sites per protein. E-hard is site-weighted and so dominated by heavily studied
+hub proteins.
+
+A model with kinase-specific capacity learns "canary k prefers less-central, more exposed sites" from the canary's
+training labels and carries that over to the eval fold. The cross-fitted F3-label is the main channel for this, and
+its eval rows are verified disjoint by protein and cluster in `ksp.crossfit`. This looks like legitimate
+generalisation of a sampler artefact, not a label leak.
+
+I have **not** proven that, though. A decisive gate needs negative-canary sites drawn **site-uniformly from the
+E-hard-eligible pool**, so that positives and E-hard negatives share one distribution. I recommend this to
+core-infra.
+
+Until then the gate failure is reported on every run, and selection uses real-kinase M1 only.
+
+## 6. Results (pooled 5-fold DEV OOF; ksp.eval; K_cv = 203 kinases; seed 0)
+**G2 gate (16:27): met.** R2 with F1+F0+F2a+F3+F4+F6 (`r2_g2_main_cv5__20261026-162249__s0`):
+- M1 0.746 [0.728, 0.760], M2 0.146, M3 0.267, M4 0.752;
+- negative canary (v2) E-hard 0.530: passes;
+- positive canary 0.997.
+
+Paired cluster bootstrap vs B1 on the matched universe (B = 1000):
+
+| comparison (R2 main − B1) | ΔM1 | ΔM2 | ΔM3 | ΔM4 |
+|---|---|---|---|---|
+| vs B1 universe percentile | +0.023 [0.009, 0.034] | −0.009 [−0.031, 0.011] | +0.130 [0.098, 0.153] | +0.045 [0.024, 0.051] |
+| vs B1 imputed-universe (covers all kinases) | +0.024 [0.009, 0.036] | −0.003 [−0.025, 0.015] | +0.134 [0.100, 0.156] | +0.050 [0.028, 0.056] |
+
+**Full model** (all groups + F5 + F7; `r2_full_cv5`):
+- M1 **0.763**, M2 0.208, M3 **0.308**, M4 0.782;
+- negative canary (v2) E-hard 0.525: passes;
+- positive canary 0.998.
+
+Pooled over 5 folds, the v2 negative-canary E-hard AUROC passes, at 0.53 for both models. The fold-0 failures in §5.2
+are partly fold-0 noise: per fold, the 10–12 canaries with 2–14 positives each vary from 0.44 to 0.62.

@@ -1,0 +1,97 @@
+{
+ "run_id": "r2_alarm_compknow_f0__20261026-162923__s0",
+ "name": "r2_alarm_compknow_f0",
+ "git_hash": "581e25c4b597e00d27eff31a5ae6a0bc6e2149f1",
+ "config": {
+  "groups": [
+   "F1",
+   "F0",
+   "F2a",
+   "F3",
+   "F4",
+   "F6a",
+   "F6b",
+   "F6c",
+   "F5",
+   "F7"
+  ],
+  "ratio": 50,
+  "hard": 0.5,
+  "alpha": 0.5,
+  "objective": "binary",
+  "num_leaves": 127,
+  "learning_rate": 0.03,
+  "min_data_in_leaf": 100,
+  "feature_fraction": 0.8,
+  "bagging_fraction": 0.8,
+  "lambda_l2": 1.0,
+  "max_bin": 255,
+  "max_rounds": 3000,
+  "es_rounds": 100,
+  "refit": true,
+  "clean": false,
+  "comp_know": true,
+  "seed": 0,
+  "variant": "L2",
+  "miss_only": false,
+  "min_rounds": 50,
+  "es_metric": "mixed"
+ },
+ "seed": 0,
+ "split": "cv",
+ "notes": "folds=[0]; ",
+ "inputs": [],
+ "host": "eu-g6-076",
+ "python": "3.12.3",
+ "platform": "Linux-5.15.0-198-generic-x86_64-with-glibc2.39",
+ "argv": [
+  "scripts/models/r2_run.py",
+  "--name",
+  "r2_alarm_compknow_f0",
+  "--folds",
+  "0",
+  "--stage",
+  "alarm",
+  "--no-register",
+  "--set",
+  "num_leaves=127",
+  "learning_rate=0.03",
+  "comp_know=true"
+ ],
+ "pid": 262024,
+ "started": "2026-10-26 16:29:23 CET",
+ "n_rows": {
+  "predictions": 21283695
+ },
+ "outputs": {
+  "predictions": {
+   "path": "cache/runs/r2_alarm_compknow_f0__20261026-162923__s0/predictions.parquet",
+   "sha256": "94af9cef30d79a89f8a5470184a855cfd72f8ffb92c945cfa4c22979d50ef23c"
+  },
+  "metrics": {
+   "path": "results/runs/r2_alarm_compknow_f0__20261026-162923__s0/metrics.json",
+   "sha256": "4b9a7c259691e7dc9eb6048ccf761bd1e9f01ea76698f13f246aeb07671186a4"
+  }
+ },
+ "fallbacks": {},
+ "fold_logs": {
+  "0": {
+   "n_train_rows": 498831,
+   "n_pos": 9781,
+   "n_val_rows": 99766,
+   "best_iteration": 310,
+   "inner_val_metric": 0.8263553414241471,
+   "t_gather_train_s": 45.3,
+   "t_train_es_s": 33.7,
+   "t_refit_s": 18.9,
+   "n_features": 174,
+   "t_predict_s": 63.3,
+   "n_pred_rows": 21283695,
+   "t_fold_s": 171.6
+  }
+ },
+ "status": "ok",
+ "error": null,
+ "runtime_s": 210.91,
+ "finished": "2026-10-26 16:32:54 CET"
+}

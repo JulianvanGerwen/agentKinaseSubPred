@@ -21,7 +21,7 @@ import torch.nn.functional as F
 
 class SiteEncoder(nn.Module):
     def __init__(self, d_esm=1280, d=192, h=128, n_layers=2, n_heads=4, flank=7, n_aa=22, dropout=0.1,
-                 esm_dropout=0.1, use_esm=True, use_prot=True, use_phos=True):
+                 esm_dropout=0.1, use_esm=True, use_prot=True, use_phos=True, d_prot=None):
         super().__init__()
         self.flank = flank
         self.use_esm, self.use_prot, self.use_phos = use_esm, use_prot, use_phos
@@ -32,7 +32,7 @@ class SiteEncoder(nn.Module):
         self.phos = nn.Embedding(2, d)
         self.pos = nn.Parameter(torch.zeros(L + 1, d))
         nn.init.normal_(self.pos, std=0.02)
-        self.prot = nn.Linear(d_esm, d)
+        self.prot = nn.Linear(d_prot or d_esm, d)
         self.pad = nn.Parameter(torch.zeros(d))
         layer = nn.TransformerEncoderLayer(d, n_heads, 2 * d, dropout, batch_first=True, norm_first=True,
                                            activation="gelu")
@@ -80,15 +80,29 @@ class KinaseEncoder(nn.Module):
 
 class R3Net(nn.Module):
     def __init__(self, d_esm, d_cantley, n_groups, n_families, flank=7, d_site=192, h=128, d_kin=256,
-                 n_layers=2, desc_dropout=0.2, dropout=0.1, esm_dropout=0.1, use_esm=True, use_prot=True, use_phos=True):
+                 n_layers=2, desc_dropout=0.2, dropout=0.1, esm_dropout=0.1, use_esm=True, use_prot=True, use_phos=True,
+                 d_prot=None, d_kin_esm=None):
         super().__init__()
         self.site = SiteEncoder(d_esm, d_site, h, n_layers, 4, flank, dropout=dropout, esm_dropout=esm_dropout,
-                                use_esm=use_esm, use_prot=use_prot, use_phos=use_phos)
-        self.kin = KinaseEncoder(d_esm, d_cantley, n_groups, n_families, d_kin, h, desc_dropout)
+                                use_esm=use_esm, use_prot=use_prot, use_phos=use_phos,
+                                d_prot=d_prot)
+        self.kin = KinaseEncoder(d_kin_esm or d_esm, d_cantley, n_groups, n_families, d_kin, h, desc_dropout)
         self.W = nn.Linear(h, h, bias=False)
         self.pair = nn.Sequential(nn.Linear(h, 64), nn.GELU(), nn.Linear(64, 1))
         self.kbias = nn.Linear(h, 1)
         self.h = h
+        # Cantley-distillation head (2 outputs: unprimed / primed-soft universe percentile); used for pretraining
+        # and the optional auxiliary loss only, never for predictions.
+        self.dW = nn.Linear(h, 2 * h, bias=False)
+        self.dpair = nn.Sequential(nn.Linear(h, 64), nn.GELU(), nn.Linear(64, 2))
+        self.dbias = nn.Linear(h, 2)
+
+    def distill(self, site_inputs, kin_inputs):
+        z = self.site(*site_inputs)
+        u = self.kin(*kin_inputs)
+        B, K = z.shape[0], u.shape[0]
+        bil = torch.einsum("bjh,kh->bkj", self.dW(z).view(B, 2, self.h), u) / math.sqrt(self.h)
+        return bil + self.dpair(z[:, None, :] * u[None, :, :]) + self.dbias(u)[None]
 
     def forward(self, site_inputs, kin_inputs):
         z = self.site(*site_inputs)                 # (B,h)

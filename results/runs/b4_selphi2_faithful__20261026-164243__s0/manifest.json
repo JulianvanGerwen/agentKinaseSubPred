@@ -1,0 +1,152 @@
+{
+ "run_id": "b4_selphi2_faithful__20261026-164243__s0",
+ "name": "b4_selphi2_faithful",
+ "git_hash": "581e25c4b597e00d27eff31a5ae6a0bc6e2149f1",
+ "config": {
+  "arm": "faithful",
+  "neg_ratio": 10,
+  "n_bags": 10,
+  "grid": {
+   "max_depth": [
+    10,
+    20,
+    50,
+    70,
+    80,
+    100
+   ],
+   "min_samples_split": [
+    8,
+    10,
+    12
+   ],
+   "n_estimators": [
+    150,
+    500,
+    1000,
+    1500
+   ]
+  },
+  "grid_bags": [
+   0
+  ],
+  "n_estimators_cap": null,
+  "n_jobs": 12,
+  "seed": 0,
+  "drop_cols": [],
+  "label_variant": "L2",
+  "best_params_per_fold": [
+   {
+    "max_depth": 20,
+    "min_samples_split": 8,
+    "n_estimators": 1500
+   },
+   {
+    "max_depth": 20,
+    "min_samples_split": 10,
+    "n_estimators": 1000
+   },
+   {
+    "max_depth": 20,
+    "min_samples_split": 12,
+    "n_estimators": 1500
+   },
+   {
+    "max_depth": 20,
+    "min_samples_split": 8,
+    "n_estimators": 1500
+   },
+   {
+    "max_depth": 20,
+    "min_samples_split": 12,
+    "n_estimators": 1500
+   }
+  ]
+ },
+ "seed": 0,
+ "split": "cv",
+ "notes": "B4 SELPHI2.0 retrained, OOF over DEV 5-fold CV; universe U_B4 = U_ms with Ochoa features",
+ "inputs": [
+  {
+   "path": "/workspace/cache/selphi2/faithful/oof_fold0.parquet",
+   "type": "file",
+   "bytes": 71769803,
+   "sha256": "730a188fb5575705b95997c4a0809f87dc2d51543ba951d1aaaecb25a8fb67ef"
+  },
+  {
+   "path": "/workspace/cache/selphi2/faithful/oof_fold1.parquet",
+   "type": "file",
+   "bytes": 75033578,
+   "sha256": "2367c85e10582b464a1d8a44b72159517e4389e51fc53e1fe7cae1f963413afd"
+  },
+  {
+   "path": "/workspace/cache/selphi2/faithful/oof_fold2.parquet",
+   "type": "file",
+   "bytes": 74689410,
+   "sha256": "3272231ca4aadbc977b1ba678aac4d8db4eeb3f40311efcca7d6fdc160dffc94"
+  },
+  {
+   "path": "/workspace/cache/selphi2/faithful/oof_fold3.parquet",
+   "type": "file",
+   "bytes": 65855077,
+   "sha256": "126207f72c26794a8d8f37c8d92bcfa612eb72beecf7c61250670945aaee0ba3"
+  },
+  {
+   "path": "/workspace/cache/selphi2/faithful/oof_fold4.parquet",
+   "type": "file",
+   "bytes": 76900875,
+   "sha256": "bfb5a227417950cc277176860d073fcda320a7a5cf30e2d8ce6273f6a9e422c1"
+  }
+ ],
+ "host": "eu-g6-076",
+ "python": "3.12.3",
+ "platform": "Linux-5.15.0-198-generic-x86_64-with-glibc2.39",
+ "argv": [
+  "scripts/baselines/selphi2_eval.py",
+  "--arm",
+  "faithful",
+  "--B",
+  "1000"
+ ],
+ "pid": 269368,
+ "started": "2026-10-26 16:42:43 CET",
+ "n_rows": {
+  "predictions": 35566203
+ },
+ "outputs": {
+  "predictions": {
+   "path": "cache/runs/b4_selphi2_faithful__20261026-164243__s0/predictions.parquet",
+   "sha256": "c3eedaf96eaa10ef19f2d75816f34725cc89e3fdd1ef5971643f138bc683f382"
+  },
+  "metrics_matched": {
+   "path": "results/runs/b4_selphi2_faithful__20261026-164243__s0/metrics_matched.json",
+   "sha256": "d5b0dce824023f82ceeb4dcb8fa9d959acb81ed11af84c9d9b0c55b182faf440"
+  },
+  "metrics_full": {
+   "path": "results/runs/b4_selphi2_faithful__20261026-164243__s0/metrics_full.json",
+   "sha256": "bf691d651a25c60790bed719fa187630a436cbcd229db9be343e6bdb4ecf4715"
+  },
+  "summary": {
+   "path": "results/runs/b4_selphi2_faithful__20261026-164243__s0/summary.json",
+   "sha256": "2956c0c7c88b802fef90662ed53c2aa78fa89f599152322965b510f1bd9cba3b"
+  }
+ },
+ "fallbacks": {
+  "cantley_ref_pairs_without_matrix": 8867232
+ },
+ "coverage": {
+  "kinases_scored": 503,
+  "sites_scored": 89419,
+  "universe_sites_scored": 89419,
+  "universe_sites": 277924,
+  "required_pairs": 68969976,
+  "required_pairs_scored": 23518206,
+  "frac_required_scored": 0.34099194118901827,
+  "positive_pairs": 8756,
+  "positive_pairs_scored": 5135
+ },
+ "status": "ok",
+ "error": null,
+ "runtime_s": 672.87,
+ "finished": "2026-10-26 16:53:56 CET"
+}

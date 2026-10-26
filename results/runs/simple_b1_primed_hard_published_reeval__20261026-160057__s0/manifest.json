@@ -1,0 +1,82 @@
+{
+ "run_id": "simple_b1_primed_hard_published_reeval__20261026-160057__s0",
+ "name": "simple_b1_primed_hard_published_reeval",
+ "git_hash": "581e25c4b597e00d27eff31a5ae6a0bc6e2149f1",
+ "config": {
+  "method": "b1_primed_hard_published",
+  "canary": false,
+  "from_run": "simple_b1_primed_hard_published__20261026-150822__s0",
+  "seed": 0,
+  "store": "motif/cantley_primed_hard_pct_published"
+ },
+ "seed": 0,
+ "split": "cv",
+ "notes": "",
+ "inputs": [
+  {
+   "path": "/workspace/cache/labels/dev_pairs.parquet",
+   "type": "file",
+   "bytes": 797455,
+   "sha256": "b6c1aaa8f67396b535ac392c08f77068e6eec1615e2debdf63ce20d6986be449"
+  },
+  {
+   "path": "/workspace/cache/labels/canary_dev.parquet",
+   "type": "file",
+   "bytes": 29718,
+   "sha256": "febef71f55dbfc5146ce686f31fea11eae6b224f38ff55276cac8bac30a96121"
+  },
+  {
+   "path": "/workspace/results/splits/cv_folds.tsv",
+   "type": "file",
+   "bytes": 203997,
+   "sha256": "aa01e43d7a064269ddf58cf00a2e3130486aee973cba3e6cf52f994f6a265dc8"
+  },
+  {
+   "path": "/workspace/cache/runs/simple_b1_primed_hard_published__20261026-150822__s0/predictions.parquet",
+   "type": "file",
+   "bytes": 339603724,
+   "sha256": "ce995dd35e7040b674d349fa2eac8faeff3eeb924d6c7e981713134fc18f6927"
+  }
+ ],
+ "host": "eu-g6-076",
+ "python": "3.12.3",
+ "platform": "Linux-5.15.0-198-generic-x86_64-with-glibc2.39",
+ "argv": [
+  "scripts/baselines/simple_run.py",
+  "--method",
+  "b1_primed_hard_published",
+  "--from-run",
+  "simple_b1_primed_hard_published__20261026-150822__s0"
+ ],
+ "pid": 239729,
+ "started": "2026-10-26 16:00:59 CET",
+ "n_rows": {
+  "predictions": 63265305
+ },
+ "outputs": {
+  "predictions": {
+   "path": "cache/runs/simple_b1_primed_hard_published_reeval__20261026-160057__s0/predictions.parquet",
+   "sha256": "ce995dd35e7040b674d349fa2eac8faeff3eeb924d6c7e981713134fc18f6927"
+  },
+  "bootstrap": {
+   "path": "results/runs/simple_b1_primed_hard_published_reeval__20261026-160057__s0/bootstrap.json",
+   "sha256": "19fc87787819cffb391b18594b4641ef6cd1fc59b511a63513b2e9901fd6da14"
+  },
+  "metrics": {
+   "path": "results/runs/simple_b1_primed_hard_published_reeval__20261026-160057__s0/metrics.json",
+   "sha256": "1405229de2588832312081dcef3bd5b8aa80507db1f17433682e5f68fd7e12a9"
+  },
+  "extra": {
+   "path": "results/runs/simple_b1_primed_hard_published_reeval__20261026-160057__s0/extra.json",
+   "sha256": "d3e0a16d52725fdac0eb5396358e183f79792a6699ad351c260a6086e6da52c7"
+  }
+ },
+ "fallbacks": {
+  "candidate_pairs_not_scored": 6432528
+ },
+ "reevaluated_from": "simple_b1_primed_hard_published__20261026-150822__s0",
+ "status": "ok",
+ "error": null,
+ "runtime_s": 309.93,
+ "finished": "2026-10-26 16:06:09 CET"
+}

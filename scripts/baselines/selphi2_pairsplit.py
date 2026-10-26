@@ -55,7 +55,7 @@ def main():
     X = M.Assembler().matrix(rows.kinase_idx.to_numpy(), rows.site_idx.to_numpy(), lab_tr)
     tr, te = next(StratifiedKFold(5, shuffle=True, random_state=0).split(X, y))
     rf = RandomForestClassifier(n_estimators=best["n_estimators"], max_depth=best["max_depth"],
-                                min_samples_split=best["min_samples_split"], bootstrap=True, n_jobs=12, random_state=0)
+                                min_samples_split=best["min_samples_split"], bootstrap=True, n_jobs=11, random_state=0)
     rf.fit(X[tr], y[tr])
     p = rf.predict_proba(X[te])[:, 1]
     # share of held-out positive pairs whose SITE also appears (with another kinase / as negative) in training rows

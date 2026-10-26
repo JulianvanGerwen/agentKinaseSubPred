@@ -1,0 +1,92 @@
+{
+ "run_id": "r2_abl_toF4_f4__20261026-164354__s0",
+ "name": "r2_abl_toF4_f4",
+ "git_hash": "581e25c4b597e00d27eff31a5ae6a0bc6e2149f1",
+ "config": {
+  "groups": [
+   "F1",
+   "F0",
+   "F2a",
+   "F3",
+   "F4"
+  ],
+  "ratio": 50,
+  "hard": 0.5,
+  "alpha": 0.5,
+  "objective": "binary",
+  "num_leaves": 127,
+  "learning_rate": 0.03,
+  "min_data_in_leaf": 100,
+  "feature_fraction": 0.8,
+  "bagging_fraction": 0.8,
+  "lambda_l2": 1.0,
+  "max_bin": 255,
+  "max_rounds": 3000,
+  "es_rounds": 100,
+  "refit": true,
+  "clean": false,
+  "comp_know": false,
+  "seed": 0,
+  "variant": "L2",
+  "miss_only": false,
+  "min_rounds": 50,
+  "es_metric": "mixed"
+ },
+ "seed": 0,
+ "split": "cv",
+ "notes": "folds=[4]; ",
+ "inputs": [],
+ "host": "eu-g6-076",
+ "python": "3.12.3",
+ "platform": "Linux-5.15.0-198-generic-x86_64-with-glibc2.39",
+ "argv": [
+  "scripts/models/r2_run.py",
+  "--name",
+  "r2_abl_toF4_f4",
+  "--folds",
+  "4",
+  "--stage",
+  "ablation",
+  "--no-register",
+  "--set",
+  "num_leaves=127",
+  "learning_rate=0.03",
+  "groups=[\"F1\",\"F0\",\"F2a\",\"F3\",\"F4\"]"
+ ],
+ "pid": 269931,
+ "started": "2026-10-26 16:43:54 CET",
+ "n_rows": {
+  "predictions": 21286274
+ },
+ "outputs": {
+  "predictions": {
+   "path": "cache/runs/r2_abl_toF4_f4__20261026-164354__s0/predictions.parquet",
+   "sha256": "6e3721a3fcca0ca2d7cdac94ab8469a9f51387ab70a437446ed5965feea79d4c"
+  },
+  "metrics": {
+   "path": "results/runs/r2_abl_toF4_f4__20261026-164354__s0/metrics.json",
+   "sha256": "f3c5265df0e8ac9e67ec622d50485cb1e151a0fbca3a59dc52769403514592af"
+  }
+ },
+ "fallbacks": {},
+ "fold_logs": {
+  "4": {
+   "n_train_rows": 498933,
+   "n_pos": 9783,
+   "n_val_rows": 99786,
+   "best_iteration": 206,
+   "inner_val_metric": 0.8071641328902385,
+   "t_gather_train_s": 13.8,
+   "t_train_es_s": 20.3,
+   "t_refit_s": 10.4,
+   "n_features": 124,
+   "t_predict_s": 43.6,
+   "n_pred_rows": 21286274,
+   "t_fold_s": 97.8
+  }
+ },
+ "status": "ok",
+ "error": null,
+ "runtime_s": 134.44,
+ "finished": "2026-10-26 16:46:09 CET"
+}

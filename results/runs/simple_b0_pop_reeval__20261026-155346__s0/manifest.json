@@ -1,0 +1,81 @@
+{
+ "run_id": "simple_b0_pop_reeval__20261026-155346__s0",
+ "name": "simple_b0_pop_reeval",
+ "git_hash": "581e25c4b597e00d27eff31a5ae6a0bc6e2149f1",
+ "config": {
+  "method": "b0_pop",
+  "canary": false,
+  "from_run": "simple_b0_pop__20261026-145746__s0",
+  "seed": 0
+ },
+ "seed": 0,
+ "split": "cv",
+ "notes": "",
+ "inputs": [
+  {
+   "path": "/workspace/cache/labels/dev_pairs.parquet",
+   "type": "file",
+   "bytes": 797455,
+   "sha256": "b6c1aaa8f67396b535ac392c08f77068e6eec1615e2debdf63ce20d6986be449"
+  },
+  {
+   "path": "/workspace/cache/labels/canary_dev.parquet",
+   "type": "file",
+   "bytes": 29718,
+   "sha256": "febef71f55dbfc5146ce686f31fea11eae6b224f38ff55276cac8bac30a96121"
+  },
+  {
+   "path": "/workspace/results/splits/cv_folds.tsv",
+   "type": "file",
+   "bytes": 203997,
+   "sha256": "aa01e43d7a064269ddf58cf00a2e3130486aee973cba3e6cf52f994f6a265dc8"
+  },
+  {
+   "path": "/workspace/cache/runs/simple_b0_pop__20261026-145746__s0/predictions.parquet",
+   "type": "file",
+   "bytes": 340146666,
+   "sha256": "4752d5976b30661e0d3ccdaad8d05fe2726dfa20574035994ec1d6448f4366e8"
+  }
+ ],
+ "host": "eu-g6-076",
+ "python": "3.12.3",
+ "platform": "Linux-5.15.0-198-generic-x86_64-with-glibc2.39",
+ "argv": [
+  "scripts/baselines/simple_run.py",
+  "--method",
+  "b0_pop",
+  "--from-run",
+  "simple_b0_pop__20261026-145746__s0"
+ ],
+ "pid": 234870,
+ "started": "2026-10-26 15:53:49 CET",
+ "n_rows": {
+  "predictions": 69697833
+ },
+ "outputs": {
+  "predictions": {
+   "path": "cache/runs/simple_b0_pop_reeval__20261026-155346__s0/predictions.parquet",
+   "sha256": "4752d5976b30661e0d3ccdaad8d05fe2726dfa20574035994ec1d6448f4366e8"
+  },
+  "bootstrap": {
+   "path": "results/runs/simple_b0_pop_reeval__20261026-155346__s0/bootstrap.json",
+   "sha256": "c174b63170be62e0c30eb4d6261bfc2230b3a7e6fcb06b4bca1c8d6093af16a6"
+  },
+  "metrics": {
+   "path": "results/runs/simple_b0_pop_reeval__20261026-155346__s0/metrics.json",
+   "sha256": "70c5fa4c8ac0c722b525a6e36d7325739ade3dbee8e126be3b6f298cad37d2ed"
+  },
+  "extra": {
+   "path": "results/runs/simple_b0_pop_reeval__20261026-155346__s0/extra.json",
+   "sha256": "ff5589310895445e07f6966809eeb2078a691761a17dd8e0dc9419d5abd13be3"
+  }
+ },
+ "fallbacks": {
+  "candidate_pairs_not_scored": 0
+ },
+ "reevaluated_from": "simple_b0_pop__20261026-145746__s0",
+ "status": "ok",
+ "error": null,
+ "runtime_s": 168.7,
+ "finished": "2026-10-26 15:56:38 CET"
+}

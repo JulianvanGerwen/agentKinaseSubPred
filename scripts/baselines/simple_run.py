@@ -55,8 +55,8 @@ def best_cantley_arm() -> str:
     return json.loads(f.read_text())["store"]
 
 
-def compute(method: str, cand: pd.DataFrame, data, canary: bool, log: dict) -> tuple[np.ndarray, dict]:
-    cfg = {"method": method, "seed": SEED}
+def compute(method: str, cand: pd.DataFrame, data, canary: bool, log: dict, twc: bool = True) -> tuple:
+    cfg = {"method": method, "seed": SEED, "pssm_tune_without_canaries": twc}
     if method == "b0_prior":
         return B.b0_prior(cand, data), cfg
     if method == "b0_pop":
@@ -74,13 +74,14 @@ def compute(method: str, cand: pd.DataFrame, data, canary: bool, log: dict) -> t
         return B.cantley(cand, st, imputed=True), cfg
     if method in ("b2_pssm", "b2_pssm_ph"):
         cfg.update(prior="family", phospho=method.endswith("_ph"), score="universe percentile")
-        return B.b2_pssm(cand, data, phospho=method.endswith("_ph"), with_canaries=canary, seed=SEED, log=log), cfg
+        return B.b2_pssm(cand, data, phospho=method.endswith("_ph"), with_canaries=canary, seed=SEED, log=log,
+                         tune_without_canaries=twc), cfg
     if method == "b7_lr":
         st = best_cantley_arm()
         cfg.update(cantley_store=st, C=1.0, neg_ratio=50, hard_frac=0.5,
                    features=["logit Cantley best arm", "logit B2 pct (cross-fitted)", "ppi_edge_any",
                              "loc_cos_combined", "+ missing indicators"], kinase_intercept="L2 one-hot, IPW weights")
-        return B.b7_lr(cand, data, st, with_canaries=canary, seed=SEED, log=log), cfg
+        return B.b7_lr(cand, data, st, with_canaries=canary, seed=SEED, log=log, tune_without_canaries=twc), cfg
     raise ValueError(f"unknown method {method}")
 
 
@@ -88,10 +89,14 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--method", required=True)
     ap.add_argument("--canary", action="store_true")
+    ap.add_argument("--tune-with-canaries", action="store_true",
+                    help="(diagnostic) let canary kinases enter the PSSM alpha/beta tuning")
     ap.add_argument("--B", type=int, default=1000)
+    ap.add_argument("--from-run", default=None, help="re-evaluate the saved OOF predictions of this run_id (no refit; "
+                    "used after the canary-v2 mask-table change); fit runtime/config/log are carried over")
     a = ap.parse_args()
     OUT.mkdir(parents=True, exist_ok=True)
-    tag = a.method + ("_canary" if a.canary else "")
+    tag = a.method + ("_canary" if a.canary else "") + ("_tunedwithcanaries" if a.tune_with_canaries else "")
     t_all = time.time()
     data = kev.prepare("cv")
     if a.canary:
@@ -101,12 +106,36 @@ def main():
         todo = [k for k in sorted(data.positives) if not k.startswith("CANARY_")]
         cand = B.candidate_pairs(data, kinases=todo)
     log: dict = {}
-    inputs = [ROOT / "cache" / "labels" / "dev_pairs.parquet", ROOT / "results" / "splits" / "cv_folds.tsv"]
-    with manifest.RunManifest(f"simple_{tag}", config={"method": a.method, "canary": a.canary}, seed=SEED,
+    inputs = [ROOT / "cache" / "labels" / "dev_pairs.parquet", ROOT / "cache" / "labels" / "canary_dev.parquet",
+              ROOT / "results" / "splits" / "cv_folds.tsv"]
+    src = None
+    if a.from_run:
+        src = ROOT / "cache" / "runs" / a.from_run / "predictions.parquet"
+        inputs.append(src)
+    name = f"simple_{tag}" + ("_reeval" if a.from_run else "")
+    with manifest.RunManifest(name, config={"method": a.method, "canary": a.canary, "from_run": a.from_run}, seed=SEED,
                               inputs=inputs, split="cv") as run:
         t0 = time.time()
-        score, cfg = compute(a.method, cand, data, a.canary, log)
-        t_fit = time.time() - t0
+        if src is not None:
+            old = json.loads((ROOT / "results" / "runs" / a.from_run / "extra.json").read_text())
+            P = pd.read_parquet(src)
+            key_c = cand.kinase_idx.values * np.int64(len(data.sites)) + cand.site_idx.values
+            key_p = P.kinase_idx.values.astype(np.int64) * np.int64(len(data.sites)) + P.site_idx.values
+            if not np.isin(key_p, key_c).all():
+                raise ValueError("saved predictions contain pairs outside the current candidate set")
+            pos = np.searchsorted(key_c, key_p)
+            score = np.full(len(cand), np.nan)
+            score[pos] = P.score.values
+            if "score_site" in P:
+                ss = np.full(len(cand), np.nan)
+                ss[pos] = P.score_site.values
+                score = {"score": score, "score_site": ss}
+            cfg, log = old["config"], old["log"]
+            t_fit = old["runtime_fit_predict_s"]
+            run.set("reevaluated_from", a.from_run)
+        else:
+            score, cfg = compute(a.method, cand, data, a.canary, log, not a.tune_with_canaries)
+            t_fit = time.time() - t0
         site_score = None
         if isinstance(score, dict):       # separate within-kinase score and site-centric (M2) score
             score, site_score = score["score"], score["score_site"]
@@ -124,6 +153,8 @@ def main():
         t1 = time.time()
         res = kev.evaluate(preds, data, kinases=todo, missing="worst")
         extra = {"method": a.method, "canary": a.canary, "run_id": run.run_id, "config": cfg,
+                 "reevaluated_from": a.from_run, "canary_version": "v2" if (ROOT / "cache" / "labels" /
+                                                                             "canary_dev_v1.parquet").exists() else "v1",
                  "runtime_fit_predict_s": round(t_fit, 1), "n_candidates": int(len(cand)),
                  "n_scored": int(ok.sum()), "missing": {k: v for k, v in res.missing.items() if k != "per_kinase"},
                  "log": log}
@@ -159,7 +190,7 @@ def main():
         run.save_metrics(res)
         run.save_metrics(extra, "extra")
         (OUT / f"{tag}.json").write_text(json.dumps(extra, indent=1, default=kev._json_default))
-        if not a.canary:
+        if not a.canary and not a.from_run:
             registry_append(f"simple:{a.method}", run.run_id, a.method, cfg, res.endpoints["M1_auroc_hard"],
                             "simple baseline (no tuning)")
         E = res.endpoints if not a.canary else res.canary

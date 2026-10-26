@@ -23,6 +23,7 @@ from ksp import canary, index, labels, splits, store
 ROOT = Path(__file__).resolve().parents[4]
 R3CACHE = ROOT / "cache" / "r3"
 FLANK_MAX = 10
+ESM_CACHES = {"650m": (ROOT / "cache" / "r3", 10), "3b": (ROOT / "cache" / "r3" / "esm3b", 7)}
 AA = "ACDEFGHIKLMNPQRSTVWY"
 AA_IDX = {a: i + 1 for i, a in enumerate(AA)}      # 0 = pad / unknown(X etc. -> 21)
 N_AA_TOK = 22                                       # pad, 20 aa, other
@@ -44,7 +45,9 @@ class SiteInputs:
     info: dict
 
 
-def load_sites() -> SiteInputs:
+def load_sites(esm: str = "650m") -> SiteInputs:
+    """esm: '650m' (cache/r3, +-10) or '3b' (cache/r3/esm3b, +-7; ESM-2 3B per-residue windows)."""
+    R3CACHE, flank_max = ESM_CACHES[esm]
     ws = pd.read_parquet(R3CACHE / "win_sites.parquet").site_id.values
     ids_arr = np.load(R3CACHE / "win_sites.site_ids.npy")
     if not (np.array(list(ws), dtype="U") == ids_arr).all():
@@ -52,7 +55,7 @@ def load_sites() -> SiteInputs:
     rows = np.load(R3CACHE / "win_rows.npy")
     emb = np.load(R3CACHE / "win_emb.npy", mmap_mode="r")
     res = pd.read_parquet(R3CACHE / "win_res.parquet")
-    if len(res) != emb.shape[0] or rows.shape[0] != len(ws):
+    if len(res) != emb.shape[0] or rows.shape[0] != len(ws) or rows.shape[1] != 2 * flank_max + 1:
         raise RuntimeError("R3 window cache shapes inconsistent; rebuild with scripts/models/r3_window_embed.py")
     S = index.load_sites()
     spos = pd.Series(np.arange(len(S)), index=S.site_id.values)
@@ -86,7 +89,8 @@ def load_sites() -> SiteInputs:
         else {}
     return SiteInputs(ws.astype(str), sidx, res_code, acc, cvf, rows, emb, res_aa, res_phos,
                       prow.values.astype(np.int64), np.nan_to_num(np.asarray(pm, np.float32)),
-                      {"n_sites": len(ws), "n_residues": len(res), "embed_meta": meta,
+                      {"n_sites": len(ws), "n_residues": len(res), "embed_meta": meta, "esm": esm,
+                       "flank_max": flank_max,
                        "protein_mean_nan_rows": int(np.isnan(np.asarray(pm)).any(1).sum())})
 
 

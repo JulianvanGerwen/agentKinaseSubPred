@@ -1,0 +1,50 @@
+{
+ "M1_auroc_hard": 0.6501508431469695,
+ "M2_hit5": 0.03992757714546034,
+ "M3_top1_recall": 0.20346088358707975,
+ "M4_auroc_hard_Kany": 0.6552512887950096,
+ "M5_auroc_hard_Kcv": 0.6501508431469695,
+ "sec_auroc_all": 0.8358826090661905,
+ "sec_mrr": 0.039788551816520606,
+ "sec_hit1": 0.011583028961318942,
+ "sec_hit10": 0.07269693150684874,
+ "n_K_primary_evaluated": 203,
+ "n_K_any_evaluated": 339,
+ "n_missing_pairs": 0,
+ "canary": {},
+ "M5_by_train_bin": [
+  {
+   "stratum": "train_bin",
+   "value": "20-99",
+   "n_kinases": 89,
+   "auroc_hard": 0.6536515904383357,
+   "hit5": 0.032482708542110605,
+   "top1_recall": 0.20472093203869077,
+   "auroc_all": 0.8377526579896123,
+   "pauroc01_all": 0.5629359560932913
+  },
+  {
+   "stratum": "train_bin",
+   "value": "5-19",
+   "n_kinases": 83,
+   "auroc_hard": 0.65145101100757,
+   "hit5": 0.03983912378667871,
+   "top1_recall": 0.21532507279318053,
+   "auroc_all": 0.8411242131697978,
+   "pauroc01_all": 0.570739058999783
+  },
+  {
+   "stratum": "train_bin",
+   "value": ">=100",
+   "n_kinases": 31,
+   "auroc_hard": 0.6366192160062782,
+   "hit5": 0.06153838148342809,
+   "top1_recall": 0.1680779153193461,
+   "auroc_all": 0.816479786653805,
+   "pauroc01_all": 0.5505054449754833
+  }
+ ],
+ "n_pred_rows": 104063976,
+ "t_eval_s": 193.4,
+ "run_id": "r3_w7_nce05_round2_lko_pooled__20261026-164850__s0"
+}

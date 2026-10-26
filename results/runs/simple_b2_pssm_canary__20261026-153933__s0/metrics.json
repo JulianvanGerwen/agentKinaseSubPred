@@ -1,0 +1,54 @@
+{
+ "split": "cv",
+ "fold": null,
+ "endpoints": {
+  "K_primary_name": "K_cv",
+  "n_K_primary": 203,
+  "n_K_primary_evaluated": 0,
+  "n_K_any": 339,
+  "n_K_any_evaluated": 0,
+  "M1_auroc_hard": NaN,
+  "M1_n_kinases_defined": 0,
+  "M2_hit5": NaN,
+  "M3_top1_recall": NaN,
+  "M4_auroc_hard_Kany": NaN,
+  "M5_auroc_hard_Kcv": NaN,
+  "sec_hit1": NaN,
+  "sec_hit10": NaN,
+  "sec_mrr": NaN,
+  "sec_fam_hit5": NaN,
+  "sec_pauroc01_all": NaN,
+  "sec_ap_all": NaN,
+  "sec_ap_lift_all": NaN,
+  "sec_auroc_all": NaN,
+  "n_missing_pairs": 0,
+  "n_required_pairs": 2393598
+ },
+ "missing": {
+  "pairs_required": 2393598,
+  "pairs_missing": 0,
+  "per_kinase": {},
+  "site_centric_missing_scores": 2159715
+ },
+ "canary": {
+  "n_neg_canaries": 12,
+  "neg_mean_auroc_hard": 0.5375011523138448,
+  "pos_auroc_hard": 0.8321018860587206,
+  "neg_mean_auroc_all": 0.6540783436231467,
+  "pos_auroc_all": 0.8971459957603393,
+  "neg_pass": true,
+  "pos_pass": false,
+  "thresholds": {
+   "neg_max": 0.57,
+   "pos_min": 0.9
+  }
+ },
+ "data_info": {
+  "n_universe_sites": 277924,
+  "n_positive_pairs": 9184,
+  "n_positive_pairs_real": 8756,
+  "n_ext_pairs": 1218
+ },
+ "strata": [],
+ "pair_strata": []
+}

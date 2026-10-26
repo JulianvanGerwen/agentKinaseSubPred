@@ -63,6 +63,5 @@
    "resample": "clusters"
   }
  ],
- "t_eval_s": 290.0,
- "run_id": "r3_w7_nce05_cv_pooled__20261026-151359__s0"
+ "t_eval_s": 290.0
 }

@@ -1,0 +1,85 @@
+{
+ "M1_auroc_hard": 0.7406998851916826,
+ "M2_hit5": 0.2209449309993189,
+ "M3_top1_recall": 0.2667040552704547,
+ "M4_auroc_hard_Kany": 0.7413080485886303,
+ "M5_auroc_hard_Kcv": 0.7406998851916826,
+ "sec_auroc_all": 0.8628267955948773,
+ "sec_mrr": 0.1831887281945766,
+ "sec_hit1": 0.11779208026680531,
+ "sec_hit10": 0.3165596907055145,
+ "n_K_primary_evaluated": 180,
+ "n_K_any_evaluated": 208,
+ "n_missing_pairs": 0,
+ "canary": {
+  "n_neg_canaries": 12,
+  "neg_mean_auroc_hard": 0.4983549661929259,
+  "pos_auroc_hard": 0.9559991638795987,
+  "neg_mean_auroc_all": 0.7168337160756685,
+  "pos_auroc_all": 0.9824494972207731,
+  "neg_pass": true,
+  "pos_pass": true,
+  "thresholds": {
+   "neg_max": 0.57,
+   "pos_min": 0.9
+  }
+ },
+ "M5_by_train_bin": [
+  {
+   "stratum": "train_bin",
+   "value": "20-99",
+   "n_kinases": 86,
+   "auroc_hard": 0.7553735323743435,
+   "hit5": 0.22013377449423965,
+   "top1_recall": 0.31634036183454795,
+   "auroc_all": 0.8656855338720881,
+   "pauroc01_all": 0.6023055892219651
+  },
+  {
+   "stratum": "train_bin",
+   "value": "5-19",
+   "n_kinases": 63,
+   "auroc_hard": 0.6984149031058201,
+   "hit5": 0.05555555555555555,
+   "top1_recall": 0.2029100529100529,
+   "auroc_all": 0.8494594633676931,
+   "pauroc01_all": 0.5470192823820859
+  },
+  {
+   "stratum": "train_bin",
+   "value": ">=100",
+   "n_kinases": 31,
+   "auroc_hard": 0.7859263436981504,
+   "hit5": 0.5593091281733158,
+   "top1_recall": 0.258649209599271,
+   "auroc_all": 0.8820619710294746,
+   "pauroc01_all": 0.585989314538756
+  }
+ ],
+ "t_eval_s": 37.0,
+ "train_info": {
+  "best_val_auroc_hard": 0.7649586734186102,
+  "ensemble_val_auroc_hard": 0.7836929417729794,
+  "best_step": [
+   200,
+   500,
+   400,
+   300,
+   300
+  ],
+  "distill": {
+   "n_targets": 195663112,
+   "t_load_s": 5.3,
+   "kinases_with_target": 396
+  },
+  "t_train_s": 336.5,
+  "t_score_s": 1.2,
+  "t_total_s": 369.6,
+  "t_targets_s": 7.2,
+  "t_gpu_load_s": 6.1,
+  "peak_gpu_mem_gb": 12.11,
+  "n_trained_kinases": 341,
+  "n_pos_fit": 7364,
+  "n_pred_rows": 21283695
+ }
+}

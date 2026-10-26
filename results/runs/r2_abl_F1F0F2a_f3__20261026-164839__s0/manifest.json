@@ -1,0 +1,90 @@
+{
+ "run_id": "r2_abl_F1F0F2a_f3__20261026-164839__s0",
+ "name": "r2_abl_F1F0F2a_f3",
+ "git_hash": "581e25c4b597e00d27eff31a5ae6a0bc6e2149f1",
+ "config": {
+  "groups": [
+   "F1",
+   "F0",
+   "F2a"
+  ],
+  "ratio": 50,
+  "hard": 0.5,
+  "alpha": 0.5,
+  "objective": "binary",
+  "num_leaves": 127,
+  "learning_rate": 0.03,
+  "min_data_in_leaf": 100,
+  "feature_fraction": 0.8,
+  "bagging_fraction": 0.8,
+  "lambda_l2": 1.0,
+  "max_bin": 255,
+  "max_rounds": 3000,
+  "es_rounds": 100,
+  "refit": true,
+  "clean": false,
+  "comp_know": false,
+  "seed": 0,
+  "variant": "L2",
+  "miss_only": false,
+  "min_rounds": 50,
+  "es_metric": "mixed"
+ },
+ "seed": 0,
+ "split": "cv",
+ "notes": "folds=[3]; ",
+ "inputs": [],
+ "host": "eu-g6-076",
+ "python": "3.12.3",
+ "platform": "Linux-5.15.0-198-generic-x86_64-with-glibc2.39",
+ "argv": [
+  "scripts/models/r2_run.py",
+  "--name",
+  "r2_abl_F1F0F2a_f3",
+  "--folds",
+  "3",
+  "--stage",
+  "ablation",
+  "--no-register",
+  "--set",
+  "num_leaves=127",
+  "learning_rate=0.03",
+  "groups=[\"F1\",\"F0\",\"F2a\"]"
+ ],
+ "pid": 272227,
+ "started": "2026-10-26 16:48:39 CET",
+ "n_rows": {
+  "predictions": 21304940
+ },
+ "outputs": {
+  "predictions": {
+   "path": "cache/runs/r2_abl_F1F0F2a_f3__20261026-164839__s0/predictions.parquet",
+   "sha256": "24fb116af8f749b395d793000d5b7aa8478d6f166fa320488bb13cc7bffb531a"
+  },
+  "metrics": {
+   "path": "results/runs/r2_abl_F1F0F2a_f3__20261026-164839__s0/metrics.json",
+   "sha256": "425cfbf1c1e2f0ea7d2f86507b113b9934097f6b85df3fff424f4cad2c1102e7"
+  }
+ },
+ "fallbacks": {},
+ "fold_logs": {
+  "3": {
+   "n_train_rows": 499086,
+   "n_pos": 9786,
+   "n_val_rows": 99817,
+   "best_iteration": 303,
+   "inner_val_metric": 0.7915078203295791,
+   "t_gather_train_s": 9.2,
+   "t_train_es_s": 22.3,
+   "t_refit_s": 9.4,
+   "n_features": 96,
+   "t_predict_s": 72.3,
+   "n_pred_rows": 21304940,
+   "t_fold_s": 122.2
+  }
+ },
+ "status": "ok",
+ "error": null,
+ "runtime_s": 159.39,
+ "finished": "2026-10-26 16:51:18 CET"
+}

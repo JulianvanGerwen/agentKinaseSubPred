@@ -1,0 +1,364 @@
+{
+ "split": "cv",
+ "fold": 0,
+ "endpoints": {
+  "K_primary_name": "K_cv",
+  "n_K_primary": 203,
+  "n_K_primary_evaluated": 180,
+  "n_K_any": 208,
+  "n_K_any_evaluated": 208,
+  "M1_auroc_hard": 0.7391719795470676,
+  "M1_n_kinases_defined": 180,
+  "M2_hit5": 0.1559163212933469,
+  "M3_top1_recall": 0.23694578332796287,
+  "M4_auroc_hard_Kany": 0.7388140311797863,
+  "M5_auroc_hard_Kcv": 0.7391719795470676,
+  "sec_hit1": 0.06158003947712934,
+  "sec_hit10": 0.2268344725525397,
+  "sec_mrr": 0.11977512054346243,
+  "sec_fam_hit5": 0.31631000313605495,
+  "sec_pauroc01_all": 0.5787864216261495,
+  "sec_ap_all": 0.03334098522747097,
+  "sec_ap_lift_all": 481.9039156191085,
+  "sec_auroc_all": 0.8603543987585955,
+  "n_missing_pairs": 0,
+  "n_required_pairs": 9000398
+ },
+ "missing": {
+  "pairs_required": 9000398,
+  "pairs_missing": 0,
+  "per_kinase": {},
+  "site_centric_missing_scores": 0
+ },
+ "canary": {
+  "n_neg_canaries": 12,
+  "neg_mean_auroc_hard": 0.5162304355535297,
+  "pos_auroc_hard": 0.9917224080267558,
+  "neg_mean_auroc_all": 0.7247638222644247,
+  "pos_auroc_all": 0.9966379449910957,
+  "neg_pass": true,
+  "pos_pass": true,
+  "thresholds": {
+   "neg_max": 0.57,
+   "pos_min": 0.9
+  }
+ },
+ "data_info": {
+  "n_universe_sites": 55632,
+  "n_positive_pairs": 1804,
+  "n_positive_pairs_real": 1724,
+  "n_ext_pairs": 288
+ },
+ "strata": [
+  {
+   "stratum": "manning_group",
+   "value": "AGC",
+   "n_kinases": 37,
+   "auroc_hard": 0.7867729442911814,
+   "hit5": 0.12852511298457245,
+   "top1_recall": 0.24332077102347371,
+   "auroc_all": 0.8787404127349843,
+   "pauroc01_all": 0.5919730495271209
+  },
+  {
+   "stratum": "manning_group",
+   "value": "Atypical",
+   "n_kinases": 6,
+   "auroc_hard": 0.8755542269127045,
+   "hit5": 0.41137820512820517,
+   "top1_recall": 0.36041666666666666,
+   "auroc_all": 0.9247392005983915,
+   "pauroc01_all": 0.6426538400118845
+  },
+  {
+   "stratum": "manning_group",
+   "value": "CAMK",
+   "n_kinases": 26,
+   "auroc_hard": 0.7551037589029761,
+   "hit5": 0.17726478742365026,
+   "top1_recall": 0.27185349488861194,
+   "auroc_all": 0.8664430113101965,
+   "pauroc01_all": 0.590480383437443
+  },
+  {
+   "stratum": "manning_group",
+   "value": "CK1",
+   "n_kinases": 7,
+   "auroc_hard": 0.8282078517367931,
+   "hit5": 0.054761904761904755,
+   "top1_recall": 0.009523809523809523,
+   "auroc_all": 0.8802670741879913,
+   "pauroc01_all": 0.4998168131109365
+  },
+  {
+   "stratum": "manning_group",
+   "value": "CMGC",
+   "n_kinases": 34,
+   "auroc_hard": 0.8201306223483673,
+   "hit5": 0.22252152675853487,
+   "top1_recall": 0.3000464988828436,
+   "auroc_all": 0.9119274236209883,
+   "pauroc01_all": 0.5902622608544964
+  },
+  {
+   "stratum": "manning_group",
+   "value": "Other",
+   "n_kinases": 25,
+   "auroc_hard": 0.764734974026226,
+   "hit5": 0.20292280335111548,
+   "top1_recall": 0.20984615948681284,
+   "auroc_all": 0.8453549765582808,
+   "pauroc01_all": 0.5827201747137054
+  },
+  {
+   "stratum": "manning_group",
+   "value": "STE",
+   "n_kinases": 26,
+   "auroc_hard": 0.7017118613324995,
+   "hit5": 0.04230769230769231,
+   "top1_recall": 0.19230769230769232,
+   "auroc_all": 0.786977175586498,
+   "pauroc01_all": 0.5650036350084895
+  },
+  {
+   "stratum": "manning_group",
+   "value": "TK",
+   "n_kinases": 38,
+   "auroc_hard": 0.5896504517468327,
+   "hit5": 0.133602270746168,
+   "top1_recall": 0.1798845610931721,
+   "auroc_all": 0.8388686000843895,
+   "pauroc01_all": 0.5557890128874124
+  },
+  {
+   "stratum": "manning_group",
+   "value": "TKL",
+   "n_kinases": 9,
+   "auroc_hard": 0.6916889355539944,
+   "hit5": 0.022222222222222223,
+   "top1_recall": 0.2296296296296296,
+   "auroc_all": 0.7770995167500011,
+   "pauroc01_all": 0.5508574295620607
+  },
+  {
+   "stratum": "residue_class",
+   "value": "ST",
+   "n_kinases": 166,
+   "auroc_hard": 0.7731942894944577,
+   "hit5": 0.15454649524767908,
+   "top1_recall": 0.24285920287646254,
+   "auroc_all": 0.8616325178750092,
+   "pauroc01_all": 0.5822727326823636
+  },
+  {
+   "stratum": "residue_class",
+   "value": "STY",
+   "n_kinases": 4,
+   "auroc_hard": 0.7290873157340004,
+   "hit5": 0.125,
+   "top1_recall": 0.125,
+   "auroc_all": 0.828732338495977,
+   "pauroc01_all": 0.5593981304068251
+  },
+  {
+   "stratum": "residue_class",
+   "value": "Y",
+   "n_kinases": 38,
+   "auroc_hard": 0.5896504517468327,
+   "hit5": 0.133602270746168,
+   "top1_recall": 0.1798845610931721,
+   "auroc_all": 0.8388686000843895,
+   "pauroc01_all": 0.5557890128874124
+  },
+  {
+   "stratum": "train_bin",
+   "value": "1-4",
+   "n_kinases": 16,
+   "auroc_hard": 0.6595524479020469,
+   "hit5": 0.05208333333333333,
+   "top1_recall": 0.125,
+   "auroc_all": 0.7677298541809969,
+   "pauroc01_all": 0.5370337726076199
+  },
+  {
+   "stratum": "train_bin",
+   "value": "20-99",
+   "n_kinases": 87,
+   "auroc_hard": 0.7493710485429255,
+   "hit5": 0.14883089452054973,
+   "top1_recall": 0.2870459680804509,
+   "auroc_all": 0.8634750931333661,
+   "pauroc01_all": 0.5957041134509033
+  },
+  {
+   "stratum": "train_bin",
+   "value": "5-19",
+   "n_kinases": 74,
+   "auroc_hard": 0.7263793587818236,
+   "hit5": 0.09279279279279279,
+   "top1_recall": 0.16846846846846847,
+   "auroc_all": 0.8569444134620913,
+   "pauroc01_all": 0.5599089248645641
+  },
+  {
+   "stratum": "train_bin",
+   "value": ">=100",
+   "n_kinases": 31,
+   "auroc_hard": 0.7797782434152699,
+   "hit5": 0.3413973121348802,
+   "top1_recall": 0.2648572615924976,
+   "auroc_all": 0.8839689277015695,
+   "pauroc01_all": 0.5858964504739704
+  },
+  {
+   "stratum": "priming",
+   "value": "False",
+   "n_kinases": 199,
+   "auroc_hard": 0.7351612176147655,
+   "hit5": 0.14318078216256788,
+   "top1_recall": 0.23000489237016883,
+   "auroc_all": 0.8556557333754601,
+   "pauroc01_all": 0.5771544126352808
+  },
+  {
+   "stratum": "priming",
+   "value": "True",
+   "n_kinases": 9,
+   "auroc_hard": 0.819581797784144,
+   "hit5": 0.3042920943464556,
+   "top1_recall": 0.20880749081885724,
+   "auroc_all": 0.8830492425250748,
+   "pauroc01_all": 0.573457835800052
+  },
+  {
+   "stratum": "pikk",
+   "value": "False",
+   "n_kinases": 204,
+   "auroc_hard": 0.7361230192174112,
+   "hit5": 0.14263072844133928,
+   "top1_recall": 0.22461310947238552,
+   "auroc_all": 0.8553084629633863,
+   "pauroc01_all": 0.5750556860253867
+  },
+  {
+   "stratum": "pikk",
+   "value": "True",
+   "n_kinases": 4,
+   "auroc_hard": 0.8760556412609304,
+   "hit5": 0.5337339743589744,
+   "top1_recall": 0.45729166666666665,
+   "auroc_all": 0.9350019199778596,
+   "pauroc01_all": 0.6758721718606083
+  }
+ ],
+ "pair_strata": [
+  {
+   "stratum": "evidence=both",
+   "kinase_set": "K_primary",
+   "n_kinases": 122,
+   "n_pos": 591,
+   "auroc_hard": 0.7324293864890937,
+   "auroc_all": 0.8526497248615383,
+   "top1_recall": 0.2520428839078594
+  },
+  {
+   "stratum": "evidence=in_vitro_only",
+   "kinase_set": "K_primary",
+   "n_kinases": 109,
+   "n_pos": 694,
+   "auroc_hard": 0.785955705932405,
+   "auroc_all": 0.885409963886339,
+   "top1_recall": 0.2934505927671097
+  },
+  {
+   "stratum": "evidence=in_vivo_only",
+   "kinase_set": "K_primary",
+   "n_kinases": 97,
+   "n_pos": 399,
+   "auroc_hard": 0.7284648216544225,
+   "auroc_all": 0.8559935017831307,
+   "top1_recall": 0.23310856940129865
+  },
+  {
+   "stratum": "external_curated",
+   "kinase_set": "K_primary",
+   "n_kinases": 64,
+   "n_pos": 230,
+   "auroc_hard": 0.7202575514992209,
+   "auroc_all": 0.8457437393732518,
+   "top1_recall": 0.2210732946238703
+  },
+  {
+   "stratum": "temporal=new_since_2021",
+   "kinase_set": "K_primary",
+   "n_kinases": 74,
+   "n_pos": 180,
+   "auroc_hard": 0.701536624700852,
+   "auroc_all": 0.8391667807940539,
+   "top1_recall": 0.13088803088803092
+  },
+  {
+   "stratum": "temporal=pre_2021",
+   "kinase_set": "K_primary",
+   "n_kinases": 161,
+   "n_pos": 1504,
+   "auroc_hard": 0.7518124704770672,
+   "auroc_all": 0.8667344658070356,
+   "top1_recall": 0.26511512754993843
+  },
+  {
+   "stratum": "evidence=both",
+   "kinase_set": "K_any",
+   "n_kinases": 133,
+   "n_pos": 605,
+   "auroc_hard": 0.7277000444679289,
+   "auroc_all": 0.8454884343610375,
+   "top1_recall": 0.24372856017613165
+  },
+  {
+   "stratum": "evidence=in_vitro_only",
+   "kinase_set": "K_any",
+   "n_kinases": 119,
+   "n_pos": 711,
+   "auroc_hard": 0.7853951191612893,
+   "auroc_all": 0.8846638138732645,
+   "top1_recall": 0.28839872222645624
+  },
+  {
+   "stratum": "evidence=in_vivo_only",
+   "kinase_set": "K_any",
+   "n_kinases": 105,
+   "n_pos": 408,
+   "auroc_hard": 0.7329693451651923,
+   "auroc_all": 0.858520006743383,
+   "top1_recall": 0.22487172601834254
+  },
+  {
+   "stratum": "external_curated",
+   "kinase_set": "K_any",
+   "n_kinases": 69,
+   "n_pos": 253,
+   "auroc_hard": 0.7283558109383744,
+   "auroc_all": 0.8528133189389921,
+   "top1_recall": 0.2356493038701277
+  },
+  {
+   "stratum": "temporal=new_since_2021",
+   "kinase_set": "K_any",
+   "n_kinases": 85,
+   "n_pos": 194,
+   "auroc_hard": 0.6961766799775896,
+   "auroc_all": 0.8302068727281052,
+   "top1_recall": 0.12571428571428572
+  },
+  {
+   "stratum": "temporal=pre_2021",
+   "kinase_set": "K_any",
+   "n_kinases": 179,
+   "n_pos": 1530,
+   "auroc_hard": 0.7554461090604638,
+   "auroc_all": 0.8676934903792898,
+   "top1_recall": 0.26266407189314767
+  }
+ ]
+}

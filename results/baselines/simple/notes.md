@@ -49,3 +49,25 @@
   unaffected.
 - Runtime = wall-clock on <=8 cores while the node was shared (load ~20-30), so it is indicative only. "fit+predict"
   covers all 5 folds over ~71M candidates. "total" adds `ksp.eval` evaluation, bootstrap and I/O.
+- **Canary v2 (installed 15:34) and re-evaluation.** The harness also changed after the first runs (`src/ksp/eval.py` modified 15:31). All main-run metrics in this file were *re-evaluated* from the
+  saved OOF predictions with `prepare('cv')` under canary v2 (runs `simple_<m>_reeval__*`, `--from-run`). The
+  first-pass numbers, from the earlier harness, were M1 about 0.002 higher for B0/B1/B2. The B7 run already used the
+  15:31 harness and did not change on re-evaluation, so the shift comes from the eval.py change, not from canary v2.
+  Main models were not refitted, because their training never used canaries.
+- **Canary findings (B2) - two pipeline hazards found with canary v2:**
+  1. `ksp.canary` gives every canary Manning group `CANARY`. The learned-PSSM hierarchical prior therefore pools the
+     12 negative canaries' windows (v2: real labelled sites) into every canary's prior. With alpha = 128-256, that
+     generic "labelled-site" prior dominates the positive canary's ~88 training sites, and its E-hard AUROC falls to
+     0.83-0.85 (fail). E-hard negatives are labelled sites, so they look labelled-site-like. Fix used for the official
+     canary runs: canary rows get an empty group/family (no pooling; prior = background), via
+     `ksp.baselines.simple.pssm_kinase_table`. Positive canary is then 0.953.
+  2. Shared hyperparameters: `fit_pssm` tunes alpha/beta by macro log-likelihood over all kinases, including canaries.
+     Official canary runs tune on real kinases only (`_fit_pssm_canary_safe`) and then fit the canaries with those
+     values fixed. Here it changed alpha/beta on 1 of 5 folds (fold 1: 256/256 with canaries vs 128/1024 without), and the effect on the positive canary was +0.017 E-hard; the rule
+     matters.
+
+  **Recommendation (motif agent / R2 / R3):** never let canary rows share group/family priors or enter shared
+  hyperparameter tuning. Ideally `ksp.canary` should give canaries unique `manning_group` values. The diagnostic
+  variants are listed in the canary table.
+- Negative canaries: E-all AUROC is 0.58-0.67. This is expected under v2 (generic labelled-site-likeness) and is not
+  gated. E-hard is 0.53-0.55, which passes the 0.57 gate but sits above 0.5.

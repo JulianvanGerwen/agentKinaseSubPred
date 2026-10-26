@@ -1,0 +1,88 @@
+{
+ "run_id": "r3_w7_nce05_cpt_aux_cv_pooled__20261026-162205__s0",
+ "name": "r3_w7_nce05_cpt_aux_cv_pooled",
+ "git_hash": "581e25c4b597e00d27eff31a5ae6a0bc6e2149f1",
+ "config": {
+  "config": {
+   "flank": 7,
+   "lambda_nce": 0.5,
+   "pretrain_steps": 3000,
+   "distill_aux": 0.2
+  },
+  "source_runs": [
+   "r3_reg1x5_w7_nce05_cpt_aux_fold0__20261026-155231__s0",
+   "r3_reg1x5_w7_nce05_cpt_aux_fold1__20261026-160057__s0",
+   "r3_reg1x5_w7_nce05_cpt_aux_fold2__20261026-160712__s0",
+   "r3_reg1x5_w7_nce05_cpt_aux_fold3__20261026-161523__s0",
+   "r3_reg1x5_w7_nce05_cpt_aux_fold4__20261026-161009__s0"
+  ]
+ },
+ "seed": 0,
+ "split": "cv",
+ "notes": "",
+ "inputs": [
+  {
+   "path": "/workspace/cache/runs/r3_reg1x5_w7_nce05_cpt_aux_fold0__20261026-155231__s0/predictions.parquet",
+   "type": "file",
+   "bytes": 56089675,
+   "sha256": "8fc5dcc5436a669d26417028dbd2412d29c220a370efc7ccc80ec83c9a2c2098"
+  },
+  {
+   "path": "/workspace/cache/runs/r3_reg1x5_w7_nce05_cpt_aux_fold1__20261026-160057__s0/predictions.parquet",
+   "type": "file",
+   "bytes": 55835021,
+   "sha256": "53e445775b09a80d99d1bf6b48499a910f5213c6fe3aeb4ab8fb6d67a6f357fe"
+  },
+  {
+   "path": "/workspace/cache/runs/r3_reg1x5_w7_nce05_cpt_aux_fold2__20261026-160712__s0/predictions.parquet",
+   "type": "file",
+   "bytes": 55945515,
+   "sha256": "82f6fa646531cc208f7d2eb14688708b6d4a1abd2567a9c1e053d94c7bceaba2"
+  },
+  {
+   "path": "/workspace/cache/runs/r3_reg1x5_w7_nce05_cpt_aux_fold3__20261026-161523__s0/predictions.parquet",
+   "type": "file",
+   "bytes": 56099786,
+   "sha256": "f480193cdf9521da3c21dba229f197f01d7d821a108b86e8e28a0f99be10f5b4"
+  },
+  {
+   "path": "/workspace/cache/runs/r3_reg1x5_w7_nce05_cpt_aux_fold4__20261026-161009__s0/predictions.parquet",
+   "type": "file",
+   "bytes": 58456967,
+   "sha256": "affde51e1431ac47e1fafc3ee4456ec3577ac18dc4fe16911114f9c741d20963"
+  }
+ ],
+ "host": "eu-g6-076",
+ "python": "3.12.3",
+ "platform": "Linux-5.15.0-198-generic-x86_64-with-glibc2.39",
+ "argv": [
+  "scripts/models/r3_cv.py",
+  "pool",
+  "--config",
+  "w7_nce05_cpt_aux",
+  "--runs",
+  "r3_reg1x5_w7_nce05_cpt_aux_fold0__20261026-155231__s0",
+  "r3_reg1x5_w7_nce05_cpt_aux_fold1__20261026-160057__s0",
+  "r3_reg1x5_w7_nce05_cpt_aux_fold2__20261026-160712__s0",
+  "r3_reg1x5_w7_nce05_cpt_aux_fold3__20261026-161523__s0",
+  "r3_reg1x5_w7_nce05_cpt_aux_fold4__20261026-161009__s0"
+ ],
+ "pid": 257975,
+ "started": "2026-10-26 16:22:06 CET",
+ "n_rows": {},
+ "outputs": {
+  "metrics": {
+   "path": "results/runs/r3_w7_nce05_cpt_aux_cv_pooled__20261026-162205__s0/metrics.json",
+   "sha256": "e45a1f5c25ffebadaaa24daff90130ffe088ba6321f1faa008a1f8bf741db3e1"
+  },
+  "summary": {
+   "path": "results/runs/r3_w7_nce05_cpt_aux_cv_pooled__20261026-162205__s0/summary.json",
+   "sha256": "70b51e6a5dd4dc07777eddd15b7e6fa61fe0b17f863cce863390453384065e70"
+  }
+ },
+ "fallbacks": {},
+ "status": "ok",
+ "error": null,
+ "runtime_s": 255.79,
+ "finished": "2026-10-26 16:26:21 CET"
+}

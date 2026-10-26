@@ -1,0 +1,6 @@
+15:56:41 r2_g2_main fold 0 -> r2_g2_main_f0__20261026-155427__s0: [r2_g2_main_f0] M1/M5=0.7373 M2=0.1447 M3=0.2304 M4=0.7388 canary={'n_neg_canaries': 12, 'neg_mean_auroc_hard': 0.556558
+16:01:28 r2_g2_main fold 1 -> r2_g2_main_f1__20261026-155642__s0: [r2_g2_main_f1] M1/M5=0.7560 M2=0.1164 M3=0.2984 M4=0.7609 canary={'n_neg_canaries': 11, 'neg_mean_auroc_hard': 0.582388
+16:07:24 r2_g2_main fold 2 -> r2_g2_main_f2__20261026-160129__s0: [r2_g2_main_f2] M1/M5=0.7647 M2=0.1340 M3=0.2277 M4=0.7500 canary={'n_neg_canaries': 11, 'neg_mean_auroc_hard': 0.439158
+16:16:37 r2_g2_main fold 3 -> r2_g2_main_f3__20261026-160725__s0: [r2_g2_main_f3] M1/M5=0.7596 M2=0.2182 M3=0.3232 M4=0.7514 canary={'n_neg_canaries': 10, 'neg_mean_auroc_hard': 0.600567
+16:22:47 r2_g2_main fold 4 -> r2_g2_main_f4__20261026-161638__s0: [r2_g2_main_f4] M1/M5=0.7365 M2=0.1226 M3=0.2371 M4=0.7297 canary={'n_neg_canaries': 10, 'neg_mean_auroc_hard': 0.615091
+16:27:26 r2_g2_main pooled: [r2_g2_main_cv5] M1/M5=0.7456 M2=0.1457 M3=0.2667 M4=0.7516 canary={'n_neg_canaries': 12, 'neg_mean_auroc_hard': 0.5295042971376158, 'pos_auroc_hard': 0.9971194215798532, 'neg_mean_auroc_all': 0.6992182742384871, 'pos_auroc_all': 0.9986753527535729, 'neg_pass': True, 'pos_pass': True, 'thresholds': {'neg_max': 0.57, 'pos_min': 0.9}}

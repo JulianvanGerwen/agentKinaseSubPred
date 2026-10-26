@@ -27,22 +27,41 @@ from ksp.models.r3.model import R3Net, bce_masked, infonce_filtered
 DEFAULT = dict(flank=7, lambda_nce=0.5, alpha=0.5, p_lab=0.5, batch=1024, lr=1e-3, wd=0.01, max_steps=6000,
                eval_every=200, patience=6, desc_dropout=0.2, d_site=192, h=128, d_kin=256, n_layers=2,
                dropout=0.1, esm_dropout=0.1, use_esm=True, use_prot=True, use_phos=True, valid_frac=0.2, seed=0, variant="L2", warmup=200,
-               n_seeds=1)
+               n_seeds=1, esm="650m", pretrain_steps=0, distill_aux=0.0, pretrain_lr=1e-3)
 
 _CACHE: dict = {}
 
 
-def inputs():
-    if "si" not in _CACHE:
-        _CACHE["si"] = r3data.load_sites()
+def inputs(esm: str = "650m"):
+    if _CACHE.get("esm") != esm:
+        _CACHE["si"] = r3data.load_sites(esm)
+        _CACHE["esm"] = esm
+    if "ki" not in _CACHE:
         _CACHE["ki"] = r3data.load_kinases()
         _CACHE["par"] = labels.paralog_sets()
     return _CACHE["si"], _CACHE["ki"], _CACHE["par"]
 
 
+def cantley_targets(si, ki, variants=("unprimed", "primed_soft")) -> np.ndarray:
+    """Label-free distillation targets: Cantley universe percentile / 100 (own atlas matrix only; NaN where the
+    kinase has no own in-class matrix; canaries NaN) for every R3 site x kinase. float16 (N, K, n_variants)."""
+    from ksp import store
+    nR = int((~ki.is_canary).sum())
+    out = np.full((len(si.site_idx), len(ki.kinases), len(variants)), np.nan, np.float16)
+    order = np.argsort(si.site_idx)
+    cols = si.site_idx[order]
+    for j, v in enumerate(variants):
+        M, _ = store.load_matrix(f"motif/cantley_{v}_pct_universe")
+        X = np.asarray(M[:, cols], np.float32) / 100.0              # (503, N) in sorted-site order
+        out[order, :nR, j] = X.T.astype(np.float16)
+    return out
+
+
 class GPUData:
     def __init__(self, si, ki, T, par, flank, dev, fam_keep, grp_keep):
-        c0 = r3data.FLANK_MAX - flank
+        c0 = si.info["flank_max"] - flank
+        if c0 < 0:
+            raise ValueError(f"flank {flank} > cached window flank {si.info['flank_max']}")
         self.dev = dev
         self.flank = flank
         t0 = time.time()
@@ -122,7 +141,7 @@ def run(cfg: dict, fold: int | None = None, lko_fold: int | None = None, device:
     """Train one R3 model; return (predictions DataFrame[kinase_idx, site_idx, kinase_acc, site_id, score], info)."""
     cfg = {**DEFAULT, **cfg}
     t_start = time.time()
-    si, ki, par = inputs()
+    si, ki, par = inputs(cfg["esm"])
     K = len(ki.kinases)
     if (fold is None) == (lko_fold is None):
         raise ValueError("give exactly one of fold / lko_fold")
@@ -165,13 +184,21 @@ def run(cfg: dict, fold: int | None = None, lko_fold: int | None = None, device:
     grp_keep[ki.group[trained]] = True
     G = GPUData(si, ki, T, par, cfg["flank"], device, fam_keep, grp_keep)
     info["t_gpu_load_s"] = round(G.load_s, 1)
+    if cfg["pretrain_steps"] > 0 or cfg["distill_aux"] > 0:
+        t0 = time.time()
+        D = cantley_targets(si, ki)
+        G.D = torch.from_numpy(D).to(device)                 # (N, K, 2) fp16, NaN = no target
+        info["distill"] = {"n_targets": int(np.isfinite(D).sum()), "t_load_s": round(time.time() - t0, 1),
+                           "kinases_with_target": int(np.isfinite(D[:, :, 0]).any(0).sum())}
+        del D
     wk_t = torch.as_tensor(wk, dtype=torch.float32, device=device)
     eval_k = [k for k in range(K) if trained[k] and not ki.is_canary[k]]
     seeds = [cfg["seed"] + i for i in range(cfg["n_seeds"])]
     models, per_seed = [], []
     t_train = time.time()
     for sd in seeds:
-        model, si_info = _train_one(cfg, sd, si, G, wk_t, lab_rows, fit_rows, val_rows, eval_k, device, log)
+        model, si_info = _train_one(cfg, sd, si, G, wk_t, lab_rows, fit_rows, val_rows, eval_k, device, log,
+                                    pre_rows=tr_idx)
         models.append(model)
         per_seed.append(si_info)
     info.update(seeds=seeds, per_seed=per_seed, history=[h for p in per_seed for h in p["history"]],
@@ -205,7 +232,20 @@ def run(cfg: dict, fold: int | None = None, lko_fold: int | None = None, device:
     return preds, info, models
 
 
-def _train_one(cfg, seed, si, G, wk_t, lab_rows, fit_rows, val_rows, eval_k, device, log):
+def distill_loss(model, G, idx_t):
+    """Soft-label BCE between the distillation head and Cantley universe percentiles (both variants) on all
+    (site, kinase) entries of the batch that have an own-matrix target. Residue class is implied by the target
+    (NaN outside the kinase's class)."""
+    with torch.autocast("cuda", dtype=torch.bfloat16):
+        Ld = model.distill(G.site_batch(idx_t), G.kin_inputs()).float()       # (B, K, 2)
+    Y = G.D[idx_t].float()
+    ok = torch.isfinite(Y)
+    Y = torch.nan_to_num(Y, 0.0)
+    l = torch.nn.functional.binary_cross_entropy_with_logits(Ld, Y, reduction="none")
+    return (l * ok).sum() / ok.sum().clamp(min=1)
+
+
+def _train_one(cfg, seed, si, G, wk_t, lab_rows, fit_rows, val_rows, eval_k, device, log, pre_rows=None):
     rng = np.random.default_rng(seed)
     torch.manual_seed(seed)
     ki = _CACHE["ki"]
@@ -213,13 +253,36 @@ def _train_one(cfg, seed, si, G, wk_t, lab_rows, fit_rows, val_rows, eval_k, dev
                   d_site=cfg["d_site"], h=cfg["h"], d_kin=cfg["d_kin"], n_layers=cfg["n_layers"],
                   desc_dropout=cfg["desc_dropout"], dropout=cfg["dropout"],
                   esm_dropout=cfg["esm_dropout"], use_esm=cfg["use_esm"], use_prot=cfg["use_prot"],
-                  use_phos=cfg["use_phos"]).to(device)
-    opt = torch.optim.AdamW(model.parameters(), lr=cfg["lr"], weight_decay=cfg["wd"])
-    sched = torch.optim.lr_scheduler.LambdaLR(opt, lambda s: min(1.0, (s + 1) / cfg["warmup"]))
+                  use_phos=cfg["use_phos"], d_prot=si.prot_mean.shape[1],
+                  d_kin_esm=G.k_esm.shape[1] - 1).to(device)
     B, nl = cfg["batch"], int(cfg["batch"] * cfg["p_lab"])
-    best, best_state, best_step, bad = -1.0, None, 0, 0
     hist = []
     t_train = time.time()
+    pre_info = {}
+    if cfg["pretrain_steps"] > 0:
+        # Stage 1: Cantley-atlas distillation on TRAINING-fold U_ms sites only (label-free targets)
+        opt = torch.optim.AdamW(model.parameters(), lr=cfg["pretrain_lr"], weight_decay=cfg["wd"])
+        n = cfg["pretrain_steps"]
+        sched = torch.optim.lr_scheduler.LambdaLR(
+            opt, lambda s: min(1.0, (s + 1) / cfg["warmup"]) * max(0.05, 1 - s / n))
+        for step in range(1, n + 1):
+            model.train()
+            idx_t = torch.as_tensor(rng.choice(pre_rows, B), device=device)
+            ld = distill_loss(model, G, idx_t)
+            opt.zero_grad(set_to_none=True)
+            ld.backward()
+            torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
+            opt.step()
+            sched.step()
+            if step % 500 == 0 or step == n:
+                log(f"seed {seed} pretrain step {step} distill_bce {float(ld):.4f} {time.time() - t_train:.0f}s")
+        pre_info = {"pretrain_final_distill_bce": float(ld), "pretrain_s": round(time.time() - t_train, 1)}
+        if eval_k:
+            m0, _ = inner_val_metric(model, G, val_rows, eval_k)
+            pre_info["val_auroc_hard_after_pretrain"] = m0      # main head untrained here; diagnostic only
+    opt = torch.optim.AdamW(model.parameters(), lr=cfg["lr"], weight_decay=cfg["wd"])
+    sched = torch.optim.lr_scheduler.LambdaLR(opt, lambda s: min(1.0, (s + 1) / cfg["warmup"]))
+    best, best_state, best_step, bad = -1.0, None, 0, 0
     for step in range(1, cfg["max_steps"] + 1):
         model.train()
         idx = np.r_[rng.choice(lab_rows, nl), rng.choice(fit_rows, B - nl)]
@@ -233,6 +296,8 @@ def _train_one(cfg, seed, si, G, wk_t, lab_rows, fit_rows, val_rows, eval_k, dev
         if cfg["lambda_nce"] > 0:
             loss_n = infonce_filtered(L, Tb, G.par, wk_t)
             loss = loss + cfg["lambda_nce"] * loss_n
+        if cfg["distill_aux"] > 0:
+            loss = loss + cfg["distill_aux"] * distill_loss(model, G, idx_t)
         opt.zero_grad(set_to_none=True)
         loss.backward()
         torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
@@ -254,7 +319,7 @@ def _train_one(cfg, seed, si, G, wk_t, lab_rows, fit_rows, val_rows, eval_k, dev
     model.load_state_dict(best_state)
     model.eval()
     return model, {"seed": seed, "best_val_auroc_hard": best, "best_step": best_step, "history": hist,
-                   "t_train_s": round(time.time() - t_train, 1)}
+                   "t_train_s": round(time.time() - t_train, 1), **pre_info}
 
 
 @torch.no_grad()

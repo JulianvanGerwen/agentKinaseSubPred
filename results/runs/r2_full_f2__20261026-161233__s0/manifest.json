@@ -1,0 +1,96 @@
+{
+ "run_id": "r2_full_f2__20261026-161233__s0",
+ "name": "r2_full_f2",
+ "git_hash": "581e25c4b597e00d27eff31a5ae6a0bc6e2149f1",
+ "config": {
+  "groups": [
+   "F1",
+   "F0",
+   "F2a",
+   "F3",
+   "F4",
+   "F6a",
+   "F6b",
+   "F6c",
+   "F5",
+   "F7"
+  ],
+  "ratio": 50,
+  "hard": 0.5,
+  "alpha": 0.5,
+  "objective": "binary",
+  "num_leaves": 127,
+  "learning_rate": 0.03,
+  "min_data_in_leaf": 100,
+  "feature_fraction": 0.8,
+  "bagging_fraction": 0.8,
+  "lambda_l2": 1.0,
+  "max_bin": 255,
+  "max_rounds": 3000,
+  "es_rounds": 100,
+  "refit": true,
+  "clean": false,
+  "comp_know": false,
+  "seed": 0,
+  "variant": "L2",
+  "miss_only": false,
+  "min_rounds": 50,
+  "es_metric": "mixed"
+ },
+ "seed": 0,
+ "split": "cv",
+ "notes": "folds=[2]; ",
+ "inputs": [],
+ "host": "eu-g6-076",
+ "python": "3.12.3",
+ "platform": "Linux-5.15.0-198-generic-x86_64-with-glibc2.39",
+ "argv": [
+  "scripts/models/r2_run.py",
+  "--name",
+  "r2_full_f2",
+  "--folds",
+  "2",
+  "--stage",
+  "final_s0",
+  "--no-register",
+  "--set",
+  "num_leaves=127",
+  "learning_rate=0.03"
+ ],
+ "pid": 249812,
+ "started": "2026-10-26 16:12:33 CET",
+ "n_rows": {
+  "predictions": 21369067
+ },
+ "outputs": {
+  "predictions": {
+   "path": "cache/runs/r2_full_f2__20261026-161233__s0/predictions.parquet",
+   "sha256": "45f25a766b3a2b77427617bd79ec437ca1fc67a28d8d2efb4df82a5a7028a5f5"
+  },
+  "metrics": {
+   "path": "results/runs/r2_full_f2__20261026-161233__s0/metrics.json",
+   "sha256": "788837a8c0c45392c4d9f46f3566bc858c05121263b6155ce4733c1c831b3056"
+  }
+ },
+ "fallbacks": {},
+ "fold_logs": {
+  "2": {
+   "n_train_rows": 498474,
+   "n_pos": 9774,
+   "n_val_rows": 99694,
+   "best_iteration": 469,
+   "inner_val_metric": 0.8495861047277137,
+   "t_gather_train_s": 22.7,
+   "t_train_es_s": 46.5,
+   "t_refit_s": 34.1,
+   "n_features": 172,
+   "t_predict_s": 123.6,
+   "n_pred_rows": 21369067,
+   "t_fold_s": 236.7
+  }
+ },
+ "status": "ok",
+ "error": null,
+ "runtime_s": 275.85,
+ "finished": "2026-10-26 16:17:09 CET"
+}

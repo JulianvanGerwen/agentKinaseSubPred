@@ -1,0 +1,189 @@
+{
+ "method": "b2_pssm_ph",
+ "canary": {
+  "n_neg_canaries": 12,
+  "neg_mean_auroc_hard": 0.5419264437716879,
+  "pos_auroc_hard": 0.7886996708939155,
+  "neg_mean_auroc_all": 0.6688465279473292,
+  "pos_auroc_all": 0.8739993222769662,
+  "neg_pass": true,
+  "pos_pass": false,
+  "thresholds": {
+   "neg_max": 0.57,
+   "pos_min": 0.9
+  }
+ },
+ "run_id": "simple_b2_pssm_ph_canary__20261026-154014__s0",
+ "config": {
+  "method": "b2_pssm_ph",
+  "seed": 0,
+  "prior": "family",
+  "phospho": true,
+  "score": "universe percentile"
+ },
+ "reevaluated_from": null,
+ "canary_version": "v2",
+ "runtime_fit_predict_s": 19.8,
+ "n_candidates": 2393598,
+ "n_scored": 2393598,
+ "missing": {
+  "pairs_required": 2393598,
+  "pairs_missing": 0,
+  "site_centric_missing_scores": 2159715
+ },
+ "log": {
+  "folds": {
+   "0": {
+    "alpha": 256.0,
+    "beta": 1024.0,
+    "n_pairs": 9781,
+    "s": 4.6
+   },
+   "1": {
+    "alpha": 256.0,
+    "beta": 1024.0,
+    "n_pairs": 9768,
+    "s": 3.9
+   },
+   "2": {
+    "alpha": 128.0,
+    "beta": 1024.0,
+    "n_pairs": 9774,
+    "s": 3.5
+   },
+   "3": {
+    "alpha": 256.0,
+    "beta": 1024.0,
+    "n_pairs": 9786,
+    "s": 3.8
+   },
+   "4": {
+    "alpha": 256.0,
+    "beta": 1024.0,
+    "n_pairs": 9783,
+    "s": 3.8
+   }
+  }
+ },
+ "canary_per_kinase": [
+  {
+   "kinase_acc": "CANARY_NEG_00",
+   "n_pos": 30,
+   "n_neg_hard": 5085,
+   "n_neg_all": 241988,
+   "auroc_hard": 0.5447099311701081,
+   "auroc_all": 0.6787476376239042,
+   "top1_recall": 0.0
+  },
+  {
+   "kinase_acc": "CANARY_NEG_01",
+   "n_pos": 48,
+   "n_neg_hard": 5067,
+   "n_neg_all": 241970,
+   "auroc_hard": 0.5783274949016513,
+   "auroc_all": 0.711589590996129,
+   "top1_recall": 0.041666666666666664
+  },
+  {
+   "kinase_acc": "CANARY_NEG_02",
+   "n_pos": 19,
+   "n_neg_hard": 5096,
+   "n_neg_all": 241999,
+   "auroc_hard": 0.49454680657688177,
+   "auroc_all": 0.6088228724738097,
+   "top1_recall": 0.10526315789473684
+  },
+  {
+   "kinase_acc": "CANARY_NEG_03",
+   "n_pos": 33,
+   "n_neg_hard": 5082,
+   "n_neg_all": 241985,
+   "auroc_hard": 0.579356135141259,
+   "auroc_all": 0.7169311771766469,
+   "top1_recall": 0.0
+  },
+  {
+   "kinase_acc": "CANARY_NEG_04",
+   "n_pos": 18,
+   "n_neg_hard": 5097,
+   "n_neg_all": 242000,
+   "auroc_hard": 0.45740958733895754,
+   "auroc_all": 0.5748668503213957,
+   "top1_recall": 0.1111111111111111
+  },
+  {
+   "kinase_acc": "CANARY_NEG_05",
+   "n_pos": 70,
+   "n_neg_hard": 5045,
+   "n_neg_all": 241948,
+   "auroc_hard": 0.507317004105904,
+   "auroc_all": 0.6276689914479853,
+   "top1_recall": 0.02857142857142857
+  },
+  {
+   "kinase_acc": "CANARY_NEG_06",
+   "n_pos": 11,
+   "n_neg_hard": 799,
+   "n_neg_all": 35895,
+   "auroc_hard": 0.5826032540675845,
+   "auroc_all": 0.7051893781103977,
+   "top1_recall": 0.09090909090909091
+  },
+  {
+   "kinase_acc": "CANARY_NEG_07",
+   "n_pos": 23,
+   "n_neg_hard": 787,
+   "n_neg_all": 35883,
+   "auroc_hard": 0.5449975139495056,
+   "auroc_all": 0.6808474159375458,
+   "top1_recall": 0.043478260869565216
+  },
+  {
+   "kinase_acc": "CANARY_NEG_08",
+   "n_pos": 19,
+   "n_neg_hard": 791,
+   "n_neg_all": 35887,
+   "auroc_hard": 0.5384257102934327,
+   "auroc_all": 0.6436497309537393,
+   "top1_recall": 0.10526315789473684
+  },
+  {
+   "kinase_acc": "CANARY_NEG_09",
+   "n_pos": 10,
+   "n_neg_hard": 800,
+   "n_neg_all": 35896,
+   "auroc_hard": 0.664125,
+   "auroc_all": 0.7739149208825495,
+   "top1_recall": 0.1
+  },
+  {
+   "kinase_acc": "CANARY_NEG_10",
+   "n_pos": 10,
+   "n_neg_hard": 5915,
+   "n_neg_all": 277914,
+   "auroc_hard": 0.5255874894336433,
+   "auroc_all": 0.6844908856696676,
+   "top1_recall": 0.0
+  },
+  {
+   "kinase_acc": "CANARY_NEG_11",
+   "n_pos": 26,
+   "n_neg_hard": 5899,
+   "n_neg_all": 277898,
+   "auroc_hard": 0.48571139828132537,
+   "auroc_all": 0.6194388837741794,
+   "top1_recall": 0.038461538461538464
+  },
+  {
+   "kinase_acc": "CANARY_POS",
+   "n_pos": 111,
+   "n_neg_hard": 5004,
+   "n_neg_all": 241907,
+   "auroc_hard": 0.7886996708939155,
+   "auroc_all": 0.8739993222769662,
+   "top1_recall": 0.12612612612612611
+  }
+ ],
+ "runtime_eval_s": 11.3,
+ "runtime_total_s": 43.7
+}

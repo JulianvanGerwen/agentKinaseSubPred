@@ -344,11 +344,38 @@ def cantley(cand: pd.DataFrame, arm_store: str, imputed: bool = False) -> np.nda
 
 
 # ================================================================================================ B2 learned PSSM
+def pssm_kinase_table(with_canaries: bool) -> pd.DataFrame:
+    """Kinase table for PSSM fits. Canary rows get EMPTY Manning group/family (= no hierarchical pooling, prior =
+    background): ksp.canary gives all canaries group 'CANARY', which would pool the 12 negative canaries' (v2: real
+    labelled-site) windows into every canary's prior - a cross-canary 'labelled-site-likeness' channel that is not
+    part of any real kinase's biology."""
+    K = (_canary.kinases_with_canaries() if with_canaries else index.load_kinases()).copy()
+    c = K.uniprot_acc.astype(str).str.startswith("CANARY_")
+    K.loc[c, "manning_group"] = ""
+    K.loc[c, "manning_family"] = ""
+    return K
+
+
+def _fit_pssm_canary_safe(ml, pairs, sites, kinases, phospho, groups, seed, tune_without_canaries, info=None):
+    """fit_pssm; if canary kinases are present and tune_without_canaries, alpha/beta are tuned on the REAL kinases'
+    pairs only (canaries must never steer shared hyperparameters), then all kinases are fitted with them fixed."""
+    has_can = pairs.kinase_acc.astype(str).str.startswith("CANARY_").any()
+    if has_can and tune_without_canaries:
+        real = pairs[~pairs.kinase_acc.astype(str).str.startswith("CANARY_")]
+        m0 = ml.fit_pssm(real[["kinase_acc", "site_id"]], sites, index.load_kinases(), "family", phospho,
+                         groups=groups, seed=seed)
+        if info is not None:
+            info["tuned_without_canaries"] = {"alpha": m0.alpha, "beta": m0.beta}
+        return ml.fit_pssm(pairs[["kinase_acc", "site_id"]], sites, kinases, "family", phospho, alpha=m0.alpha,
+                           beta=m0.beta, groups=groups, seed=seed)
+    return ml.fit_pssm(pairs[["kinase_acc", "site_id"]], sites, kinases, "family", phospho, groups=groups, seed=seed)
+
+
 def b2_pssm(cand: pd.DataFrame, data, phospho: bool = False, with_canaries: bool = False, seed: int = 0,
-            log: dict | None = None) -> np.ndarray:
+            log: dict | None = None, tune_without_canaries: bool = True) -> np.ndarray:
     """OOF learned-PSSM percentile: fit on fold-training L2 labels (all of them: B2 is a model, not a feature)."""
     from ..features import motif_learned as ml
-    K = _canary.kinases_with_canaries() if with_canaries else index.load_kinases()
+    K = pssm_kinase_table(with_canaries)
     S = data.sites
     sf = site_fold(S)[cand.site_idx.values]
     out = np.full(len(cand), np.nan)
@@ -359,7 +386,8 @@ def b2_pssm(cand: pd.DataFrame, data, phospho: bool = False, with_canaries: bool
         acc = tr.site_id.str.rsplit("_", n=1).str[0]
         groups = pd.Series(acc.map(cl).fillna(acc).astype(str).values, index=tr.site_id.values)
         groups = groups[~groups.index.duplicated()]
-        m = ml.fit_pssm(tr[["kinase_acc", "site_id"]], S, K, "family", phospho, groups=groups, seed=seed)
+        info = {}
+        m = _fit_pssm_canary_safe(ml, tr, S, K, phospho, groups, seed, tune_without_canaries, info)
         r = sf == f
         ki, si = cand.kinase_idx.values[r], cand.site_idx.values[r]
         if ki.max() >= len(K):
@@ -368,7 +396,7 @@ def b2_pssm(cand: pd.DataFrame, data, phospho: bool = False, with_canaries: bool
         out[r] = ml.universe_percentile(m, ki, v, si, S)
         if log is not None:
             log.setdefault("folds", {})[f] = {"alpha": m.alpha, "beta": m.beta, "n_pairs": m.info.get("n_pairs_used"),
-                                              "s": round(time.time() - t0, 1)}
+                                              "s": round(time.time() - t0, 1), **info}
     return out
 
 
@@ -377,16 +405,15 @@ class LearnedPSSMAnyKinases(crossfit.LabelDerivedFeature):
     ksp.features.motif_learned.LearnedPSSM (family prior, no phospho channel), percentile output only."""
     name = "b7_f2a_pssm_pct"
 
-    def __init__(self, kinases: pd.DataFrame, sites: pd.DataFrame):
-        self.kinases, self.sites = kinases, sites
+    def __init__(self, kinases: pd.DataFrame, sites: pd.DataFrame, tune_without_canaries: bool = True):
+        self.kinases, self.sites, self.twc = kinases, sites, tune_without_canaries
 
     def fit(self, train_pairs, ctx=None):
         from ..features import motif_learned as ml
         acc = train_pairs.site_id.str.rsplit("_", n=1).str[0]
         groups = pd.Series(acc.map(ctx.clusters).fillna(acc).astype(str).to_numpy(), index=train_pairs.site_id)
         groups = groups[~groups.index.duplicated()]
-        self.m = ml.fit_pssm(train_pairs[["kinase_acc", "site_id"]], self.sites, self.kinases, "family", False,
-                             groups=groups, seed=ctx.seed)
+        self.m = _fit_pssm_canary_safe(ml, train_pairs, self.sites, self.kinases, False, groups, ctx.seed, self.twc)
         return self
 
     def transform(self, query, ctx=None):
@@ -425,12 +452,12 @@ def b7_features(kidx, sidx, pidx, cantley_store: str, b2_pct: np.ndarray, pos_pa
 
 
 def b7_lr(cand: pd.DataFrame, data, cantley_store: str, with_canaries: bool = False, seed: int = 0, C: float = 1.0,
-          log: dict | None = None) -> dict:
+          log: dict | None = None, tune_without_canaries: bool = True) -> dict:
     """OOF B7 scores (logit scale). Per outer fold: training rows sampled from fold-training data; the B2 feature is
     cross-fitted with ksp.crossfit.crossfit (inner 5-fold over substrate clusters; eval rows by A1 inner-fold fits)."""
     import scipy.sparse as sp
     from sklearn.linear_model import LogisticRegression
-    K = _canary.kinases_with_canaries() if with_canaries else index.load_kinases()
+    K = pssm_kinase_table(with_canaries)
     S = data.sites
     pidx_all = site_protein_idx(S)
     pacc = index.load_proteins().acc.values
@@ -448,7 +475,7 @@ def b7_lr(cand: pd.DataFrame, data, cantley_store: str, with_canaries: bool = Fa
         ki, si = cand.kinase_idx.values[r], cand.site_idx.values[r]
         ev = pd.DataFrame({"kinase_acc": data.kinases.uniprot_acc.values[ki], "site_id": S.site_id.values[si],
                            "kinase_idx": ki, "site_idx": si})
-        ftr, fev = crossfit.crossfit(lambda: LearnedPSSMAnyKinases(K, S), lab[["kinase_acc", "site_id"]],
+        ftr, fev = crossfit.crossfit(lambda: LearnedPSSMAnyKinases(K, S, tune_without_canaries), lab[["kinase_acc", "site_id"]],
                                      tr[["kinase_acc", "site_id", "kinase_idx", "site_idx"]], ev, seed=seed,
                                      outer_fold=f, clusters=cl)
         t1 = time.time()

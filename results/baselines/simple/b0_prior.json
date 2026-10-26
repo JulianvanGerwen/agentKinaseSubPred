@@ -1,11 +1,13 @@
 {
  "method": "b0_prior",
  "canary": false,
- "run_id": "simple_b0_prior__20261026-150925__s0",
+ "run_id": "simple_b0_prior_reeval__20261026-155334__s0",
  "config": {
   "method": "b0_prior",
   "seed": 0
  },
+ "reevaluated_from": "simple_b0_prior__20261026-150925__s0",
+ "canary_version": "v2",
  "runtime_fit_predict_s": 1.7,
  "n_candidates": 69697833,
  "n_scored": 69697833,
@@ -59,18 +61,18 @@
   {
    "endpoint": "M2",
    "point": 0.06412057572782018,
-   "lo95": 0.06253144335531087,
-   "hi95": 0.06935069626124155,
-   "se": 0.0017626701186257718,
+   "lo95": 0.06242143793893298,
+   "hi95": 0.06902691827512515,
+   "se": 0.0016238489736168748,
    "B": 1000,
    "resample": "clusters"
   },
   {
    "endpoint": "M3",
    "point": 0.010004032854629813,
-   "lo95": 0.010003983747256693,
-   "hi95": 0.010004105672845749,
-   "se": 2.7846475894910567e-08,
+   "lo95": 0.010004021080552072,
+   "hi95": 0.010004106912644825,
+   "se": 2.3142521409294387e-08,
    "B": 1000,
    "resample": "clusters"
   },
@@ -588,6 +590,6 @@
    "top1_recall": 0.010003773296290295
   }
  ],
- "runtime_eval_s": 143.1,
- "runtime_total_s": 241.9
+ "runtime_eval_s": 108.7,
+ "runtime_total_s": 219.2
 }

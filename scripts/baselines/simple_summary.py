@@ -21,8 +21,7 @@ ORDER = [("b0_prior", "B0-prior (kinase training count)"),
          ("b1_primed_hard_published", "B1 suppl.: primed hard, published pct"),
          ("b1_primed_soft_published", "B1 suppl.: primed soft, published pct"),
          ("b1_imputed_universe", "B1 suppl.: universe pct + nearest-atlas imputed"),
-         ("b1_imputed_primed_soft", "B1 suppl.: primed soft + nearest-atlas imputed"),
-         ("b1_imputed_primed_hard", "B1 suppl.: primed hard + nearest-atlas imputed"),
+         ("b1_imputed_published", "B1 suppl.: published pct + nearest-atlas imputed"),
          ("b2_pssm", "B2 learned PSSM (F2a, family prior)"),
          ("b2_pssm_ph", "B2 learned PSSM + phospho channel"),
          ("b7_lr", "B7 simple strong (LR)")]
@@ -51,7 +50,9 @@ def main():
          "every DEV U_ms site of its class, plus all real kinases x labelled sites for M2). "
          "Missing pairs = 'worst' (ties at the bottom). 95% CI: cluster bootstrap over substrate clusters, B=1000 "
          "(`ksp.eval.bootstrap`). M1 = M5 on CV (K_cv, E-hard); M4 = CV analogue over K_any_cv (>=1 DEV positive). "
-         "M2 = filtered site-centric Hit@5 (A18), M3 = recall in top 1% of E-all.\n"]
+         "M2 = filtered site-centric Hit@5 (A18), M3 = recall in top 1% of E-all. Runtime: 'fit+predict' = all 5 folds "
+         "over ~71M candidates (<=8 cores, shared node); 'total' = wall time of the latest (re-)evaluation run incl. "
+         "ksp.eval + bootstrap.\n"]
     rows, cov = [], []
     for m, lab in ORDER:
         f = OUT / f"{m}.json"
@@ -88,17 +89,40 @@ def main():
                  + "\n")
         pb = pd.DataFrame(bb["paired_bootstrap_best_vs_other"])
         L.append("Paired cluster bootstrap (B=1000), best minus other:\n")
-        L.append(md(pb[["comparison", "endpoint", "diff", "lo95", "hi95", "p_boot"]].round(4))
+        L.append(md(pb[["comparison", "endpoint", "diff", "lo95", "hi95", "p_boot"]].round(6))
                  + "\n")
+    pf = OUT / "paired.json"
+    if pf.exists():
+        L.append("## Paired cluster bootstrap between baselines (B=1000; `ksp.eval.paired_bootstrap`)\n")
+        L.append("'full' = all candidates, missing='worst'; 'matched' = pairs both score (PRIOR-1), missing='drop'.\n")
+        pr = []
+        for key, v in json.loads(pf.read_text()).items():
+            for view in ["full_missing_worst", "matched_universe"]:
+                for r in v[view]:
+                    pr.append({"comparison": key, "view": view.split("_")[0], "endpoint": r["endpoint"],
+                               "diff": round(r["diff"], 4), "lo95": round(r["lo95"], 4), "hi95": round(r["hi95"], 4),
+                               "p_boot": round(r["p_boot"], 4)})
+        L.append(md(pd.DataFrame(pr)) + "\n")
     can = []
-    for m in ["b2_pssm", "b2_pssm_ph", "b7_lr", "b0_miss"]:
-        f = OUT / f"{m}_canary.json"
+    CAN = [("b2_pssm_canary", "B2, canary v2 (official: canary-free tuning, isolated canary priors)"),
+           ("b2_pssm_ph_canary", "B2+phospho, canary v2 (official)"),
+           ("b7_lr_canary", "B7, canary v2 (official)"),
+           ("b2_pssm_canary_pooledprior", "diag: B2 v2, canaries share group 'CANARY' prior (tuning canary-free)"),
+           ("b2_pssm_ph_canary_pooledprior", "diag: B2+ph v2, shared canary prior"),
+           ("b2_pssm_canary_tunedwithcanaries", "diag: B2 v2, shared prior + canaries in alpha/beta tuning"),
+           ("b2_pssm_ph_canary_tunedwithcanaries", "diag: B2+ph v2, shared prior + canaries in tuning"),
+           ("b2_pssm_canary_v1", "superseded: B2, canary v1"),
+           ("b7_lr_canary_v1", "superseded: B7, canary v1")]
+    for m, lab in CAN:
+        f = OUT / f"{m}.json"
         if f.exists():
-            c = json.loads(f.read_text())["canary"]
-            can.append({"method": f"`{m}`", "neg mean AUROC E-hard": round(c["neg_mean_auroc_hard"], 3),
-                        "neg mean AUROC E-all": round(c["neg_mean_auroc_all"], 3),
+            j = json.loads(f.read_text())
+            c = j["canary"]
+            can.append({"file": f"`{m}`", "what": lab, "run_id": j["run_id"],
+                        "neg mean AUROC E-hard (gate <=0.57)": round(c["neg_mean_auroc_hard"], 3),
+                        "neg mean AUROC E-all (not gated)": round(c["neg_mean_auroc_all"], 3),
                         "pos AUROC E-hard": round(c["pos_auroc_hard"], 3),
-                        "pos AUROC E-all": round(c["pos_auroc_all"], 3), "neg pass (<=0.57)": c["neg_pass"],
+                        "pos AUROC E-all": round(c["pos_auroc_all"], 3), "neg pass": c["neg_pass"],
                         "pos pass (>=0.90)": c["pos_pass"]})
     if can:
         L.append("## Canaries (trained with `load_dev(with_canaries=True)`; `ksp.eval.canary_check`)\n")

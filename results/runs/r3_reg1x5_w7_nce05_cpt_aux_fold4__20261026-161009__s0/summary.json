@@ -1,0 +1,85 @@
+{
+ "M1_auroc_hard": 0.7523908428441445,
+ "M2_hit5": 0.235772044848406,
+ "M3_top1_recall": 0.2995778898487335,
+ "M4_auroc_hard_Kany": 0.7439625120518004,
+ "M5_auroc_hard_Kcv": 0.7523908428441445,
+ "sec_auroc_all": 0.8419226322177062,
+ "sec_mrr": 0.1773254021271295,
+ "sec_hit1": 0.10031979761474731,
+ "sec_hit10": 0.3163739924719864,
+ "n_K_primary_evaluated": 183,
+ "n_K_any_evaluated": 232,
+ "n_missing_pairs": 0,
+ "canary": {
+  "n_neg_canaries": 10,
+  "neg_mean_auroc_hard": 0.6668726994775892,
+  "pos_auroc_hard": 0.9348947995236205,
+  "neg_mean_auroc_all": 0.807790508801836,
+  "pos_auroc_all": 0.979273610706465,
+  "neg_pass": false,
+  "pos_pass": true,
+  "thresholds": {
+   "neg_max": 0.57,
+   "pos_min": 0.9
+  }
+ },
+ "M5_by_train_bin": [
+  {
+   "stratum": "train_bin",
+   "value": "20-99",
+   "n_kinases": 87,
+   "auroc_hard": 0.7251892286717224,
+   "hit5": 0.20169138013965598,
+   "top1_recall": 0.29697218490321936,
+   "auroc_all": 0.8195643385255391,
+   "pauroc01_all": 0.5831244703894861
+  },
+  {
+   "stratum": "train_bin",
+   "value": "5-19",
+   "n_kinases": 65,
+   "auroc_hard": 0.7728094333338658,
+   "hit5": 0.09846153846153846,
+   "top1_recall": 0.31743589743589745,
+   "auroc_all": 0.868627999704616,
+   "pauroc01_all": 0.6023087409499555
+  },
+  {
+   "stratum": "train_bin",
+   "value": ">=100",
+   "n_kinases": 31,
+   "auroc_hard": 0.7859176832044308,
+   "hit5": 0.6193269075841363,
+   "top1_recall": 0.269446465238865,
+   "auroc_all": 0.8486749762360747,
+   "pauroc01_all": 0.5847631984158498
+  }
+ ],
+ "t_eval_s": 38.1,
+ "train_info": {
+  "best_val_auroc_hard": 0.7404000427093236,
+  "ensemble_val_auroc_hard": 0.7681860700249672,
+  "best_step": [
+   200,
+   100,
+   300,
+   200,
+   400
+  ],
+  "distill": {
+   "n_targets": 195663112,
+   "t_load_s": 2.9,
+   "kinases_with_target": 396
+  },
+  "t_train_s": 321.1,
+  "t_score_s": 1.2,
+  "t_total_s": 343.5,
+  "t_targets_s": 7.1,
+  "t_gpu_load_s": 1.8,
+  "peak_gpu_mem_gb": 12.11,
+  "n_trained_kinases": 336,
+  "n_pos_fit": 7640,
+  "n_pred_rows": 21286274
+ }
+}

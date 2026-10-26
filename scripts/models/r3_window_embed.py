@@ -32,9 +32,16 @@ sys.path.insert(0, str(ROOT / "src"))
 from ksp import index  # noqa: E402
 from ksp.features import esm_embed  # noqa: E402
 
-OUT = ROOT / "cache" / "r3"
-FLANK = 10
-MODEL = "facebook/esm2_t33_650M_UR50D"
+VARIANTS = {  # name -> (out dir, flank, HF model, S/T/Y reference cache for the consistency check, token budget)
+    "650m": (ROOT / "cache" / "r3", 10, "facebook/esm2_t33_650M_UR50D", ROOT / "cache" / "esm2_650m", 16384),
+    "3b": (ROOT / "cache" / "r3" / "esm3b", 7, "facebook/esm2_t36_3B_UR50D", ROOT / "cache" / "esm2_3b", 8192),
+}
+OUT, FLANK, MODEL, REFCACHE, TOKBUD = VARIANTS["650m"]
+
+
+def set_variant(v: str):
+    global OUT, FLANK, MODEL, REFCACHE, TOKBUD
+    OUT, FLANK, MODEL, REFCACHE, TOKBUD = VARIANTS[v]
 
 
 def ums_sites() -> pd.DataFrame:
@@ -62,7 +69,7 @@ def run(args):
     off = np.arange(-FLANK, FLANK + 1)
     for g0 in range(0, len(mine), args.group):
         g = mine.iloc[g0:g0 + args.group]
-        embs = esm_embed.embed_sequences(g.seq.tolist(), tok, model, stride=511, token_budget=16384)
+        embs = esm_embed.embed_sequences(g.seq.tolist(), tok, model, stride=511, token_budget=TOKBUD)
         for (acc, seq), E in zip(g[["acc", "seq"]].itertuples(index=False), embs):
             p = pos_by_acc[acc]
             for pp in p:
@@ -126,14 +133,14 @@ def merge(args):
     # consistency check vs struct+ESM S/T/Y cache (centre residues, random 5000 sites)
     rng = np.random.default_rng(0)
     pick = rng.choice(len(s), size=5000, replace=False)
-    idx, M = esm_embed.load_sty(ROOT / "cache" / "esm2_650m", site_ids=s.site_id.values[pick])
+    idx, M = esm_embed.load_sty(REFCACHE, site_ids=s.site_id.values[pick])
     assert (idx.site_id.values == s.site_id.values[pick]).all()
     A = E[W[pick, FLANK]].astype(np.float32)
     B = np.asarray(M, dtype=np.float32)
     cos = (A * B).sum(1) / np.linalg.norm(A, axis=1) / np.linalg.norm(B, axis=1)
     tim = [json.loads((OUT / f"win_timing_{w}.json").read_text()) for w in range(args.n_workers)]
     meta = dict(model=MODEL, flank=FLANK, n_sites=len(s), n_residues=len(res), shape=list(E.shape),
-                centre_cos_vs_esm2_650m_cache=dict(min=float(cos.min()), mean=float(cos.mean()), n=5000),
+                centre_cos_vs_sty_cache=dict(min=float(cos.min()), mean=float(cos.mean()), n=5000),
                 window_residue_mismatches=bad, timings=tim,
                 gpu_minutes=sum(t["seconds"] for t in tim) / 60)
     (OUT / "win_embed_meta.json").write_text(json.dumps(meta, indent=1))
@@ -146,5 +153,7 @@ if __name__ == "__main__":
     ap.add_argument("--worker", type=int, default=0)
     ap.add_argument("--n-workers", type=int, default=2)
     ap.add_argument("--group", type=int, default=400)
+    ap.add_argument("--variant", default="650m", choices=sorted(VARIANTS))
     a = ap.parse_args()
+    set_variant(a.variant)
     run(a) if a.cmd == "run" else merge(a)

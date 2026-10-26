@@ -1,0 +1,83 @@
+{
+ "run_id": "simple_b1_imputed_universe_reeval__20261026-160413__s0",
+ "name": "simple_b1_imputed_universe_reeval",
+ "git_hash": "581e25c4b597e00d27eff31a5ae6a0bc6e2149f1",
+ "config": {
+  "method": "b1_imputed_universe",
+  "canary": false,
+  "from_run": "simple_b1_imputed_universe__20261026-150833__s0",
+  "seed": 0,
+  "store": "motif/cantley_unprimed_pct_universe",
+  "imputed": true
+ },
+ "seed": 0,
+ "split": "cv",
+ "notes": "",
+ "inputs": [
+  {
+   "path": "/workspace/cache/labels/dev_pairs.parquet",
+   "type": "file",
+   "bytes": 797455,
+   "sha256": "b6c1aaa8f67396b535ac392c08f77068e6eec1615e2debdf63ce20d6986be449"
+  },
+  {
+   "path": "/workspace/cache/labels/canary_dev.parquet",
+   "type": "file",
+   "bytes": 29718,
+   "sha256": "febef71f55dbfc5146ce686f31fea11eae6b224f38ff55276cac8bac30a96121"
+  },
+  {
+   "path": "/workspace/results/splits/cv_folds.tsv",
+   "type": "file",
+   "bytes": 203997,
+   "sha256": "aa01e43d7a064269ddf58cf00a2e3130486aee973cba3e6cf52f994f6a265dc8"
+  },
+  {
+   "path": "/workspace/cache/runs/simple_b1_imputed_universe__20261026-150833__s0/predictions.parquet",
+   "type": "file",
+   "bytes": 406150663,
+   "sha256": "7c568c8ede967d3bc80299b23ddb0b0e4e34d18e3ec3630fa86ad4f0ee80440d"
+  }
+ ],
+ "host": "eu-g6-076",
+ "python": "3.12.3",
+ "platform": "Linux-5.15.0-198-generic-x86_64-with-glibc2.39",
+ "argv": [
+  "scripts/baselines/simple_run.py",
+  "--method",
+  "b1_imputed_universe",
+  "--from-run",
+  "simple_b1_imputed_universe__20261026-150833__s0"
+ ],
+ "pid": 242206,
+ "started": "2026-10-26 16:04:16 CET",
+ "n_rows": {
+  "predictions": 69697833
+ },
+ "outputs": {
+  "predictions": {
+   "path": "cache/runs/simple_b1_imputed_universe_reeval__20261026-160413__s0/predictions.parquet",
+   "sha256": "7c568c8ede967d3bc80299b23ddb0b0e4e34d18e3ec3630fa86ad4f0ee80440d"
+  },
+  "bootstrap": {
+   "path": "results/runs/simple_b1_imputed_universe_reeval__20261026-160413__s0/bootstrap.json",
+   "sha256": "a8696896da9f988ac66ab5a7edc439fc5a1cff6d91d52a0422a77966b93bcc76"
+  },
+  "metrics": {
+   "path": "results/runs/simple_b1_imputed_universe_reeval__20261026-160413__s0/metrics.json",
+   "sha256": "6e42a02bdc1814eba83e753b9c59c8172cfc58c62ad3b9203b1ae55e2fbe8a1b"
+  },
+  "extra": {
+   "path": "results/runs/simple_b1_imputed_universe_reeval__20261026-160413__s0/extra.json",
+   "sha256": "5e789d5b2d29ca4329d4d68340321f0ada231cc4ae916afd1d635097766f8869"
+  }
+ },
+ "fallbacks": {
+  "candidate_pairs_not_scored": 0
+ },
+ "reevaluated_from": "simple_b1_imputed_universe__20261026-150833__s0",
+ "status": "ok",
+ "error": null,
+ "runtime_s": 196.64,
+ "finished": "2026-10-26 16:07:33 CET"
+}

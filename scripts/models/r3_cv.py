@@ -25,8 +25,8 @@ import pandas as pd  # noqa: E402
 
 from ksp import manifest  # noqa: E402
 
-# Agents never run git (DESIGN §11.8 / AGENT_BRIEF): do not let the manifest call `git rev-parse`.
-manifest.git_hash = lambda: "not_queried(agent no-git rule)"
+
+
 
 CONFIGS = {
     "w7_nce05": dict(flank=7, lambda_nce=0.5),
@@ -34,6 +34,12 @@ CONFIGS = {
     "w7_nce0": dict(flank=7, lambda_nce=0.0),
     # diagnostic ablation (not eligible for selection): no protein-context token, no phospho channel
     "w7_nce05_noctx": dict(flank=7, lambda_nce=0.5, use_prot=False, use_phos=False),
+    # round 2 (PI): Cantley-atlas distillation pretraining (label-free targets, training-fold sites only)
+    "w7_nce05_cpt": dict(flank=7, lambda_nce=0.5, pretrain_steps=3000),
+    "w7_nce05_cpt_aux": dict(flank=7, lambda_nce=0.5, pretrain_steps=3000, distill_aux=0.2),
+    # round 2 (PI): ESM-2 3B per-residue window embeddings (cache/r3/esm3b, +-7)
+    "w7_nce05_esm3b": dict(flank=7, lambda_nce=0.5, esm="3b"),
+    "w7_nce05_cptaux_esm3b": dict(flank=7, lambda_nce=0.5, pretrain_steps=3000, distill_aux=0.2, esm="3b"),
 }
 # Base hyper-parameters ("reg1"), chosen by the fold-0 INNER-validation dev sweep (scripts/models/r3_dev_sweep.sh;
 # REGISTRY split=inner_dev); 5-seed ensemble (seeds [0..4]) per training run, logits averaged.
@@ -74,7 +80,10 @@ def summarise(res) -> dict:
     keys = ["M1_auroc_hard", "M2_hit5", "M3_top1_recall", "M4_auroc_hard_Kany", "M5_auroc_hard_Kcv",
             "sec_auroc_all", "sec_mrr", "sec_hit1", "sec_hit10", "n_K_primary_evaluated", "n_K_any_evaluated",
             "n_missing_pairs"]
-    return {k: E.get(k) for k in keys} | {"canary": res.canary}
+    from ksp import eval as kev
+    bins = kev.strata(res, cols=("train_bin",), kinase_set="primary")
+    return {k: E.get(k) for k in keys} | {"canary": res.canary,
+                                          "M5_by_train_bin": bins.to_dict(orient="records")}
 
 
 def cmd_train(a):
@@ -112,7 +121,8 @@ def cmd_train(a):
         res.per_kinase.to_csv(run.dir / "per_kinase.tsv", sep="\t", index=False)
         summ = summarise(res)
         summ["t_eval_s"] = round(time.time() - t1, 1)
-        summ["train_info"] = {k: info.get(k) for k in ["best_val_auroc_hard", "ensemble_val_auroc_hard", "best_step", "t_train_s", "t_score_s",
+        summ["train_info"] = {k: info.get(k) for k in ["best_val_auroc_hard", "ensemble_val_auroc_hard", "best_step",
+                                                        "distill", "t_train_s", "t_score_s",
                                                     "t_total_s", "t_targets_s", "t_gpu_load_s", "peak_gpu_mem_gb",
                                                     "n_trained_kinases", "n_pos_fit", "n_pred_rows"]}
         run.save_metrics(summ, name="summary")
@@ -166,7 +176,7 @@ def cmd_pool(a, lko=False):
     from ksp import eval as kev
     t0 = time.time()
     P = _load_preds(a.runs)
-    name = f"r3_{a.config}_{'lko_pooled' if lko else 'cv_pooled'}"
+    name = f"r3_{a.config}{'_' + a.tag if a.tag else ''}_{'lko_pooled' if lko else 'cv_pooled'}"
     with manifest.RunManifest(name, config={"config": CONFIGS[a.config], "source_runs": a.runs}, seed=a.seed,
                               inputs=[manifest.CACHE / r / "predictions.parquet" for r in a.runs],
                               split="lko_T2" if lko else "cv") as run:
@@ -210,6 +220,7 @@ if __name__ == "__main__":
     ap.add_argument("--runs", nargs="*", default=[])
     ap.add_argument("--boot", type=int, default=1000)
     ap.add_argument("--note", default="")
+    ap.add_argument("--tag", default="", help="pool: extra name tag (e.g. canaryv2)")
     ap.add_argument("--set", default="{}", help="JSON overrides of the training config")
     ap.add_argument("--set-name", default="")
     ap.add_argument("--inner-only", action="store_true")

@@ -1,0 +1,73 @@
+{
+ "M1_auroc_hard": 0.679356774014046,
+ "M2_hit5": 0.2943659470188713,
+ "M3_top1_recall": 0.20755601306737417,
+ "M4_auroc_hard_Kany": 0.6930356463111154,
+ "M5_auroc_hard_Kcv": 0.679356774014046,
+ "sec_auroc_all": 0.8414818331447755,
+ "sec_mrr": 0.18693357636464372,
+ "sec_hit1": 0.0786467189041686,
+ "sec_hit10": 0.424294112601906,
+ "n_K_primary_evaluated": 37,
+ "n_K_any_evaluated": 65,
+ "n_missing_pairs": 0,
+ "canary": {},
+ "M5_by_train_bin": [
+  {
+   "stratum": "train_bin",
+   "value": "20-99",
+   "n_kinases": 13,
+   "auroc_hard": 0.6417600295353055,
+   "hit5": 0.45947876894142925,
+   "top1_recall": 0.2134225811044108,
+   "auroc_all": 0.8259656224674147,
+   "pauroc01_all": 0.5650331095541327
+  },
+  {
+   "stratum": "train_bin",
+   "value": "5-19",
+   "n_kinases": 19,
+   "auroc_hard": 0.7122929100159211,
+   "hit5": 0.18755221386800333,
+   "top1_recall": 0.22247284878863827,
+   "auroc_all": 0.8712449350686488,
+   "pauroc01_all": 0.5721754045207844
+  },
+  {
+   "stratum": "train_bin",
+   "value": ">=100",
+   "n_kinases": 5,
+   "auroc_hard": 0.6519509928516474,
+   "hit5": 0.27096479599351897,
+   "top1_recall": 0.13561896043027538,
+   "auroc_all": 0.7687241935951954,
+   "pauroc01_all": 0.5388857847805055
+  }
+ ],
+ "t_eval_s": 57.2,
+ "train_info": {
+  "best_val_auroc_hard": 0.7485479886105302,
+  "ensemble_val_auroc_hard": 0.7745326481281071,
+  "best_step": [
+   400,
+   200,
+   600,
+   300,
+   300
+  ],
+  "distill": {
+   "n_targets": 195663112,
+   "t_load_s": 3.0,
+   "kinases_with_target": 396
+  },
+  "t_train_s": 338.3,
+  "t_score_s": 4.7,
+  "t_total_s": 442.4,
+  "t_targets_s": 6.4,
+  "t_gpu_load_s": 79.6,
+  "peak_gpu_mem_gb": 12.97,
+  "n_trained_kinases": 283,
+  "n_pos_fit": 8173,
+  "n_pred_rows": 22248398
+ }
+}

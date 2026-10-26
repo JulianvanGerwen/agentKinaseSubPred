@@ -1,0 +1,38 @@
+{
+ "model": "R3",
+ "variant": "reg1x5:w7_nce05_cpt_aux",
+ "config": {
+  "flank": 7,
+  "lambda_nce": 0.5,
+  "pretrain_steps": 3000,
+  "distill_aux": 0.2,
+  "lr": 0.0003,
+  "p_lab": 0.25,
+  "dropout": 0.2,
+  "esm_dropout": 0.3,
+  "wd": 0.05,
+  "eval_every": 100,
+  "patience": 10,
+  "n_seeds": 5,
+  "esm": "650m"
+ },
+ "cv_fold_runs": [
+  "r3_reg1x5_w7_nce05_cpt_aux_fold0__20261026-155231__s0",
+  "r3_reg1x5_w7_nce05_cpt_aux_fold1__20261026-160057__s0",
+  "r3_reg1x5_w7_nce05_cpt_aux_fold2__20261026-160712__s0",
+  "r3_reg1x5_w7_nce05_cpt_aux_fold3__20261026-161523__s0",
+  "r3_reg1x5_w7_nce05_cpt_aux_fold4__20261026-161009__s0"
+ ],
+ "lko_T2_runs": [
+  "r3_reg1x5_w7_nce05_cpt_aux_lko0__20261026-162151__s0",
+  "r3_reg1x5_w7_nce05_cpt_aux_lko1__20261026-162828__s0",
+  "r3_reg1x5_w7_nce05_cpt_aux_lko2__20261026-161641__s0",
+  "r3_reg1x5_w7_nce05_cpt_aux_lko3__20261026-162328__s0",
+  "r3_reg1x5_w7_nce05_cpt_aux_lko4__20261026-163141__s0"
+ ],
+ "pooled_cv_run": "r3_w7_nce05_cpt_aux_cv_pooled__20261026-162205__s0",
+ "pooled_lko_run": "r3_w7_nce05_cpt_aux_lko_pooled__20261026-164851__s0",
+ "predictions": "cache/runs/<run_id>/predictions.parquet (kinase_idx, site_idx, kinase_acc, site_id, score=raw logit, mean of 5 seeds)",
+ "coverage": "CV: every U_ms site of the fold x every kinase (503 real + 13 canaries) of matching residue class; LKO: held-out kinases x all DEV U_ms sites",
+ "canary": "v2 (cache/labels/canary_dev.parquet)"
+}

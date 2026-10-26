@@ -1,0 +1,77 @@
+{
+ "run_id": "simple_b7_lr__20261026-153330__s0",
+ "name": "simple_b7_lr",
+ "git_hash": "d7722d66ecd1a039e07a1e4967965dc49d1b34d2",
+ "config": {
+  "method": "b7_lr",
+  "canary": false,
+  "seed": 0,
+  "cantley_store": "motif/cantley_unprimed_pct_published",
+  "C": 1.0,
+  "neg_ratio": 50,
+  "hard_frac": 0.5,
+  "features": [
+   "logit Cantley best arm",
+   "logit B2 pct (cross-fitted)",
+   "ppi_edge_any",
+   "loc_cos_combined",
+   "+ missing indicators"
+  ],
+  "kinase_intercept": "L2 one-hot, IPW weights"
+ },
+ "seed": 0,
+ "split": "cv",
+ "notes": "",
+ "inputs": [
+  {
+   "path": "/workspace/cache/labels/dev_pairs.parquet",
+   "type": "file",
+   "bytes": 797455,
+   "sha256": "b6c1aaa8f67396b535ac392c08f77068e6eec1615e2debdf63ce20d6986be449"
+  },
+  {
+   "path": "/workspace/results/splits/cv_folds.tsv",
+   "type": "file",
+   "bytes": 203997,
+   "sha256": "aa01e43d7a064269ddf58cf00a2e3130486aee973cba3e6cf52f994f6a265dc8"
+  }
+ ],
+ "host": "eu-g6-076",
+ "python": "3.12.3",
+ "platform": "Linux-5.15.0-198-generic-x86_64-with-glibc2.39",
+ "argv": [
+  "scripts/baselines/simple_run.py",
+  "--method",
+  "b7_lr"
+ ],
+ "pid": 215082,
+ "started": "2026-10-26 15:33:30 CET",
+ "n_rows": {
+  "predictions": 69697833
+ },
+ "outputs": {
+  "predictions": {
+   "path": "cache/runs/simple_b7_lr__20261026-153330__s0/predictions.parquet",
+   "sha256": "e3c644479c552a4def803bc6a64107c22429b6708cc4617413d31fb9a01dab2d"
+  },
+  "bootstrap": {
+   "path": "results/runs/simple_b7_lr__20261026-153330__s0/bootstrap.json",
+   "sha256": "91b72387982b5638e0e8897d543912314379190913d537acd96b813c73197466"
+  },
+  "metrics": {
+   "path": "results/runs/simple_b7_lr__20261026-153330__s0/metrics.json",
+   "sha256": "b9b1bf37651cdd92ec4c428a0a0fb994c23db016b28edcf5bd8d4965d0bf9770"
+  },
+  "extra": {
+   "path": "results/runs/simple_b7_lr__20261026-153330__s0/extra.json",
+   "sha256": "994a6523920b49845aff577f05c5ae37b4cb7ed97511fb07cec32cd6fbff9c71"
+  }
+ },
+ "fallbacks": {
+  "candidate_pairs_not_scored": 0
+ },
+ "status": "ok",
+ "error": null,
+ "runtime_s": 1190.91,
+ "finished": "2026-10-26 15:53:21 CET"
+}

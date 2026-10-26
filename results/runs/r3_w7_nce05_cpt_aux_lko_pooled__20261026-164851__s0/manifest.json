@@ -1,0 +1,88 @@
+{
+ "run_id": "r3_w7_nce05_cpt_aux_lko_pooled__20261026-164851__s0",
+ "name": "r3_w7_nce05_cpt_aux_lko_pooled",
+ "git_hash": "581e25c4b597e00d27eff31a5ae6a0bc6e2149f1",
+ "config": {
+  "config": {
+   "flank": 7,
+   "lambda_nce": 0.5,
+   "pretrain_steps": 3000,
+   "distill_aux": 0.2
+  },
+  "source_runs": [
+   "r3_reg1x5_w7_nce05_cpt_aux_lko0__20261026-162151__s0",
+   "r3_reg1x5_w7_nce05_cpt_aux_lko1__20261026-162828__s0",
+   "r3_reg1x5_w7_nce05_cpt_aux_lko2__20261026-161641__s0",
+   "r3_reg1x5_w7_nce05_cpt_aux_lko3__20261026-162328__s0",
+   "r3_reg1x5_w7_nce05_cpt_aux_lko4__20261026-163141__s0"
+  ]
+ },
+ "seed": 0,
+ "split": "lko_T2",
+ "notes": "",
+ "inputs": [
+  {
+   "path": "/workspace/cache/runs/r3_reg1x5_w7_nce05_cpt_aux_lko0__20261026-162151__s0/predictions.parquet",
+   "type": "file",
+   "bytes": 76721890,
+   "sha256": "a9e493649f31bb7086221e2aa5705656af613edfc651176257ad475028cdba2c"
+  },
+  {
+   "path": "/workspace/cache/runs/r3_reg1x5_w7_nce05_cpt_aux_lko1__20261026-162828__s0/predictions.parquet",
+   "type": "file",
+   "bytes": 79352438,
+   "sha256": "b3259b00f9eb4107d8b01a958bd72f755061452678d96326c4e4f99f9179e5fb"
+  },
+  {
+   "path": "/workspace/cache/runs/r3_reg1x5_w7_nce05_cpt_aux_lko2__20261026-161641__s0/predictions.parquet",
+   "type": "file",
+   "bytes": 75533039,
+   "sha256": "b1bfa32d4f5d8cfea1d67e2bc79045f013cf488911133ec9a8cdfb070d124301"
+  },
+  {
+   "path": "/workspace/cache/runs/r3_reg1x5_w7_nce05_cpt_aux_lko3__20261026-162328__s0/predictions.parquet",
+   "type": "file",
+   "bytes": 76941395,
+   "sha256": "25abfc4f1a3ecd8a62d31cb0c8c3db428d43b27b9158625f05bce5b0f79c272d"
+  },
+  {
+   "path": "/workspace/cache/runs/r3_reg1x5_w7_nce05_cpt_aux_lko4__20261026-163141__s0/predictions.parquet",
+   "type": "file",
+   "bytes": 84788672,
+   "sha256": "12658f2a7d14ae921ba9c8b37b56fb2a305a5e8c22011c5c7e1f55874ba2d04f"
+  }
+ ],
+ "host": "eu-g6-076",
+ "python": "3.12.3",
+ "platform": "Linux-5.15.0-198-generic-x86_64-with-glibc2.39",
+ "argv": [
+  "scripts/models/r3_cv.py",
+  "pool-lko",
+  "--config",
+  "w7_nce05_cpt_aux",
+  "--runs",
+  "r3_reg1x5_w7_nce05_cpt_aux_lko0__20261026-162151__s0",
+  "r3_reg1x5_w7_nce05_cpt_aux_lko1__20261026-162828__s0",
+  "r3_reg1x5_w7_nce05_cpt_aux_lko2__20261026-161641__s0",
+  "r3_reg1x5_w7_nce05_cpt_aux_lko3__20261026-162328__s0",
+  "r3_reg1x5_w7_nce05_cpt_aux_lko4__20261026-163141__s0"
+ ],
+ "pid": 272427,
+ "started": "2026-10-26 16:48:56 CET",
+ "n_rows": {},
+ "outputs": {
+  "metrics": {
+   "path": "results/runs/r3_w7_nce05_cpt_aux_lko_pooled__20261026-164851__s0/metrics.json",
+   "sha256": "1a9f951c1db5fffa0a1931bdc3dabddc009ed4e3f0e703891ac9f7f4d5c0f885"
+  },
+  "summary": {
+   "path": "results/runs/r3_w7_nce05_cpt_aux_lko_pooled__20261026-164851__s0/summary.json",
+   "sha256": "3a77d5abd3b0f890b33cf5b170f3e4325cbc36dd3c30b38522498eefee26b8ad"
+  }
+ },
+ "fallbacks": {},
+ "status": "ok",
+ "error": null,
+ "runtime_s": 202.88,
+ "finished": "2026-10-26 16:52:19 CET"
+}

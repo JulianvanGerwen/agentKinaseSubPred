@@ -1,0 +1,86 @@
+{
+ "run_id": "r3_w7_nce05_cv_pooled__20261026-160122__s0",
+ "name": "r3_w7_nce05_cv_pooled",
+ "git_hash": "581e25c4b597e00d27eff31a5ae6a0bc6e2149f1",
+ "config": {
+  "config": {
+   "flank": 7,
+   "lambda_nce": 0.5
+  },
+  "source_runs": [
+   "r3_reg1x5_w7_nce05_fold0__20261026-154250__s0",
+   "r3_reg1x5_w7_nce05_fold1__20261026-154825__s0",
+   "r3_reg1x5_w7_nce05_fold2__20261026-155158__s0",
+   "r3_reg1x5_w7_nce05_fold3__20261026-155528__s0",
+   "r3_reg1x5_w7_nce05_fold4__20261026-155809__s0"
+  ]
+ },
+ "seed": 0,
+ "split": "cv",
+ "notes": "",
+ "inputs": [
+  {
+   "path": "/workspace/cache/runs/r3_reg1x5_w7_nce05_fold0__20261026-154250__s0/predictions.parquet",
+   "type": "file",
+   "bytes": 55643887,
+   "sha256": "0bdabbcf09871b529bae9118e93e3617d945ba9e10f2b61c5e49350cc3c502b7"
+  },
+  {
+   "path": "/workspace/cache/runs/r3_reg1x5_w7_nce05_fold1__20261026-154825__s0/predictions.parquet",
+   "type": "file",
+   "bytes": 56114751,
+   "sha256": "28caad49dd0044f379b8a9acd4d7974a4289bf7b6f60a93825c9e1947e7c0eac"
+  },
+  {
+   "path": "/workspace/cache/runs/r3_reg1x5_w7_nce05_fold2__20261026-155158__s0/predictions.parquet",
+   "type": "file",
+   "bytes": 56108390,
+   "sha256": "de28cf03dd5192790de6289db2170dcf9744f701e281d1b80b9c01d3c0317166"
+  },
+  {
+   "path": "/workspace/cache/runs/r3_reg1x5_w7_nce05_fold3__20261026-155528__s0/predictions.parquet",
+   "type": "file",
+   "bytes": 55191111,
+   "sha256": "1699dc00afe1aa1ec4c9378866d91bbc446e3ae4733f7ee87b8992d075435774"
+  },
+  {
+   "path": "/workspace/cache/runs/r3_reg1x5_w7_nce05_fold4__20261026-155809__s0/predictions.parquet",
+   "type": "file",
+   "bytes": 56015992,
+   "sha256": "830e6c81196dd58cc5b3330392a15b970a2382e4bd1a96886eaa1addf3da9cb2"
+  }
+ ],
+ "host": "eu-g6-076",
+ "python": "3.12.3",
+ "platform": "Linux-5.15.0-198-generic-x86_64-with-glibc2.39",
+ "argv": [
+  "scripts/models/r3_cv.py",
+  "pool",
+  "--config",
+  "w7_nce05",
+  "--runs",
+  "r3_reg1x5_w7_nce05_fold0__20261026-154250__s0",
+  "r3_reg1x5_w7_nce05_fold1__20261026-154825__s0",
+  "r3_reg1x5_w7_nce05_fold2__20261026-155158__s0",
+  "r3_reg1x5_w7_nce05_fold3__20261026-155528__s0",
+  "r3_reg1x5_w7_nce05_fold4__20261026-155809__s0"
+ ],
+ "pid": 241123,
+ "started": "2026-10-26 16:01:27 CET",
+ "n_rows": {},
+ "outputs": {
+  "metrics": {
+   "path": "results/runs/r3_w7_nce05_cv_pooled__20261026-160122__s0/metrics.json",
+   "sha256": "0877fb8b1e71f482b1a1ed616143a4e64e1d6a6c2e8b247f32eb927405716993"
+  },
+  "summary": {
+   "path": "results/runs/r3_w7_nce05_cv_pooled__20261026-160122__s0/summary.json",
+   "sha256": "19b097afd3f708026bf00b8fe224e0b3733595ae05e9807cb54a82f140e721e6"
+  }
+ },
+ "fallbacks": {},
+ "status": "ok",
+ "error": null,
+ "runtime_s": 233.59,
+ "finished": "2026-10-26 16:05:21 CET"
+}

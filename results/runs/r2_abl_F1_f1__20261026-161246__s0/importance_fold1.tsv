@@ -1,0 +1,8 @@
+feature	gain	split
+f1_unprimed_score	50921.513976573944	1042
+f1_unprimed_pct_universe	93889.40409755707	989
+f1_primed_soft_score	15164.514055728912	954
+f1_primed_soft_pct_universe	18534.622744083405	878
+f1_primed_hard_score	18360.546327114105	1161
+f1_primed_hard_pct_universe	15544.52933883667	999
+f1_impute_dist	4758.710292339325	277

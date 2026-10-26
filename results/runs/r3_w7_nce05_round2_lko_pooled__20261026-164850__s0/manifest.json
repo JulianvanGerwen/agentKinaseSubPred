@@ -1,0 +1,88 @@
+{
+ "run_id": "r3_w7_nce05_round2_lko_pooled__20261026-164850__s0",
+ "name": "r3_w7_nce05_round2_lko_pooled",
+ "git_hash": "581e25c4b597e00d27eff31a5ae6a0bc6e2149f1",
+ "config": {
+  "config": {
+   "flank": 7,
+   "lambda_nce": 0.5
+  },
+  "source_runs": [
+   "r3_reg1x5_w7_nce05_lko0__20261026-163555__s0",
+   "r3_reg1x5_w7_nce05_lko1__20261026-163914__s0",
+   "r3_reg1x5_w7_nce05_lko2__20261026-164006__s0",
+   "r3_reg1x5_w7_nce05_lko3__20261026-164259__s0",
+   "r3_reg1x5_w7_nce05_lko4__20261026-164548__s0"
+  ]
+ },
+ "seed": 0,
+ "split": "lko_T2",
+ "notes": "",
+ "inputs": [
+  {
+   "path": "/workspace/cache/runs/r3_reg1x5_w7_nce05_lko0__20261026-163555__s0/predictions.parquet",
+   "type": "file",
+   "bytes": 76809832,
+   "sha256": "a73f3732044000b060df4beb63c9a8fa42abfa8669b5f6077cafd0bcae4e9253"
+  },
+  {
+   "path": "/workspace/cache/runs/r3_reg1x5_w7_nce05_lko1__20261026-163914__s0/predictions.parquet",
+   "type": "file",
+   "bytes": 81705683,
+   "sha256": "cea891053c30e7d2dbee0f67767ab7fbca0b720e2b7f9c60cf4cb5bc3e3866be"
+  },
+  {
+   "path": "/workspace/cache/runs/r3_reg1x5_w7_nce05_lko2__20261026-164006__s0/predictions.parquet",
+   "type": "file",
+   "bytes": 75564813,
+   "sha256": "15cc8f66ed2cd30e19ae2a4f786ddde411b533a7d6e4053e5ba824aa96291646"
+  },
+  {
+   "path": "/workspace/cache/runs/r3_reg1x5_w7_nce05_lko3__20261026-164259__s0/predictions.parquet",
+   "type": "file",
+   "bytes": 76596374,
+   "sha256": "7c7d1f92595a03a2ed3cf826b94894d1ea4033f29a074b93b1b6b041205f73b7"
+  },
+  {
+   "path": "/workspace/cache/runs/r3_reg1x5_w7_nce05_lko4__20261026-164548__s0/predictions.parquet",
+   "type": "file",
+   "bytes": 83813519,
+   "sha256": "97304f1935e4b941b40361759b82690366a29f888d9aafbd2854f46b95b4a393"
+  }
+ ],
+ "host": "eu-g6-076",
+ "python": "3.12.3",
+ "platform": "Linux-5.15.0-198-generic-x86_64-with-glibc2.39",
+ "argv": [
+  "scripts/models/r3_cv.py",
+  "pool-lko",
+  "--config",
+  "w7_nce05",
+  "--tag",
+  "round2",
+  "--runs",
+  "r3_reg1x5_w7_nce05_lko0__20261026-163555__s0",
+  "r3_reg1x5_w7_nce05_lko1__20261026-163914__s0",
+  "r3_reg1x5_w7_nce05_lko2__20261026-164006__s0",
+  "r3_reg1x5_w7_nce05_lko3__20261026-164259__s0",
+  "r3_reg1x5_w7_nce05_lko4__20261026-164548__s0"
+ ],
+ "pid": 272428,
+ "started": "2026-10-26 16:48:54 CET",
+ "n_rows": {},
+ "outputs": {
+  "metrics": {
+   "path": "results/runs/r3_w7_nce05_round2_lko_pooled__20261026-164850__s0/metrics.json",
+   "sha256": "f5a6b24d705f683db55dbc6a494823ecce27bbff8218b709ac4de26a8208b400"
+  },
+  "summary": {
+   "path": "results/runs/r3_w7_nce05_round2_lko_pooled__20261026-164850__s0/summary.json",
+   "sha256": "63a1f9694e83a129bfe16e5a774b98b31a850f9b0b088fa4fe17431747c5c1a0"
+  }
+ },
+ "fallbacks": {},
+ "status": "ok",
+ "error": null,
+ "runtime_s": 185.49,
+ "finished": "2026-10-26 16:52:00 CET"
+}
