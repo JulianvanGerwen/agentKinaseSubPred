@@ -17,3 +17,4 @@
 14. Verify file identities before recording them — paper1/paper2 were swapped in LITERATURE.md until an agent read the PDFs.
 15. The node is shared with other users' jobs — budget memory per agent (≤60 GB) and check `free -g` before parallel launches — a re-eval worker was OOM-killed at ~100 GB total (17:50).
 16. Audit PROMPT.md's explicit asks against the leaderboard at every milestone: at 20:00 the label-variant (in vivo/in vitro, species) and per-kinase-vs-global comparisons were still unrun with 5 h of CV time left. (2026-10-26 20:00)
+17. Our job cgroup caps memory at 128 GiB, not the node's 375 GB — budget against the cgroup; the regimes agent at ~60–67 GB triggered 3 OOM kills of co-running jobs (2026-10-26 ~23:00).
