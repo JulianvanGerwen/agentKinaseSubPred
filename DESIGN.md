@@ -1,6 +1,6 @@
 # DESIGN — Human kinase–substrate (site-level) predictor
 
-**Version: v2 (2026-10-26 15:15) — FROZEN for implementation.** v2 = v1 + the amendments in §16, which take precedence over earlier sections where they conflict. This revision follows review round 1 (`docs/reviews/r1_*.md`). §15 maps each accepted or rejected reviewer change to the place it lands.
+**Version: v2 (2026-10-26 ~14:30) — FROZEN for implementation.** v2 = v1 + the amendments in §16, which take precedence over earlier sections where they conflict. This revision follows review round 1 (`docs/reviews/r1_*.md`). §15 maps each accepted or rejected reviewer change to the place it lands.
 
 Supporting material:
 - `LITERATURE.md` and `docs/lit/*`
@@ -379,7 +379,7 @@ GPU allocation:
 ## 14. Revision log
 - v0 (14:00): initial draft.
 - v1 (14:30): round-1 revisions (see §15).
-- v2 (15:15): round-2 revisions (§16). No round 3: round 2 found no design-level critical issues beyond those fixed here (decision: PI; reason: avoid rework while 6 implementers run, per LESSONS #6/#7).
+- v2 (~14:30): round-2 revisions (§16). No round 3: round 2 found no design-level critical issues beyond those fixed here (decision: PI; reason: avoid rework while 6 implementers run, per LESSONS #6/#7).
 
 ## 15. Round-1 change map
 **Accepted, with location:**

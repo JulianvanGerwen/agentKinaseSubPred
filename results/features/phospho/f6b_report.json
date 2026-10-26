@@ -1,0 +1,183 @@
+{
+ "n_conditions_total": 1937,
+ "n_used": 692,
+ "n_used_hijazi": 165,
+ "n_used_affinity": 527,
+ "n_used_unknown_time": 67,
+ "dropped": {
+  "no_drug": 1169,
+  "": 692,
+  "time>120min": 40,
+  "no_kinase_target_occ50": 33,
+  "no_kinhib_column": 3
+ },
+ "hijazi_kinhib_rows_unresolved": [
+  [
+   "BCR/ABL",
+   "symbol",
+   1
+  ],
+  [
+   "PDPK2P",
+   "symbol",
+   0
+  ],
+  [
+   "PI4KB",
+   "unknown",
+   1
+  ],
+  [
+   "PIK3C2A",
+   "symbol",
+   0
+  ],
+  [
+   "PIK3C2B",
+   "unknown",
+   1
+  ],
+  [
+   "PIK3C2G",
+   "unknown",
+   3
+  ],
+  [
+   "PIK3C3",
+   "symbol",
+   3
+  ],
+  [
+   "PIK3CA",
+   "symbol",
+   3
+  ],
+  [
+   "PIK3CB",
+   "symbol",
+   4
+  ],
+  [
+   "PIK3CD",
+   "symbol",
+   6
+  ],
+  [
+   "PIK3CG",
+   "symbol",
+   3
+  ],
+  [
+   "PIK3R1",
+   "symbol",
+   0
+  ],
+  [
+   "PIKFYVE",
+   "symbol",
+   3
+  ],
+  [
+   "PIP4K2A",
+   "symbol",
+   0
+  ],
+  [
+   "PIP4K2B",
+   "unknown",
+   1
+  ],
+  [
+   "PIP4K2C",
+   "unknown",
+   3
+  ],
+  [
+   "PIP5K1A",
+   "unknown",
+   3
+  ],
+  [
+   "PIP5K1C",
+   "unknown",
+   1
+  ],
+  [
+   "PRKY",
+   "unknown",
+   3
+  ],
+  [
+   "Q6ZSR9",
+   "unknown",
+   3
+  ]
+ ],
+ "affinity_sources": [
+  {
+   "source": "klaeger2017",
+   "n_drugs": 243,
+   "n_pairs": 54334,
+   "n_finite": 4310,
+   "n_rows_gene_not_in_kinase_list": 54420,
+   "n_unresolved_gene_names_total": 329
+  },
+  {
+   "source": "reinecke2024",
+   "n_drugs": 1049,
+   "n_pairs": 9400,
+   "n_finite": 9400,
+   "n_rows_gene_not_in_kinase_list": 1153,
+   "n_unresolved_gene_names_total": 329
+  },
+  {
+   "source": "curvecurator",
+   "n_drugs": 220,
+   "n_pairs": 4282,
+   "n_finite": 4282,
+   "n_rows_gene_not_in_kinase_list": 121,
+   "n_unresolved_gene_names_total": 329
+  },
+  {
+   "source": "davis2011",
+   "n_drugs": 72,
+   "n_pairs": 26496,
+   "n_finite": 7460,
+   "n_rows_gene_not_in_kinase_list": 792,
+   "n_unresolved_gene_names_total": 329
+  },
+  {
+   "source": "hijazi_kinhib",
+   "n_drugs": 59,
+   "n_pairs": 743,
+   "n_finite": 743,
+   "n_rows_gene_not_in_kinase_list": 19,
+   "n_unresolved_gene_names_total": 329
+  }
+ ],
+ "variant": "",
+ "lam": 1.0,
+ "s0_sq": 1.2281086444854736,
+ "n_exposed_kinases": 384,
+ "n_sites": 76380,
+ "n_nonseparable_pairs": 191,
+ "n_nonseparable_kinases": 109,
+ "features": {
+  "f6b_ridge_beta": {
+   "n_finite": 9986812,
+   "n_kinases": 384,
+   "n_sites": 75366
+  },
+  "f6b_ridge_z": {
+   "n_finite": 9986812,
+   "n_kinases": 384,
+   "n_sites": 75366
+  },
+  "f6b_contrast": {
+   "n_finite": 8195308,
+   "n_kinases": 378,
+   "n_sites": 63446
+  }
+ },
+ "seconds": 20.0
+}

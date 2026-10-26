@@ -16,7 +16,7 @@ Hardware: 64 CPU cores, 375 GB RAM, 4× RTX 4090 (24 GB). Internet available. Ne
 - T+22–24h: REPORT.md, final commit
 User notes: PSP full downloads will be provided by user; CPTAC/others: try to fetch ourselves, ask user only if slow.
 
-### 2026-10-26 14:50 — M1: design v1 + implementation start
+### 2026-10-26 ~14:15 — M1: design v1 + implementation start
 Decision note: accepted ~80 of 84 round-1 changes (map in DESIGN §15). Biggest design changes: (1) hard gates G1–G6 with scope cuts; (2) leave-substrate-cluster-out cross-fitting for every label-derived feature (DL-1: 68% of KS pairs have a same-protein co-labelled site → leave-site-out leaks); (3) paralog-masked hard negatives (SRC family: >50% of hard negatives were paralog substrates); (4) endpoints M1 (macro E-hard AUROC), M2 (filtered site-centric Hit@5), M3 (top-1% recall on U_ms), M4/M5 for understudied kinases; (5) sealed TEST + FREEZE.json + canary kinases; (6) only systematic-screen PPI (STRING leaks).
 Status: literature (4 reviews), data profiling, two acquisition waves (~12.6 GB), labels (L2 = 18,638 pairs, 401 kinases) and site universe (350,736 sites) are done. Round-2 review (4 reviewers) running in parallel with 6 implementation agents: core infra (splits/seal/eval/canaries), motif features, context features, phospho features, Phosformer reimplementation (GPU 0), structure+ESM (GPUs 2–3). DATAINEED.md created for the user (7 open requests; none blocking).
 
