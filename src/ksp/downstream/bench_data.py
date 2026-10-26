@@ -245,21 +245,10 @@ def _cohort_file(c: str) -> Path:
     return BK / f"{c.lower()}_original_medcent_30plus.tsv"
 
 
-@lru_cache(maxsize=1)
-def _cptac_logmap() -> dict:
-    """src_id (first 4 '|' fields) -> site_id from the site-universe mapping log (same BCM v1.2 identifiers)."""
-    p = ROOT / "cache" / "sites" / "mapping_log.parquet"
-    m = pd.read_parquet(p, columns=["source", "src_id", "site_id"])
-    m = m[m.source.eq("cptac") & m.site_id.notna()]
-    return dict(zip(m.src_id, m.site_id))
-
-
 def _map_cptac_ids(ids: pd.Series) -> pd.DataFrame:
     p = ids.str.split("|", expand=True)
-    key = p[0] + "|" + p[1] + "|" + p[2] + "|" + p[3]
-    lm = _cptac_logmap()
-    sid = key.map(lm)
-    meth = pd.Series(np.where(sid.notna(), "universe_log", "unmapped"), index=ids.index)
+    sid = pd.Series([None] * len(ids), index=ids.index, dtype=object)
+    meth = pd.Series("unmapped", index=ids.index)
     reason = pd.Series("", index=ids.index)
     need = sid.isna()
     if need.any():

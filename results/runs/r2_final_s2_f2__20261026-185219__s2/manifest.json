@@ -1,0 +1,103 @@
+{
+ "run_id": "r2_final_s2_f2__20261026-185219__s2",
+ "name": "r2_final_s2_f2",
+ "git_hash": "ac18aadef9a63f7ca4a988f9979301cd42d06ed5",
+ "config": {
+  "groups": [
+   "F1",
+   "F0",
+   "F2a",
+   "F3",
+   "F4",
+   "F6a",
+   "F6b",
+   "F6c",
+   "F5",
+   "F7"
+  ],
+  "ratio": 50,
+  "hard": 0.5,
+  "alpha": 0.5,
+  "objective": "binary",
+  "num_leaves": 127,
+  "learning_rate": 0.03,
+  "min_data_in_leaf": 100,
+  "feature_fraction": 0.8,
+  "bagging_fraction": 0.8,
+  "lambda_l2": 1.0,
+  "max_bin": 255,
+  "max_rounds": 3000,
+  "es_rounds": 100,
+  "refit": true,
+  "clean": false,
+  "comp_know": false,
+  "seed": 2,
+  "variant": "L2",
+  "miss_only": false,
+  "min_rounds": 50,
+  "es_metric": "mixed",
+  "es_real_only": true,
+  "f2a_family": "f2a_sep",
+  "desc_v": 2
+ },
+ "seed": 2,
+ "split": "cv",
+ "notes": "folds=[2]; ",
+ "inputs": [],
+ "host": "eu-g6-076",
+ "python": "3.12.3",
+ "platform": "Linux-5.15.0-198-generic-x86_64-with-glibc2.39",
+ "argv": [
+  "scripts/models/r2_run.py",
+  "--name",
+  "r2_final_s2_f2",
+  "--folds",
+  "2",
+  "--stage",
+  "final_v3",
+  "--no-register",
+  "--set",
+  "num_leaves=127",
+  "learning_rate=0.03",
+  "f2a_family=f2a_sep",
+  "desc_v=2",
+  "es_real_only=true",
+  "seed=2"
+ ],
+ "pid": 331810,
+ "started": "2026-10-26 18:52:19 CET",
+ "n_rows": {
+  "predictions": 21369067
+ },
+ "outputs": {
+  "predictions": {
+   "path": "cache/runs/r2_final_s2_f2__20261026-185219__s2/predictions.parquet",
+   "sha256": "23dda8df84d764e765596b65ba60bf1eeaf03c1fe4fc3c5e55aa05c4fcdc1b63"
+  },
+  "metrics": {
+   "path": "results/runs/r2_final_s2_f2__20261026-185219__s2/metrics.json",
+   "sha256": "446f788235f0d49755f6adc4bf9e37e5b920025a926306f6fe42185a6b3ebea7"
+  }
+ },
+ "fallbacks": {},
+ "fold_logs": {
+  "2": {
+   "n_train_rows": 498474,
+   "n_pos": 9774,
+   "n_val_rows": 99694,
+   "best_iteration": 334,
+   "inner_val_metric": 0.8380463629448112,
+   "t_gather_train_s": 14.2,
+   "t_train_es_s": 34.1,
+   "t_refit_s": 19.9,
+   "n_features": 172,
+   "t_predict_s": 73.4,
+   "n_pred_rows": 21369067,
+   "t_fold_s": 150.7
+  }
+ },
+ "status": "ok",
+ "error": null,
+ "runtime_s": 186.0,
+ "finished": "2026-10-26 18:55:25 CET"
+}
