@@ -9,6 +9,7 @@ PATTERNS = ["sealed/", "ks_pairs", "Kinase_Substrate_Dataset", "kinase_label_cou
 ALLOW = {"scripts/features/phospho_study_lists.py",  # PI 2026-10-26: reads only PMIDs of KS evidence to build the A12 exclusion list; no labels enter features
          "src/ksp/io_psp.py", "src/ksp/labels.py", "scripts/build_labels.py", "src/ksp/eval_test.py",
          "scripts/build_splits.py",
+         "src/ksp/deploy.py",  # PI 2026-10-27 00:12: G5 deployment labels (DEV+TEST); refuses unless the TEST batch is COMPLETED in LEDGER.md
          "src/ksp/models/regime/variants.py"}  # PI 2026-10-26 20:23: compares provenance values of load_dev('all') (DEV proteins only); no raw-source read          # build_splits.py: writes the seal (core-infra; runs once at G1)
 ALLOW_PREFIX = ("scripts/lit/", "scripts/audit_")
 # Pre-existing files reported to the PI (docs/core_infra.md) for their owners to fix; remove entries once fixed.
@@ -44,7 +45,7 @@ def test_no_sealed_or_raw_label_access():
 
 def test_sealed_dir_only_in_eval_test():
     for p, rel in _files():
-        if rel in ("src/ksp/eval_test.py", "scripts/build_splits.py"):
+        if rel in ("src/ksp/eval_test.py", "scripts/build_splits.py", "src/ksp/deploy.py"):  # deploy: G5, post-COMPLETED only
             continue
         assert "sealed/" not in p.read_text(errors="ignore"), f"{rel} references sealed/"
 

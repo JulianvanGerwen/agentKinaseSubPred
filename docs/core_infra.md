@@ -202,6 +202,32 @@ An intermediate v2 draft that drew a labelled site uniformly and then took its p
 
 ## 8. Tests (`tests/`, pytest added to requirements.txt)
 
+### 8.0 Deployment labels (G5; `src/ksp/deploy.py`, new module, so labels.py stays frozen under A28)
+
+**Call.** `ksp.deploy.load_deploy_labels(variant="L2", with_canaries=False, ums_only=None)` returns DEV + TEST labels for the deployment model (DESIGN §8.6: the frozen config retrained on DEV+TEST for the released predictions).
+
+**Semantics:** the same as `load_dev`.
+- Variants: L1/L2/L3/L2_vitro/L2_noauto/EXT/EXT_not_in_psp, `eval`, and `all` (every row, including mask-only rows, for KP and `NegativeMasks`).
+- U_ms-only by default, except for `all`.
+- The columns are the same, including `is_canary`.
+- DEV and TEST must be protein-disjoint; this is asserted.
+
+**Refusals.** It raises `DeployError` unless:
+- FREEZE.json is git-tracked and unmodified;
+- `results/test/LEDGER.md` has a **COMPLETED TEST** block for exactly that FREEZE sha (parsed with the `eval_test` ledger markers; STARTED-only, DRYRUN, or another sha do not count);
+- the sealed files match SEAL.json.
+
+**Canaries are off by default.** Released predictions must not contain canary pseudo-kinases, and after DEV+TEST retraining there is no held-out data on which a canary gate could be evaluated.
+- `with_canaries=True` adds the DEV canaries (v2) and the sealed TEST canary rows (positive canary only), for pipelines whose code path expects canary kinases.
+- Their CANARY_* outputs must be dropped before release.
+
+**Access and tests.** `deploy.py` is on the sealed-access allowlist (`tests/test_no_test_access.py`). The tests (`tests/test_deploy.py`, using a toy sealed set on public TEST proteins) check four things:
+1. It refuses with an empty ledger, with STARTED only, with COMPLETED for another sha, with DRYRUN, and with an untracked FREEZE.
+2. Once COMPLETED exists, it returns a strict superset of DEV for L2, all and eval, with identical columns, and is canary-free by default.
+3. It refuses a tampered seal.
+4. It refuses a DEV/TEST protein overlap.
+
+
 - **test_metrics:** hand-computed toys and sklearn cross-checks.
 - **test_splits:** no protein, cluster or identical-15-mer overlap between TEST and DEV or across CV folds; mmseqs edges stay inside clusters; constraints hold.
 - **test_masks:** Hamming search vs brute force; KP, paralog and E-hard semantics.
