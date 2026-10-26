@@ -21,3 +21,4 @@ Agents write only in their assigned paths; shared modules are changed only by th
 | R5-crossenc | src/ksp/models/r5/, scripts/models/r5_*.py, results/models/r5 | GPU 1–3 | done 19:53 (negative) |
 | core-infra (G4) | src/ksp/eval_test.py, tests/, docs/G4_RUNBOOK.md | 0/8 | running (19:58) |
 | strata | src/ksp/strata.py, tests/test_strata.py, results/strata, docs/strata_cv.md | 0/8 | running (19:59) |
+| regimes | scripts/models/regime_*.py, src/ksp/models/regime/, results/models/regime, docs/regimes_labels.md | 0/24 | running (20:00) |

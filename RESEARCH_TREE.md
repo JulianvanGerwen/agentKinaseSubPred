@@ -104,3 +104,5 @@ Status: literature (4 reviews), data profiling, two acquisition waves (~12.6 GB)
   - [x] 5.10 Downstream benchmarKIN harness → docs/downstream.md: reproduces Müller-Dott 2025 (PSP z-score perturbation AUROC 0.782 vs 0.79; tumour 0.664 vs 0.662; PSP+KinLib 0.650/0.583 vs 0.65/0.58). Cantley-only top-N 0.50–0.64; shuffled 0.52. DEV-only PSP ≈ full PSP. Needs clean-variant predictions (no bench studies, no CPTAC features).
   - [~] 5.11 Strata (priming, PIKK, FAM20C, hub, label bins, residue) on CV OOF → src/ksp/strata.py, docs/strata_cv.md (strata agent, due 23:30)
   - [~] 5.12 G4 readiness: eval_test strata + 9 Holm superiority tests + T3/external/temporal + toy dry run + docs/G4_RUNBOOK.md (core-infra, started 19:58)
+  - [~] 5.13 Label variants (L1 human-only, L2_vitro, L2_vivo, L2+ext; crossfit refit) and training regimes (global vs per-kinase vs partial pooling λ) on 5-fold CV → docs/regimes_labels.md (regimes agent, due 00:45). Adoption: ΔM1 ≥+0.005, M2 drop ≤0.01, canary pass.
+  - [ ] 5.14 R2 queue: LKO T2 final config; clean variant → benchmarKIN; final DEV retrain + TEST + T3 predictions ready by 01:30
