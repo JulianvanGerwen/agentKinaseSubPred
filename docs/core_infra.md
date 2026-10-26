@@ -136,6 +136,14 @@ K_eval is 119, below the ≈135–160 expected in DESIGN. The cause is the U_ms 
 - `paired_bootstrap(A, B)` refuses unmatched universes and returns bootstrap p-values; `holm(p)` applies Holm correction.
 - `matched_universe`, `coverage` and `coverage_at` (A17).
 
+**Pooled CV (A24, DESIGN §17).**
+- With `split='cv'` and `fold=None`, scores are by default replaced by their mid-rank percentile ((rank − 0.5)/n) within (CV fold, kinase), over universe sites. This is `evaluate(..., fold_normalise=None)`, which turns ON for pooled CV and is a no-op for a single fold or TEST.
+- It is applied before M1/M3/M4/M5. M2 uses the supplied `score_site`, or the raw score when none is given.
+- `endpoints` gains `fold_normalised`, `M1_per_fold` (macro M1 per fold) and `M1_fold_mean`.
+- Leave-kinase-out pooled predictions come from one model per kinase, so pass `fold_normalise=False` for them.
+- Check: B0-prior with fold-training counts had pooled M1 0.400 raw; with the option it is 0.500, and per-fold M1 is 0.5.
+- Pooled evaluation of 70M rows takes 79 s.
+
 **Speed.** CV fold 0 has 21.3M (k,s) rows, i.e. 516 kinases × 55.6k sites; one evaluate takes 27 s and B=200 bootstrap takes 1.3 s. TEST (≈70k sites) should take about 35 s.
 
 ## 6. Canaries (`ksp.canary`, **v2**, PI decision after the R3 audit)
@@ -209,7 +217,7 @@ An intermediate v2 draft that drew a labelled site uniformly and then took its p
 ## 11. API stability (R2, R3, B3, B4 and baseline agents)
 
 I expect no breaking changes. Every public signature above is frozen, including load_dev, NegativeMasks, paralog_sets, splits readers, inner_folds, crossfit, prepare/evaluate/bootstrap/paired_bootstrap, RunManifest and canary helpers. Possible changes are additive only, with defaults that keep current behaviour:
-- `evaluate(...)` may gain optional arguments, e.g. per-fold aggregation for CV (`cv_mode='per_fold'`). The pooled-OOF default stays.
+- `evaluate(..., fold_normalise=None)` was added (A24). It changes pooled-CV M1/M3/M4/M5 relative to runs evaluated before 17:00, so re-evaluate those from their saved predictions. Further optional arguments may follow, always with defaults.
 - `EvalResult.endpoints` may gain extra keys, e.g. bootstrap summaries. Existing keys keep their names.
 - If the PI adopts it, a shared `ksp.labels.sample_negatives(...)` generator would be added (A15/A22). Nothing existing would be renamed.
 - Label tables change only through `build_splits.py --relabel`. That mode keeps the split, evaluation positives and canaries fixed and fails otherwise, so DEV evaluation sets cannot shift silently.

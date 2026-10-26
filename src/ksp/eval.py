@@ -333,7 +333,7 @@ def _nanmean(x) -> float:
 
 
 def fold_rank_normalise(P: pd.DataFrame, data: EvalData) -> pd.DataFrame:
-    """DESIGN §17 A24: replace `score` by its percentile (average rank / n, ties averaged) among the same kinase's
+    """DESIGN §17 A24: replace `score` by its mid-rank percentile ((average rank - 0.5) / n) among the same kinase's
     scored candidates in the same CV fold (universe sites only), removing fold-varying score offsets before pooled
     per-kinase metrics. The raw score is kept as `score_site` for M2 unless a separate score_site was supplied."""
     if data.site_fold is None:
@@ -344,7 +344,10 @@ def fold_rank_normalise(P: pd.DataFrame, data: EvalData) -> pd.DataFrame:
     fk = data.site_fold[P.s.values]
     m = (fk >= 0) & data.universe[P.s.values]
     key = P.k.values[m] * 8 + fk[m]
-    P.loc[m, "score"] = pd.Series(P.score.values[m]).groupby(key).rank(method="average", pct=True).values
+    g = pd.Series(P.score.values[m]).groupby(key)
+    r = g.rank(method="average").values
+    n = g.transform("size").values
+    P.loc[m, "score"] = (r - 0.5) / n          # mid-rank percentile: all-tied fold -> exactly 0.5 in every fold
     return P
 
 
