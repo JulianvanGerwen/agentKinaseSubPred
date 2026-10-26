@@ -36,6 +36,10 @@ def main():
     p, q = rng.normal(1, 1, 50), rng.normal(0, 1, 300)
     q[:20] = p[:20]                                                        # ties
     assert np.isclose(evaluate.auroc(p, q), roc_auc_score(np.r_[np.ones(50), np.zeros(300)], np.r_[p, q]))
+    from ksp.downstream import paired
+    w = rng.integers(0, 3, 350).astype(float)
+    sc, yy = np.r_[p, q], np.r_[np.ones(50), np.zeros(300)]
+    assert np.isclose(paired._wauc(paired._prep_auc(sc, yy), w), roc_auc_score(yy, sc, sample_weight=w))
     sh = libraries.shuffled(lib, 1)
     assert libraries.sizes(sh).equals(libraries.sizes(lib)) and set(sh.site_id) == set(lib.site_id)
     print("downstream selftest OK")

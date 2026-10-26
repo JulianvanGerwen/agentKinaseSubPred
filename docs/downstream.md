@@ -1,7 +1,7 @@
 # Downstream: kinase-activity inference on benchmarKIN (DESIGN §6.7, §16 A21)
 
-Code: `src/ksp/downstream/` (`bench_data`, `libraries`, `inference`, `evaluate`, `api`). Scripts: `scripts/downstream/`
-(`run_validation.py`, `run_predictions.py`, `selftest.py`). Results: `results/downstream/`. Caches of the mapped benchmark:
+Code: `src/ksp/downstream/` (`bench_data`, `libraries`, `inference`, `evaluate`, `api`, `paired`, `ldo`). Scripts: `scripts/downstream/`
+(`run_validation.py`, `run_predictions.py`, `pred_topk.py`, `run_final.py`, `selftest.py`). Results: `results/downstream/`. Caches of the mapped benchmark:
 `cache/downstream/`. Run time: about 6 min for the full validation (4 methods, 22 libraries, 1000 iterations, 1 core).
 
 Reference: Müller-Dott et al. 2025 *Nat Commun* 16:4771 (doi:10.1038/s41467-025-59779-y). Data: Zenodo 12566560
@@ -145,9 +145,110 @@ Python API: `api.prediction_arms(path, tag)` gives the top{PSP,50,100}, `+PSP` a
 
 **Universe caveat.** Top-50 over U_obs (350k sites) leaves few *measured* targets. Only 13 perturbed kinases are evaluable for Cantley_top50_Uobs. Report U_obs (the pre-registered library) and `measured` side by side. `measured` uses only which sites were quantified, never their values.
 
-## 7. Assumptions and limitations
+## 7. Final pre-registered analysis: R2 clean library (2026-10-26 22:10)
+**Inputs.**
+- **Model:** `r2_final_cleanbench_uobs__20261026-204513__s0` (docs/model_r2.md §6.2). It is DEV-trained; its phospho features exclude the 22 `clean_bench` PMIDs and every CPTAC-derived feature; CV M1 is 0.771.
+- **Library source:** its exhaustive U_obs predictions (131,144,410 rows; `cache/runs/<id>/uobs_predictions.parquet`).
+
+**Pipeline.**
+1. `scripts/downstream/pred_topk.py --tag r2_clean` streams the parquet with pyarrow `iter_batches` (4 M rows per batch, 30 s, a few GB of RAM).
+2. `scripts/downstream/run_final.py --tag r2_clean --methods zscore`, and the same with `ulm`. Each takes about 4 min.
+3. Outputs are in `results/downstream/final_r2_clean_{zscore,ulm}_{native,paired,coverage,per_kinase,ldo_strata}.tsv` and `r2_clean_topk_check.json`.
+
+**Truncation check** (`r2_clean_topk_check.json`). R2's truncated file (`uobs_predictions_topk.parquet`, the per-kinase top 2·|PSP|+200 rows) contains every row every U_obs arm needs:
+- There are 0 kinases with ties at the cut.
+- All six arms (top{PSP,50,100}, with and without the `-PSP` exclusion) are identical whether built from the truncated file or from the streamed full ranking.
+- The `-PSP` arms need at most rank 2·|PSP|+100, i.e. K−100.
+- The `measured`-universe arms cannot come from the U_obs truncation. They were built from the stream as the top-K within the 92,054 benchmark-measured sites.
+
+**Arms.**
+- Pre-registered universe U_obs:
+  - ours_top{PSP,50,100};
+  - ours_top{N}+PSP (∪ PSP_all);
+  - ours_top{N}-PSP (PSP_all pairs removed before ranking);
+  - Cantley_top{N};
+  - PSP_all and PSP_dev;
+  - shuffled controls: PSP_all, ours_topPSP and ours_top50, 5 seeds each.
+- The same model arms and Cantley arms are repeated in the `measured` universe as a sensitivity analysis.
+- Primary method: z-score. ULM is the sensitivity method and gives the same conclusions to within ±0.02 (`final_r2_clean_ulm_*`).
+
+**Leave-drug-out (A21).** No leave-drug-out *model* exists: it would need F6a/F6b with `exclude_drugs` and an R2 retrain, which belongs to the feature and R2 teams. As an approximation, `ksp.downstream.ldo` classifies every benchmark experiment by whether its drug appears anywhere in the clean model's compendium.
+- **How drugs are matched:** the F6b union-find drug identity (Klaeger/Reinecke/Davis synonyms plus `drug_aliases.tsv`), with a substring fallback over Condition/Control text, applied to compendium conditions outside `clean_bench`.
+- **drug_unseen** (114 experiments: 24 Hernandez, 88 Hijazi, 2 tyrosine): the clean model had no phosphoproteomic response data for that drug. This is the leave-drug-out stratum.
+- **drug_seen:** 57 experiments.
+- **no_drug:** 59 experiments (stimuli, cell cycle, DNA damage, genetic).
+- **Caveat:** drug_unseen is dominated by Hijazi, so a drug effect cannot be separated from a dataset effect. The per-dataset rows are reported as well.
+
+**Paired comparisons on matched kinase sets** (`ksp.downstream.paired`). A matched set contains only what both libraries score:
+- perturbation: (experiment, kinase) cells, keeping experiments in which a perturbed kinase is scored by both;
+- tumour: per-cohort kinases with ≥30 scored tumours in both, and GS pairs present in both.
+
+Bootstrap: B = 1000 paired draws. The unit is the experiment for perturbation AUROC, the perturbed kinase for scaled rank, and the kinase for tumour AUROC. CIs are 95% percentile intervals. AUROC is the full AUROC, whose expectation equals the paper's balanced-subsample mcauroc. The CIs are unadjusted: downstream is a secondary, descriptive endpoint, and no superiority claim is pre-registered for it.
+
+**Results** (z-score, U_obs, Δ = ours − reference with 95% CI, followed by the matched AUROC of the reference → ours and the matched n):
+
+| comparison | perturbation, all 230 exps | leave-drug-out (drug_unseen) | tumour (CPTAC, 7 cohorts) |
+|---|---|---|---|
+| ours_topPSP vs PSP_all | −0.017 [−0.054, 0.018]; 0.772→0.755 (35 kin, 129 exp) | −0.058 [−0.123, 0.003] | +0.016 [−0.018, 0.051]; 0.680→0.696 (57 kin) |
+| ours_top50 vs PSP_all | −0.013 [−0.043, 0.012]; 0.769→0.756 (33 kin, 106 exp) | −0.050 [−0.096, −0.001] | +0.011 [−0.027, 0.046] (54 kin) |
+| ours_top100 vs PSP_all | −0.019 [−0.053, 0.012] (39 kin, 126 exp) | −0.041 [−0.099, 0.017] | +0.029 [−0.010, 0.071] (70 kin) |
+| ours_top{PSP,50,100} vs PSP_dev | −0.023 / −0.021 / −0.014 (all CIs include 0) | −0.057 / −0.063* / −0.021 | +0.024 / +0.021 / +0.039 (all CIs include 0) |
+| ours_top{PSP,50,100}+PSP vs PSP_all | +0.005 / +0.002 / +0.001 (all CIs include 0; 41 kin, 147 exp) | −0.015 / −0.006 / −0.011 | +0.015 / +0.015 / **+0.034 [0.005, 0.068]** (73 kin) |
+| ours_top{PSP,50,100}−PSP vs PSP_all | **−0.045*** / −0.052 / **−0.068*** | −0.075* / −0.125* / −0.107* | +0.013 / +0.018 / +0.020 (all CIs include 0) |
+| ours_topPSP vs Cantley_topPSP | **+0.126 [0.059, 0.190]** (22 kin) | −0.002 [−0.106, 0.102] (15 kin) | **+0.164 [0.095, 0.240]** |
+| ours_top100 vs Cantley_top100 | **+0.176 [0.091, 0.263]** (36 kin) | +0.095 [−0.019, 0.208] | **+0.114 [0.078, 0.149]** (146 kin) |
+| ours_top{N}−PSP vs Cantley_top{N} (PSP / 100) | **+0.103 / +0.119** | +0.013 / +0.079 | **+0.161 / +0.114** |
+| ours_topPSP vs its shuffle (s0) | **+0.260 [0.180, 0.334]** | **+0.184 [0.052, 0.305]** | **+0.200 [0.136, 0.261]** |
+
+Notes on the table:
+- `*` = the 95% CI excludes 0. Bold marks the main CI-excludes-0 results.
+- ours_top50 vs Cantley_top50 at U_obs is not interpretable: only 9 kinases and 25 experiments are matched, because Cantley's U_obs top-50 is almost never measured.
+- In the `measured` universe the picture is the same. ours vs PSP_all on perturbation is +0.013 / −0.027 / −0.024 (n.s.). On tumour it is +0.037 / +0.018 / +0.038, with CIs excluding 0 for topPSP; versus PSP_dev it is +0.048 [0.012, 0.085]. ours vs Cantley is +0.13 to +0.22 on perturbation and +0.10 to +0.13 on tumour, all with CIs excluding 0.
+
+**Per dataset** (ours_top50 vs PSP_all):
+
+| dataset | Δ AUROC [95% CI] |
+|---|---|
+| Hernandez | +0.014 [−0.031, 0.058] |
+| Hijazi | −0.042 [−0.087, 0.001] |
+| tyrosine | +0.041 [−0.026, 0.114] |
+| drug_seen | +0.016 |
+| no_drug | +0.013 |
+
+**Coverage** (`final_r2_clean_zscore_coverage.tsv`; native, each library on its own):
+
+| library | evaluable perturbed kinases / experiments | native perturbation AUROC | evaluable tumour kinases | native tumour AUROC |
+|---|---|---|---|---|
+| PSP_all | 41 / 147 | 0.782 | 73 | 0.664 |
+| PSP_dev | 37 / 140 | 0.784 | 61 | 0.666 |
+| ours_topPSP | 38 / 141 | 0.744 | 59 | 0.692 |
+| ours_top50 | 50 / 123 | 0.775 | 149 | 0.653 |
+| ours_top100 | 65 / 152 | 0.749 | 274 | 0.645 |
+| ours_top50+PSP | 60 / 168 | 0.787 | 172 | 0.659 |
+| ours_top100+PSP | 66 / 181 | 0.770 | 282 | 0.653 |
+| ours_top100−PSP | 62 / 141 | 0.707 | 275 | 0.646 |
+| Cantley_top50 (U_obs) | 13 / 31 | 0.620 | 126 | 0.540 |
+| Cantley_top100 (U_obs) | 37 / 85 | 0.529 | 166 | 0.544 |
+| shuffled PSP_all (5 seeds) | 34 / 128 | 0.518 ± 0.028 | 86 | 0.531 ± 0.019 |
+
+Overlap with PSP: 28% of ours_topPSP pairs, 13% of top50 and 9% of top100 are PSP_all pairs.
+
+**Interpretation (pre-registered arms, z-score, U_obs):**
+1. **Ours vs PSP.** On matched kinase sets the clean R2 library is statistically indistinguishable from PSP. Perturbation Δ runs from −0.013 to −0.019; tumour Δ from +0.011 to +0.029; every CI includes 0.
+   - The R2 team's native contrasts (top50 0.775 on 50 kinases vs PSP 0.783 on 41; tumour topPSP 0.692 vs 0.664) are not like-for-like.
+   - Matched, the tumour contrast is 0.680 → 0.696, +0.016 [−0.018, 0.051]. It is not significant.
+2. **Coverage.** The model's libraries make many more kinases evaluable: 50–65 perturbed kinases vs 41, and 149–274 tumour kinases vs 73. At those extra kinases, performance stays well above chance.
+3. **Adding predictions to PSP.** This leaves the perturbation benchmark unchanged (Δ ≤ +0.005) and helps the tumour benchmark slightly (+0.015 to +0.034; the top-100 CI excludes 0). The paper found the opposite for Kinase Library and Phosformer targets: adding them lowered performance, to 0.65 on perturbation and 0.57–0.58 on tumour. We reproduce their KL result (§5).
+4. **Novel predictions only (−PSP).** These are worse than PSP on perturbation (−0.045 to −0.068) but equal to PSP on tumour. They beat Cantley (+0.10 to +0.12 perturbation, +0.11 to +0.16 tumour) and the shuffles.
+5. **Leave-drug-out.** In experiments whose drug the clean model never saw (mostly Hijazi), ours trails PSP by 0.04–0.06; the top50 CI just excludes 0. On drug_seen and no_drug experiments it is level with PSP.
+   - So part of the perturbation-benchmark parity depends on drug-response data for the same compounds from other studies.
+   - On unseen drugs at U_obs, the model's advantage over Cantley also shrinks to n.s. (+0.00 to +0.10). In the `measured` universe it stays significant (+0.09 to +0.12).
+   - A true leave-drug-out retrain would be needed to separate the drug effect from the Hijazi-dataset effect.
+
+## 8. Assumptions and limitations
 - Hernandez, Hijazi and tyrosine sites are mapped by symbol + position, with no window; roughly 9% of Hernandez rows are lost to isoform or version shifts. Hijazi FDR filtering is as distributed.
 - PSP_all uses the 2025 PSP release; the paper used the 2023 one. The paper's "curated" library also had PTMsigDB and GPS-gold, which we don't build.
 - Benchmark experiments may be among the HTP evidence that PSP curates. This affects every PSP-based arm, as it did in the paper.
 - The scaled rank uses stable ordering for ties. The mcauroc seed is 42 (decoupler) and the tumour seed is 1 (benchmarKIN). The numpy RNG differs from R's, so subsampled values differ from R in the third decimal.
-- "Leave-drug-out" (A21) is supported only by restricting the experiments plus a matching predictions file. The leave-drug-out model itself belongs to the R2 team.
+- Leave-drug-out (A21) is approximated by the drug_unseen stratum (§7), which is confounded with the Hijazi dataset. A true leave-drug-out run needs a model whose F6a/F6b exclude the benchmark drugs (`exclude_drugs`), evaluated with `--experiments-file`; that model belongs to the R2 team.
+- The paired CIs are not adjusted for the many comparisons. Read them descriptively; downstream is a secondary endpoint.
