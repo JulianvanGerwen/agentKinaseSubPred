@@ -484,3 +484,8 @@ GPU allocation:
 - **A28. Harness freeze** (2026-10-26 17:35). `src/ksp/eval.py`, `labels.py`, `splits.py`, `crossfit.py` and `canary.py` are frozen at the current commit; the harness version is that commit's hash.
   - Any further change needs a PI decision logged here, and must be applied to all methods.
   - Exploration on CV closes at **01:00**. After that, only the pre-declared final selection rule (§8.6: best M1-CV; ties → M2-CV) and the seed runs happen before FREEZE.json (G4).
+- **A29. TEST-batch integrity and contents** (2026-10-26 20:50; independent review of `eval_test.py`).
+  - FREEZE.json pins every predictions file by SHA-256. A STARTED ledger block is written before `sealed/` is read, and a COMPLETED block after. Any COMPLETED block blocks further TEST batches, except through a logged override. A crashed run may be resumed only with identical FREEZE, input and code hashes. The run requires `--real`, B = 10,000 and harness commit 974d520.
+  - **Contingency:** if B3 or B4 is not ready at FREEZE, the primary family stays m = 9. Absent tests take p = 1 and are reported "NOT TESTED".
+  - **In the single batch** (there is no second sealed access): per-kinase and site-level tables; kinase-resampling sensitivity CIs (§6.8); A17 assignment-reliability on labelled TEST sites; calibration on the external and temporal strata. Secondary analyses use B = 1,000.
+  - Fold-0 rehearsal note: final vs B1 arm (i) M1 was Holm p 0.018 at B = 1,000 and 0.050 at B = 10,000. Small-B p-values are not trusted.
