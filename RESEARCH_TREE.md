@@ -92,7 +92,7 @@ Status: literature (4 reviews), data profiling, two acquisition waves (~12.6 GB)
   - [x] 5.5 B4 SELPHI2.0 retrain → docs/baseline_selphi2.md (audit pending)
     - [!] Faithful retrain (39/44 features regenerated, 2 substituted, label-derived via crossfit): matched-universe M1 0.708 vs Cantley 0.728 on same pairs (−0.020); M3 0.316 (+0.187, driven by site-popularity features: dropping 4 leak-suspect features → M1 0.724, M3 0.265). Coverage 34% of pairs (Ochoa-table sites only). 109 min on 12 cores.
     - [!] Their 0.97 AUROC comes from random-pair negatives, not split leakage: same metric ≈0.947 on our cluster split.
-  - [~] 5.6 kNN embedding-similarity crossfit feature (GPU 2)
+  - [x] 5.6 knn_sim crossfit family → docs/features_knn.md: fold-0 sanity BLOSUM log-ratio 0.750, ESM centre 0.744 vs PSSM 0.765 (r≈0.25 with PSSM; rank-avg with PSSM 0.789). Better for ≥100-label kinases. Stores for 5 CV folds; final TEST rows use inner-fold fit (A1, PI decision).
   - [x] 5.7 Tyrosine-kinase specificity → docs/features_tyr.md
     - [!] Y gap real but partly artefactual: macro dilution (42% of Y kinases ≤3 positives); E-hard Y pool dominated by promiscuous hub sites (GLO1 Y136 → 15 TKs, STAT5A Y694 → 9); Cantley Tyr atlas within-family discrimination ≈0.51 and some matrices (FGFR1, BTK, Eph, VEGFR, TAM) anti-correlated with own labels.
     - F9 SH2-docking (Yaron-Barir SH2 matrices, 24/28 SH2 kinases): modest; most GBDT gain is a NaN-indicator artefact (+0.019 [−0.018, 0.057] for kinases with SH2 matrix). Recommended small set → R2 (ablation).
