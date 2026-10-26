@@ -89,5 +89,8 @@ Status: literature (4 reviews), data profiling, two acquisition waves (~12.6 GB)
     - [!] Faithful retrain (39/44 features regenerated, 2 substituted, label-derived via crossfit): matched-universe M1 0.708 vs Cantley 0.728 on same pairs (−0.020); M3 0.316 (+0.187, driven by site-popularity features: dropping 4 leak-suspect features → M1 0.724, M3 0.265). Coverage 34% of pairs (Ochoa-table sites only). 109 min on 12 cores.
     - [!] Their 0.97 AUROC comes from random-pair negatives, not split leakage: same metric ≈0.947 on our cluster split.
   - [~] 5.6 kNN embedding-similarity crossfit feature (GPU 2)
-  - [~] 5.7 Tyrosine-kinase specificity diagnosis + SH2-docking features
+  - [x] 5.7 Tyrosine-kinase specificity → docs/features_tyr.md
+    - [!] Y gap real but partly artefactual: macro dilution (42% of Y kinases ≤3 positives); E-hard Y pool dominated by promiscuous hub sites (GLO1 Y136 → 15 TKs, STAT5A Y694 → 9); Cantley Tyr atlas within-family discrimination ≈0.51 and some matrices (FGFR1, BTK, Eph, VEGFR, TAM) anti-correlated with own labels.
+    - F9 SH2-docking (Yaron-Barir SH2 matrices, 24/28 SH2 kinases): modest; most GBDT gain is a NaN-indicator artefact (+0.019 [−0.018, 0.057] for kinases with SH2 matrix). Recommended small set → R2 (ablation).
+    - Decision A26: hub-site stratum added (reporting only); relabelling A-loop cross-kinase labels rejected.
   - [~] 5.8 Independent audit of CV results (R3, baselines, R2)
