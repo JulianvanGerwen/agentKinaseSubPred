@@ -1,0 +1,5 @@
+arm	hit5	hit10	rr	n_kinases	n_pairs
+pct_published	0.1444	0.2259	0.1124	334	11693
+pct_universe	0.1557	0.2286	0.1171	334	11693
+primed_soft_pct_universe	0.1441	0.2164	0.1092	334	11693
+score	0.1581	0.23	0.1137	334	11693

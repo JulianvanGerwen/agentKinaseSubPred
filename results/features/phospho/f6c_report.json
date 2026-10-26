@@ -1,0 +1,56 @@
+{
+ "variant": "",
+ "exclude_cptac": "",
+ "cohorts": [
+  "BRCA",
+  "CCRCC",
+  "COAD",
+  "GBM",
+  "HNSCC",
+  "LSCC",
+  "LUAD",
+  "OV",
+  "PDAC",
+  "UCEC"
+ ],
+ "min_n": 20,
+ "n_kinases_with_aloop_range": 452,
+ "n_kinases_with_aloop_sites_in_universe": 350,
+ "n_kinases_with_aloop_profile_per_cohort": {
+  "BRCA": 50,
+  "CCRCC": 52,
+  "COAD": 34,
+  "GBM": 64,
+  "HNSCC": 58,
+  "LSCC": 71,
+  "LUAD": 67,
+  "OV": 31,
+  "PDAC": 50,
+  "UCEC": 59
+ },
+ "n_kinases_with_protein_per_cohort": {
+  "BRCA": 359,
+  "CCRCC": 338,
+  "COAD": 253,
+  "GBM": 370,
+  "HNSCC": 355,
+  "LSCC": 379,
+  "LUAD": 367,
+  "OV": 303,
+  "PDAC": 343,
+  "UCEC": 355
+ },
+ "f6c_prot": {
+  "n_finite": 25435280,
+  "n_kinases": 427,
+  "n_sites": 69058,
+  "mean_abs_z": 0.1089572012424469
+ },
+ "f6c_aloop": {
+  "n_finite": 4407056,
+  "n_kinases": 99,
+  "n_sites": 69058,
+  "mean_abs_z": 0.1400144100189209
+ },
+ "seconds": 14.9
+}

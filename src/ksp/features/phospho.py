@@ -400,3 +400,92 @@ def save_feature(name: str, M: np.ndarray, meta: dict | None = None) -> Path:
 
 def load_feature(name: str, mmap: bool = True) -> np.ndarray:
     return np.load(feature_path(name), mmap_mode="r" if mmap else None)
+
+
+# ----------------------------------------------------------------------------------------------- crossfit contract
+_BLOCK_CACHE: dict = {}
+
+
+def cached_blocks(kind: str, exclude_pmids=(), exclude_cptac=False) -> list:
+    key = (kind, tuple(sorted(int(p) for p in exclude_pmids)),
+           exclude_cptac if isinstance(exclude_cptac, bool) else tuple(sorted(exclude_cptac)))
+    if key not in _BLOCK_CACHE:
+        _BLOCK_CACHE[key] = load_blocks(kinds=(kind,), exclude_pmids=exclude_pmids, exclude_cptac=exclude_cptac)
+    return _BLOCK_CACHE[key]
+
+
+def site_clusters_from_acc(clusters: pd.Series | None, sites: pd.DataFrame | None = None) -> np.ndarray | None:
+    """acc -> cluster Series (FitContext.clusters) to an int64 cluster id per canonical site (-1 = unknown, never
+    matches another site because unknowns get unique negative ids)."""
+    if clusters is None:
+        return None
+    sites = site_index() if sites is None else sites
+    c = sites.acc.map(clusters)
+    out = np.empty(len(sites), np.int64)
+    miss = c.isna().to_numpy()
+    out[~miss] = c[~miss].astype(np.int64).to_numpy()
+    out[miss] = -1 - np.arange(miss.sum())
+    return out
+
+
+try:
+    from ksp.crossfit import LabelDerivedFeature, register  # noqa: E402
+except Exception:  # pragma: no cover - crossfit module not available
+    LabelDerivedFeature, register = object, (lambda c: c)
+
+
+@register
+class CoregF6a(LabelDerivedFeature):
+    """F6a co-regulation with training substrates (ksp.crossfit contract).
+
+    fit(train_pairs, ctx): keeps the training KS pairs (kinase_acc, site_id).
+    transform(query, ctx): for the unique query sites, runs ``coreg_features`` on the compendium blocks and on the
+    CPTAC blocks separately (substrates on the query's protein and substrate cluster excluded; ctx.clusters used) and
+    returns per query pair: f6a_comp_top, f6a_comp_med, f6a_cptac_top, f6a_cptac_med (Fisher z; NaN = <2 blocks).
+    Class attributes (override by subclassing or ``make_f6a``): kinds, exclude_pmids, exclude_cptac, m, min_shared,
+    min_blocks, device.
+    """
+    name = "f6a_coreg"
+    kinds = ("compendium", "cptac")
+    exclude_pmids: tuple = ()
+    exclude_cptac = False
+    m, min_shared, min_blocks = 3, 8, 2
+    device = "cuda"
+
+    def fit(self, train_pairs: pd.DataFrame, ctx=None):
+        self.train = train_pairs[["kinase_acc", "site_id"]].drop_duplicates().reset_index(drop=True)
+        return self
+
+    def transform(self, query: pd.DataFrame, ctx=None) -> pd.DataFrame:
+        sites = site_index()
+        kin = kinase_index()
+        if "site_idx" in query.columns:
+            sidx = query.site_idx.to_numpy(np.int64)
+        else:
+            sidx = query.site_id.map({s: j for j, s in enumerate(sites.site_id)}).to_numpy()
+        if "kinase_idx" in query.columns:
+            kidx = query.kinase_idx.to_numpy(np.int64)
+        else:
+            kidx = query.kinase_acc.map({a: i for i, a in enumerate(kin.uniprot_acc)}).to_numpy()
+        uq, inv = np.unique(sidx, return_inverse=True)
+        clus = site_clusters_from_acc(getattr(ctx, "clusters", None), sites) if ctx is not None else None
+        out = {}
+        for kind in self.kinds:
+            tag = "comp" if kind == "compendium" else "cptac"
+            if kind == "cptac" and self.exclude_cptac is True:
+                out[f"f6a_{tag}_top"] = np.full(len(query), np.nan, np.float32)
+                out[f"f6a_{tag}_med"] = np.full(len(query), np.nan, np.float32)
+                continue
+            blocks = cached_blocks(kind, self.exclude_pmids if kind == "compendium" else (),
+                                   self.exclude_cptac if kind == "cptac" else False)
+            r = coreg_features(self.train, uq, blocks, cluster_of_site=clus, m=self.m, min_shared=self.min_shared,
+                               min_blocks=self.min_blocks, n_kinases=len(kin), device=self.device)
+            out[f"f6a_{tag}_top"] = r["top"][kidx, inv]
+            out[f"f6a_{tag}_med"] = r["med"][kidx, inv]
+        return pd.DataFrame(out)
+
+
+def make_f6a(name: str, **attrs):
+    """Factory for clean variants, e.g. make_f6a('f6a_coreg_clean', exclude_pmids=(...), exclude_cptac=True)."""
+    cls = type(f"CoregF6a_{name}", (CoregF6a,), dict(name=name, **attrs))
+    return cls

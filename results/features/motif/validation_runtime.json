@@ -1,27 +1,28 @@
 {
- "cantley_auroc_s": 14.2,
- "fit_pssm_family_s": 2.4,
+ "cantley_auroc_s": 17.3,
+ "site_centric_s": 3.3,
+ "fit_pssm_family_s": 2.28,
  "fit_pssm_family_alpha_beta": [
-  128.0,
+  64.0,
   256.0
  ],
- "fit_pssm_group_s": 0.53,
+ "fit_pssm_group_s": 0.52,
  "fit_pssm_group_alpha_beta": [
   64.0,
   4.0
  ],
- "fit_pssm_none_s": 0.56,
+ "fit_pssm_none_s": 0.52,
  "fit_pssm_none_alpha_beta": [
-  64.0,
+  32.0,
   4.0
  ],
- "fit_pssm_family_phospho_s": 3.13,
+ "fit_pssm_family_phospho_s": 3.14,
  "fit_pssm_family_phospho_alpha_beta": [
   128.0,
   256.0
  ],
- "score_all_503x350736_s": 8.3,
- "crossfit_fit_transform_2000_s": 14.5,
+ "score_all_503x350736_s": 6.0,
+ "crossfit_driver_5inner+eval_s": 62.2,
  "crossfit_columns": [
   "f2a_pssm",
   "f2a_pssm_pct",
@@ -30,5 +31,8 @@
   "f2a_pssm_level",
   "f2a_pssm_log_ntrain"
  ],
- "crossfit_nan_frac": 0.0
+ "crossfit_nan_frac_train_eval": [
+  0.0,
+  0.0
+ ]
 }

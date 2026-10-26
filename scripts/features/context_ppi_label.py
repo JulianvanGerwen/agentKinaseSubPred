@@ -105,8 +105,6 @@ def main():
             r.update(module="ppi_label", feature=f"{n}[cf5,{cname}]")
             rows.append(r)
             print(f"{r['feature']:40s} cov={r['coverage_pos']:.3f} AUCrand={r['auc_rand_all']:.3f} AUCshuf={r['auc_shuf_all']:.3f}", flush=True)
-        if cname == "dummy_gene_family":
-            np.save(ROOT / "cache" / "features" / "context" / "ppi" / "nb_max_cf5_dummy.npy", cf["nb_max"])
     # in-sample (NOT cross-fitted) for contrast: shows the leak if cross-fitting is skipped
     for n in ["nb_max", "nb_frac_adj"]:
         r = evaluate_matrix(dense[n], pi, pj, bgs)

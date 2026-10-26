@@ -36,7 +36,7 @@ RT_RES = {"ST": ("S", "T"), "Y": ("Y",)}
 CLASS_RTS = {"ST": ("ST",), "Y": ("Y",), "STY": ("ST", "Y")}
 GAMMA = 10.0
 ALPHA_GRID = (0.5, 1, 2, 4, 8, 16, 32, 64, 128, 256, 512)
-BETA_GRID = (1, 4, 16, 64, 256)
+BETA_GRID = (1, 4, 16, 64, 256, 1024)
 
 _cache: dict = {}
 

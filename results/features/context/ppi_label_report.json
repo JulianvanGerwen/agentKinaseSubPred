@@ -1,6 +1,6 @@
 {
- "graph_load_s": 2.4,
+ "graph_load_s": 0.7,
  "unit_tests": "ok",
  "dense_all_kinases_s": 6.4,
- "total_s": 27.4
+ "total_s": 26.2
 }

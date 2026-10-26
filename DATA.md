@@ -641,3 +641,8 @@ All under /workspace/external/<dir>/. Full hash list: logs/dl/sha256_wave2.txt. 
 |---|---|---|---|---|
 | facebook/esm2_t33_650M_UR50D | https://huggingface.co/facebook/esm2_t33_650M_UR50D | 08e4846e537177426273712802403f7ba8261b6c | model.safetensors a08adabb949fa67ad3c14b509d04fd60368b35007b0095e3358f81200c4f4db0 | MIT (Lin et al. 2023 Science) |
 | facebook/esm2_t36_3B_UR50D | https://huggingface.co/facebook/esm2_t36_3B_UR50D | 476b639933c8baad5ad09a60ac1a87f987b656fc | pytorch_model-00001-of-00002.bin 0f971f11c449d21422aa982b791619c10351972992c735f4c3cd43fe09790412; -00002 7560b46fc383c691fb74b915b7d4bcef40d3df181447f16ba4b298845e308d0c | MIT |
+
+### UniProt topology + xrefs (external/uniprot_topology/; F4 site topology and ID mapping, src/ksp/features/{loc,ppi_idmap}.py; added by feat-context)
+| file | content | URL | version | accessed (UTC) | SHA-256 | License |
+|---|---|---|---|---|---|---|
+| external/uniprot_topology/UP000005640_reviewed_topology.tsv.gz | 20,416 reviewed human entries: accession, primary gene, Entrez GeneID, Ensembl transcripts, RefSeq, seq version, length, Topological domain, Transmembrane, Intramembrane, Signal peptide, Transit peptide | https://rest.uniprot.org/uniprotkb/stream?query=proteome%3AUP000005640+AND+reviewed%3Atrue&format=tsv&fields=accession%2Cgene_primary%2Cxref_geneid%2Cxref_ensembl%2Cxref_refseq%2Csequence_version%2Clength%2Cft_topo_dom%2Cft_transmem%2Cft_intramem%2Cft_signal%2Cft_transit&compressed=true | 2026_03 (02-September-2026) | 2026-10-26T13:22:35 | 47daa7b776faebc0cdb045aee993bd37e8294d7a878de53663bce52001997dcf | CC BY 4.0 (UniProt) |

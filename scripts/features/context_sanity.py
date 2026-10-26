@@ -124,7 +124,7 @@ def site_checks():
     sp_ = site_pos()
     from ksp import labels
     ks = labels.load_dev("L2")
-    ks = ks[ks & ks.site_id.isin(sp_)][["kinase", "site_id"]].drop_duplicates()
+    ks = ks[ks.site_id.isin(sp_)][["kinase", "site_id"]].drop_duplicates()
     ks["lum"] = lum[ks.site_id.map(sp_).to_numpy()]
     g = ks.groupby("kinase").lum.agg(["mean", "count"])
     out = {"all_U_obs_sites_frac_lumenal": float(np.nanmean(lum)),

@@ -1,8 +1,8 @@
 """Sanity validation of F1 (Cantley) and F2a (learned PSSM) motif features.
 
-NON-OFFICIAL: uses cache/labels/ks_pairs.parquet L2 rows directly and a TEMPORARY protein-level random
-80/20 split (seed 0). These numbers are sanity checks only, not project metrics (no paralog masks, no
-substrate clusters, random U_ms negatives).
+NON-OFFICIAL sanity checks: DEV labels via ksp.labels.load_dev('L2') (TEST proteins are absent),
+learned-PSSM held-out = DEV CV fold 0 proteins (ksp.splits.load_cv_folds). Random U_ms negatives, no
+paralog masks: these are NOT project metrics.
 Writes results/features/motif/{validation_auroc_cantley.tsv, validation_learned.tsv, motif_top_positions.tsv,
 validation_runtime.json}.
 """
@@ -19,6 +19,7 @@ from ksp.index import load_kinases, load_sites  # noqa: E402
 from ksp.store import load_matrix  # noqa: E402
 from ksp.features import motif_cantley as mc  # noqa: E402
 from ksp.features import motif_learned as ml  # noqa: E402
+from ksp import labels, splits  # noqa: E402
 
 RES = ROOT / "results/features/motif"
 rng = np.random.default_rng(0)
@@ -31,13 +32,12 @@ ms = S.in_U_ms.to_numpy(bool)
 spos = pd.Index(S.site_id)
 
 # ---- labels (NON-OFFICIAL sanity use) ----
-P = pd.read_parquet(ROOT / "cache/labels/ks_pairs.parquet")
-P = P[P.L2.fillna(False).astype(bool) & P.kinase_included.fillna(False).astype(bool)]
-P = P[P.site_id.isin(spos)][["kinase_acc", "site_id"]].drop_duplicates()
+P = labels.load_dev("L2")
+P = P[P.site_id.isin(spos) & P.kinase_acc.isin(kpos)][["kinase_acc", "site_id"]].drop_duplicates()
 P["si"] = spos.get_indexer(P.site_id)
 P["ki"] = P.kinase_acc.map(kpos)
 allpos = P.groupby("ki").si.apply(set).to_dict()
-any_lab = pd.read_parquet(ROOT / "cache/labels/ks_pairs.parquet", columns=["kinase_acc", "site_id"])
+any_lab = labels.load_dev("all")[["kinase_acc", "site_id"]]
 any_lab = any_lab[any_lab.site_id.isin(spos)]
 known = {kpos[k]: set(spos.get_indexer(g.site_id)) for k, g in any_lab.groupby("kinase_acc") if k in kpos}
 cls = K.residue_class.to_numpy()
@@ -128,7 +128,8 @@ runtime["site_centric_s"] = round(time.time() - t, 1)
 # ---- 2. learned PSSM on a temporary protein split ----
 acc = P.site_id.str.rsplit("_", n=1).str[0]
 prots = np.array(sorted(acc.unique()))
-test_prot = set(rng.choice(prots, size=len(prots) // 5, replace=False))
+folds = splits.load_cv_folds()
+test_prot = set(folds.index[folds == 0])
 is_te = acc.isin(test_prot).to_numpy()
 tr, te = P[~is_te], P[is_te]
 models = {}
@@ -192,13 +193,13 @@ pd.DataFrame(tops).to_csv(RES / "motif_top_positions.tsv", sep="\t", index=False
 try:
     from ksp import crossfit
     t = time.time()
-    clusters = pd.Series(np.arange(len(prots)), index=prots)
-    q = te.sample(min(2000, len(te)), random_state=0)[["kinase_acc", "site_id"]].reset_index(drop=True)
-    fam = crossfit.REGISTRY["f2a_pssm"]().fit(tr[["kinase_acc", "site_id"]], crossfit.FitContext(clusters))
-    out = fam.transform(q, crossfit.FitContext(clusters))
-    runtime["crossfit_fit_transform_2000_s"] = round(time.time() - t, 1)
-    runtime["crossfit_columns"] = list(out.columns)
-    runtime["crossfit_nan_frac"] = float(out.isna().mean().mean())
+    trows = tr.sample(min(3000, len(tr)), random_state=0)[["kinase_acc", "site_id"]].reset_index(drop=True)
+    erows = te.sample(min(2000, len(te)), random_state=0)[["kinase_acc", "site_id"]].reset_index(drop=True)
+    ftr, fev = crossfit.crossfit(crossfit.REGISTRY["f2a_pssm"], tr[["kinase_acc", "site_id"]], trows, erows,
+                                 outer_fold=0)
+    runtime["crossfit_driver_5inner+eval_s"] = round(time.time() - t, 1)
+    runtime["crossfit_columns"] = list(fev.columns)
+    runtime["crossfit_nan_frac_train_eval"] = [float(ftr.isna().mean().mean()), float(fev.isna().mean().mean())]
 except Exception as e:  # pragma: no cover
     runtime["crossfit_error"] = repr(e)
 

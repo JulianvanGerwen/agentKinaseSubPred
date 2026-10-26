@@ -61,5 +61,6 @@ Status: literature (4 reviews), data profiling, two acquisition waves (~12.6 GB)
   - [~] 4.6 F3/F4/F5 context features (screen-only PPI, RWR, localisation)
   - [~] 4.7 F6 phospho features (inhibitor deconvolution, CPTAC kinase-state, co-regulation fn)
   - [~] 4.8 B3 Phosformer reimplementation + MLM pretraining (GPU 0)
-  - [~] 4.2 AlphaFold structure features + ESM-2 650M per-residue embeddings for all S/T/Y (agent; GPUs 2–3)
+  - [x] 4.2 Structure (AFDB v6, 99.45% S/T/Y) + ESM-2 650M & 3B embeddings (2.8 / 7.9 GPU-min) → docs/features_structure_esm.md
+  - [x] 4.4a G1 split freeze (11,609 clusters; TEST 20.0%; K_eval 119, K_any 256, K_cv 203; 13 canaries) → results/splits/
   - [x] 4.3 Data acquisition wave 2 (Buljan2020, Kinobeads/Davis/DTC, Sugiyama, Phosformer weights, SELPHI2 code, KinCore, HGNC, SIGNOR retry)
