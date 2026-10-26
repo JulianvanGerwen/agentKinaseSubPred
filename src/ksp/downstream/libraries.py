@@ -91,7 +91,7 @@ def _universe_mask(universe, site_ids: np.ndarray) -> np.ndarray:
             from ksp import index
             return index.load_sites().in_U_ms.to_numpy().astype(bool)
         raise ValueError(universe)
-    return np.isin(site_ids, np.asarray(list(universe)))
+    return pd.Index(site_ids).isin(set(universe))            # hash-based (np.isin on object arrays is slow)
 
 
 def _n_vector(n, kinase_accs: np.ndarray) -> np.ndarray:
@@ -123,9 +123,12 @@ def topn_from_matrix(name: str, n, universe=None, tiebreak: str | None = None, k
         if not ok.any():
             continue
         c, x = cols[ok], x[ok]
+        m = min(nv[i], len(c))
+        thr = np.partition(x, len(x) - m)[len(x) - m]   # m-th largest; keep all ties at the threshold
+        sel = x >= thr
+        c, x = c[sel], x[sel]
         t = np.asarray(T[i, c], dtype=np.float64) if T is not None else np.zeros(len(c))
         t = np.nan_to_num(t, nan=-np.inf)
-        m = min(nv[i], len(c))
         o = np.lexsort((t, x))[::-1][:m]              # primary x desc, then tiebreak desc
         rows.append(pd.DataFrame({"kinase_acc": k, "site_id": sids[c[o]], "score": x[o], "rank": np.arange(1, m + 1)}))
     out = pd.concat(rows, ignore_index=True) if rows else pd.DataFrame(columns=["kinase_acc", "site_id", "score", "rank"])

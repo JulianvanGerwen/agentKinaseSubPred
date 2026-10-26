@@ -38,7 +38,7 @@ BINS = ["0", "1-4", "5-19", "20-99", ">=100"]
 
 def family(name: str) -> str:
     for pre, fam in [("simple_b0", "B0 floor"), ("simple_b1", "B1 Cantley"), ("simple_b2", "B2 PSSM"),
-                     ("simple_b7", "B7 simple-strong"), ("r2_", "R2 LightGBM"), ("r3_", "R3 neural"),
+                     ("simple_b7", "B7 simple-strong"), ("r2_", "R2 LightGBM"), ("r3_", "R3 neural"), ("r5_", "R5 late-interaction"),
                      ("b3", "B3 Phosformer"), ("b4", "B4 SELPHI2"), ("b5", "B5 NetworKIN"), ("b6", "B6 KolossuS")]:
         if name.startswith(pre):
             return fam
@@ -198,16 +198,18 @@ def board(canary_v2_time: float) -> pd.DataFrame:
         ec = a.get("eall_check", {"eall_valid": bool(r["coverage"] >= 0.95), "n_partial_kinases": -1})
         r["eall_valid"] = ec["eall_valid"]
         r["n_partial_kinases"] = ec.get("n_partial_kinases")
-        if not r["eall_valid"]:
-            r["M3_top1"] = np.nan
         # M3 over K_cv kinases whose required pairs are all scored (matched-coverage view; needs per_kinase)
         pkj = pd.DataFrame(j.get("per_kinase", []))
         if len(pkj) and "n_missing" in pkj:
-            fc = pkj[pkj.in_K_primary.astype(bool) & (pkj.n_missing == 0)]
+            kp = pkj[pkj.in_K_primary.astype(bool)]
+            fc = kp[kp.n_missing == 0]
             r["M3_fullcov"] = float(fc.top1_recall.mean()) if len(fc) else np.nan
             r["n_fullcov"] = int(len(fc))
+            r["eall_valid"] = bool(len(fc) == len(kp))       # every K_cv kinase fully scored -> M3 valid as is
         else:
             r["M3_fullcov"], r["n_fullcov"] = np.nan, np.nan
+        if not r["eall_valid"]:
+            r["M3_top1"] = np.nan
         cfg = man.get("config", {})
         r["contaminated"] = bool(isinstance(cfg, dict) and cfg.get("contaminated"))
         r["runtime_s"] = man.get("runtime_s")
@@ -242,7 +244,8 @@ def write_board(B: pd.DataFrame) -> None:
          "(metrics_a24.json per run). Sorted by M1 (macro E-hard AUROC over K_cv, fold rank-normalised; LKO pooled "
          "runs not normalised). M5bin = macro E-hard AUROC over K_any by DEV training-label bin; M1_ST/M1_Y = "
          "K_any macro by residue class. Coverage = fraction of required (kinase, U_ms site) pairs scored "
-         "(missing = ranked last). M3 is blanked when >5% of a run's scored kinases have partial E-all coverage "
+         "(missing = ranked last). M3 is blanked unless every K_cv kinase is fully scored (runs with per-kinase data) "
+         "or, for older metrics files, when any scored kinase has partial E-all coverage "
          "(e.g. only positives + E-hard scored): E-all metrics are then not comparable (use ksp.eval.matched_universe); "
          "unscored whole kinases do not invalidate M3. 'M3 full-cov (n)' = M3 over the n K_cv kinases with every "
          "required pair scored (matched-coverage view; available for runs evaluated after 17:40). Canary gate (v2): mean negative E-hard <= 0.57 and positive >= 0.90; "

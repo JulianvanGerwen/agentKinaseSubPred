@@ -12,11 +12,14 @@ ap = argparse.ArgumentParser()
 ap.add_argument("--r2", required=True); ap.add_argument("--r3", default=None)
 ap.add_argument("--ws", nargs="+", type=float, default=[0, 0.2, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0])
 a = ap.parse_args()
-r3 = a.r3 or json.load(open(ROOT / "results" / "models" / "r3" / "FINAL_OOF.json"))["pooled_cv_run"]
+R3F = json.load(open(ROOT / "results" / "models" / "r3" / "FINAL_OOF.json"))
+r3 = a.r3 or R3F["pooled_cv_run"]
 
 
 def load(r):
     m = json.load(open(ROOT / "results" / "runs" / r / "manifest.json"))
+    if "predictions" not in m["outputs"]:          # R3 pooled run stores no predictions: use its 5 fold runs
+        return pd.concat([load(x) for x in R3F["cv_fold_runs"]], ignore_index=True)
     p = pd.read_parquet(ROOT / m["outputs"]["predictions"]["path"], columns=["kinase_idx", "site_idx", "score"])
     return p.astype({"kinase_idx": np.int64, "site_idx": np.int64})
 

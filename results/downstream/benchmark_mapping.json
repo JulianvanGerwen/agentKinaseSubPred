@@ -34,9 +34,26 @@
    },
    "name": "hijazi"
   },
+  "tyrosine": {
+   "source_rows": 2803,
+   "mapped_rows": 2450,
+   "mapped_frac": 0.8741,
+   "unique_sites": 2437,
+   "methods": {
+    "pos_residue_symbol": 2450,
+    "unmapped": 353
+   },
+   "unmapped_reasons": {
+    "residue_mismatch": 328,
+    "no_candidate": 20,
+    "multiple_candidates": 3,
+    "bad_site": 2
+   },
+   "name": "tyrosine"
+  },
   "kinase_resolution": {
    "counts": {
-    "symbol": 69
+    "symbol": 80
    },
    "unresolved": [],
    "dropped_target_rows": 0
@@ -281,6 +298,7 @@
  },
  "n_experiments": {
   "hernandez": 94,
-  "hijazi": 118
+  "hijazi": 118,
+  "tyrosine": 18
  }
 }
