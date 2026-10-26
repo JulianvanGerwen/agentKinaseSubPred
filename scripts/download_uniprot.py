@@ -8,6 +8,10 @@ Files (each in its own subdirectory, as downloaded files are untrusted):
   human_tsv/UP000005640_annotations.tsv.gz     per-entry table (gene names, keywords, domains, families)
   kinase_kw0418/human_kw0418_reviewed.tsv.gz   reviewed human entries with keyword KW-0418 (Kinase)
   pkinfam/pkinfam.txt                          UniProt "Protein kinase families" doc (all species)
+  ptm_tsv/UP000005640_reviewed_ptm.tsv.gz      reviewed human entries: gene synonyms, HGNC xref, MOD_RES features
+                                               (incl. "Phosphoserine; by PKA" notes + ECO evidence codes)
+  kinase_detail/human_kw0418_detail.tsv.gz     reviewed KW-0418 entries: domains, active site, binding, function,
+                                               caution text (used for kinase list / pseudokinase flags)
 
 A manifest (external/uniprot/MANIFEST.json) records URL, UniProt release, release date,
 download timestamp and SHA-256 for every file.
@@ -38,6 +42,15 @@ FILES = [
     ("kinase_kw0418/human_kw0418_reviewed.tsv.gz", REST,
      {"query": "organism_id:9606 AND reviewed:true AND keyword:KW-0418", "format": "tsv",
       "fields": TSV_FIELDS, "compressed": "true"}),
+    ("ptm_tsv/UP000005640_reviewed_ptm.tsv.gz", REST,
+     {"query": "proteome:UP000005640 AND reviewed:true", "format": "tsv",
+      "fields": "accession,id,gene_primary,gene_synonym,xref_hgnc,sequence_version,length,ft_mod_res",
+      "compressed": "true"}),
+    ("kinase_detail/human_kw0418_detail.tsv.gz", REST,
+     {"query": "organism_id:9606 AND reviewed:true AND keyword:KW-0418", "format": "tsv",
+      "fields": "accession,id,gene_primary,gene_synonym,protein_name,length,ft_domain,ft_act_site,ft_binding,"
+                "cc_function,cc_caution,ec,protein_families,keyword",
+      "compressed": "true"}),
     ("pkinfam/pkinfam.txt", "https://ftp.uniprot.org/pub/databases/uniprot/knowledgebase/complete/docs/pkinfam.txt",
      None),
 ]

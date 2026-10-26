@@ -16,3 +16,6 @@ pypdf
 requests
 tqdm
 statsmodels
+openpyxl
+xlrd
+openpyxl

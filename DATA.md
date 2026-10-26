@@ -337,3 +337,283 @@ All under /workspace/external/<dir>/. Per-file SHA-256 below each source; full l
 | 9606.protein.links.detailed.v12.0.txt.gz | 139634808 | 28a2ea3b22c964e691c0f2f934c5e3e397a4b0a12c833d8787fa02b7847b91b6 |
 | 9606.protein.physical.links.detailed.v12.0.txt.gz | 11086354 | db1de86dc7a6e34eba78ca6e6747f9201195b0af1edb607c19bf651b0eddede5 |
 
+
+## Downloaded (external/) -- wave 2, access date 2026-10-26
+All under /workspace/external/<dir>/. Full hash list: logs/dl/sha256_wave2.txt. Git clones (data only, not executed): phosformer/github = https://github.com/esbgkannan/phosformer (waylandy/phosformer) commit 6e7c019ba5a4c4f6cf7e44c5359c6115afc14c16, CC BY-NC-ND 4.0; kolossus/github = https://github.com/rohitsinghlab/KolossuS commit e8f3013a9736be07a1ff17a79ca7c9529daec63b; selphi2/selphi_2.0 = https://gitlab.ebi.ac.uk/petsalakilab/selphi_2.0 commit f9822f90f174e09e392d789698d8c5ec33baf1d2, Apache-2.0 (commits: logs/dl/wave2_git_commits.txt). Scripts: scripts/dl_w2.sh, scripts/dl_w2b.sh, scripts/make_data_rows_w2.py.
+
+### buljan2020
+- URL: https://www.ebi.ac.uk/europepmc/webservices/rest/PMC7427327/supplementaryFiles (Buljan 2020 Mol Cell, doi 10.1016/j.molcel.2020.07.001; mmc3=Table S2 final AP-MS interactome, mmc4=S3 co-purified pairs, mmc7=S6 predicted regulatory phosphosites, mmc2=S1 kinase classification)
+- Version/release: Mol Cell 2020 suppl. (PMC7427327)
+- Accessed: 2026-10-26; License: CC BY-NC-ND (article); total size: 15.8 MB
+
+| file | bytes | SHA-256 |
+|---|---|---|
+| supp_PMC7427327.zip | 15829375 | 33042ec85c9509f88d0f47c447443f512a71a236efe3e294f154420b5d872d9f |
+
+### curvecurator_zenodo_8399823
+- URL: https://zenodo.org/api/records/8399823 Kinobeads.zip (CurveCurator example outputs: Klaeger-style kinobeads dose-response, all_binder_data_lfq_annotated.txt, curves.txt); NOT downloaded: CTRP.zip, Simulations.zip
+- Version/release: Zenodo 2023-08-04
+- Accessed: 2026-10-26; License: CC BY 4.0; total size: 38.6 MB
+
+| file | bytes | SHA-256 |
+|---|---|---|
+| Kinobeads.zip | 38583516 | 725305d965b6c3006d86edf1b64e2697e4c071c5c700ce7a09ab895b7626d721 |
+
+### davis2011
+- URL: https://media.springernature.com/original/springer-static/esm/art%3A10.1038%2Fnbt.1990/MediaObjects/ (MOESM2-6; Davis 2011 Nat Biotech; .xls OLE2 - xlrd not installed in env, not yet parsed)
+- Version/release: Nat Biotech 2011 suppl.
+- Accessed: 2026-10-26; License: Publisher supplementary; cite; total size: 3.5 MB
+
+| file | bytes | SHA-256 |
+|---|---|---|
+| 41587_2011_BFnbt1990_MOESM2_ESM.pdf | 2992846 | b90915deb6f5100dcdd2690fe6a6a16850ee698553d712d10669245eda6d9105 |
+| 41587_2011_BFnbt1990_MOESM3_ESM.xls | 94720 | 69c2957c1fa1b5ba032721031af2fffe1eb896acd0723829e4500da8f75779c9 |
+| 41587_2011_BFnbt1990_MOESM4_ESM.xls | 39936 | f8b01f6bfa47adb61b6c5a6de2ae81281990da89b703848efec4f2e37488fae8 |
+| 41587_2011_BFnbt1990_MOESM5_ESM.xls | 304640 | e47821b2e959ff22aa6d1613b236a63fb530f0da19cfa8d45408598cf27498d7 |
+| 41587_2011_BFnbt1990_MOESM6_ESM.xls | 32256 | b2a3c85303b62716ac5d5f9307c93d32de4429327b4f9dfab29199ff0b13b241 |
+
+### hein2025_zenodo_14000085
+- URL: https://zenodo.org/api/records/14000085 (analysis repo of Hein et al. Cell 2025: cluster_annotation_Dec6.csv, enrichment tables NOC_prop, volcano tables; the final per-protein localisation table is in the Cell supplement = 403)
+- Version/release: Zenodo 2024-10-28
+- Accessed: 2026-10-26; License: CC BY 4.0; total size: 133.4 MB
+
+| file | bytes | SHA-256 |
+|---|---|---|
+| Organelle_IP_analyses_and_figures-2024-10-28.zip | 133403654 | 6b6bf03102fbfe6ac9cfcea3d9ca644571fb612fbb9e40934e2304254a0d08cc |
+
+### hgnc
+- URL: https://storage.googleapis.com/public-download-files/hgnc/tsv/tsv/hgnc_complete_set.txt
+- Version/release: HGNC complete set, current as of 2026-10-26
+- Accessed: 2026-10-26; License: CC0; total size: 17.0 MB
+
+| file | bytes | SHA-256 |
+|---|---|---|
+| hgnc_complete_set.txt | 16982321 | 12363916be36f8f6f91879b0faade4eeaac973722de7136ec61329b77f2c2f91 |
+
+### ikipdb_zenodo_20037245
+- URL: https://zenodo.org/api/records/20037245 (same atlas; only kinase scores file; NOT downloaded: Phos table 321 MB, Prot table 59 MB)
+- Version/release: Zenodo 2026-05-05
+- Accessed: 2026-10-26; License: CC BY 4.0; total size: 1.2 MB
+
+| file | bytes | SHA-256 |
+|---|---|---|
+| Kinase_Scores_Long_Weighted_OriginalDataset_Gene.csv | 1206323 | 14b8a214653bf18595c58e4d7e3a2aeaed191cf0ea37820937ae4f1b0627d8e7 |
+
+### ikipdb_zenodo_21469258
+- URL: https://zenodo.org/api/records/21469258 (phosphoproteome atlas of human cell lines / kinase activity; iKiP-DB tables; NOT downloaded: SpectralLibraries.zip 6.5 GB, Phosphosites_and_ProteinGroups_Tables.zip 525 MB)
+- Version/release: Zenodo 2026-07-21
+- Accessed: 2026-10-26; License: CC BY 4.0; total size: 29.7 MB
+
+| file | bytes | SHA-256 |
+|---|---|---|
+| Site_Stoichiometry.zip | 26289589 | 758f16249255b8bad6c2e1e17c22d66c31118553cb178bb35cdef7e63af87764 |
+| Table5_Cscore.xlsx | 800018 | 6833a67ea450ca6c8a071708c5b3351d2583b58128eff73a34e69914451fa577 |
+| Table6_ActivationLoopSites.txt | 97460 | 707912615d44f29318e690a3839e58417a68e30a93814c136affb2fdb55dbf83 |
+| Table7_iKiPDB_Modified_Combined_PSP.gmt | 2494001 | f8b0821044d7c8b437310cad28c4a0bd52ea932d26f9a90710f9e1102c9970da |
+
+### kiba_zenodo_5105698
+- URL: https://zenodo.org/api/records/5105698 kiba.zip (KiBA.xlsx: comparison of Davis/Metz/Klaeger-type kinase inhibitor bioactivity sets; Szwajda/Tang-lab)
+- Version/release: Zenodo 2021-07-15
+- Accessed: 2026-10-26; License: CC BY 4.0; total size: 29.8 MB
+
+| file | bytes | SHA-256 |
+|---|---|---|
+| kiba.zip | 29828700 | 9512dd4f461fe0ee948550f1b1d8726ec71c7b54589fab0c5f0648c03ed73d96 |
+
+### kinasecanvas_zenodo_22941318
+- URL: https://zenodo.org/api/records/22941318 "KinaseCanvas: integrated resource for curated and novel kinase-substrate interactions" (KinaseCanvas.zip, 1.47 GB; contains literature-derived + predicted KS: do NOT use as independent test data)
+- Version/release: Zenodo 2026-09-24
+- Accessed: 2026-10-26; License: MIT; total size: 1470.8 MB
+
+| file | bytes | SHA-256 |
+|---|---|---|
+| KinaseCanvas.zip | 1470838141 | ce87ef79673026b9fa791a763413d236916bef67dd37fca6fb0b5cda6c8441ea |
+
+### kincore
+- URL: https://dunbrack.fccc.edu/kincore/static/downloads/{alignment-files/Human-PK-alignment.{aln,fasta},alignment-files/Human-PK.fasta,fasta_with_labels/PK_labels_PDB.fasta}
+- Version/release: KinCore web download as of 2026-10-26 (497 human PK domain seqs; header ">GROUP_GENE/start-end ENTRY GENE ACC")
+- Accessed: 2026-10-26; License: Not stated (academic); cite Modi & Dunbrack; total size: 8.4 MB
+
+| file | bytes | SHA-256 |
+|---|---|---|
+| alignment-files_Human-PK-alignment.aln | 1583686 | 2fafefd08aa1246beee7fd24622fb8ba8cff04654f935dc111c62a28750844e5 |
+| alignment-files_Human-PK-alignment.fasta | 1141724 | 078ba2d3075fcfe7fde01750f84deb339b430eabeb44c53378f7da2e18e75082 |
+| alignment-files_Human-PK.fasta | 159151 | 317bb905c0f13b8fedf18cfcc0f213f83506a96326a1049331130a93ae374a4d |
+| fasta_with_labels_PK_labels_PDB.fasta | 5502947 | b5f0fa41a1d3c43d845c34a6038fc45fff60774c3fc1a2dd5bdc3113f2526acd |
+
+### kinoplex_natbiotech2026
+- URL: https://media.springernature.com/original/springer-static/esm/art%3A10.1038%2Fs41587-026-03239-5/MediaObjects/ (MOESM1-8; "AI-enabled structural atlas decodes kinase specificity", Nat Biotech 2026)
+- Version/release: Nat Biotech 2026 suppl.
+- Accessed: 2026-10-26; License: Publisher supplementary; cite; total size: 137.4 MB
+
+| file | bytes | SHA-256 |
+|---|---|---|
+| 41587_2026_3239_MOESM1_ESM.pdf | 47954092 | 96abba0abb240b7be9820d8a682c1ddc3fb94f0fb234f1abc5dfcbf6c89ccc17 |
+| 41587_2026_3239_MOESM2_ESM.pdf | 2291478 | c439b6b5ba9393e51a3ba16085a95a2c9a7d55fd25a99f4663145a72e15bc879 |
+| 41587_2026_3239_MOESM3_ESM.pdf | 281843 | dbe6ec565fa33c3694ec9b7048c2bbfc51c2c3d96e3a2600f3e8b1a6f399ddeb |
+| 41587_2026_3239_MOESM4_ESM.xlsx | 22304738 | 4f219cd6b519293723cbdcec62c18a02b2c457a9d568baa8c9bc612d2df5e778 |
+| 41587_2026_3239_MOESM5_ESM.xlsx | 17223084 | eeb10595edae899bdf25bcfe3249e7e64198254bf344b9fb1c653699c1f5fe6f |
+| 41587_2026_3239_MOESM6_ESM.xlsx | 355692 | 1c20da8325b8f6c75e65570e415d8980417de78d4f64e704898396613d707e8c |
+| 41587_2026_3239_MOESM7_ESM.xlsx | 17019748 | eb67e1262ada9625fded0be70d24623ff4e84b8c720f04dc748c5fa1a34953f7 |
+| 41587_2026_3239_MOESM8_ESM.xlsx | 29999426 | 766601cdd3ecd1c0633d61d0d77a16a242871a43ba5b10d8e5badb99d2ce63ab |
+
+### kinoplex_zenodo_20633591
+- URL: https://zenodo.org/api/records/20633591 Complete_KinoPlex_STY_Structural_Atlas.feather (all canonical STY residues x structural features); NOT downloaded: .csv duplicate 3.1 GB, All_ST_bootstrapped_quantiles.feather 3.5 GB
+- Version/release: Zenodo 2026-06-10
+- Accessed: 2026-10-26; License: CC BY 4.0; total size: 1427.4 MB
+
+| file | bytes | SHA-256 |
+|---|---|---|
+| Complete_KinoPlex_STY_Structural_Atlas.feather | 1427388946 | 46db95b3ce747b0983dcb6258f1e8155058f76d99f5591376b450116017ea46e |
+
+### kolossus
+- URL: https://pypi.org/project/kolossus/1.0.6/ sdist (kolossus-1.0.6.tar.gz, not installed); weights https://huggingface.co/aparekh2/kolossus (large epoch_59 = 100.7 MB, small epoch_55 = 15.5 MB; README: large = ESM2-15B (esm2_t48_15B) embeddings, small = ESM2-650M; the ESM2 backbone itself is NOT included and must be fetched separately)
+- Version/release: kolossus 1.0.6; HF sha 64088d2bf798be505dc7e03a22a2a09fa684c104 (2025-07-01)
+- Accessed: 2026-10-26; License: MIT (HF tag); PyPI license field empty; total size: 116.2 MB
+
+| file | bytes | SHA-256 |
+|---|---|---|
+| hf_weights/README.md | 24 | d8d7a46d41a1a37fe4f0a5f637bf55c649310185329127d8a2204632e480be17 |
+| hf_weights/saved_model_cs_ws_ft_humansty.epoch_55.pth | 15516468 | d76d7c444d4b778cbf6d4bf99633311822641e7411097ed525af1797929d9c5b |
+| hf_weights/saved_model_cs_ws_ft_humansty.epoch_59.pth | 100692020 | 6b26b6155aa2d8c71bad4f5cf4aae33aa1e5d3d3e4da48a79d54d04509acb753 |
+| kolossus-1.0.6.tar.gz | 21706 | 7cd87fbe7eb1fc4620fc4e3677ef08891a777c038a7fe2a7a42a9b891e30a014 |
+
+### orphan_top5_zenodo_16881580
+- URL: https://zenodo.org/api/records/16881580 "Top5 Kinase Predictions for Orphan Human Phosphosites"
+- Version/release: Zenodo 2025-08-14
+- Accessed: 2026-10-26; License: CC BY 4.0; total size: 12.2 MB
+
+| file | bytes | SHA-256 |
+|---|---|---|
+| top5_orphan.csv | 12171165 | 860af4c4fe0125f45370edc7bcaf51c5aac6f6b23431cd5f80cde49f85e7d92e |
+
+### phosformer/hf_dataset_curated
+- URL: https://huggingface.co/datasets/waylandy/phosformer_curated (resolve/main)
+- Version/release: HF last modified 2023-01-25; corpus/, curated/, splits/ (train.csv 715 MB)
+- Accessed: 2026-10-26; License: Not stated on card; repo code is CC BY-NC-ND 4.0 -- treat as non-commercial; total size: 854.9 MB
+
+| file | bytes | SHA-256 |
+|---|---|---|
+| corpus/kinases.fa | 109060154 | 020660c7a17ac563d9535f9a22d1ee694fc9a95b713f27dde20f81cd66461168 |
+| corpus/substrates.fa | 4448860 | 91d30a2fbe08d92d005597509413be54211c398a6782f09763aaa6bc7df061c1 |
+| curated/phosphosites_11mer_kinase_specific.tsv | 9048043 | a2d0e4556c78c946e6010e0541679a459bb423cecfa4b554d0707f633198187d |
+| curated/phosphosites_11mer_nonspecific.tsv | 7183384 | a4319de076e96ecbd00e91818917054884679eaf55673e056351c13890cd6fee |
+| splits/test_neg_only.csv | 2552152 | fe47afeb25eef6c3a9a2ff49bb55114a14ee62fec2d7fcb8ee8dda514e21784e |
+| splits/test_pos_neg.csv | 1562905 | bce1a32f163b30a0ed9a47f1762f54e0f3c5ec46971a30472939b0ae212e513e |
+| splits/test_pos_neg_shifted.csv | 4688614 | c83af399eddb3075efcf7ee6a7999c48f7c6f822b18654782012354a3a7d881f |
+| splits/train.csv | 714807702 | 4affe5da638827466a6df755066f617e0f98a3063b349896134b3ac8183eb65f |
+| splits/val_pos_neg.csv | 1562905 | 82a7998fab498d0f9d9a138061400ed376a9ca5152a5c7d8704b07f58462c76b |
+
+### phosformer/hf_phosformer
+- URL: https://huggingface.co/waylandy/phosformer (resolve/main)
+- Version/release: HF last modified 2022-11-04; RoBERTa-style Phosformer weights
+- Accessed: 2026-10-26; License: CC BY-NC-ND 4.0 (LICENSE file in repo) -- NON-COMMERCIAL, NO DERIVATIVES; total size: 185.2 MB
+
+| file | bytes | SHA-256 |
+|---|---|---|
+| LICENSE | 19128 | a9e0ed4f0e31270dd688be0ac2f847ae366e3dd1435f782de4f728176949fbe3 |
+| README.md | 23 | 5cd90383fd9b88cdd9481555d2576cfa76d216de0eb2530b680dd649bce822d6 |
+| config.json | 763 | ef3d26eceaeed97733ead6819d0ee00a207007361bac54b9bc8b66824a7d3ca9 |
+| merges.txt | 14 | 215a6aba00d27bcd42b8ad1dccc4b4d23f40decc150bdbf0d5ce6bb2410708df |
+| pytorch_model.bin | 185133357 | ddc452fad0c265948c765453ed4663bc4c94ca5ebb5e73d62abfb2386d336ea3 |
+| special_tokens_map.json | 957 | 8293ae960b0a0852d4d3813118030a1149a3ed9fe37bc2e1e7b3c2e62eb2d4b7 |
+| tokenizer_config.json | 1367 | d338b292a930a6d1a2f3f359f058fd053f894b4afbe3d2fb89892c5d55787591 |
+| vocab.json | 1058 | 799eacf0c334affdc773dc9e90408f5e4d81bf801aaa0bc9b3e199556ad48065 |
+
+### phosformer/hf_space_phosformerST
+- URL: https://huggingface.co/spaces/gravelcompbio/Phosformer-ST (resolve/main) -- Phosformer-ST weights (ESM2 t30 150M multitask)
+- Version/release: HF last modified 2025-04-16
+- Accessed: 2026-10-26; License: CC BY-NC-ND 4.0 (LICENSE file); total size: 602.3 MB
+
+| file | bytes | SHA-256 |
+|---|---|---|
+| LICENSE | 19126 | f7f28b8c7a1af76b9874ca6d040e8b1eb6768fd1043106c9d315090ea96754e7 |
+| README.md | 10869 | e40fbd1515d9b05969e80e70a184a53a5724a83573678d98e62cf1c0599b8637 |
+| app.py | 170743 | c1688e939c04c462d0fdc34156bce03d7a2a8c717a549c0ad0d576b4a218355c |
+| configuration_esm.py | 14926 | 8918ee5329af946fa0e197bde60b0a660a09b7bd0c36ac864dd65d05147b93ca |
+| modeling_esm.py | 70322 | a5d31206244e9b5b50c84e9fec59dadc1f288c69a498a9744a91c5ec6e2f8155 |
+| multitask_MHA_esm2_t30_150M_UR50D_neg_ratio_8+8_shift_30_mask_0.2_2023-03-25_90/config.json | 802 | fe94d301a071fe16012fb969ee502b9318ef14c5129214f2cdf1f70e16a6bf80 |
+| multitask_MHA_esm2_t30_150M_UR50D_neg_ratio_8+8_shift_30_mask_0.2_2023-03-25_90/pytorch_model.bin | 601966443 | eaf88ce07aae79ccdd1843f3f7587e9d21077a61018cee4e214b15bc5576e9dd |
+| multitask_MHA_esm2_t30_150M_UR50D_neg_ratio_8+8_shift_30_mask_0.2_2023-03-25_90/special_tokens_map.json | 125 | 3aedcd4211c0d43aec4e607ff60a63255f3174ead795e997350f09a5f8cd9ee1 |
+| multitask_MHA_esm2_t30_150M_UR50D_neg_ratio_8+8_shift_30_mask_0.2_2023-03-25_90/tokenizer_config.json | 297 | 7c0ce3a1d341faa2efcdbfee8709eeae7bf3ec34e2141103febd40e5044e8f13 |
+| multitask_MHA_esm2_t30_150M_UR50D_neg_ratio_8+8_shift_30_mask_0.2_2023-03-25_90/vocab.txt | 93 | 0b82cc0a7c7cf9e567b1e5892d793285b9fbae822c964ca48696f7db44598e03 |
+| requirements.txt | 40 | 270ff5ee7538e7af4caacef08ed3a924eb42a32316444117baa802798ecb4fea |
+| tokenization_esm.py | 5637 | 5f2169da84f740912220ed8b3dc8ce7ce475158b64d4cb6dd787263ecc509018 |
+
+### proteomehd_kustatscher2019
+- URL: https://media.springernature.com/original/springer-static/esm/art%3A10.1038%2Fs41592-019-0461-4/MediaObjects/ (MOESM1-9; Kustatscher 2019 Nat Methods ProteomeHD; MOESM3/4 .txt may be the co-regulation tables - verify)
+- Version/release: Nat Methods 2019 suppl.
+- Accessed: 2026-10-26; License: Publisher supplementary; cite; total size: 2.6 MB
+
+| file | bytes | SHA-256 |
+|---|---|---|
+| 41592_2019_461_MOESM1_ESM.pdf | 1485630 | b5a8aef93e12e58efbe02011623d0527f51bdb5a03881ec05b2b07f38d020fc4 |
+| 41592_2019_461_MOESM2_ESM.pdf | 73904 | e91a268954d8e67b052faf8b98a0003f86a22677dcc85696dc40af28824c7553 |
+| 41592_2019_461_MOESM3_ESM.txt | 372024 | 81ab2d2fc33aa105a947ca9934edff6eca5b84855d03c7d529e688cb41ca6e63 |
+| 41592_2019_461_MOESM4_ESM.txt | 96935 | 99638de9379f01c707c4cceec312fd033b52af8e1ef318b5e35beb8ea642542c |
+| 41592_2019_461_MOESM5_ESM.xlsx | 17730 | 74f5a2069bb5413b7994a4919478aa1d1be703778e323e8a91d49cf3b9fc4303 |
+| 41592_2019_461_MOESM6_ESM.xlsx | 329002 | b9a6ef8cb87f073fb1e97212bf23ac0cc8f326a9b7d6b61a33baa1b307203d6c |
+| 41592_2019_461_MOESM7_ESM.xlsx | 85709 | 30523fc08ec115b58adfe67c58f9c7ab54acd1a1371f52c9053cdf7c86ba15e8 |
+| 41592_2019_461_MOESM8_ESM.xlsx | 46102 | 93f2f01adc2d9b07dcb44681db2e0c0dba710999c8a6647368cfac9a0a2f4a49 |
+| 41592_2019_461_MOESM9_ESM.xlsx | 47891 | 648c92fd2478d6b9a0b40a3487961a71c1195855e6a6c1754fabeb12c272c923 |
+
+### reinecke2024
+- URL: https://media.springernature.com/original/springer-static/esm/art%3A10.1038%2Fs41589-023-01459-3/MediaObjects/ (MOESM1-8; Reinecke 2024 Nat Chem Biol "target landscape of 1,000 kinase inhibitors")
+- Version/release: Nat Chem Biol 2024 suppl.
+- Accessed: 2026-10-26; License: Publisher supplementary; cite; total size: 35.4 MB
+
+| file | bytes | SHA-256 |
+|---|---|---|
+| 41589_2023_1459_MOESM1_ESM.pdf | 1685437 | d79faee4a8c50925b2bfcf8755ef88e75ecbe1af939ff36fb5f4ee8eadd4c9b2 |
+| 41589_2023_1459_MOESM2_ESM.xlsx | 681059 | 9c13b2c95e2cd31de46b74fc9ecc25a2f3c72e0b101d0720bd6e917c3cecf5bb |
+| 41589_2023_1459_MOESM3_ESM.xlsx | 718492 | aa62105218abe10c6c1eb3584a13a87769c4dd1d96cd9cc496cf6c2743d36606 |
+| 41589_2023_1459_MOESM4_ESM.xlsx | 2201186 | ee0f24baf1134b051ca93238b821c39a06a58205a547a3cea944df4a74a7a21f |
+| 41589_2023_1459_MOESM5_ESM.xlsx | 57379 | 3d4309371f3a4c19c6e76fb5cdd78e651fd59d7235b8aef4d01c53ceb55663b8 |
+| 41589_2023_1459_MOESM6_ESM.xlsx | 14046365 | c9fbd59b33e78e216070d5d4959932a231706d7597cbe08e86199f940794347d |
+| 41589_2023_1459_MOESM7_ESM.pdf | 4874121 | 2042f9d429123b58d500b6da7fadfc32d42a53ff8c44ae67e446c9b88ef0d40c |
+| 41589_2023_1459_MOESM8_ESM.pdf | 10755648 | e411d0d4a119c9029584f8c1ab0362e27a5bcb28cd4d89d0c4e45ea17aa8c592 |
+| supp.zip | 409600 | 231a310ec12230fcedcf72898d24b5c962d9e5895e12bc78bedf6b4d47aa264a |
+
+### selphi2/zenodo_13821321
+- URL: https://zenodo.org/api/records/13821321/files/<name>/content (SELPHI2.0 Zenodo 10.5281/zenodo.13821321; small files only; NOT downloaded: prediction_matrix.csv 8.3 GB, feature_table.tsv 10.7 GB, k_p_*_pssm_scores.tsv 3.9-4.1 GB)
+- Version/release: Zenodo 13821321 (2024-09-20)
+- Accessed: 2026-10-26; License: CC BY 4.0; total size: 88.8 MB
+
+| file | bytes | SHA-256 |
+|---|---|---|
+| kinase-citations-2_kin_20240910.tsv | 55115 | 1fedba00d592239785c3e3fdcc2a89496bce0006d3c7a23cc5082f2c3feabc00 |
+| kinase-citations-2_sub_20240910.tsv | 985217 | a9cc35238435e3e13b5383e79bf77fa6c057355b1a7ec0a31d5773cad5f7e8ed |
+| kinase-kinase-rels-kinome_kin_20240910.tsv | 61507 | 5b6159205e9e2b1768bd9e1e93572c724584d79e924a220deaa131a17b9a00ba |
+| kinase-kinase-rels-kinome_sub_20240910.tsv | 114705 | 6a161f6d58501b676e71bd99051094f2d24391e6b8acd5dc1058b2e556503c71 |
+| positive-set-20240910.tsv | 224251 | 7f03e2dafa07d103865d6738bdc4ae56352a1e16d34af8514b6c7ec3b7d9a755 |
+| prediction_matrix_high_conf_curated.csv | 87367852 | 8f869a163d05bcefc70f1c2e8c9bf69c06897a7c9138ca7078df3ee7e4db8cf3 |
+| prediction_matrix_overlap.csv | 8715 | 3cb7bbd9401a826604194adc1abe4ffe8a6213b3081996999ae45264390ba028 |
+
+### sugiyama2019
+- URL: https://www.ebi.ac.uk/europepmc/webservices/rest/PMC6642169/supplementaryFiles (Sugiyama 2019 Sci Rep, doi 10.1038/s41598-019-46385-4; MOESM3 = Table S2 198,536 in-vitro kinase-substrate-site rows, MOESM6 = per-kinase counts)
+- Version/release: Sci Rep 2019 suppl.
+- Accessed: 2026-10-26; License: CC BY 4.0; total size: 16.7 MB
+
+| file | bytes | SHA-256 |
+|---|---|---|
+| supp_PMC6642169.zip | 16709306 | 178aee0f5d6ed76d044083d23c8a5f2d40611655979be325c510b690a178ba88 |
+
+### zenodo_meta
+- URL: Zenodo search API JSON (q=recid:ID) for the records above, incl. decryptM 2.0 17533475 (restricted, no files)
+- Version/release: 2026-10-26
+- Accessed: 2026-10-26; License: n/a; total size: 0.1 MB
+
+| file | bytes | SHA-256 |
+|---|---|---|
+| rec_13821321.json | 9095 | da97734e57f32247decdda38bbdf757f993a24a21ea76376bc8569785ef3a366 |
+| rec_14000085.json | 5759 | 8370ac2d7c20a87071e363c9f969eae92b817f4d3bd7c01c2128243a3b4b4038 |
+| rec_16881580.json | 5256 | 91cf3503976139bc288a264d99819d2f501dccfb7e23df13b7112b58c5a69455 |
+| rec_17533475.json | 7321 | 9d66552a61ca369ec8708d9284f5732f9426c059a79ae49a8516cc92f94d30c6 |
+| rec_18450948.json | 6619 | d907ec24839a5fa1fdb29f1c19d4460d0ad7c3ed8bcf2aa103940dcfc4c9f7c0 |
+| rec_20037245.json | 7676 | e40960c569033ac9462dc23974d8df0f631ecf59fe1a87222c1f929a3a0ca4d9 |
+| rec_20633591.json | 8935 | 663c22701a39984e609427ffdd651a76b2df1e01b926cfe06242d3b86fe0941a |
+| rec_21469258.json | 8236 | 6cb89e30139d98e8719bbe4cab3cb08472dade8c8d6bc145b726e87848ff89d1 |
+| rec_22941318.json | 17005 | 4a7fb79f8f94349579d8875ccefe312cd899a8c05f0feb3722645b643e31b1c1 |
+| rec_5105698.json | 6973 | 2154d10a060375bff4a817a65b75ba1a3b4c73bf4a1065a206e0756b72368a34 |
+| rec_8399823.json | 7624 | 67289a1bb688e7f4bd7ca8b21cb1e51f1d5fdbfd5aa80c7b895e6a9b8c8ba942 |
+

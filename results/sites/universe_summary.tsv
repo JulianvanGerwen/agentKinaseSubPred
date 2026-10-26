@@ -1,0 +1,59 @@
+source	metric	count	fraction
+psp	source_sites	240699	1.0000
+psp	method:exact_pos	231646	0.9624
+psp	method:unmapped	4852	0.0202
+psp	method:shifted	4201	0.0175
+psp	unmapped:no_match	4516	0.0188
+psp	unmapped:no_candidate	322	0.0013
+psp	unmapped:multiple_matches	14	0.0001
+psp	mapped_source_sites	235847	0.9798
+psp	unique_canonical_sites	232789	
+psp_ks	source_sites	10433	1.0000
+psp_ks	method:exact_pos	9917	0.9505
+psp_ks	method:shifted	455	0.0436
+psp_ks	method:unmapped	61	0.0058
+psp_ks	unmapped:no_match	58	0.0056
+psp_ks	unmapped:no_candidate	3	0.0003
+psp_ks	mapped_source_sites	10372	0.9942
+psp_ks	unique_canonical_sites	10201	
+compendium	source_sites	189962	1.0000
+compendium	method:exact_pos	180190	0.9486
+compendium	method:shifted	7010	0.0369
+compendium	method:unmapped	2762	0.0145
+compendium	unmapped:no_match	1703	0.0090
+compendium	unmapped:no_candidate	1024	0.0054
+compendium	unmapped:multiple_matches	35	0.0002
+compendium	mapped_source_sites	187200	0.9855
+compendium	unique_canonical_sites	179238	
+cptac	source_sites	126946	1.0000
+cptac	method:exact_pos	123083	0.9696
+cptac	method:shifted	3514	0.0277
+cptac	method:unmapped	349	0.0027
+cptac	unmapped:no_match	197	0.0016
+cptac	unmapped:no_candidate	150	0.0012
+cptac	unmapped:multiple_matches	2	0.0000
+cptac	mapped_source_sites	126597	0.9973
+cptac	unique_canonical_sites	125754	
+ochoa	source_sites	116258	1.0000
+ochoa	method:pos_residue	111141	0.9560
+ochoa	method:unmapped	5117	0.0440
+ochoa	unmapped:length_changed	3803	0.0327
+ochoa	unmapped:no_candidate	1200	0.0103
+ochoa	unmapped:pos_out_of_range	105	0.0009
+ochoa	unmapped:residue_mismatch	9	0.0001
+ochoa	mapped_source_sites	111141	0.9560
+ochoa	unique_canonical_sites	111141	
+universe	sites_all_sources	350740	
+universe	sites_U_obs	350736	
+universe	sites_only_psp_ks (labels outside U_obs)	4	
+universe	proteins_U_obs	18702	
+universe	U_obs_res:S	217233	0.6194
+universe	U_obs_res:T	87608	0.2498
+universe	U_obs_res:Y	45895	0.1309
+universe	psp_LT>=1_or_MS>=2	110705	
+universe	U_obs_supported_by>=2_sources	152396	
+psp	sites_unique_to_source	103773	
+psp_ks	sites_unique_to_source	4	
+compendium	sites_unique_to_source	50225	
+cptac	sites_unique_to_source	28002	
+ochoa	sites_unique_to_source	12052	

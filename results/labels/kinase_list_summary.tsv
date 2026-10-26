@@ -1,0 +1,37 @@
+metric	value
+candidates	568
+include	503
+include_pseudokinase	38
+include_activity_uncertain	6
+excluded:disputed_activity	20
+excluded:metabolic_enzyme	12
+excluded:lipid_kinase	8
+excluded:regulatory_subunit	6
+excluded:guanylate_cyclase_pseudokinase	6
+excluded:not_protein_kinase	5
+excluded:not_in_protein_kinase_sources	3
+excluded:fusion	2
+excluded:glycan_kinase	2
+excluded:pseudogene	1
+include_residue_class:ST	391
+include_residue_class:Y	92
+include_residue_class:STY	20
+include_group:TK	90
+include_group:Other	82
+include_group:CAMK	74
+include_group:CMGC	65
+include_group:AGC	62
+include_group:STE	47
+include_group:TKL	43
+include_group:Atypical	28
+include_group:CK1	12
+include_with_kinase_domain	498
+synonyms_rows	2503
+synonyms_use_for_join	2416
+kinhib_rows	420
+kinhib_resolved	411
+kinhib_resolved_included	400
+kinhib_unresolved_names	PI4KB PIK3C2B PIK3C2G PIP4K2B PIP4K2C PIP5K1A PIP5K1C PRKY Q6ZSR9
+cantley_matrices	408
+cantley_resolved	399
+cantley_unresolved	CAM1 CSK1 DDRB EGL15 LET23 SCD2 SID3 VAB-1 VER3
