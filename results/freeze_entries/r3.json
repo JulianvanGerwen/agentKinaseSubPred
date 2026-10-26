@@ -1,0 +1,18 @@
+{
+ "name": "R3",
+ "role": "ablation",
+ "run_id": "r3_final_distill_test__20261026-220424__s0",
+ "predictions": "cache/runs/r3_final_distill_test__20261026-220424__s0/test_predictions.parquet",
+ "score_site_predictions": null,
+ "t3_predictions": "cache/runs/r3_final_distill_test__20261026-220424__s0/test_t3_predictions.parquet",
+ "predictions_sha256": "6223c72c3a93d8082c957753c541dc0737a8e9b5921e90ce19e29af71828d384",
+ "t3_predictions_sha256": "9c6c403ea27690d8f5c337b47525a4cb84452ad0cc9be1cf31de78a4b78b8874",
+ "runtime": {
+  "train_wall_s": 718.7,
+  "inference_wall_s": 3.1,
+  "t3_train_wall_s_sum": 3446.2,
+  "t3_inference_wall_s_sum": 9.4
+ },
+ "missing": "worst",
+ "description": "R3 neural (frozen ESM + Cantley distillation), 5 seeds"
+}

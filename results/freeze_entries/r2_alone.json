@@ -1,0 +1,15 @@
+{
+ "name": "R2",
+ "role": "ablation",
+ "run_id": "r2_final_test__20261026-221039__s0",
+ "predictions": "cache/runs/r2_final_test__20261026-221039__s0/test_predictions.parquet",
+ "predictions_sha256": "2aa381c9fbccaba1b2da022af453276b0ca960e878a72e3be2017ff67ee9f17b",
+ "t3_predictions": "cache/runs/r2_final_t3__20261026-221039__s0/test_t3_predictions.parquet",
+ "t3_predictions_sha256": "344433cbb4928ce7f91ffd19c705c186fa996fec7a3c1bdff813cefbb37f053f",
+ "runtime": {
+  "train_wall_s": 417.9,
+  "inference_wall_s": 298.9
+ },
+ "missing": "worst",
+ "description": "R2 LightGBM final config alone, 5 seeds"
+}

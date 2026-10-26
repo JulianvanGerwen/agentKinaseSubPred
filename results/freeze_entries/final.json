@@ -1,0 +1,17 @@
+{
+ "name": "final",
+ "role": "final",
+ "run_id": "r2r3_final__20261026-230138__s0",
+ "predictions": "cache/runs/r2r3_final__20261026-230138__s0/test_predictions.parquet",
+ "predictions_sha256": "1d95b271672b1db20ae63c2918a32a911e6800dc969b53b6514a3dceff7ce9c4",
+ "score_site_predictions": null,
+ "assignment_prob_predictions": null,
+ "t3_predictions": "cache/runs/r2r3_final__20261026-230138__s0/test_t3_predictions.parquet",
+ "t3_predictions_sha256": "d62195b8f3a66df64cb0f91f5261469d1c80ed1204922bd016470aaafc8ad1b1",
+ "runtime": {
+  "train_wall_s": 1136.6,
+  "inference_wall_s": 316.9
+ },
+ "missing": "worst",
+ "description": "R2 LightGBM (5 seeds) + R3 neural (5 seeds) late fusion; score w=0.6, score_site w=0.5 (raw, M2); assignment_prob A31(b)"
+}
