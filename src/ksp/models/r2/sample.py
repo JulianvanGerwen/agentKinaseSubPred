@@ -33,8 +33,10 @@ def residue_ok(res: np.ndarray, cls: str) -> np.ndarray:
 class FoldData:
     """Everything label-related for one outer CV fold (fold=None: all DEV = final model)."""
 
-    def __init__(self, fold: int | None, variant: str = "L2"):
+    def __init__(self, fold: int | None, variant: str = "L2", exclude_kinases: set | None = None):
+        """exclude_kinases: leave-kinase-out - their label rows are removed from positives AND masks."""
         self.fold = fold
+        excl = set(exclude_kinases or ())
         S = index.load_sites()
         self.S = S
         self.K = canary.kinases_with_canaries()
@@ -52,7 +54,7 @@ class FoldData:
             self.eval_sites = np.where(ums & (pf.values == fold))[0]
             train_prot = set(folds.index[folds != fold])
         lab = labels.load_dev(variant, with_canaries=True)
-        lab = lab[lab.acc.isin(train_prot)]
+        lab = lab[lab.acc.isin(train_prot) & ~lab.kinase_acc.isin(excl)]
         lab = lab[lab.site_id.isin(spos.index)]
         lab = lab.assign(kinase_idx=lab.kinase_acc.map(self.kpos), site_idx=spos[lab.site_id].values)
         if lab.kinase_idx.isna().any():
@@ -66,7 +68,7 @@ class FoldData:
         self.pos = lab[["kinase_acc", "site_id", "kinase_idx", "site_idx", "is_canary"]].copy()
         # masks from TRAINING-fold rows only (all provenances / mask-only rows) + training canaries
         allp = labels.load_dev("all")
-        allp = allp[allp.acc.isin(train_prot)]
+        allp = allp[allp.acc.isin(train_prot) & ~allp.kinase_acc.isin(excl)]
         can = canary.canary_labels()
         can = can[can.acc.isin(train_prot)]
         self.mask_pairs = pd.concat([allp, can], ignore_index=True)

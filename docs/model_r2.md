@@ -1,6 +1,20 @@
 # R2 — global kinase–site pair model (LightGBM)
 
-Owner: R2 agent. Status: **in progress** (updated incrementally; latest numbers at the top of §6).
+Owner: R2 agent. Status (21:25): CV work done; final DEV/TEST runs are prepared (§6.4) and waiting for the G4 go.
+
+**Headline.** Pooled 5-fold DEV CV, ksp.eval A24 (harness 974d520), K_cv = 203 kinases.
+
+| model | M1 | M2 | M3 | M4 |
+|---|---|---|---|---|
+| final candidate = R2 (v3, 5-seed ensemble) late-fused with R3 | **0.786** | **0.263** | **0.361** | 0.774 |
+| R2 alone, 5-seed ensemble | 0.776 | 0.200 | 0.312 | 0.767 |
+| B1 Cantley (universe percentile) | 0.719 | 0.171 | 0.133 | |
+
+- Per-fold M1 of the final candidate: 0.767 / 0.788 / 0.782 / 0.794 / 0.773.
+- Paired vs B1-universe on the matched universe: ΔM1 +0.063 [0.048, 0.074], ΔM2 +0.105 [0.082, 0.125],
+  ΔM3 +0.227 [0.189, 0.251].
+- Pooled negative canary (v2) 0.539: passes. Positive canary 1.00.
+- LKO-T2: R2 M1 0.751; the fusion 0.749.
 Code: `src/ksp/models/r2/{xfit,assemble,sample,train}.py`, scripts `scripts/models/r2_*.py`. Caches: `cache/r2/`.
 Results: `results/models/r2/`, runs `results/runs/r2_*`, registry rows `results/cv/REGISTRY.tsv` (model = R2).
 
@@ -153,7 +167,40 @@ Configurations tried on fold 0: 7 (a) + 1 (a, v2 rerun) + 2 (b) + 6 (c) + 3 (d) 
 control.
 
 ## 5. Ablation curve and leakage alarms
-(filled as run)
+Setup: seed 0, all 5 folds, chosen tree configuration, pooled DEV OOF. Metrics come from `ksp.eval` **A24**
+(within-(fold, kinase) rank normalisation; harness frozen at commit 974d520) and are re-evaluated with
+`scripts/models/r2_reeval.py`; the full table is `results/models/r2/cv_table.tsv`. CIs are 95% cluster bootstrap,
+B = 1000. These runs predate the final v3 settings (F2a fitted jointly with canaries, descriptor v1), and their canary
+numbers are approximate (see §4).
+
+| step | M1 [95% CI] | per-fold mean M1 | M2 | M3 | M4 | neg/pos canary E-hard |
+|---|---|---|---|---|---|---|
+| F1 (Cantley) | 0.723 [0.707, 0.737] | 0.725 | 0.136 | 0.125 | 0.703 | 0.50 / 0.50 |
+| + F0 (site) | 0.733 [0.714, 0.747] | 0.729 | 0.169 | 0.236 | 0.717 | 0.55 / 0.45 |
+| + F2a (learned PSSM) | 0.738 [0.718, 0.751] | 0.733 | 0.094 | 0.239 | 0.720 | 0.53 / 0.79 |
+| + F3 (PPI + F3-label) | 0.748 [0.730, 0.761] | 0.745 | 0.143 | 0.260 | 0.728 | 0.55 / 0.99 |
+| + F4 (localisation) | 0.753 [0.734, 0.767] | 0.750 | 0.141 | 0.269 | 0.742 | 0.54 / 1.00 |
+| + F6a (co-regulation) | 0.755 [0.737, 0.768] | 0.751 | 0.149 | 0.274 | 0.746 | 0.53 / 0.99 |
+| + F6b (inhibitor) | 0.755 [0.738, 0.767] | 0.752 | 0.154 | 0.281 | 0.742 | 0.52 / 1.00 |
+| + F6c (CPTAC) = G2 run | 0.754 [0.736, 0.767] | 0.751 | 0.146 | 0.272 | 0.735 | 0.54 / 1.00 |
+| + F5 (co-expression) | 0.759 [0.741, 0.773] | 0.757 | 0.160 | 0.283 | 0.746 | 0.53 / 1.00 |
+| + F8 (Sugiyama) | not available (no store) | | | | | |
+| + F7 (kinase descriptors) = full | **0.773** [0.755, 0.785] | 0.768 | **0.208** | **0.312** | 0.770 | 0.54 / 1.00 |
+| + knn_sim (final v3 settings; §6) | 0.774 | 0.769 | 0.175 | 0.311 | 0.761 | 0.55 / 1.00 |
+
+Reading:
+- The largest single gains come from F0 (M3 0.125 → 0.236), F3 (+0.010 M1) and F7 (+0.014 M1, +0.05 M2).
+- F2a alone lowers M2: the per-kinase learned-PSSM scales are not comparable across kinases. F7 repairs that.
+- F6 adds about +0.002 M1 in total and +0.01 M3.
+
+**Leakage alarms** (all relative to the full model, 0.773):
+
+| alarm | M1 | M2 | M3 | verdict |
+|---|---|---|---|---|
+| (i) + COMPARTMENTS knowledge channel | 0.776 (+0.003) | 0.204 | 0.320 | small gain; the curated channel adds little beyond HPA/OpenCell/HCM/Hein; stays out |
+| (ii) F6-clean (18 label-source PMIDs removed from F6a/F6b) | 0.773 (−0.000) | 0.194 | 0.302 | no dependence on label-source studies |
+| (iii) B0-miss (LightGBM on F6 missingness only, same pipeline) | 0.522 | 0.018 | 0.054 | missingness carries ~no within-kinase E-hard signal; the F6 gain is not a missingness artefact |
+| label-free control F0+F7 (fold 0) | 0.663 (fold 0) | 0.152 | 0.183 | negative canary 0.54 |
 
 ### 5.1 Negative-canary caveat (found 15:15; for PI / core-infra)
 On fold 0, R2's negative canaries score 0.545–0.566 (E-hard) and 0.56 (E-all). That passes the ≤ 0.57 gate, but
@@ -221,23 +268,203 @@ core-infra.
 
 Until then the gate failure is reported on every run, and selection uses real-kinase M1 only.
 
-## 6. Results (pooled 5-fold DEV OOF; ksp.eval; K_cv = 203 kinases; seed 0)
-**G2 gate (16:27): met.** R2 with F1+F0+F2a+F3+F4+F6 (`r2_g2_main_cv5__20261026-162249__s0`):
-- M1 0.746 [0.728, 0.760], M2 0.146, M3 0.267, M4 0.752;
-- negative canary (v2) E-hard 0.530: passes;
-- positive canary 0.997.
+## 6. Results (pooled 5-fold DEV OOF; ksp.eval A24 = harness commit 974d520; K_cv = 203 kinases)
+All numbers in this section use the A24 eval. Pre-A24 numbers in earlier progress notes are superseded; in
+particular full-model M4 0.782 is now 0.770.
 
-Paired cluster bootstrap vs B1 on the matched universe (B = 1000):
+**G2 gate: met (16:27).** R2 with F1+F0+F2a+F3+F4+F6 (`r2_g2_main_cv5`):
+- M1 0.754 [0.736, 0.767]; per-fold 0.737 / 0.756 / 0.765 / 0.760 / 0.737;
+- paired vs B1-universe on the matched universe (pre-A24 eval): ΔM1 +0.023 [0.009, 0.034], ΔM3 +0.130 [0.098, 0.153],
+  ΔM2 −0.009 (not significant).
 
-| comparison (R2 main − B1) | ΔM1 | ΔM2 | ΔM3 | ΔM4 |
+**Final R2 configuration v3.** Binary objective, 127 leaves, lr 0.03, inner early stopping on real kinases only,
+α 0.5, 1:50 with 50% hard. Groups F1+F0+F2a+F3+F4+F6abc+F5+F7, with F2a fitted with canaries separate (`f2a_sep`)
+and descriptor v2 (A25).
+
+Seeds 0–4 (`r2_final_s{0..4}_cv5`):
+
+| | M1 | per-fold mean M1 | M2 | M3 | M4 |
+|---|---|---|---|---|---|
+| mean ± sd over seeds | 0.7711 ± 0.0028 | 0.7669 ± 0.0025 | 0.187 ± 0.008 | 0.300 ± 0.002 | 0.761 ± 0.001 |
+| seed ensemble (mean logit; `r2_final_ens5`) | **0.776** | 0.771 (0.756 / 0.782 / 0.772 / 0.787 / 0.761) | 0.200 | 0.312 | 0.767 |
+
+- Negative canary (pooled E-hard) per seed: 0.547 / 0.547 / 0.541 / 0.550 / 0.525, all passing ≤ 0.57.
+  Ensemble: 0.548.
+- Positive canary: 0.999.
+
+**+knn_sim** (`Fknn`, 16 cross-fitted columns built through `ksp.models.r2.xfit`). They agree with feat-knn's own
+stores to float16 precision (r > 0.99999). Seeds 0–4: M1 0.7736 / 0.7738 / 0.7748 / 0.7732 / 0.7748, mean 0.7740 ±
+0.0008.
+- vs v3 without knn: **+0.003 mean M1**. The seed-0 pair gave +0.0054 [0.000, 0.012], but seed 1 only +0.0004.
+- ΔM3 +0.012 [0.002, 0.024].
+- **ΔM2 −0.018 [−0.030, −0.006]**: the per-kinase kde/log_ntrain columns break cross-kinase comparability.
+
+Decision under the PI rule (M1 gain ≥ 0.005 with the canary gate passing): **not adopted**. The seed-averaged gain
+is 0.003, and M2 drops significantly.
+
+**F9 (Tyr)** ablation (`r2_final_f9_s0_cv5`, seed 0). Columns: sh2_dock_{max,local,spec}, itam_gated,
+kinase_desc{is_tm,is_receptor,has_sh2_matrix} and itam_order.
+- M1 0.7699 vs 0.7682 (+0.0017); M2 0.195 vs 0.192; M3 0.310 vs 0.298; canary 0.537 (passes).
+- The overall M1 gain is below the 0.005 adoption threshold, so F9 is **not adopted**. The Y-stratum test was not
+  needed.
+
+**Late fusion with R3 (A13)**, `r2_fusion_r3__20261026-191901__s0`. The blend is w·z(R2 seed ensemble) +
+(1−w)·z(R3 final OOF), with z = standardised logits per fold. The weight is chosen on pooled-CV M1; the score_site
+weight (M2) is chosen on M2 (A20).
+
+| w_R2 | 0 (R3 alone) | 0.3 | 0.4 | 0.5 | **0.6** | 0.7 | 1 (R2 alone, ensemble) |
+|---|---|---|---|---|---|---|---|
+| M1 | 0.754 | 0.780 | 0.784 | 0.786 | **0.786** | 0.785 | 0.776 |
+| M2 | 0.223 | 0.258 | 0.261 | **0.263** | 0.257 | 0.246 | 0.200 |
+| M3 | 0.294 | 0.353 | 0.363 | 0.360 | 0.361 | 0.351 | 0.312 |
+
+The R3-alone column is from the seed-0 sweep. The ensemble sweep covered w ∈ {0.3, …, 0.8}, and both sweeps agree
+to within 0.002.
+
+**Candidate final model = fusion (score w = 0.6, score_site w = 0.5):**
+- M1 **0.786**; per-fold 0.767 / 0.788 / 0.782 / 0.794 / 0.773 (mean 0.781);
+- M2 **0.263**, M3 **0.361**, M4 0.774;
+- negative canary E-hard 0.539 (passes); positive canary 1.000.
+
+Paired vs B1-universe on the matched universe: ΔM1 **+0.063 [0.048, 0.074]**, ΔM2 **+0.105 [0.082, 0.125]**,
+ΔM3 **+0.227 [0.189, 0.251]**, ΔM4 +0.071 [0.053, 0.080] (p = 0.002 for all).
+
+### 6.1 Calibration (A16) and site-level assignment (A17) — final fusion model
+`scripts/models/r2_calib.py`; outputs in `results/models/r2/calib/r2_fusion_r3__20261026-191901__s0__{calibrated,score_site}/`.
+
+Everything here is cross-fitted over CV folds: the calibrator and the temperature are fitted on 4 folds' OOF rows and
+applied to the 5th. Calibration is exhaustive over DEV U_ms, with E-all negatives subsampled to 20k per kinase with
+inverse-probability weights.
+
+Calibrator tiers:
+- per-kinase Platt for kinases with ≥ 30 OOF positives (61 kinases);
+- otherwise a family-level slope with a per-kinase intercept (261), or a global slope (17);
+- kinases with no positives (164) get an intercept set so that their expected number of positives is 0.5. Borrowing
+  the family intercept instead over-predicted the 0-label bin by about 2,000 positives in a first version.
+
+Calibration-in-the-large, out of sample (expected / observed curated positives) by training bin:
+
+| bin | expected / observed |
+|---|---|
+| 1–4 | 173 / 147 |
+| 5–19 | 863 / 848 |
+| 20–99 | 2,558 / 2,361 |
+| ≥ 100 | 5,739 / 5,400 |
+| 0 | 84 / 0 |
+
+ECE < 1e-4 in every bin, which is trivial at this prevalence; see `reliability_by_bin.tsv`. Under PU labels these
+probabilities estimate P(curated human-native PSP positive | score), a **lower bound** on the true probability.
+
+**Assignment probability** p(k | s) is a softmax over the **calibrated** kinase logits of the real kinases of matching
+class. The temperature T ≈ 0.93 is fitted on labelled DEV sites by OOF log-likelihood.
+
+Reliability on labelled DEV sites (out of sample):
+
+| p_top bin | sites | mean p_top | top kinase is a true kinase |
+|---|---|---|---|
+| [0, 0.2) | 1,835 | 0.13 | 0.18 |
+| [0.2, 0.5) | 3,021 | 0.32 | 0.40 |
+| [0.5, 0.8) | 794 | 0.62 | 0.61 |
+| [0.8, 1] | 167 | 0.87 | **0.54** (overconfident) |
+
+Overall top-1 accuracy is 0.365.
+
+Cantley-only, same procedure, for comparison:
+- top-1 accuracy 0.282;
+- on labelled sites only 152 reach p ≥ 0.5 (observed 0.66), and none reach 0.8.
+
+Its large unlabelled coverage@0.5 comes from a smaller candidate set and from confident motif-family calls on
+unlabelled sites. That cannot be verified, so **coverage counts are not comparable across methods unless they share a
+candidate set**. Reliability on labelled sites is the comparable quantity: R2 puts 961 labelled sites at ≥ 0.5 with
+0.59 observed precision, Cantley 152.
+
+**Coverage over DEV U_ms OOF (277,924 sites):**
+
+| | coverage@0.5 | coverage@0.8 |
+|---|---|---|
+| this model | **14,235** (13,274 unlabelled) | **1,674** (1,507 unlabelled) |
+| random scores | 5 | 0 |
+| Cantley-only (B1-imputed; only the 339 kinases with ≥ 1 DEV positive, so fewer candidates per site) | 23,867 (23,715 unlabelled) | 477 |
+
+Coverage is conditional on the site being a target of one of the modelled kinases.
+
+The ≥ 0.8 tier is overconfident: 0.87 claimed vs 0.54 observed. So coverage@0.8 should be read as "≥ 0.5 precision
+on labelled sites", not 0.8.
+
+An uncalibrated softmax (raw fused logits, T ≈ 0.47) is much worse: [0.8, 1] observed 0.13, and coverage@0.5 of
+10,722 against 9,757 for random scores. The reason is that pseudokinases and 0-label kinases (PRAG1, TTK, ALPK2,
+BUB1B) get extreme raw logits.
+
+**M2 component (A20).** The calibrated logit gives M2 0.205. The raw fused score_site (w = 0.5) gives **0.263**.
+Each component is selected on its own endpoint, so M2 uses the raw fused score_site and coverage uses the calibrated
+assignment probability.
+
+### 6.2 benchmarKIN-clean variant (DESIGN §6.7)
+Phospho features without the 22 `clean_bench` PMIDs and without any CPTAC-derived feature:
+- F6b `*_clean_bench` stores;
+- F6a refitted on compendium blocks minus those PMIDs, with the CPTAC columns NaN (xfit family `f6a_bench`);
+- F6c dropped.
+
+Otherwise it is the v3 configuration, seed 0 (`r2_final_cleanbench_s0_cv5`):
+- **CV M1 0.771**, M2 0.189, M3 0.300, M4 0.768;
+- canary 0.551 / 0.999.
+
+v3 seed 0 gives 0.768, so the benchmark studies and CPTAC contribute nothing measurable to M1.
+
+The DEV-trained U_obs library is `r2_final_cleanbench_uobs__20261026-204513__s0`:
+`cache/runs/<id>/uobs_predictions.parquet`, 131 M rows = all U_obs × the 503 real kinases of matching class.
+- Training took 274 s and inference 729 s.
+- The full 131 M-row parquet OOM-killed the downstream harness. It was cut to each kinase's top 2·|PSP_all(k)| + 200
+  rows (`uobs_predictions_topk.parquet`, made by `scripts/models/r2_topk_filter.py`), which is all the arms need.
+- `scripts/downstream/run_predictions.py --tag r2_clean` was then run; outputs are in
+  `results/downstream/r2_clean_*`.
+
+benchmarKIN results (z-score, native, U_obs; mean AUROC, with the number of evaluable kinases in brackets):
+
+| benchmark | r2_clean top50 | top50 −PSP | topPSP | PSP_all | PSP_dev | Cantley top50 | shuffled PSP |
+|---|---|---|---|---|---|---|---|
+| perturbation (all) | 0.775 (50) | 0.720 (48) | 0.745 (38) | 0.783 (41) | 0.784 (37) | 0.620 (13) | 0.48–0.55 |
+| tumour (CPTAC) | 0.653 (149 kinases) | 0.653 | 0.692 | 0.664 | 0.666 | 0.540 | 0.51–0.56 |
+
+- The clean R2 library matches PSP on the perturbation benchmark with more evaluable kinases (50 vs 41).
+- It beats PSP on the tumour benchmark with the topPSP arm (0.692 vs 0.664).
+- With all PSP pairs removed (the −PSP arm) it still clearly beats Cantley and the shuffled libraries.
+
+### 6.3 Leave-kinase-out T2 (kinase folds `results/splits/kinase_folds.tsv`, pooled; evaluated like R3's LKO pool)
+For each kinase fold, the held-out kinases' labels are removed from positives, negative masks and all label-derived
+features (xfit tags `lko<j>`). The held-out kinases are then scored on all DEV U_ms sites.
+
+| model | M1 | M2 | M3 | M4 |
 |---|---|---|---|---|
-| vs B1 universe percentile | +0.023 [0.009, 0.034] | −0.009 [−0.031, 0.011] | +0.130 [0.098, 0.153] | +0.045 [0.024, 0.051] |
-| vs B1 imputed-universe (covers all kinases) | +0.024 [0.009, 0.036] | −0.003 [−0.025, 0.015] | +0.134 [0.100, 0.156] | +0.050 [0.028, 0.056] |
+| R2 v3, seed 0 (`r2_final_lko`) | **0.751** | 0.133 | 0.295 | 0.749 |
+| R2 + R3 fusion (w 0.6 / 0.5) | 0.749 | 0.114 | **0.337** | 0.748 |
+| R3 final distilled (reference, R3 agent) | 0.686 | | | |
 
-**Full model** (all groups + F5 + F7; `r2_full_cv5`):
-- M1 **0.763**, M2 0.208, M3 **0.308**, M4 0.782;
-- negative canary (v2) E-hard 0.525: passes;
-- positive canary 0.998.
+On unseen kinase families with seen proteins, R2 loses only 0.02 M1 relative to CV (0.771 → 0.751). The label-free
+Cantley atlas (F1, with nearest-atlas imputation) and the kinase descriptors carry the specificity.
 
-Pooled over 5 folds, the v2 negative-canary E-hard AUROC passes, at 0.53 for both models. The fold-0 failures in §5.2
-are partly fold-0 noise: per fold, the 10–12 canaries with 2–14 positives each vary from 0.44 to 0.62.
+### 6.4 Final DEV retrain and TEST-candidate predictions (prepared, NOT run; G4 runbook format)
+The stores are built:
+- `cache/r2/xfit/final/all/{f2a_sep,f3nb,f6a,f6a_bench}`: rows = DEV U_obs, eval rows = TEST-protein U_obs sites,
+  A1 inner-fold fits;
+- `cache/r2/xfit/t3lko{0..4}/all/*`: being pre-built.
+
+Commands, with V3 = `num_leaves=127 learning_rate=0.03 f2a_family=f2a_sep desc_v=2 es_real_only=true`:
+
+    # 1. R2 final, 5-seed ensemble, TEST candidates (U_ms on TEST proteins x 503 real kinases of matching class)
+    PYTHONPATH=src R2_THREADS=16 .venv/bin/python scripts/models/r2_final.py --name r2_final_test --target test --seeds 0 1 2 3 4 --set $V3
+    # 2. R2 T3: each LKO fold's kinases scored by the model trained without that fold's labels
+    PYTHONPATH=src R2_THREADS=16 .venv/bin/python scripts/models/r2_final.py --name r2_final_t3 --target t3 --seeds 0 1 2 3 4 --set $V3
+    # 3. Final = late fusion with R3's TEST predictions (CV weights: score 0.6, score_site 0.5); likewise for T3
+    PYTHONPATH=src .venv/bin/python scripts/models/r2_fuse_test.py --name r2r3_final_test --r2 cache/runs/<r2_final_test>/test_predictions.parquet --r3 <R3 test_predictions.parquet>
+    PYTHONPATH=src .venv/bin/python scripts/models/r2_fuse_test.py --name r2r3_final_t3 --kind t3 --r2 cache/runs/<r2_final_t3>/test_t3_predictions.parquet --r3 <R3 test_t3_predictions.parquet>
+    # 4. pre-flight
+    .venv/bin/python -I src/ksp/eval_test.py --check-predictions cache/runs/<run_id>/test_predictions.parquet
+
+Expected runtime:
+- (1) about 5 × (≈ 5 min train + ≈ 2 min inference of 25.9 M rows) ≈ 35 min at 16 threads;
+- (2) about 5 folds × 5 seeds × ≈ 4 min ≈ 100 min, or ≈ 20 min with `--seeds 0`.
+
+The manifests record `train_wall_s` and `inference_wall_s`.
+
+(further results appended below)

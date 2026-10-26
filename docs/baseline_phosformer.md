@@ -101,3 +101,12 @@ The released repository, weights and dataset are CC BY-NC-ND 4.0.
 - Expected times: set-A pooled ≈ 22:30; E-all ≈ 01:30, before G3 at 02:20.
 - Seed: 0 only (time). Seeds 1–4 are deferred.
 - **Pipeline verified.** A smoke fine-tune on fold 0 (released init, 3,200 rows) ran end to end through `ksp.eval` and `ksp.manifest`. It was then deleted.
+
+## Update 19:55 (PI: GPUs 1–3 free; parallel folds)
+- **Pretraining finished at 19:09.** 50 epochs, 38,900 steps; MLM validation loss 1.822, accuracy 0.453. Checkpoint: `cache/phosformer/pretrain/mlm_final.pt`.
+- **f0_r16:** inner-validation macro AUROC(hard) 0.720, with early stopping at step 13,328. Fold-0 OOF M1 = 0.693.
+- **Ratio fixed at 1:16 by PI instruction.** The PI said "Same config as f0_r16; no hyperparameter changes after seeing fold metrics". So the pre-registered r16-vs-r50 selection on inner validation is replaced by the paper's 1:16. The f0_r50 run was stopped at 13 min, before any result. It will be re-run as an informational ablation only if GPU time remains.
+- **Folds 1–4** run at 1:16 with `--eall`, one per GPU (f1→GPU1, f2→GPU2, f3→GPU3, f4→GPU0). Fold-0 E-all rescoring (`--skip-train` from the f0_r16 best checkpoint) runs on GPU1.
+- **Pooled run:** `scripts/baselines/phosformer_cv_pool.py`.
+  - `fill` scores the pooled-E-all pairs that are missing for kinases with no positive in a given fold, using that fold's own model.
+  - `pool` then writes the run `b3a_phosformer_cv_pooled`.

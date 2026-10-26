@@ -1,0 +1,65 @@
+{
+ "temperature_by_fold": {
+  "0": 0.47106002128798535,
+  "1": 0.47380763746342175,
+  "2": 0.47198684802979285,
+  "3": 0.4817124257633406,
+  "4": 0.4696955867045224
+ },
+ "assignment_reliability_labelled_sites": [
+  {
+   "p_top_bin": "[0,0.2)",
+   "n_labelled_sites": 3079,
+   "mean_p_top": 0.11851109677508959,
+   "frac_top_is_true": 0.196492367651835
+  },
+  {
+   "p_top_bin": "[0.2,0.5)",
+   "n_labelled_sites": 2188,
+   "mean_p_top": 0.3142109480212004,
+   "frac_top_is_true": 0.39716636197440586
+  },
+  {
+   "p_top_bin": "[0.5,0.8)",
+   "n_labelled_sites": 466,
+   "mean_p_top": 0.6059007293970715,
+   "frac_top_is_true": 0.4957081545064378
+  },
+  {
+   "p_top_bin": "[0.8,1.01)",
+   "n_labelled_sites": 84,
+   "mean_p_top": 0.8791202916541311,
+   "frac_top_is_true": 0.13095238095238096
+  }
+ ],
+ "coverage_DEV_Ums_OOF": {
+  "coverage@0.5": 10722,
+  "coverage@0.8": 1347,
+  "coverage@0.5_unlabelled": 10172,
+  "coverage@0.8_unlabelled": 1263,
+  "n_sites": 277924,
+  "n_labelled_sites": 5817
+ },
+ "coverage_random_scores": {
+  "coverage@0.5": 9757,
+  "coverage@0.8": 742
+ },
+ "top1_accuracy_labelled": 0.294997421351212,
+ "ece_by_bin": {
+  "0": 2.9522381446327787e-06,
+  "1-4": 2.256319549306746e-06,
+  "20-99": 2.8028098377530067e-05,
+  "5-19": 5.937334167517857e-06,
+  ">=100": 6.396136585613759e-05,
+  "all": 7.631458332928998e-06
+ },
+ "tiers": {
+  "family_slope": 261,
+  "global_slope+no_pos(0.5 pseudo)": 83,
+  "family_slope+no_pos(0.5 pseudo)": 81,
+  "kinase": 61,
+  "global_slope": 17
+ },
+ "runtime_s": 98.8,
+ "note": "PU: calibrated probabilities estimate P(curated human-native PSP positive | score), a lower bound; coverage is conditional on the site being a target of a modelled kinase (A17)."
+}

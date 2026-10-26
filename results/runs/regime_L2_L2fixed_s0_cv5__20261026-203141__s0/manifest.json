@@ -1,0 +1,117 @@
+{
+ "run_id": "regime_L2_L2fixed_s0_cv5__20261026-203141__s0",
+ "name": "regime_L2_L2fixed_s0_cv5",
+ "git_hash": "793b4a39ce8083c353e4ca0b9c70372b3940ab71",
+ "config": {
+  "groups": [
+   "F1",
+   "F0",
+   "F2a",
+   "F3",
+   "F4",
+   "F6a",
+   "F6b",
+   "F6c",
+   "F5",
+   "F7"
+  ],
+  "ratio": 50,
+  "hard": 0.5,
+  "alpha": 0.5,
+  "objective": "binary",
+  "num_leaves": 127,
+  "learning_rate": 0.03,
+  "min_data_in_leaf": 100,
+  "feature_fraction": 0.8,
+  "bagging_fraction": 0.8,
+  "lambda_l2": 1.0,
+  "max_bin": 255,
+  "max_rounds": 3000,
+  "es_rounds": 100,
+  "refit": true,
+  "clean": false,
+  "comp_know": false,
+  "seed": 0,
+  "variant": "L2",
+  "miss_only": false,
+  "min_rounds": 50,
+  "es_metric": "mixed",
+  "es_real_only": true,
+  "f2a_family": "f2a_sep",
+  "desc_v": 2,
+  "feat": "L2fixed"
+ },
+ "seed": 0,
+ "split": "cv",
+ "notes": "pooled 5-fold OOF of ['regime_L2_L2fixed_s0_f0__20261026-200420__s0', 'regime_L2_L2fixed_s0_f1__20261026-201048__s0', 'regime_L2_L2fixed_s0_f2__20261026-201431__s0', 'regime_L2_L2fixed_s0_f3__20261026-202143__s0', 'regime_L2_L2fixed_s0_f4__20261026-202715__s0']; label variant L2, features L2fixed; train wall 1641s",
+ "inputs": [
+  {
+   "path": "/workspace/cache/runs/regime_L2_L2fixed_s0_f0__20261026-200420__s0/predictions.parquet",
+   "type": "file",
+   "bytes": 144080966,
+   "sha256": "ef95c8207ba9f4ce6e8e1ac22486f59109caf6ca3b5cc771a1fef8fb7771c9e3"
+  },
+  {
+   "path": "/workspace/cache/runs/regime_L2_L2fixed_s0_f1__20261026-201048__s0/predictions.parquet",
+   "type": "file",
+   "bytes": 143634771,
+   "sha256": "d5225da57ef59c26f0aff3b11e6096d61c15f57fcc1e73fe0f2ad4a3512b6963"
+  },
+  {
+   "path": "/workspace/cache/runs/regime_L2_L2fixed_s0_f2__20261026-201431__s0/predictions.parquet",
+   "type": "file",
+   "bytes": 144613791,
+   "sha256": "57659102132df0c33bfd3a26bbb4a2cebaeea90f64f794df06cb2bad7f66ff76"
+  },
+  {
+   "path": "/workspace/cache/runs/regime_L2_L2fixed_s0_f3__20261026-202143__s0/predictions.parquet",
+   "type": "file",
+   "bytes": 144332178,
+   "sha256": "88b6cd2bed8bf9f5211fae2df59c80eef9b3d6d7a4a111bbeff176e61ac5744a"
+  },
+  {
+   "path": "/workspace/cache/runs/regime_L2_L2fixed_s0_f4__20261026-202715__s0/predictions.parquet",
+   "type": "file",
+   "bytes": 144214668,
+   "sha256": "bb83fcf2fdb9931a488d43b4b1f0128cdc96cf17dd001415feb2cbaed1d2f64f"
+  }
+ ],
+ "host": "eu-g6-076",
+ "python": "3.12.3",
+ "platform": "Linux-5.15.0-198-generic-x86_64-with-glibc2.39",
+ "argv": [
+  "scripts/models/regime_run.py",
+  "--variant",
+  "L2",
+  "--feat",
+  "L2fixed",
+  "--fold0-eval"
+ ],
+ "pid": 349688,
+ "started": "2026-10-26 20:31:41 CET",
+ "n_rows": {
+  "predictions": 106457574
+ },
+ "outputs": {
+  "predictions": {
+   "path": "cache/runs/regime_L2_L2fixed_s0_cv5__20261026-203141__s0/predictions.parquet",
+   "sha256": "6e293442d7740238fe4202553800ef867f65fd4135bbfebc346ac66164d7fe6e"
+  },
+  "metrics": {
+   "path": "results/runs/regime_L2_L2fixed_s0_cv5__20261026-203141__s0/metrics.json",
+   "sha256": "0cbfe9bffa46b25dae16fed6fd3170468323bb845810aa331ffbed13db1ca743"
+  }
+ },
+ "fallbacks": {},
+ "fold_runs": [
+  "regime_L2_L2fixed_s0_f0__20261026-200420__s0",
+  "regime_L2_L2fixed_s0_f1__20261026-201048__s0",
+  "regime_L2_L2fixed_s0_f2__20261026-201431__s0",
+  "regime_L2_L2fixed_s0_f3__20261026-202143__s0",
+  "regime_L2_L2fixed_s0_f4__20261026-202715__s0"
+ ],
+ "status": "ok",
+ "error": null,
+ "runtime_s": 356.97,
+ "finished": "2026-10-26 20:37:38 CET"
+}

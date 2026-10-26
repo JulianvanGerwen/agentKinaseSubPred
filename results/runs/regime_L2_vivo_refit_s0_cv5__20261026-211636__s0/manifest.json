@@ -1,0 +1,117 @@
+{
+ "run_id": "regime_L2_vivo_refit_s0_cv5__20261026-211636__s0",
+ "name": "regime_L2_vivo_refit_s0_cv5",
+ "git_hash": "68b81614838434fb3eb97748996c2f0527b34bfc",
+ "config": {
+  "groups": [
+   "F1",
+   "F0",
+   "F2a",
+   "F3",
+   "F4",
+   "F6a",
+   "F6b",
+   "F6c",
+   "F5",
+   "F7"
+  ],
+  "ratio": 50,
+  "hard": 0.5,
+  "alpha": 0.5,
+  "objective": "binary",
+  "num_leaves": 127,
+  "learning_rate": 0.03,
+  "min_data_in_leaf": 100,
+  "feature_fraction": 0.8,
+  "bagging_fraction": 0.8,
+  "lambda_l2": 1.0,
+  "max_bin": 255,
+  "max_rounds": 3000,
+  "es_rounds": 100,
+  "refit": true,
+  "clean": false,
+  "comp_know": false,
+  "seed": 0,
+  "variant": "L2_vivo",
+  "miss_only": false,
+  "min_rounds": 50,
+  "es_metric": "mixed",
+  "es_real_only": true,
+  "f2a_family": "f2a_sep",
+  "desc_v": 2,
+  "feat": "refit"
+ },
+ "seed": 0,
+ "split": "cv",
+ "notes": "pooled 5-fold OOF of ['regime_L2_vivo_refit_s0_f0__20261026-205943__s0', 'regime_L2_vivo_refit_s0_f1__20261026-210439__s0', 'regime_L2_vivo_refit_s0_f2__20261026-210831__s0', 'regime_L2_vivo_refit_s0_f3__20261026-211159__s0', 'regime_L2_vivo_refit_s0_f4__20261026-211509__s0']; label variant L2_vivo, features refit; train wall 2092s",
+ "inputs": [
+  {
+   "path": "/workspace/cache/runs/regime_L2_vivo_refit_s0_f0__20261026-205943__s0/predictions.parquet",
+   "type": "file",
+   "bytes": 144049034,
+   "sha256": "f303541d15297018f6d907c6c6d208a8398591e58b0946631cb13316f8a7ff63"
+  },
+  {
+   "path": "/workspace/cache/runs/regime_L2_vivo_refit_s0_f1__20261026-210439__s0/predictions.parquet",
+   "type": "file",
+   "bytes": 142900867,
+   "sha256": "fdbec3609a8fa1ebb5c3139b6899cb32a00a0b250fe5a036553f234ca15d6b98"
+  },
+  {
+   "path": "/workspace/cache/runs/regime_L2_vivo_refit_s0_f2__20261026-210831__s0/predictions.parquet",
+   "type": "file",
+   "bytes": 144520528,
+   "sha256": "56278ee64a3a441b97794b81e585b3302abda53f8b2a2585912791913eada6f7"
+  },
+  {
+   "path": "/workspace/cache/runs/regime_L2_vivo_refit_s0_f3__20261026-211159__s0/predictions.parquet",
+   "type": "file",
+   "bytes": 144272490,
+   "sha256": "2fc748ea1e676028cad9f8a95a16a8a1b67afa73473339c078ed9c0d10cbb2d4"
+  },
+  {
+   "path": "/workspace/cache/runs/regime_L2_vivo_refit_s0_f4__20261026-211509__s0/predictions.parquet",
+   "type": "file",
+   "bytes": 144163745,
+   "sha256": "6f0b560cfb03c0e39e3dd0167a8b3a8a401ca8d466801d1e09f06c4995fab8fb"
+  }
+ ],
+ "host": "eu-g6-076",
+ "python": "3.12.3",
+ "platform": "Linux-5.15.0-198-generic-x86_64-with-glibc2.39",
+ "argv": [
+  "scripts/models/regime_run.py",
+  "--variant",
+  "L2_vivo",
+  "--feat",
+  "refit",
+  "--fold0-eval"
+ ],
+ "pid": 367768,
+ "started": "2026-10-26 21:16:37 CET",
+ "n_rows": {
+  "predictions": 106457574
+ },
+ "outputs": {
+  "predictions": {
+   "path": "cache/runs/regime_L2_vivo_refit_s0_cv5__20261026-211636__s0/predictions.parquet",
+   "sha256": "a1a9dba6e0972037921057596c1a96cc74354627a488180d4afa9f170b0c8669"
+  },
+  "metrics": {
+   "path": "results/runs/regime_L2_vivo_refit_s0_cv5__20261026-211636__s0/metrics.json",
+   "sha256": "50745c17e26eb9aeee94541f804ca5cddc5b966b9ede0565689757160dcc20b4"
+  }
+ },
+ "fallbacks": {},
+ "fold_runs": [
+  "regime_L2_vivo_refit_s0_f0__20261026-205943__s0",
+  "regime_L2_vivo_refit_s0_f1__20261026-210439__s0",
+  "regime_L2_vivo_refit_s0_f2__20261026-210831__s0",
+  "regime_L2_vivo_refit_s0_f3__20261026-211159__s0",
+  "regime_L2_vivo_refit_s0_f4__20261026-211509__s0"
+ ],
+ "status": "ok",
+ "error": null,
+ "runtime_s": 343.31,
+ "finished": "2026-10-26 21:22:20 CET"
+}

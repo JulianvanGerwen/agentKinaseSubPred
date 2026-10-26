@@ -1,0 +1,102 @@
+{
+ "run_id": "regime_L2_vivo_refit_s0_f0__20261026-205943__s0",
+ "name": "regime_L2_vivo_refit_s0_f0",
+ "git_hash": "68b81614838434fb3eb97748996c2f0527b34bfc",
+ "config": {
+  "groups": [
+   "F1",
+   "F0",
+   "F2a",
+   "F3",
+   "F4",
+   "F6a",
+   "F6b",
+   "F6c",
+   "F5",
+   "F7"
+  ],
+  "ratio": 50,
+  "hard": 0.5,
+  "alpha": 0.5,
+  "objective": "binary",
+  "num_leaves": 127,
+  "learning_rate": 0.03,
+  "min_data_in_leaf": 100,
+  "feature_fraction": 0.8,
+  "bagging_fraction": 0.8,
+  "lambda_l2": 1.0,
+  "max_bin": 255,
+  "max_rounds": 3000,
+  "es_rounds": 100,
+  "refit": true,
+  "clean": false,
+  "comp_know": false,
+  "seed": 0,
+  "variant": "L2_vivo",
+  "miss_only": false,
+  "min_rounds": 50,
+  "es_metric": "mixed",
+  "es_real_only": true,
+  "f2a_family": "f2a_sep",
+  "desc_v": 2,
+  "feat": "refit",
+  "xfit_tag": "/workspace/cache/regime/xfit/L2_vivo"
+ },
+ "seed": 0,
+ "split": "cv",
+ "notes": "folds=[0]; regime variant=L2_vivo feat=refit",
+ "inputs": [],
+ "host": "eu-g6-076",
+ "python": "3.12.3",
+ "platform": "Linux-5.15.0-198-generic-x86_64-with-glibc2.39",
+ "argv": [
+  "scripts/models/regime_run.py",
+  "--variant",
+  "L2_vivo",
+  "--feat",
+  "refit",
+  "--fold0-eval"
+ ],
+ "pid": 367768,
+ "started": "2026-10-26 20:59:43 CET",
+ "n_rows": {
+  "predictions": 21283695
+ },
+ "outputs": {
+  "predictions": {
+   "path": "cache/runs/regime_L2_vivo_refit_s0_f0__20261026-205943__s0/predictions.parquet",
+   "sha256": "f303541d15297018f6d907c6c6d208a8398591e58b0946631cb13316f8a7ff63"
+  },
+  "metrics": {
+   "path": "results/runs/regime_L2_vivo_refit_s0_f0__20261026-205943__s0/metrics.json",
+   "sha256": "f3c4fc766c9966335a618b209c2cd40afe3915d300a927615bd436fc7493f468"
+  }
+ },
+ "fallbacks": {},
+ "xfit_n_train_labels": {
+  "f2a_sep": 2649,
+  "f3nb": 2649,
+  "f6a": 2649
+ },
+ "fold_logs": {
+  "0": {
+   "n_label_pos": 2649,
+   "n_label_pos_real": 2301,
+   "n_train_rows": 135099,
+   "n_pos": 2649,
+   "n_val_rows": 27019,
+   "best_iteration": 170,
+   "inner_val_metric": 0.8452463789799158,
+   "t_gather_train_s": 23.6,
+   "t_train_es_s": 10.6,
+   "t_refit_s": 6.0,
+   "n_features": 172,
+   "t_predict_s": 41.4,
+   "t_fold_s": 90.5
+  }
+ },
+ "status": "ok",
+ "error": null,
+ "runtime_s": 145.24,
+ "finished": "2026-10-26 21:02:09 CET"
+}

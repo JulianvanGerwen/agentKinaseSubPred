@@ -1,0 +1,45 @@
+{
+ "run_id": "regime_ppool_lam300_cv5__20261026-205817__s0",
+ "name": "regime_ppool_lam300_cv5",
+ "git_hash": "68b81614838434fb3eb97748996c2f0527b34bfc",
+ "config": {
+  "regime": "partial pooling",
+  "lambda": 300.0,
+  "mu": 10,
+  "base": "r2_final_s0_cv5__20261026-181435__s0",
+  "seed": 0
+ },
+ "seed": 0,
+ "split": "cv",
+ "notes": "pooled 5-fold OOF of []; lambda selected on fold-0 M1",
+ "inputs": [],
+ "host": "eu-g6-076",
+ "python": "3.12.3",
+ "platform": "Linux-5.15.0-198-generic-x86_64-with-glibc2.39",
+ "argv": [
+  "scripts/models/regime_partial_pool_eval.py",
+  "--stage",
+  "cv5"
+ ],
+ "pid": 362212,
+ "started": "2026-10-26 20:58:17 CET",
+ "n_rows": {
+  "predictions": 106457574
+ },
+ "outputs": {
+  "predictions": {
+   "path": "cache/runs/regime_ppool_lam300_cv5__20261026-205817__s0/predictions.parquet",
+   "sha256": "c7c84a3613d6752b9cedd58811c66eabd6ea3ad468109078d3520d1963903dac"
+  },
+  "metrics": {
+   "path": "results/runs/regime_ppool_lam300_cv5__20261026-205817__s0/metrics.json",
+   "sha256": "850b768a338abf38e30863b16f7d355893e574a148f69d18f75d7f302c486e3b"
+  }
+ },
+ "fallbacks": {},
+ "fold_runs": [],
+ "status": "ok",
+ "error": null,
+ "runtime_s": 343.41,
+ "finished": "2026-10-26 21:04:01 CET"
+}

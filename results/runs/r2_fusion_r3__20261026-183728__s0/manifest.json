@@ -1,0 +1,52 @@
+{
+ "run_id": "r2_fusion_r3__20261026-183728__s0",
+ "name": "r2_fusion_r3",
+ "git_hash": "ac18aadef9a63f7ca4a988f9979301cd42d06ed5",
+ "config": {
+  "r2": "r2_final_knn_s0_cv5__20261026-181711__s0",
+  "r3": "r3_w7_nce05_cpt_aux_cv_pooled__20261026-162205__s0",
+  "ws": [
+   0,
+   0.2,
+   0.4,
+   0.5,
+   0.6,
+   0.7,
+   0.8,
+   0.9,
+   1.0
+  ]
+ },
+ "seed": 0,
+ "split": "cv",
+ "notes": "late fusion sweep (A13)",
+ "inputs": [],
+ "host": "eu-g6-076",
+ "python": "3.12.3",
+ "platform": "Linux-5.15.0-198-generic-x86_64-with-glibc2.39",
+ "argv": [
+  "scripts/models/r2_fusion.py",
+  "--r2",
+  "r2_final_knn_s0_cv5__20261026-181711__s0"
+ ],
+ "pid": 328597,
+ "started": "2026-10-26 18:37:28 CET",
+ "n_rows": {
+  "predictions": 106457574
+ },
+ "outputs": {
+  "predictions": {
+   "path": "cache/runs/r2_fusion_r3__20261026-183728__s0/predictions.parquet",
+   "sha256": "d5cbddf8218bbc9d92890cb4b5bc64ff0b542c3d8a261741d8097496256a123a"
+  },
+  "metrics": {
+   "path": "results/runs/r2_fusion_r3__20261026-183728__s0/metrics.json",
+   "sha256": "f721a157cb495fddbe026da6c7b8b6b9f526d474c97c3a380fccd96b8ba9f781"
+  }
+ },
+ "fallbacks": {},
+ "status": "ok",
+ "error": null,
+ "runtime_s": 2075.66,
+ "finished": "2026-10-26 19:12:04 CET"
+}

@@ -1,0 +1,49 @@
+{
+ "run_id": "r2r3_fusion_lko__20261026-210236__s0",
+ "name": "r2r3_fusion_lko",
+ "git_hash": "68b81614838434fb3eb97748996c2f0527b34bfc",
+ "config": {
+  "r2": "r2_final_lko__20261026-202728__s0",
+  "w": 0.6,
+  "w_site": 0.5,
+  "r3_lko_runs": [
+   "r3_reg1x5_w7_nce05_cpt_aux_lko0__20261026-162151__s0",
+   "r3_reg1x5_w7_nce05_cpt_aux_lko1__20261026-162828__s0",
+   "r3_reg1x5_w7_nce05_cpt_aux_lko2__20261026-161641__s0",
+   "r3_reg1x5_w7_nce05_cpt_aux_lko3__20261026-162328__s0",
+   "r3_reg1x5_w7_nce05_cpt_aux_lko4__20261026-163141__s0"
+  ]
+ },
+ "seed": 0,
+ "split": "lko_T2",
+ "notes": "LKO T2 of the late-fusion final model",
+ "inputs": [],
+ "host": "eu-g6-076",
+ "python": "3.12.3",
+ "platform": "Linux-5.15.0-198-generic-x86_64-with-glibc2.39",
+ "argv": [
+  "scripts/models/r2_fusion_lko.py",
+  "--r2",
+  "r2_final_lko__20261026-202728__s0"
+ ],
+ "pid": 375453,
+ "started": "2026-10-26 21:02:36 CET",
+ "n_rows": {
+  "predictions": 104063976
+ },
+ "outputs": {
+  "predictions": {
+   "path": "cache/runs/r2r3_fusion_lko__20261026-210236__s0/predictions.parquet",
+   "sha256": "b14b867d91bfd4f67b6f7361290824cf909eb476460e46c8100d1e1902a86ee8"
+  },
+  "metrics": {
+   "path": "results/runs/r2r3_fusion_lko__20261026-210236__s0/metrics.json",
+   "sha256": "3336f892f980c2f6659a5e50d5284978d0478ee94da4fc55d3c238b0dd6205a7"
+  }
+ },
+ "fallbacks": {},
+ "status": "ok",
+ "error": null,
+ "runtime_s": 278.78,
+ "finished": "2026-10-26 21:07:15 CET"
+}

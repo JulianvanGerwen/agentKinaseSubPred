@@ -33,7 +33,7 @@ from ksp.index import ROOT
 from ksp.models.r2 import xfit
 
 N_REAL = 503
-GROUP_ORDER = ["F1", "F0", "F2a", "F3", "F4", "F6a", "F6b", "F6c", "F5", "F8", "F7", "Fknn"]
+GROUP_ORDER = ["F1", "F0", "F2a", "F3", "F4", "F6a", "F6b", "F6c", "F5", "F8", "F7", "Fknn", "F9"]
 DESC_CACHE = ROOT / "cache" / "r2" / "kinase_desc.parquet"
 
 
@@ -127,18 +127,31 @@ class Assembler:
         if "F5" in g:
             for c in ["coexpr_hpa_tissue_spearman", "coexpr_depmap_pearson", "coexpr_depmap_pearson_pc5"]:
                 self._add(f"f5_{c}", "kp", self._m(f"context/coexpr/{c}"))
+        bench = self.clean == "bench"       # benchmarKIN clean variant (DESIGN §6.7): no benchmark PMIDs, no CPTAC
         if "F6a" in g:
-            self._xfit("f6a_clean" if self.clean else "f6a")
+            self._xfit("f6a_bench" if bench else ("f6a_clean" if self.clean else "f6a"))
         if "F6b" in g:
-            sfx = "_f6_clean" if self.clean else ""
+            sfx = "_clean_bench" if bench else ("_f6_clean" if self.clean else "")
             for c in ["f6b_ridge_beta", "f6b_ridge_z", "f6b_contrast"]:
                 self._add(c, "ks", self._m(f"phospho/{c}{sfx}"))
             self._add("f6b_kinase_maxcos", "k", np.asarray(self._m(f"phospho/f6b_kinase_maxcos{sfx}")))
-        if "F6c" in g:
+        if "F6c" in g and bench:
+            self.fallbacks["F6c_dropped_clean_bench(CPTAC)"] = 1
+        elif "F6c" in g:
             for c in ["f6c_prot", "f6c_aloop"]:
                 self._add(c, "ks", self._m(f"phospho/{c}"))
         if "F8" in g:
             self.fallbacks["F8_unavailable"] = 1      # Sugiyama 2019 store not built; group contributes nothing
+        if "F9" in g:               # Tyr-specific (docs/features_tyr.md; PI 17:4x): SH2 docking + ITAM + TK descriptors
+            for c in ["sh2_dock_max", "sh2_dock_local", "sh2_dock_spec", "itam_gated"]:
+                self._add(f"f9_{c}", "ks", self._m(f"tyr/{c}"))
+            kd = np.asarray(self._m("tyr/kinase_desc"))
+            kcols = list(np.load(ROOT / "cache" / "features" / "tyr" / "kinase_desc.cols.npy", allow_pickle=True))
+            for c in ["is_tm", "is_receptor", "has_sh2_matrix"]:
+                self._add(f"f9_k_{c}", "k", kd[:, kcols.index(c)])
+            si = np.asarray(self._m("tyr/site_itam"))
+            scols = list(np.load(ROOT / "cache" / "features" / "tyr" / "site_itam.cols.npy", allow_pickle=True))
+            self._add("f9_itam_order", "site", si[:, scols.index("itam_order")].astype(np.float32))
         if "Fknn" in g:
             self._xfit("knn")       # knn_sim (feat-knn), cross-fitted through ksp.crossfit by ksp.models.r2.xfit
         if "F7" in g:

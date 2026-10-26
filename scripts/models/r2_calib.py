@@ -12,9 +12,11 @@ ap = argparse.ArgumentParser()
 ap.add_argument("--run", required=True)
 ap.add_argument("--cantley", default=None, help="B1 run id for the Cantley-only coverage baseline")
 ap.add_argument("--min-pos", type=int, default=30)
+ap.add_argument("--assign", choices=["calibrated", "score_site"], default="calibrated",
+                help="logit for the site-level softmax: per-kinase calibrated score, or the raw cross-kinase score_site")
 a = ap.parse_args()
 t0 = time.time()
-out = ROOT / "results" / "models" / "r2" / "calib" / a.run
+out = ROOT / "results" / "models" / "r2" / "calib" / f"{a.run}__{a.assign}"
 out.mkdir(parents=True, exist_ok=True)
 m = json.load(open(ROOT / "results" / "runs" / a.run / "manifest.json"))
 P = pd.read_parquet(ROOT / m["outputs"]["predictions"]["path"])
@@ -56,9 +58,12 @@ print("ECE by train bin (cross-fitted):", ece, "\ntiers:", tiers, "\n", itl, flu
 P = P[real[P.kinase_idx.values]].reset_index(drop=True)
 pf = fold_of_site[P.site_idx.values]
 lc = np.empty(len(P), np.float64)
-for f in range(5):
-    mk = pf == f
-    lc[mk] = calib.apply(Cs[f], P.kinase_idx.values[mk], P.score.values[mk])
+if a.assign == "score_site" and "score_site" in P:
+    lc[:] = P.score_site.values
+else:
+    for f in range(5):
+        mk = pf == f
+        lc[mk] = calib.apply(Cs[f], P.kinase_idx.values[mk], P.score.values[mk])
 o = np.lexsort((P.kinase_idx.values, P.site_idx.values))
 s_sorted = P.site_idx.values[o]
 k_sorted = P.kinase_idx.values[o]
@@ -106,12 +111,12 @@ res = {"temperature_by_fold": Tf, "assignment_reliability_labelled_sites": rel, 
                "coverage is conditional on the site being a target of a modelled kinase (A17)."}
 json.dump(res, open(out / "assignment.json", "w"), indent=1, default=float)
 pd.DataFrame({"site_idx": site_ids, "top_kinase_idx": k_sorted[arg], "p_top": top_p, "labelled": labelled,
-              "top_is_true": top_true}).to_parquet(ROOT / "cache" / "r2" / f"assign_{a.run}.parquet")
+              "top_is_true": top_true}).to_parquet(ROOT / "cache" / "r2" / f"assign_{a.run}__{a.assign}.parquet")
 # M2 with the assignment score (A20): score_site = cross-fitted calibrated logit (monotone in p(k|s) within site)
 P2 = pd.DataFrame({"kinase_idx": k_sorted, "site_idx": s_sorted, "score": P.score.values[o], "score_site": l_sorted})
 Pc = pd.read_parquet(ROOT / m["outputs"]["predictions"]["path"])
 Pc = Pc[~real[Pc.kinase_idx.values]]
-Pc["score_site"] = Pc.score
+Pc["score_site"] = Pc.score_site if "score_site" in Pc else Pc.score
 P2 = pd.concat([P2, Pc], ignore_index=True)
 r2 = kev.evaluate(P2, data, missing="error")
 res["endpoints_with_assignment_score_site"] = r2.endpoints

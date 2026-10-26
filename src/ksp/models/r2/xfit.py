@@ -97,7 +97,15 @@ def _f2a_sep_class():
     return LearnedPSSMSep
 
 
-def _f6a_class(exclude_pmids=(), name="r2_f6a_coreg_canary"):
+def bench_pmids() -> tuple:
+    p = ROOT / "results" / "features" / "phospho" / "exclude_lists.json"
+    v = json.loads(p.read_text())["clean_bench"]
+    if v.get("exclude_cptac") is not True:
+        raise ValueError("clean_bench is expected to drop all CPTAC")
+    return tuple(int(x) for x in v["exclude_pmids"])
+
+
+def _f6a_class(exclude_pmids=(), name="r2_f6a_coreg_canary", no_cptac=False):
     from ksp.features import phospho as ph
 
     class CoregF6aCanary(ph.CoregF6a):
@@ -119,6 +127,10 @@ def _f6a_class(exclude_pmids=(), name="r2_f6a_coreg_canary"):
             out = {}
             for kind in self.kinds:
                 tag = "comp" if kind == "compendium" else "cptac"
+                if kind == "cptac" and no_cptac:
+                    out[f"f6a_{tag}_top"] = np.full(len(query), np.nan, np.float32)
+                    out[f"f6a_{tag}_med"] = np.full(len(query), np.nan, np.float32)
+                    continue
                 blocks = ph.cached_blocks(kind, self.exclude_pmids if kind == "compendium" else (), False, ())
                 r = ph.coreg_features(tp, uq, blocks, cluster_of_site=clus, m=self.m, min_shared=self.min_shared,
                                       min_blocks=self.min_blocks, n_kinases=len(K), device="cpu")
@@ -156,12 +168,14 @@ FAMILIES = {
     "f3nb": (lambda: _f3_class(), "protein",
              ["f3nb_nb_max", "f3nb_nb_mean", "f3nb_nb_top3", "f3nb_nb_n_adj", "f3nb_nb_frac_adj", "f3nb_nb_n_used"]),
     "f6a": (lambda: _f6a_class(), "site", ["f6a_comp_top", "f6a_comp_med", "f6a_cptac_top", "f6a_cptac_med"]),
+    "f6a_bench": (lambda: _f6a_class(bench_pmids(), "r2_f6a_coreg_bench_canary", no_cptac=True), "site",
+                  ["f6a_comp_top", "f6a_comp_med", "f6a_cptac_top", "f6a_cptac_med"]),
     "f6a_clean": (lambda: _f6a_class(f6_clean_pmids(), "r2_f6a_coreg_f6clean_canary"), "site",
                   ["f6a_comp_top", "f6a_comp_med", "f6a_cptac_top", "f6a_cptac_med"]),
 }
 
 
-CHUNK = {"f2a": 6_000_000, "f2a_sep": 6_000_000, "f3nb": 6_000_000, "f6a": 40_000_000, "f6a_clean": 40_000_000}
+CHUNK = {"f2a": 6_000_000, "f2a_sep": 6_000_000, "f3nb": 6_000_000, "f6a": 40_000_000, "f6a_clean": 40_000_000, "f6a_bench": 40_000_000}
 
 
 def _knn_class():
@@ -252,7 +266,9 @@ def split_sites(fold: int | None):
 
 
 def build(family: str, fold: int | None, seed: int = 0, variant: str = "L2", tag: str | None = None,
-          eval_site_idx: np.ndarray | None = None, overwrite: bool = False) -> Path:
+          eval_site_idx: np.ndarray | None = None, overwrite: bool = False,
+          exclude_kinases: set | None = None, train_site_idx: np.ndarray | None = None) -> Path:
+    """exclude_kinases: kinase accessions whose labels are removed from the fitted labels (leave-kinase-out T2/T3)."""
     tag = tag or ("cv" if fold is not None else "final")
     out = XFIT_DIR / tag / (f"fold{fold}" if fold is not None else "all") / f"{family}.npy"
     if out.exists() and not overwrite:
@@ -265,10 +281,17 @@ def build(family: str, fold: int | None, seed: int = 0, variant: str = "L2", tag
     inner_cls = cls_factory()
     train_labels, _, _ = crossfit.outer_split(fold, variant=variant, with_canaries=True)
     train_labels = train_labels[["kinase_acc", "site_id"]].drop_duplicates().reset_index(drop=True)
+    n_excl = 0
+    if exclude_kinases:
+        keep = ~train_labels.kinase_acc.isin(set(exclude_kinases))
+        n_excl = int((~keep).sum())
+        train_labels = train_labels[keep].reset_index(drop=True)
     S = index.load_sites()
     tr_idx, ev_idx = split_sites(fold)
     if eval_site_idx is not None:
         ev_idx = np.asarray(eval_site_idx, np.int64)
+    if train_site_idx is not None:
+        tr_idx = np.asarray(train_site_idx, np.int64)
     K = kinases_all()
     buf = np.full((len(cols), len(K), len(S)), np.nan, np.float32)      # in RAM (scattered writes; NFS-safe)
     log: list = []
@@ -289,7 +312,8 @@ def build(family: str, fold: int | None, seed: int = 0, variant: str = "L2", tag
             "n_kinases": len(K), "n_sites": len(S), "n_train_sites": int(len(tr_idx)), "n_eval_sites": int(len(ev_idx)),
             "n_train_labels": int(len(train_labels)), "n_canary_labels": int(canary.is_canary(train_labels.kinase_acc).sum()),
             "blocks": log, "runtime_s": round(time.time() - t0, 1), "inner_class": inner_cls.__name__,
-            "eval_mode": "inner (A1 default)"}
+            "eval_mode": "inner (A1 default)", "n_excluded_kinases": len(exclude_kinases or ()),
+            "n_excluded_label_pairs": n_excl}
     out.with_suffix(".json").write_text(json.dumps(meta, indent=1))
     return out
 

@@ -1,0 +1,65 @@
+{
+ "run_id": "r2_fusion_r3__20261026-191901__s0",
+ "name": "r2_fusion_r3",
+ "git_hash": "95dbb9fc8eebce6427b2231f543c4cbce69a9bbf",
+ "config": {
+  "r2": "r2_final_ens5__20261026-191213__s-1",
+  "r3": "r3_w7_nce05_cpt_aux_cv_pooled__20261026-162205__s0",
+  "ws": [
+   0.3,
+   0.4,
+   0.5,
+   0.6,
+   0.7,
+   0.8
+  ]
+ },
+ "seed": 0,
+ "split": "cv",
+ "notes": "late fusion sweep (A13); score = blend with w chosen on M1, score_site = blend with w chosen on M2 (A20: each component selected on its own CV endpoint)",
+ "inputs": [],
+ "host": "eu-g6-076",
+ "python": "3.12.3",
+ "platform": "Linux-5.15.0-198-generic-x86_64-with-glibc2.39",
+ "argv": [
+  "scripts/models/r2_fusion.py",
+  "--r2",
+  "r2_final_ens5__20261026-191213__s-1",
+  "--ws",
+  "0.3",
+  "0.4",
+  "0.5",
+  "0.6",
+  "0.7",
+  "0.8"
+ ],
+ "pid": 337346,
+ "started": "2026-10-26 19:19:01 CET",
+ "n_rows": {
+  "predictions": 106457574
+ },
+ "outputs": {
+  "predictions": {
+   "path": "cache/runs/r2_fusion_r3__20261026-191901__s0/predictions.parquet",
+   "sha256": "b1d91bbe2f1b2cc188743bd5f94f1c5bb5049a993609a8db5a9e822b53338afa"
+  },
+  "metrics": {
+   "path": "results/runs/r2_fusion_r3__20261026-191901__s0/metrics.json",
+   "sha256": "5d73648c12dd76970807d65dc9f2ca4f53768422d92911427df48310d7682472"
+  }
+ },
+ "fallbacks": {},
+ "weights": {
+  "w_r2_score(M1)": 0.6,
+  "w_r2_score_site(M2)": 0.5,
+  "rows": {
+   "n_r2": 106457574,
+   "n_r3": 106457574,
+   "n_common": 106457574
+  }
+ },
+ "status": "ok",
+ "error": null,
+ "runtime_s": 1617.76,
+ "finished": "2026-10-26 19:45:59 CET"
+}

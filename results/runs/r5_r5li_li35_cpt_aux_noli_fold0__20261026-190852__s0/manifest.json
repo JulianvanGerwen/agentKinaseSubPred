@@ -1,0 +1,145 @@
+{
+ "run_id": "r5_r5li_li35_cpt_aux_noli_fold0__20261026-190852__s0",
+ "name": "r5_r5li_li35_cpt_aux_noli_fold0",
+ "git_hash": "95dbb9fc8eebce6427b2231f543c4cbce69a9bbf",
+ "config": {
+  "trunk": "35m",
+  "lr": 0.0003,
+  "lr_trunk": 2e-05,
+  "wd": 0.05,
+  "alpha": 0.5,
+  "p_lab": 0.25,
+  "batch": 512,
+  "max_steps": 3000,
+  "eval_every": 100,
+  "patience": 10,
+  "warmup": 100,
+  "lambda_nce": 0.5,
+  "desc_dropout": 0.2,
+  "dropout": 0.1,
+  "esm_dropout": 0.3,
+  "d_li": 64,
+  "h": 128,
+  "d_kin": 256,
+  "d_k": 192,
+  "m_query": 8,
+  "kin_layers": 2,
+  "use_esm650": true,
+  "use_phos": true,
+  "use_prot": true,
+  "use_li": false,
+  "use_pair": true,
+  "pretrain_steps": 1500,
+  "pretrain_batch": 256,
+  "pretrain_lr": 0.0003,
+  "distill_aux": 0.2,
+  "valid_frac": 0.2,
+  "variant": "L2",
+  "seed": 0,
+  "n_seeds": 3,
+  "esm": "650m",
+  "score_chunk": 1024,
+  "emb_on_gpu": true
+ },
+ "seed": 0,
+ "split": "cv",
+ "notes": "R5 fine-tuned ESM-2 late-interaction kinase-site model",
+ "inputs": [
+  {
+   "path": "/workspace/cache/r3/win_embed_meta.json",
+   "type": "file",
+   "bytes": 622,
+   "sha256": "95ffd8497c88afa57ede9a5bff0472282aabeff982ff97b6d8fccb4430f56572"
+  },
+  {
+   "path": "/workspace/cache/r3/win_rows.npy",
+   "type": "file",
+   "bytes": 58355600,
+   "sha256": "83559927bc16322a78d112b21b180b1c82021c6b1b258d48508c3229be422af9"
+  },
+  {
+   "path": "/workspace/cache/r3/win_sites.parquet",
+   "type": "file",
+   "bytes": 2021758,
+   "sha256": "5058ab3245c63747c2c631d38f83762933b24ef5a15fd8220c7159fbd4ea1de9"
+  },
+  {
+   "path": "/workspace/cache/r5/kin_tok.npy",
+   "type": "file",
+   "bytes": 412057728,
+   "sha256": "4e7313012a95d2ec21e18ae94faac53ba625692a58334cd8f02e9110958a9d3a"
+  },
+  {
+   "path": "/workspace/cache/r5/kin_meta.json",
+   "type": "file",
+   "bytes": 64002,
+   "sha256": "c5d222250ad0e1db72d7911dad58902c61908d3452ca82411c0f042f7bd637f5"
+  },
+  {
+   "path": "/workspace/cache/r5/win31_tokens.json",
+   "type": "file",
+   "bytes": 163,
+   "sha256": "8480b5ea9f6d2ca3b636a1f3699af97ffd4dbef66857f3e3dce0d964d5e67b6f"
+  },
+  {
+   "path": "/workspace/cache/features/esm2_650m/kinase_domain.npy",
+   "type": "file",
+   "bytes": 2575488,
+   "sha256": "428b7fda7221240cf36aa64287aded1b2df613be50a649400257de2f66943650"
+  },
+  {
+   "path": "/workspace/cache/labels/dev_pairs.parquet",
+   "type": "file",
+   "bytes": 797455,
+   "sha256": "b6c1aaa8f67396b535ac392c08f77068e6eec1615e2debdf63ce20d6986be449"
+  },
+  {
+   "path": "/workspace/cache/labels/canary_dev.parquet",
+   "type": "file",
+   "bytes": 29718,
+   "sha256": "febef71f55dbfc5146ce686f31fea11eae6b224f38ff55276cac8bac30a96121"
+  },
+  {
+   "path": "/workspace/results/splits/cv_folds.tsv",
+   "type": "file",
+   "bytes": 203997,
+   "sha256": "aa01e43d7a064269ddf58cf00a2e3130486aee973cba3e6cf52f994f6a265dc8"
+  },
+  {
+   "path": "/workspace/results/splits/kinase_folds.tsv",
+   "type": "file",
+   "bytes": 15014,
+   "sha256": "d4acaafd16342d59c7a24286f1c69e3d4b439a1efe1b911a49f48e761f3831ae"
+  },
+  {
+   "path": "/workspace/cache/features/motif/cantley_unprimed_score.json",
+   "type": "file",
+   "bytes": 479,
+   "sha256": "05c8289459f3d934831e2573bc71e02654e37969a158425ddb8da5d9a9b13071"
+  }
+ ],
+ "host": "eu-g6-076",
+ "python": "3.12.3",
+ "platform": "Linux-5.15.0-198-generic-x86_64-with-glibc2.39",
+ "argv": [
+  "scripts/models/r5_cv.py",
+  "train",
+  "--fold",
+  "0",
+  "--config",
+  "li35_cpt_aux_noli",
+  "--n-seeds",
+  "3",
+  "--note",
+  "DIAGNOSTIC ablation, not eligible for selection: late-interaction term removed (R3-style head on a fine-tuned 35M trunk); first attempt OOMed sharing a GPU"
+ ],
+ "pid": 335512,
+ "started": "2026-10-26 19:09:00 CET",
+ "n_rows": {},
+ "outputs": {},
+ "fallbacks": {},
+ "status": "failed",
+ "error": "Traceback (most recent call last):\n  File \"/workspace/scripts/models/r5_cv.py\", line 99, in cmd_train\n    preds, info, _ = r5train.run(cfg, fold=a.fold, lko_fold=a.lko, log=lambda s: print(s, flush=True))\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/src/ksp/models/r5/train.py\", line 237, in run\n    model, sinfo = _train_one(cfg, sd, s5, k5, G, wk_t, lab_rows, fit_rows, val_rows, eval_k, device, log,\n                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/src/ksp/models/r5/train.py\", line 309, in _train_one\n    Q, u = model.kinase(G.kin_tok, G.kin_mask, G.kin_desc())\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/src/ksp/models/r5/model.py\", line 127, in kinase\n    return self.kin_tok(kin_tok, kin_mask), self.kin(*kin_desc)        # Q (K,m,d_li), u (K,h)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py\", line 1739, in _wrapped_call_impl\n    return self._call_impl(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py\", line 1750, in _call_impl\n    return forward_call(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/src/ksp/models/r5/model.py\", line 101, in forward\n    a, _ = self.attn(q, hs, hs, key_padding_mask=~mask, need_weights=False)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py\", line 1739, in _wrapped_call_impl\n    return self._call_impl(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py\", line 1750, in _call_impl\n    return forward_call(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/.venv/lib/python3.12/site-packages/torch/nn/modules/activation.py\", line 1373, in forward\n    attn_output, attn_output_weights = F.multi_head_attention_forward(\n                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/.venv/lib/python3.12/site-packages/torch/nn/functional.py\", line 6230, in multi_head_attention_forward\n    q, k, v = _in_projection_packed(query, key, value, in_proj_weight, in_proj_bias)\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/.venv/lib/python3.12/site-packages/torch/nn/functional.py\", line 5639, in _in_projection_packed\n    .contiguous()\n     ^^^^^^^^^^^^\ntorch.OutOfMemoryError: CUDA out of memory. Tried to allocate 122.00 MiB. GPU 0 has a total capacity of 23.52 GiB of which 91.75 MiB is free. Including non-PyTorch memory, this process has 23.42 GiB memory in use. Of the allocated memory 22.22 GiB is allocated by PyTorch, and 756.73 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)\n",
+ "runtime_s": 591.41,
+ "finished": "2026-10-26 19:18:51 CET"
+}

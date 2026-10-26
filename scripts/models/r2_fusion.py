@@ -37,27 +37,40 @@ for c in ["score_r2", "score_r3"]:
         mk = fold == f
         z[mk] = (z[mk] - z[mk].mean()) / z[mk].std()
     M[c + "_z"] = z
-rows, best = [], None
+rows = []
 with manifest.RunManifest("r2_fusion_r3", config={"r2": a.r2, "r3": r3, "ws": a.ws}, seed=0, split="cv",
-                          notes="late fusion sweep (A13)") as run:
+                          notes="late fusion sweep (A13); score = blend with w chosen on M1, score_site = blend with w "
+                                "chosen on M2 (A20: each component selected on its own CV endpoint)") as run:
+    def blend(w):
+        return (w * M.score_r2_z.values + (1 - w) * M.score_r3_z.values).astype(np.float32)
     for w in a.ws:
-        P = pd.DataFrame({"kinase_idx": M.kinase_idx.values, "site_idx": M.site_idx.values,
-                          "score": (w * M.score_r2_z.values + (1 - w) * M.score_r3_z.values).astype(np.float32)})
+        P = pd.DataFrame({"kinase_idx": M.kinase_idx.values, "site_idx": M.site_idx.values, "score": blend(w)})
         res = kev.evaluate(P, data, missing="error", keep_items=False)
         E = res.endpoints
         r = {"w_r2": w, "M1": E["M1_auroc_hard"], "M2": E["M2_hit5"], "M3": E["M3_top1_recall"],
-             "M4": E["M4_auroc_hard_Kany"], "mrr": E["sec_mrr"], "neg_canary_hard": res.canary.get("neg_mean_auroc_hard"),
-             "pos_canary_hard": res.canary.get("pos_auroc_hard")}
+             "M4": E["M4_auroc_hard_Kany"], "mrr": E["sec_mrr"], "M1_fold_mean": E.get("M1_fold_mean"),
+             "neg_canary_hard": res.canary.get("neg_mean_auroc_hard"), "pos_canary_hard": res.canary.get("pos_auroc_hard")}
         rows.append(r); print(r, flush=True)
-        if best is None or r["M1"] > best[0]["M1"]:
-            best = (r, P)
     R = pd.DataFrame(rows)
-    R.to_csv(ROOT / "results" / "models" / "r2" / "fusion_r3_sweep.tsv", sep="\t", index=False)
-    run.save_predictions(best[1])
-    run.save_metrics({"sweep": rows, "best": best[0], "rows": rep})
+    tag = a.r2.split("__")[0]
+    R.to_csv(ROOT / "results" / "models" / "r2" / f"fusion_r3_sweep__{tag}.tsv", sep="\t", index=False)
+    w1 = float(R.loc[R.M1.idxmax(), "w_r2"]); w2 = float(R.loc[R.M2.idxmax(), "w_r2"])
+    P = pd.DataFrame({"kinase_idx": M.kinase_idx.values, "site_idx": M.site_idx.values, "score": blend(w1),
+                      "score_site": blend(w2)})
+    run.save_predictions(P)
+    res = kev.evaluate(P, data, missing="error")
+    run.save_metrics(res)
+    res.per_kinase.to_csv(run.dir / "per_kinase.tsv", sep="\t", index=False)
+    kev.bootstrap(res, B=1000, seed=0).to_csv(run.dir / "bootstrap.tsv", sep="\t", index=False)
+    kev.strata(res).to_csv(run.dir / "strata.tsv", sep="\t", index=False)
+    run.set("weights", {"w_r2_score(M1)": w1, "w_r2_score_site(M2)": w2, "rows": rep})
+    E = res.endpoints
     train.register({"run_id": run.run_id, "split": "cv", "fold": "all(pooled)", "config_name": "r2_fusion_r3",
-                    "config_json": json.dumps({"r2": a.r2, "r3": r3, "ws": a.ws}),
-                    "selection_metric": "M1_auroc_hard(K_cv) [=M5]", "value": round(best[0]["M1"], 5),
-                    "notes": f"late fusion sweep ({len(a.ws)} weights = 1 registry row); best w_r2={best[0]['w_r2']} "
-                             f"M2={best[0]['M2']:.4f} M3={best[0]['M3']:.4f}"})
-    print("BEST", best[0])
+                    "config_json": json.dumps({"r2": a.r2, "r3": r3, "ws": a.ws, "w_M1": w1, "w_M2": w2}),
+                    "selection_metric": "M1_auroc_hard(K_cv) [=M5]", "value": round(E["M1_auroc_hard"], 5),
+                    "notes": f"late fusion sweep ({len(a.ws)} weights = 1 registry row); w_M1={w1} w_M2={w2}; "
+                             f"M2={E['M2_hit5']:.4f} M3={E['M3_top1_recall']:.4f} fold-mean M1={E.get('M1_fold_mean')}; "
+                             f"canary={res.canary.get('neg_mean_auroc_hard'):.3f}/{res.canary.get('pos_auroc_hard'):.3f}"})
+    print("FINAL", {"w_M1": w1, "w_M2": w2, **{k: E[k] for k in ["M1_auroc_hard", "M2_hit5", "M3_top1_recall", "M4_auroc_hard_Kany"]},
+                    "M1_fold_mean": E.get("M1_fold_mean"), "M1_per_fold": E.get("M1_per_fold"), "canary": res.canary}, flush=True)
+    print("RUN", run.run_id)

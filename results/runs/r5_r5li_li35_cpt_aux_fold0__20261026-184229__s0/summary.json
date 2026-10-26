@@ -1,0 +1,83 @@
+{
+ "M1_auroc_hard": 0.7249587886840319,
+ "M2_hit5": 0.1668476027178486,
+ "M3_top1_recall": 0.21058493274412057,
+ "M4_auroc_hard_Kany": 0.7261409089312613,
+ "M5_auroc_hard_Kcv": 0.7249587886840319,
+ "sec_auroc_all": 0.8580637850713582,
+ "sec_mrr": 0.1480664901829123,
+ "sec_hit1": 0.0877111372549382,
+ "sec_hit10": 0.27373611780868223,
+ "n_K_primary_evaluated": 180,
+ "n_K_any_evaluated": 208,
+ "n_missing_pairs": 0,
+ "canary": {
+  "n_neg_canaries": 12,
+  "neg_mean_auroc_hard": 0.518702447889925,
+  "pos_auroc_hard": 0.958319397993311,
+  "neg_mean_auroc_all": 0.7196339466879835,
+  "pos_auroc_all": 0.9866372254501627,
+  "neg_pass": true,
+  "pos_pass": true,
+  "thresholds": {
+   "neg_max": 0.57,
+   "pos_min": 0.9
+  }
+ },
+ "M5_by_train_bin": [
+  {
+   "stratum": "train_bin",
+   "value": "20-99",
+   "n_kinases": 86,
+   "auroc_hard": 0.7490373399783975,
+   "hit5": 0.11988808994622947,
+   "top1_recall": 0.2584168576901135,
+   "auroc_all": 0.8715057681377506,
+   "pauroc01_all": 0.5933351835349022
+  },
+  {
+   "stratum": "train_bin",
+   "value": "5-19",
+   "n_kinases": 63,
+   "auroc_hard": 0.669149791558175,
+   "hit5": 0.04497354497354497,
+   "top1_recall": 0.1222222222222222,
+   "auroc_all": 0.8323452994112359,
+   "pauroc01_all": 0.5362944959168207
+  },
+  {
+   "stratum": "train_bin",
+   "value": ">=100",
+   "n_kinases": 31,
+   "auroc_hard": 0.7715785115102761,
+   "hit5": 0.5448019167904412,
+   "top1_recall": 0.25746574621264334,
+   "auroc_all": 0.8730397222609693,
+   "pauroc01_all": 0.5849672331950667
+  }
+ ],
+ "t_eval_s": 37.4,
+ "train_info": {
+  "best_val_auroc_hard": 0.7678998497798865,
+  "ensemble_val_auroc_hard": 0.7853481382183678,
+  "best_step": [
+   200,
+   200,
+   300
+  ],
+  "distill": {
+   "n_targets": 195663112,
+   "t_load_s": 3.0,
+   "kinases_with_target": 396
+  },
+  "t_train_s": 779.0,
+  "t_score_s": 12.4,
+  "t_total_s": 810.0,
+  "t_targets_s": 5.8,
+  "t_gpu_load_s": 1.2,
+  "peak_gpu_mem_gb": 20.01,
+  "n_trained_kinases": 341,
+  "n_pos_fit": 7364,
+  "n_pred_rows": 21283695
+ }
+}

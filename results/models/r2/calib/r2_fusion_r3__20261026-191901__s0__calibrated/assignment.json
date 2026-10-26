@@ -1,0 +1,97 @@
+{
+ "temperature_by_fold": {
+  "0": 0.9249062669327118,
+  "1": 0.9210312359123445,
+  "2": 0.9292731064924491,
+  "3": 0.9315433700864862,
+  "4": 0.9255336365344209
+ },
+ "assignment_reliability_labelled_sites": [
+  {
+   "p_top_bin": "[0,0.2)",
+   "n_labelled_sites": 1835,
+   "mean_p_top": 0.1329617078807789,
+   "frac_top_is_true": 0.179291553133515
+  },
+  {
+   "p_top_bin": "[0.2,0.5)",
+   "n_labelled_sites": 3021,
+   "mean_p_top": 0.32219375624123703,
+   "frac_top_is_true": 0.40383978814961935
+  },
+  {
+   "p_top_bin": "[0.5,0.8)",
+   "n_labelled_sites": 794,
+   "mean_p_top": 0.6216193130748003,
+   "frac_top_is_true": 0.6083123425692695
+  },
+  {
+   "p_top_bin": "[0.8,1.01)",
+   "n_labelled_sites": 167,
+   "mean_p_top": 0.8678292952287693,
+   "frac_top_is_true": 0.5449101796407185
+  }
+ ],
+ "coverage_DEV_Ums_OOF": {
+  "coverage@0.5": 14235,
+  "coverage@0.8": 1674,
+  "coverage@0.5_unlabelled": 13274,
+  "coverage@0.8_unlabelled": 1507,
+  "n_sites": 277924,
+  "n_labelled_sites": 5817
+ },
+ "coverage_random_scores": {
+  "coverage@0.5": 5,
+  "coverage@0.8": 0
+ },
+ "top1_accuracy_labelled": 0.3649647584665635,
+ "ece_by_bin": {
+  "0": 2.9522381446327787e-06,
+  "1-4": 2.256319549306746e-06,
+  "20-99": 2.8028098377530067e-05,
+  "5-19": 5.937334167517857e-06,
+  ">=100": 6.396136585613759e-05,
+  "all": 7.631458332928998e-06
+ },
+ "tiers": {
+  "family_slope": 261,
+  "global_slope+no_pos(0.5 pseudo)": 83,
+  "family_slope+no_pos(0.5 pseudo)": 81,
+  "kinase": 61,
+  "global_slope": 17
+ },
+ "runtime_s": 99.7,
+ "note": "PU: calibrated probabilities estimate P(curated human-native PSP positive | score), a lower bound; coverage is conditional on the site being a target of a modelled kinase (A17).",
+ "endpoints_with_assignment_score_site": {
+  "K_primary_name": "K_cv",
+  "n_K_primary": 203,
+  "n_K_primary_evaluated": 203,
+  "n_K_any": 339,
+  "n_K_any_evaluated": 339,
+  "M1_auroc_hard": 0.7864081926249794,
+  "M1_n_kinases_defined": 203,
+  "M2_hit5": 0.20524230275113056,
+  "M3_top1_recall": 0.3608625756046788,
+  "M4_auroc_hard_Kany": 0.7743750170157622,
+  "M5_auroc_hard_Kcv": 0.7864081926249794,
+  "sec_hit1": 0.07671404416859942,
+  "sec_hit10": 0.29814425331770467,
+  "sec_mrr": 0.15222435387856073,
+  "sec_fam_hit5": 0.3632067714038519,
+  "sec_pauroc01_all": 0.6279237191734894,
+  "sec_ap_all": 0.02603160924360685,
+  "sec_ap_lift_all": 313.42848482811036,
+  "sec_auroc_all": 0.8912260985341011,
+  "fold_normalised": true,
+  "M1_per_fold": [
+   0.7667578928349643,
+   0.7879026865133549,
+   0.7815556807808104,
+   0.7942148710734994,
+   0.7732928860661452
+  ],
+  "M1_fold_mean": 0.7807448034537549,
+  "n_missing_pairs": 0,
+  "n_required_pairs": 71331065
+ }
+}

@@ -1,0 +1,189 @@
+{
+ "run_id": "b3a_phosformer_f2_r16__20261026-210741__s0",
+ "name": "b3a_phosformer_f2_r16",
+ "git_hash": "68b81614838434fb3eb97748996c2f0527b34bfc",
+ "config": {
+  "fold": 2,
+  "neg_ratio": 16,
+  "hard_frac": 0.5,
+  "init": "cache/phosformer/pretrain/mlm_final.pt",
+  "seed": 0,
+  "lr": 2e-05,
+  "gamma": 2.0,
+  "batch": 64,
+  "max_epochs": 3.0,
+  "evals_per_epoch": 4,
+  "patience": 5,
+  "shift": 5,
+  "mask_frac": 0.05,
+  "no_aug": false,
+  "eall": true,
+  "skip_train": false,
+  "max_train_rows": 0,
+  "name": null,
+  "threads": 2,
+  "init_tag": "mlm_final.pt",
+  "n_fit_pos": 7293,
+  "fold_max_count": 343,
+  "epoch_rows": 437342,
+  "steps_per_epoch": 6834,
+  "best_val": 0.732149896547075,
+  "history": [
+   {
+    "step": 0,
+    "val_macro_auroc_hard": 0.5096142151817268
+   },
+   {
+    "step": 1708,
+    "epoch": 0.24992683640620428,
+    "val_macro_auroc_hard": 0.6934687137553166,
+    "train_loss": 0.04835251718759537
+   },
+   {
+    "step": 3416,
+    "epoch": 0.49985367281240856,
+    "val_macro_auroc_hard": 0.7169545274469546,
+    "train_loss": 0.053286533802747726
+   },
+   {
+    "step": 5124,
+    "epoch": 0.7497805092186128,
+    "val_macro_auroc_hard": 0.7277266781731027,
+    "train_loss": 0.03512817621231079
+   },
+   {
+    "step": 6832,
+    "epoch": 0.9997073456248171,
+    "val_macro_auroc_hard": 0.732149896547075,
+    "train_loss": 0.03608500584959984
+   },
+   {
+    "step": 8540,
+    "epoch": 1.2496341820310213,
+    "val_macro_auroc_hard": 0.723976579553456,
+    "train_loss": 0.026570290327072144
+   },
+   {
+    "step": 10248,
+    "epoch": 1.4995610184372257,
+    "val_macro_auroc_hard": 0.7255583059790742,
+    "train_loss": 0.04336848482489586
+   },
+   {
+    "step": 11956,
+    "epoch": 1.7494878548434298,
+    "val_macro_auroc_hard": 0.7263156437770768,
+    "train_loss": 0.049661390483379364
+   },
+   {
+    "step": 13664,
+    "epoch": 1.9994146912496342,
+    "val_macro_auroc_hard": 0.7311309647986006,
+    "train_loss": 0.030450856313109398
+   },
+   {
+    "step": 15372,
+    "epoch": 2.2493415276558384,
+    "val_macro_auroc_hard": 0.7247627935689029,
+    "train_loss": 0.03530589118599892
+   }
+  ],
+  "train_s": 1948.3148407936096,
+  "score_s": 2338.563642024994,
+  "eall_complete": true,
+  "pairs_per_s": 3897.4889698137995
+ },
+ "seed": 0,
+ "split": "cv_fold2",
+ "notes": "B3a Phosformer reimplementation; OOF predictions for CV fold; metrics with missing='drop' (E-all metrics valid only if eall_complete)",
+ "inputs": [
+  {
+   "path": "/workspace/results/splits/cv_folds.tsv",
+   "type": "file",
+   "bytes": 203997,
+   "sha256": "aa01e43d7a064269ddf58cf00a2e3130486aee973cba3e6cf52f994f6a265dc8"
+  },
+  {
+   "path": "/workspace/cache/index/kinases.parquet",
+   "type": "file",
+   "bytes": 18889,
+   "sha256": "e278ec9b4147d04dd33911f27b76e54e5528c1b1125c5140c588a1d1c49f4637"
+  },
+  {
+   "path": "/workspace/cache/index/sites.parquet",
+   "type": "file",
+   "bytes": 13829932,
+   "sha256": "a280d3bb1a843c965b148b2067715567c9a515e9f3e18ab486bb97ed0d052975"
+  },
+  {
+   "path": "cache/phosformer/pretrain/mlm_final.pt",
+   "type": "file",
+   "bytes": 185112890,
+   "sha256": "b1bd71a1db865a477e32b27f75d98ccd57e98a0755c80626fee7e5f554a9aa4a"
+  }
+ ],
+ "host": "eu-g6-076",
+ "python": "3.12.3",
+ "platform": "Linux-5.15.0-198-generic-x86_64-with-glibc2.39",
+ "argv": [
+  "scripts/baselines/phosformer_finetune.py",
+  "--fold",
+  "2",
+  "--neg-ratio",
+  "16",
+  "--init",
+  "cache/phosformer/pretrain/mlm_final.pt",
+  "--seed",
+  "0",
+  "--eall",
+  "--threads",
+  "2"
+ ],
+ "pid": 344975,
+ "started": "2026-10-26 21:07:43 CET",
+ "n_rows": {
+  "predictions": 9114526
+ },
+ "outputs": {
+  "predictions": {
+   "path": "cache/runs/b3a_phosformer_f2_r16__20261026-210741__s0/predictions.parquet",
+   "sha256": "7bfab477dd623d5d96551d6c02667b1570986d086364a5b9d229f4c1cc85d379"
+  },
+  "metrics": {
+   "path": "results/runs/b3a_phosformer_f2_r16__20261026-210741__s0/metrics.json",
+   "sha256": "b423ffe7cf9ee29316b7b1ca066a6574ee5369b277874b3ad83229c93486afae"
+  }
+ },
+ "fallbacks": {
+  "kinase_domain_full_seq": 5,
+  "hard_pool_empty_used_easy": 0
+ },
+ "endpoints": {
+  "K_primary_name": "K_cv",
+  "n_K_primary": 203,
+  "n_K_primary_evaluated": 179,
+  "n_K_any": 223,
+  "n_K_any_evaluated": 223,
+  "M1_auroc_hard": 0.6879192344843376,
+  "M1_n_kinases_defined": 179,
+  "M2_hit5": 0.1322151190246992,
+  "M3_top1_recall": 0.11573523374799963,
+  "M4_auroc_hard_Kany": 0.6664506455052597,
+  "M5_auroc_hard_Kcv": 0.6879192344843376,
+  "sec_hit1": 0.06661517066775755,
+  "sec_hit10": 0.21806512020596272,
+  "sec_mrr": 0.12231096936051995,
+  "sec_fam_hit5": 0.3393123516831597,
+  "sec_pauroc01_all": 0.5304896143203944,
+  "sec_ap_all": 0.005021330824605495,
+  "sec_ap_lift_all": 48.17979062336984,
+  "sec_auroc_all": 0.7344891462628219,
+  "fold_normalised": false,
+  "n_missing_pairs": 0,
+  "n_required_pairs": 8869395
+ },
+ "status": "ok",
+ "error": null,
+ "runtime_s": 0.65,
+ "finished": "2026-10-26 21:07:43 CET"
+}
