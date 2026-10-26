@@ -1,0 +1,32 @@
+{
+ "n_test_proteins_direct": 3957,
+ "n_T_with_cluster_members": 3957,
+ "removed": {
+  "kinases.fa|near_identical_90id_80qcov": 152,
+  "substrates.fa|accession_in_TEST": 642,
+  "substrates.fa|homolog_40id_50cov": 458
+ },
+ "removed_residues": {
+  "kinases.fa": 47711,
+  "substrates.fa": 781998
+ },
+ "kinase_domain_hit_counts": {
+  "kin_domains_with_hit_id>=0.40_qcov>=0.50": 25634,
+  "kin_domains_with_hit_id>=0.50_qcov>=0.50": 7294,
+  "kin_domains_with_hit_id>=0.90_qcov>=0.80": 152
+ },
+ "filtered_corpus": {
+  "kinases.fa": {
+   "n_seq": 295168,
+   "n_res": 86897077
+  },
+  "substrates.fa": {
+   "n_seq": 4238,
+   "n_res": 3063763
+  }
+ },
+ "original": {
+  "kinases.fa": 295320,
+  "substrates.fa": 5338
+ }
+}

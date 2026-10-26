@@ -33,7 +33,10 @@ CONFIGS = {
     "w10_nce05": dict(flank=10, lambda_nce=0.5),
     "w7_nce0": dict(flank=7, lambda_nce=0.0),
 }
-BASE: dict = {}      # base hyper-parameters chosen on inner validation (filled after the dev sweep)
+# Base hyper-parameters ("reg1"), chosen by the fold-0 INNER-validation dev sweep (scripts/models/r3_dev_sweep.sh;
+# REGISTRY split=inner_dev); 5-seed ensemble (seeds [0..4]) per training run, logits averaged.
+BASE: dict = dict(lr=3e-4, p_lab=0.25, dropout=0.2, esm_dropout=0.3, wd=0.05, eval_every=100, patience=10, n_seeds=5)
+BASE_NAME = "reg1x5"
 REGISTRY = ROOT / "results" / "cv" / "REGISTRY.tsv"
 REG_COLS = ["timestamp", "model", "run_id", "split", "fold", "config_name", "config_json", "selection_metric",
             "value", "n_configs_tried_model", "notes"]
@@ -53,7 +56,7 @@ def n_configs_tried() -> int:
     if not REGISTRY.exists():
         return 0
     r = pd.read_csv(REGISTRY, sep="\t")
-    r = r[r.model.eq("R3")]
+    r = r[r.model.eq("R3") & r.split.eq("cv")]
     return int(r.config_name.nunique())
 
 
@@ -82,12 +85,12 @@ def cmd_train(a):
     if a.inner_only:
         return cmd_inner(a, cfg)
     tag = f"fold{a.fold}" if a.fold is not None else f"lko{a.lko}"
-    name = f"r3_{a.config}_{tag}"
+    name = f"r3_{BASE_NAME}_{a.config}_{tag}"
     with manifest.RunManifest(name, config=cfg, seed=a.seed, inputs=inputs_list(),
                               split="cv" if a.fold is not None else "lko_T2",
                               notes="R3 neural kinase-site model (DESIGN §8.4)") as run:
         t0 = time.time()
-        preds, info, model = r3train.run(cfg, fold=a.fold, lko_fold=a.lko, log=lambda s: print(s, flush=True))
+        preds, info, _ = r3train.run(cfg, fold=a.fold, lko_fold=a.lko, log=lambda s: print(s, flush=True))
         info["gpu"] = torch.cuda.get_device_name(0)
         run.set("train_info", {k: v for k, v in info.items() if k != "history"})
         run.set("history", info["history"])
@@ -107,17 +110,17 @@ def cmd_train(a):
         res.per_kinase.to_csv(run.dir / "per_kinase.tsv", sep="\t", index=False)
         summ = summarise(res)
         summ["t_eval_s"] = round(time.time() - t1, 1)
-        summ["train_info"] = {k: info[k] for k in ["best_val_auroc_hard", "best_step", "t_train_s", "t_score_s",
+        summ["train_info"] = {k: info.get(k) for k in ["best_val_auroc_hard", "ensemble_val_auroc_hard", "best_step", "t_train_s", "t_score_s",
                                                     "t_total_s", "t_targets_s", "t_gpu_load_s", "peak_gpu_mem_gb",
                                                     "n_trained_kinases", "n_pos_fit", "n_pred_rows"]}
         run.save_metrics(summ, name="summary")
         print(json.dumps(summ, indent=1, default=str), flush=True)
         if a.fold is not None:
             registry_append({"timestamp": time.strftime("%Y-%m-%d %H:%M:%S"), "model": "R3", "run_id": run.run_id,
-                             "split": "cv", "fold": a.fold, "config_name": a.config,
-                             "config_json": json.dumps(CONFIGS[a.config]), "selection_metric": "M1_auroc_hard(K_cv)",
+                             "split": "cv", "fold": a.fold, "config_name": f"{BASE_NAME}:{a.config}",
+                             "config_json": json.dumps({**BASE, **CONFIGS[a.config]}), "selection_metric": "M1_auroc_hard(K_cv)",
                              "value": round(summ["M1_auroc_hard"], 5),
-                             "n_configs_tried_model": n_configs_tried() + (0 if _seen(a.config) else 1),
+                             "n_configs_tried_model": n_configs_tried() + (0 if _seen(f"{BASE_NAME}:{a.config}") else 1),
                              "notes": a.note})
 
 
@@ -128,6 +131,7 @@ def cmd_inner(a, cfg):
     t0 = time.time()
     _, info, _ = r3train.run(cfg, fold=a.fold, log=lambda s: print(s, flush=True), score=False)
     out = {"cfg": cfg, "best_val_auroc_hard": info["best_val_auroc_hard"], "best_step": info["best_step"],
+           "ensemble_val_auroc_hard": info.get("ensemble_val_auroc_hard"),
            "t_train_s": info["t_train_s"], "history": info["history"]}
     d = OUTDIR / "inner_dev"
     d.mkdir(parents=True, exist_ok=True)

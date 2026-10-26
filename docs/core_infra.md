@@ -1,0 +1,190 @@
+# Core infrastructure (splits, labels API, eval harness, canaries, manifests, TEST seal)
+
+Owner: core-infra. Frozen at G1 (split frozen 2026-10-26 14:34 CET, seed 0; label tables relabelled 14:50 after the
+v2 label amendments, with the split unchanged). Every number below comes from `results/splits/split_numbers.json`
+and `split_report.md`.
+
+```
+/workspace/.venv/bin/python -I scripts/build_kinase_list.py      # residue-class overrides (config/kinase_curation.tsv)
+/workspace/.venv/bin/python -I scripts/build_labels.py           # -> cache/labels/ks_pairs.parquet (pre-split, full)
+/workspace/.venv/bin/python -I scripts/build_splits.py           # FREEZE (refuses if SEAL.json exists; --force = PI only)
+/workspace/.venv/bin/python -I scripts/build_splits.py --relabel # after a label change: same split, new tables, re-seal
+/workspace/.venv/bin/python -m pytest -q tests/                  # 63 tests, ~45 s
+```
+
+## 1. Residue classes (DESIGN §2) and kinase list
+
+`config/kinase_curation.tsv` has 36 `residue_class` rows:
+- **ST:** LMTK1–3, STYK1; DYRK1A/1B/2/3/4, CLK1–4, HIPK1–4, GSK3A/B. For DYRK, CLK, HIPK and GSK3 the Y labels are cis-autophosphorylation. GSK3 and HIPK are written explicitly even though ST is already their default.
+- **STY:** MAP2K1–7, TTK, TESK1/2, PKMYT1, PKDCC, NEK10.
+- **Y:** WEE1/2.
+- **ERN1 → ST.** IRE1α is a Ser/Thr kinase. Its only label is O75460_Y628 (autophosphorylation, in vitro), which is now dropped as out of class.
+- **MAP3K21 → ST.** MLK4 is a Ser/Thr MAP3K; it keeps its EXT labels MAP2K1 S218/S222. Its PSP label Q9NRM6_Y447 is dropped.
+
+Class totals for the 503 included kinases: ST 402, Y 88, STY 13. Inclusion and order are unchanged.
+
+`cache/index/kinases.parquet` was rebuilt with `scripts/build_index.py`:
+- Only the `residue_class` column changed (15 kinases). New SHA-256: `e278ec9b…`.
+- sites.parquet and proteins.parquet are byte-identical.
+- Any kinase-axis matrix saved through `ksp.store` before 14:16 must be re-saved.
+
+Regulatory-subunit rows (CSNK2B, PRKAB1, PRKAG2, PIK3R1, PHKA1, PHKB) are excluded and have 0 L2 labels (verified). Under A7 they become mask-only rows for their catalytic kinases.
+
+Strict name resolver (A4): `ksp.kinases.resolve_kinase_names(names, source, accs=None, on_unknown='collect'|'raise')`.
+- It returns gene, accession, `how`, family members, and the unresolved names.
+- Per-source homonym rules are in `config/kinase_homonyms.tsv`. "PDK1" resolves to PDPK1 for hprd/signor/cantley/kinase_library/kinhib, is dropped for uniprot/other, and is PDK1 for PSP rows (which resolve by accession). It also covers RSK*/MSK*, PKN/CK1/CK2/PKA/PKC/AMPK family names, MST1/2, PKD1/2 and CDK11.
+- UniProt EXT labels are now resolved through it: 2,918 → 2,914 pairs.
+
+## 2. Labels API (`ksp.labels`)
+
+| function | what |
+|---|---|
+| `load_dev(variant='L2', with_canaries=False, ums_only=None)` | **The only modelling label reader.** Reads DEV proteins only. Variants: L1/L2/L3/L2_vitro/L2_noauto/EXT/EXT_not_in_psp, `eval` (evaluation positives) and `all` (every row, incl. mask-only, for masks). U_ms-only by default, except for `all` (A6). |
+| `evaluable_positive(df)` | PSP ∧ L1 ∧ ¬autophos. This is the same set for TEST and CV whatever the training variant (AIFM2-7). |
+| `known_positive_sets(pairs)` | KP(k) over all sources, species and flags, plus identical-15-mer U_obs sites. Sensitivity-only rows are excluded unless `include_sensitivity=True`. |
+| `paralog_sets()` | Par(k): ≥60% kinase-domain identity, OR same Manning subfamily, OR (no subfamily) same family with ≥50% identity (A8). Symmetric; mean size 2.1. |
+| `kinase_domain_identity()` | KinCore MSA identity (identical / both-residue columns, ≥50% overlap of the shorter domain; max over multi-domain entries). The 28 atypicals missing from KinCore use a within-family Biopython global alignment of UniProt domains. |
+| `NegativeMasks(pairs)` | `.excluded(k)` = KP(k) ∪ Hamming≤2 15-mers of KP(k) sites ∪ sites labelled to Par(k). `.hard_candidates(k)` = sites with a human-native non-autophos label to a kinase ∉ {k}∪Par(k) (PI r2). |
+| `hamming_neighbors(q, ref, 2)` | Exact pigeonhole search; tested against brute force. |
+| `new_since_2021`, `external_test_filter`, `ext_test_tiers`, `mask_only_pairs` | A10, DL-5+A9 and A7 respectively; details below. |
+
+Notes on those last four:
+- **Temporal (A10):** a pair is new if it is absent from the 2021 kinase-library PSP file in every species, matched by acc+window, acc+residue/position, or kinase symbol+SITE_GRP_ID.
+- **External test (A9):** OmniPath rows that list PhosphoSite are dropped, pairs are capped at 20 per PMID, and tier A = SIGNOR/HPRD/UniProt-ECO. Flags are `ext_test` and `ext_tier`.
+- **Mask-only rows (A7):** they come from `config/complex_subunits.tsv` (cyclins, AMPKβ/γ, PKA-R, TFIIH/CAK, mTORC, Ku, NEMO) and UniProt family notes, 3,159 rows in total. The 20,652 OmniPath text-mining/KEA rows are `mask_sensitivity_only`.
+
+Columns added at freeze: `in_index`, `in_U_ms`, `new_since_2021`, `ext_test`, `ext_tier`, `mask_only`, `mask_sensitivity_only`, `is_canary`.
+
+## 3. Splits (`ksp.splits`, `scripts/build_splits.py`)
+
+**Substrate clusters.**
+- Built from an mmseqs2 easy-search all-vs-all (`-s 7.5 --max-seqs 2000 -e 1e-3 --min-seq-id 0.4 -c 0.5 --cov-mode 0`, 12 threads, 109 s).
+- 167,275 edges plus 10,477 identical-15-mer edges, connected into components.
+- Result: **11,609 clusters** (8,874 singletons). The largest has 455 proteins (the kinases) and holds 2.35% of labels. That is below the 3% threshold, so nothing was re-thresholded.
+
+**TEST.** Chosen by simulated annealing with soft penalties (seed 0; 400k moves, 11 s):
+- 2,353 clusters (20.3%), **3,957 proteins**, 69,430 U_ms sites, 2,952 L2 pairs and **2,205 evaluation positives**.
+- Label, U_ms and S/T/Y fractions are all between 19.96% and 20.04%.
+- Per-kinase band, for the 228 kinases with ≥5 positives:
+  - 187 fall in 15–25%;
+  - 223 fall in the integer band [⌊.15n⌋, ⌈.25n⌉];
+  - 92 of 94 kinases with ≥20 positives fall in 15–25%.
+- The misses are structural, because all their positives sit in 1–3 clusters (e.g. OXSR1 0/15, BMPR1B 0/6).
+
+**CV.** 5-fold annealing over DEV clusters (800k moves). Each fold holds 19.98–20.03% of labels.
+
+**LKO.** 120 kinase clusters (≥50% domain identity ∪ Manning family) in 5 folds of 97–103 kinases, with no family split.
+
+**Kinase sets.**
+
+| | n | AGC | Atyp | CAMK | CK1 | CMGC | Other | STE | TK | TKL | ST/Y/STY |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| K_eval | **119** | 24 | 4 | 15 | 4 | 23 | 15 | 8 | 23 | 3 | 94/23/2 |
+| K_any | **256** | 41 | 11 | 37 | 7 | 41 | 30 | 26 | 48 | 15 | 205/45/6 |
+| K_cv | **203** | 33 | 5 | 28 | 6 | 34 | 25 | 23 | 38 | 11 | 161/38/4 |
+
+K_eval is 119, below the ≈135–160 expected in DESIGN. The cause is the U_ms restriction (A6), which drops 2,431 of 13,392 evaluation pairs.
+
+**Dropped (A6).** 956 L2 pairs have no index row, and 2,934 L2 pairs plus 2,431 evaluation pairs are not in U_ms.
+
+**Readers.** `load_clusters`, `load_test_proteins`, `load_cv_folds`, `load_kinase_folds`, `load_eval_kinase_sets`, `site_cluster`.
+
+**Helpers.**
+- `inner_folds(train_sites, k=5, seed)`: cluster-grouped and balanced.
+- `train_valid_split_inner`: early stopping inside training folds only (AIFM2-7).
+- `cv_eval_rows(fold)`.
+
+**Frozen files.** In results/splits/: `substrate_clusters.tsv`, `test_proteins.tsv`, `cv_folds.tsv`, `kinase_folds.tsv`, `eval_kinase_sets.tsv`, `canary_ppi_partners.tsv`, `split_report.md`, `split_numbers.json` and `SEAL.json` (SHA-256 of every sealed file, plus history).
+
+**Seal (A3).**
+- Moved into `sealed/`: `ks_pairs_full.parquet`, `ks_unmapped.parquet` and `kinase_label_counts.tsv`, plus the new `test_labels.parquet` (TEST rows and TEST canaries).
+- DEV tables are `cache/labels/dev_pairs.parquet` and `canary_dev.parquet`, plus public `results/labels/kinase_label_counts_dev.tsv`.
+- `tests/test_labels_universe.py` now skips its label checks because `ks_pairs.parquet` is sealed.
+
+## 4. Cross-fitting (`ksp.crossfit`; DESIGN §7, §16 A1)
+
+- **Contract:** subclass `LabelDerivedFeature`, decorate it with `@register`, and implement `fit(train_pairs, ctx)` and `transform(query, ctx)`. `transform` returns len(query) rows in the same order.
+- **Driver:** `crossfit(factory, train_labels, train_rows, eval_rows, k_inner=5, seed, eval_mode='inner')`.
+  - Training rows get an inner 5-fold over substrate clusters.
+  - By default, eval rows go to a randomly assigned inner-fold fit (A1). `eval_mode='all'` is reserved for a PI decision.
+  - `LeakageError` is raised if any fitted label lies on a query protein or cluster.
+- **Outer folds:** `outer_split(fold)`.
+- **Toy test:** in the planted-signal test, the "is labelled" feature gives AUROC 1.0 without cross-fitting and exactly 0.5 under the driver.
+
+## 5. Evaluation (`ksp.eval`; the only metric code)
+
+**API.** `prepare('cv', fold=None|f)`, then `evaluate(preds, data, missing='worst'|'drop'|'error')`. The result is an `EvalResult` with `.endpoints`, `.per_kinase`, `.site_level`, `.pair_strata`, `.missing`, `.canary` and `.to_json()`; `strata(res)` gives the stratum table.
+
+**Input.**
+- Predictions are (kinase_acc, site_id, score), or (kinase_idx, site_idx, score) for very large outputs. Canaries are appended after kinase index 502.
+- An optional `score_site` column holds the cross-kinase score used for M2 (A20).
+- Unknown IDs, duplicate pairs and NaN scores raise. Missing pairs are counted per kinase.
+
+**Endpoints.**
+- M1 and M4: E-hard AUROC.
+- M2: filtered site-centric Hit@5, which drops other labelled kinases and Par(k) (A18). Expected values under random tie-breaking. Hit@1/10, MRR and family Hit@5 are secondary.
+- M3: top-1% recall in E-all, with fractional tie credit.
+- Secondary: pAUROC at FPR≤0.01 (McClish-standardised, matches sklearn), AP and lift, and E-all AUROC.
+- CV uses K_cv (so M5 = M1-CV).
+
+**Strata.**
+- Per kinase: Manning group, residue class, training bin (0/1–4/5–19/20–99/≥100 DEV L2), priming, PIKK.
+- Per pair: evidence class, new-since-2021 versus pre-2021, external curated.
+
+**Statistics.**
+- `bootstrap(res, B=1000|10000, resample='clusters'|'kinases')` gives cluster-bootstrap CIs. M2 and M3 keep each kinase's top-1% cut-off fixed, which is an approximation.
+- `paired_bootstrap(A, B)` refuses unmatched universes and returns bootstrap p-values; `holm(p)` applies Holm correction.
+- `matched_universe`, `coverage` and `coverage_at` (A17).
+
+**Speed.** CV fold 0 has 21.3M (k,s) rows, i.e. 516 kinases × 55.6k sites; one evaluate takes 27 s and B=200 bootstrap takes 1.3 s. TEST (≈70k sites) should take about 35 s.
+
+## 6. Canaries (`ksp.canary`)
+
+- **12 negative canaries** (6 ST, 4 Y, 2 STY). Sizes 10–70 were drawn from real kinases with 10–100 labels. Sites are random U_ms sites, 1–4 per random protein, and descriptors are fixed random vectors.
+- **1 positive canary.** It has 138 R-x-x-[ST]-[FILMV] sites on 120 planted PPI partners (`canary_ppi_partners()`).
+- All canaries were generated before the split, so the optimiser balanced them: their TEST share is 18–30%.
+- **Use:** `load_dev(..., with_canaries=True)` adds them, and `kinases_with_canaries()` gives the extended kinase list.
+- **Acceptance** (`eval.canary_check`, on both E-hard and E-all): mean negative AUROC ≤ 0.57 and positive ≥ 0.90. It passes end to end on fold 0 with random scores for the negatives and motif+PPI scores for the positive. Canaries never enter endpoints.
+
+## 7. Manifests and TEST
+
+- **`ksp.manifest.RunManifest(name, config, seed, inputs)`** is a context manager. It records the git hash (read-only), input SHA-256, runtime, n_rows, fallback counters and status. Predictions go to `cache/runs/<id>/predictions.parquet`, metrics to `results/runs/<id>/metrics.json`, and existing runs are never overwritten.
+- **`ksp.eval_test`** refuses to run unless FREEZE.json is tracked (`git ls-files`) and unmodified (`git diff --quiet`), the seal hashes match, and that FREEZE.json has not already been scored. It scores every config in one batch with B from FREEZE (default 10,000), plus paired comparisons with Holm correction, and appends to `results/test/LEDGER.md`.
+
+## 8. Tests (`tests/`, pytest added to requirements.txt)
+
+- **test_metrics:** hand-computed toys and sklearn cross-checks.
+- **test_splits:** no protein, cluster or identical-15-mer overlap between TEST and DEV or across CV folds; mmseqs edges stay inside clusters; constraints hold.
+- **test_masks:** Hamming search vs brute force; KP, paralog and E-hard semantics.
+- **test_crossfit:** the planted leak.
+- **test_canary.**
+- **test_eval_harness:** ID errors, missing-prediction policies, oracle and random behaviour, A18/A20, canaries, bootstrap, TEST refusal, manifest.
+- **test_feature_overlap:** A11 helper `check_feature_overlap(pairs)`, which fails above 3× chance overlap with DEV PSP pairs.
+- **test_no_test_access:** grep over the PI's pattern list, plus "feature modules never load labels".
+
+**Grep-guard violators, for their owners.**
+- `scripts/features/phospho_study_lists.py` reads OmniPath enzsub and iPTMnet directly for PMIDs only (the A12 exclusion list). The PI has added it to ALLOW.
+- Docstring-only, listed in `KNOWN_VIOLATORS`: `src/ksp/sites.py`, `src/ksp/ids.py`, `src/ksp/features/ppi.py`, `scripts/make_data_rows.py`, `scripts/profile_psp.py`.
+- `scripts/validate_structure_esm_features.py` does not match any pattern.
+
+## 9. Biological controls
+
+`config/bio_controls.tsv` has 44 canonical pairs, all in PSP L2 and none autophosphorylation, covering 9 groups with 10 Y sites.
+- Numbering follows the human canonical sequence, e.g. CREB1 S133 → S119, H3 S10 → S11, EIF2S1 S51 → S52, PRKAA1 T172 → T183, RPS6KB1 T389 → T412, LAT Y191 → Y220.
+- `in_test_split` is set for 8 of 44.
+- The panel is not used for tuning.
+
+## 10. Assumptions and open points
+
+- Coverage for mmseqs edges means coverage of both query and target ≥ 50%. Identity is mmseqs fident over the alignment.
+- In CV, masks use DEV labels only. In TEST, masks use DEV ∪ TEST labels, because Hamming neighbours can cross splits.
+- M3/M2 bootstrap keeps each kinase's top-1% threshold fixed.
+- Pooled out-of-fold CV evaluation mixes fold models within a kinase. Per-fold evaluation is available through `prepare('cv', fold=f)`.
+
+## 11. API stability (R2, R3, B3, B4 and baseline agents)
+
+I expect no breaking changes. Every public signature above is frozen, including load_dev, NegativeMasks, paralog_sets, splits readers, inner_folds, crossfit, prepare/evaluate/bootstrap/paired_bootstrap, RunManifest and canary helpers. Possible changes are additive only, with defaults that keep current behaviour:
+- `evaluate(...)` may gain optional arguments, e.g. per-fold aggregation for CV (`cv_mode='per_fold'`). The pooled-OOF default stays.
+- `EvalResult.endpoints` may gain extra keys, e.g. bootstrap summaries. Existing keys keep their names.
+- If the PI adopts it, a shared `ksp.labels.sample_negatives(...)` generator would be added (A15/A22). Nothing existing would be renamed.
+- Label tables change only through `build_splits.py --relabel`. That mode keeps the split, evaluation positives and canaries fixed and fails otherwise, so DEV evaluation sets cannot shift silently.

@@ -26,7 +26,8 @@ from ksp.models.r3.model import R3Net, bce_masked, infonce_filtered
 
 DEFAULT = dict(flank=7, lambda_nce=0.5, alpha=0.5, p_lab=0.5, batch=1024, lr=1e-3, wd=0.01, max_steps=6000,
                eval_every=200, patience=6, desc_dropout=0.2, d_site=192, h=128, d_kin=256, n_layers=2,
-               dropout=0.1, esm_dropout=0.1, use_esm=True, use_prot=True, valid_frac=0.2, seed=0, variant="L2", warmup=200)
+               dropout=0.1, esm_dropout=0.1, use_esm=True, use_prot=True, valid_frac=0.2, seed=0, variant="L2", warmup=200,
+               n_seeds=1)
 
 _CACHE: dict = {}
 
@@ -123,8 +124,6 @@ def run(cfg: dict, fold: int | None = None, lko_fold: int | None = None, device:
     t_start = time.time()
     si, ki, par = inputs()
     K = len(ki.kinases)
-    rng = np.random.default_rng(cfg["seed"])
-    torch.manual_seed(cfg["seed"])
     if (fold is None) == (lko_fold is None):
         raise ValueError("give exactly one of fold / lko_fold")
     dev_rows = si.cv_fold >= 0
@@ -166,14 +165,56 @@ def run(cfg: dict, fold: int | None = None, lko_fold: int | None = None, device:
     grp_keep[ki.group[trained]] = True
     G = GPUData(si, ki, T, par, cfg["flank"], device, fam_keep, grp_keep)
     info["t_gpu_load_s"] = round(G.load_s, 1)
+    wk_t = torch.as_tensor(wk, dtype=torch.float32, device=device)
+    eval_k = [k for k in range(K) if trained[k] and not ki.is_canary[k]]
+    seeds = [cfg["seed"] + i for i in range(cfg["n_seeds"])]
+    models, per_seed = [], []
+    t_train = time.time()
+    for sd in seeds:
+        model, si_info = _train_one(cfg, sd, si, G, wk_t, lab_rows, fit_rows, val_rows, eval_k, device, log)
+        models.append(model)
+        per_seed.append(si_info)
+    info.update(seeds=seeds, per_seed=per_seed, history=[h for p in per_seed for h in p["history"]],
+                best_val_auroc_hard=float(np.mean([p["best_val_auroc_hard"] for p in per_seed])),
+                best_step=[p["best_step"] for p in per_seed], t_train_s=round(time.time() - t_train, 1))
+    if len(models) > 1:
+        m_ens = _ensemble_val(models, G, val_rows, eval_k)
+        info["ensemble_val_auroc_hard"] = m_ens
+        log(f"ensemble of {len(models)} seeds: inner val_auroc_hard {m_ens:.4f}")
+    if not score:
+        del G
+        torch.cuda.empty_cache()
+        return None, info, models
+    t0 = time.time()
+    srows = np.where(score_mask)[0]
+    S = sum(score_rows(m, G, srows) for m in models) / len(models)     # mean logit over seeds (n, K)
+    S = S.cpu().numpy()
+    ok = ki.class_ok[si.res_code[srows]] & score_k[None]
+    ri, kk = np.nonzero(ok)
+    preds = pd.DataFrame({"kinase_idx": kk.astype(np.int64), "site_idx": si.site_idx[srows[ri]],
+                          "score": S[ri, kk].astype(np.float32)})
+    kacc = ki.kinases.uniprot_acc.values
+    preds["kinase_acc"] = pd.Categorical.from_codes(kk, categories=kacc)
+    preds["site_id"] = pd.Categorical.from_codes(ri, categories=si.site_ids[srows])
+    info["t_score_s"] = round(time.time() - t0, 1)
+    info["n_pred_rows"] = len(preds)
+    info["t_total_s"] = round(time.time() - t_start, 1)
+    info["peak_gpu_mem_gb"] = round(torch.cuda.max_memory_allocated() / 2**30, 2)
+    del G
+    torch.cuda.empty_cache()
+    return preds, info, models
+
+
+def _train_one(cfg, seed, si, G, wk_t, lab_rows, fit_rows, val_rows, eval_k, device, log):
+    rng = np.random.default_rng(seed)
+    torch.manual_seed(seed)
+    ki = _CACHE["ki"]
     model = R3Net(si.emb.shape[1], G.k_cant.shape[1], len(ki.group_names), len(ki.family_names), flank=cfg["flank"],
                   d_site=cfg["d_site"], h=cfg["h"], d_kin=cfg["d_kin"], n_layers=cfg["n_layers"],
                   desc_dropout=cfg["desc_dropout"], dropout=cfg["dropout"],
                   esm_dropout=cfg["esm_dropout"], use_esm=cfg["use_esm"], use_prot=cfg["use_prot"]).to(device)
     opt = torch.optim.AdamW(model.parameters(), lr=cfg["lr"], weight_decay=cfg["wd"])
     sched = torch.optim.lr_scheduler.LambdaLR(opt, lambda s: min(1.0, (s + 1) / cfg["warmup"]))
-    wk_t = torch.as_tensor(wk, dtype=torch.float32, device=device)
-    eval_k = [k for k in range(K) if trained[k] and not ki.is_canary[k]]
     B, nl = cfg["batch"], int(cfg["batch"] * cfg["p_lab"])
     best, best_state, best_step, bad = -1.0, None, 0, 0
     hist = []
@@ -198,10 +239,10 @@ def run(cfg: dict, fold: int | None = None, lko_fold: int | None = None, device:
         sched.step()
         if step % cfg["eval_every"] == 0:
             m, nk = inner_val_metric(model, G, val_rows, eval_k)
-            hist.append({"step": step, "loss_bce": float(loss_b), "loss_nce": float(loss_n), "val_auroc_hard": m,
-                         "val_n_kinases": nk, "t": round(time.time() - t_train, 1)})
-            log(f"step {step} bce {float(loss_b):.4f} nce {float(loss_n):.4f} val_auroc_hard {m:.4f} ({nk} k) "
-                f"{time.time() - t_train:.0f}s")
+            hist.append({"seed": seed, "step": step, "loss_bce": float(loss_b), "loss_nce": float(loss_n),
+                         "val_auroc_hard": m, "val_n_kinases": nk, "t": round(time.time() - t_train, 1)})
+            log(f"seed {seed} step {step} bce {float(loss_b):.4f} nce {float(loss_n):.4f} val_auroc_hard {m:.4f} "
+                f"({nk} k) {time.time() - t_train:.0f}s")
             if m > best:
                 best, best_step, bad = m, step, 0
                 best_state = copy.deepcopy({k: v.detach().cpu() for k, v in model.state_dict().items()})
@@ -209,27 +250,21 @@ def run(cfg: dict, fold: int | None = None, lko_fold: int | None = None, device:
                 bad += 1
                 if bad >= cfg["patience"]:
                     break
-    info.update(best_val_auroc_hard=best, best_step=best_step, history=hist,
-                t_train_s=round(time.time() - t_train, 1))
     model.load_state_dict(best_state)
-    if not score:
-        del G
-        torch.cuda.empty_cache()
-        return None, info, model
-    t0 = time.time()
-    srows = np.where(score_mask)[0]
-    S = score_rows(model, G, srows).cpu().numpy()                     # (n, K)
-    ok = ki.class_ok[si.res_code[srows]] & score_k[None]
-    ri, kk = np.nonzero(ok)
-    preds = pd.DataFrame({"kinase_idx": kk.astype(np.int64), "site_idx": si.site_idx[srows[ri]],
-                          "score": S[ri, kk].astype(np.float32)})
-    kacc = ki.kinases.uniprot_acc.values
-    preds["kinase_acc"] = pd.Categorical.from_codes(kk, categories=kacc)
-    preds["site_id"] = pd.Categorical.from_codes(ri, categories=si.site_ids[srows])
-    info["t_score_s"] = round(time.time() - t0, 1)
-    info["n_pred_rows"] = len(preds)
-    info["t_total_s"] = round(time.time() - t_start, 1)
-    info["peak_gpu_mem_gb"] = round(torch.cuda.max_memory_allocated() / 2**30, 2)
-    del G
-    torch.cuda.empty_cache()
-    return preds, info, model
+    model.eval()
+    return model, {"seed": seed, "best_val_auroc_hard": best, "best_step": best_step, "history": hist,
+                   "t_train_s": round(time.time() - t_train, 1)}
+
+
+@torch.no_grad()
+def _ensemble_val(models, G, val_rows, eval_k):
+    L = sum(score_rows(m, G, val_rows) for m in models) / len(models)
+    T = G.T[torch.as_tensor(val_rows, device=G.dev)]
+    hard_row = (T == 1).any(1)
+    vals = []
+    for k in eval_k:
+        p = T[:, k] == 1
+        n = (T[:, k] == 0) & hard_row
+        if p.sum() >= 3 and n.sum() >= 3:
+            vals.append(_auroc_t(L[p, k], L[n, k]))
+    return float(np.mean(vals)) if vals else float("nan")
