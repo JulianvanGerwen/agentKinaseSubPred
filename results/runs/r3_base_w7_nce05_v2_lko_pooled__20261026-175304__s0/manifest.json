@@ -1,0 +1,307 @@
+{
+ "run_id": "r3_base_w7_nce05_v2_lko_pooled__20261026-175304__s0",
+ "name": "r3_base_w7_nce05_v2_lko_pooled",
+ "git_hash": "3cd99b73241d5a8a85474db3e0ac56505b32ef75",
+ "config": {
+  "pooled_from": [
+   "r3_reg1x5_w7_nce05_lko0__20261026-163555__s0",
+   "r3_reg1x5_w7_nce05_lko1__20261026-163914__s0",
+   "r3_reg1x5_w7_nce05_lko2__20261026-164006__s0",
+   "r3_reg1x5_w7_nce05_lko3__20261026-164259__s0",
+   "r3_reg1x5_w7_nce05_lko4__20261026-164548__s0"
+  ],
+  "mode": "lko",
+  "source_info": {
+   "r3_reg1x5_w7_nce05_lko0__20261026-163555__s0": {
+    "n_rows": 20187278,
+    "cv_folds_of_sites": [
+     0,
+     1,
+     2,
+     3,
+     4
+    ],
+    "n_kinases": 102
+   },
+   "r3_reg1x5_w7_nce05_lko1__20261026-163914__s0": {
+    "n_rows": 21316232,
+    "cv_folds_of_sites": [
+     0,
+     1,
+     2,
+     3,
+     4
+    ],
+    "n_kinases": 100
+   },
+   "r3_reg1x5_w7_nce05_lko2__20261026-164006__s0": {
+    "n_rows": 20007748,
+    "cv_folds_of_sites": [
+     0,
+     1,
+     2,
+     3,
+     4
+    ],
+    "n_kinases": 97
+   },
+   "r3_reg1x5_w7_nce05_lko3__20261026-164259__s0": {
+    "n_rows": 20304320,
+    "cv_folds_of_sites": [
+     0,
+     1,
+     2,
+     3,
+     4
+    ],
+    "n_kinases": 103
+   },
+   "r3_reg1x5_w7_nce05_lko4__20261026-164548__s0": {
+    "n_rows": 22248398,
+    "cv_folds_of_sites": [
+     0,
+     1,
+     2,
+     3,
+     4
+    ],
+    "n_kinases": 101
+   }
+  },
+  "source_manifests": {
+   "r3_reg1x5_w7_nce05_lko0__20261026-163555__s0": {
+    "config": {
+     "flank": 7,
+     "lambda_nce": 0.5,
+     "alpha": 0.5,
+     "p_lab": 0.25,
+     "batch": 1024,
+     "lr": 0.0003,
+     "wd": 0.05,
+     "max_steps": 6000,
+     "eval_every": 100,
+     "patience": 10,
+     "desc_dropout": 0.2,
+     "d_site": 192,
+     "h": 128,
+     "d_kin": 256,
+     "n_layers": 2,
+     "dropout": 0.2,
+     "esm_dropout": 0.3,
+     "use_esm": true,
+     "use_prot": true,
+     "use_phos": true,
+     "valid_frac": 0.2,
+     "seed": 0,
+     "variant": "L2",
+     "warmup": 200,
+     "n_seeds": 5,
+     "esm": "650m",
+     "pretrain_steps": 0,
+     "distill_aux": 0.0,
+     "pretrain_lr": 0.001
+    },
+    "started": "2026-10-26 16:35:55 CET",
+    "runtime_s": 195.65,
+    "git_hash": "581e25c4b597e00d27eff31a5ae6a0bc6e2149f1"
+   },
+   "r3_reg1x5_w7_nce05_lko1__20261026-163914__s0": {
+    "config": {
+     "flank": 7,
+     "lambda_nce": 0.5,
+     "alpha": 0.5,
+     "p_lab": 0.25,
+     "batch": 1024,
+     "lr": 0.0003,
+     "wd": 0.05,
+     "max_steps": 6000,
+     "eval_every": 100,
+     "patience": 10,
+     "desc_dropout": 0.2,
+     "d_site": 192,
+     "h": 128,
+     "d_kin": 256,
+     "n_layers": 2,
+     "dropout": 0.2,
+     "esm_dropout": 0.3,
+     "use_esm": true,
+     "use_prot": true,
+     "use_phos": true,
+     "valid_frac": 0.2,
+     "seed": 0,
+     "variant": "L2",
+     "warmup": 200,
+     "n_seeds": 5,
+     "esm": "650m",
+     "pretrain_steps": 0,
+     "distill_aux": 0.0,
+     "pretrain_lr": 0.001
+    },
+    "started": "2026-10-26 16:39:14 CET",
+    "runtime_s": 221.98,
+    "git_hash": "581e25c4b597e00d27eff31a5ae6a0bc6e2149f1"
+   },
+   "r3_reg1x5_w7_nce05_lko2__20261026-164006__s0": {
+    "config": {
+     "flank": 7,
+     "lambda_nce": 0.5,
+     "alpha": 0.5,
+     "p_lab": 0.25,
+     "batch": 1024,
+     "lr": 0.0003,
+     "wd": 0.05,
+     "max_steps": 6000,
+     "eval_every": 100,
+     "patience": 10,
+     "desc_dropout": 0.2,
+     "d_site": 192,
+     "h": 128,
+     "d_kin": 256,
+     "n_layers": 2,
+     "dropout": 0.2,
+     "esm_dropout": 0.3,
+     "use_esm": true,
+     "use_prot": true,
+     "use_phos": true,
+     "valid_frac": 0.2,
+     "seed": 0,
+     "variant": "L2",
+     "warmup": 200,
+     "n_seeds": 5,
+     "esm": "650m",
+     "pretrain_steps": 0,
+     "distill_aux": 0.0,
+     "pretrain_lr": 0.001
+    },
+    "started": "2026-10-26 16:40:06 CET",
+    "runtime_s": 169.72,
+    "git_hash": "581e25c4b597e00d27eff31a5ae6a0bc6e2149f1"
+   },
+   "r3_reg1x5_w7_nce05_lko3__20261026-164259__s0": {
+    "config": {
+     "flank": 7,
+     "lambda_nce": 0.5,
+     "alpha": 0.5,
+     "p_lab": 0.25,
+     "batch": 1024,
+     "lr": 0.0003,
+     "wd": 0.05,
+     "max_steps": 6000,
+     "eval_every": 100,
+     "patience": 10,
+     "desc_dropout": 0.2,
+     "d_site": 192,
+     "h": 128,
+     "d_kin": 256,
+     "n_layers": 2,
+     "dropout": 0.2,
+     "esm_dropout": 0.3,
+     "use_esm": true,
+     "use_prot": true,
+     "use_phos": true,
+     "valid_frac": 0.2,
+     "seed": 0,
+     "variant": "L2",
+     "warmup": 200,
+     "n_seeds": 5,
+     "esm": "650m",
+     "pretrain_steps": 0,
+     "distill_aux": 0.0,
+     "pretrain_lr": 0.001
+    },
+    "started": "2026-10-26 16:42:59 CET",
+    "runtime_s": 165.59,
+    "git_hash": "581e25c4b597e00d27eff31a5ae6a0bc6e2149f1"
+   },
+   "r3_reg1x5_w7_nce05_lko4__20261026-164548__s0": {
+    "config": {
+     "flank": 7,
+     "lambda_nce": 0.5,
+     "alpha": 0.5,
+     "p_lab": 0.25,
+     "batch": 1024,
+     "lr": 0.0003,
+     "wd": 0.05,
+     "max_steps": 6000,
+     "eval_every": 100,
+     "patience": 10,
+     "desc_dropout": 0.2,
+     "d_site": 192,
+     "h": 128,
+     "d_kin": 256,
+     "n_layers": 2,
+     "dropout": 0.2,
+     "esm_dropout": 0.3,
+     "use_esm": true,
+     "use_prot": true,
+     "use_phos": true,
+     "valid_frac": 0.2,
+     "seed": 0,
+     "variant": "L2",
+     "warmup": 200,
+     "n_seeds": 5,
+     "esm": "650m",
+     "pretrain_steps": 0,
+     "distill_aux": 0.0,
+     "pretrain_lr": 0.001
+    },
+    "started": "2026-10-26 16:45:48 CET",
+    "runtime_s": 168.95,
+    "git_hash": "581e25c4b597e00d27eff31a5ae6a0bc6e2149f1"
+   }
+  },
+  "fold_normalise": false,
+  "bootstrap_B": 1000
+ },
+ "seed": 0,
+ "split": "lko_T2",
+ "notes": "R3 base w7_nce05 LKO T2 round 2 (16:35-16:45)",
+ "inputs": [],
+ "host": "eu-g6-076",
+ "python": "3.12.3",
+ "platform": "Linux-5.15.0-198-generic-x86_64-with-glibc2.39",
+ "argv": [
+  "scripts/pool_fold_runs.py",
+  "--name",
+  "r3_base_w7_nce05_v2_lko_pooled",
+  "--mode",
+  "lko",
+  "--B",
+  "1000",
+  "--notes",
+  "R3 base w7_nce05 LKO T2 round 2 (16:35-16:45)",
+  "--runs",
+  "r3_reg1x5_w7_nce05_lko0__20261026-163555__s0",
+  "r3_reg1x5_w7_nce05_lko1__20261026-163914__s0",
+  "r3_reg1x5_w7_nce05_lko2__20261026-164006__s0",
+  "r3_reg1x5_w7_nce05_lko3__20261026-164259__s0",
+  "r3_reg1x5_w7_nce05_lko4__20261026-164548__s0"
+ ],
+ "pid": 318954,
+ "started": "2026-10-26 17:53:04 CET",
+ "n_rows": {
+  "predictions": 104063976
+ },
+ "outputs": {
+  "predictions": {
+   "path": "cache/runs/r3_base_w7_nce05_v2_lko_pooled__20261026-175304__s0/predictions.parquet",
+   "sha256": "2057382d0f582c466206c4e3f94717fd81e2954d60a5d88bd0879f61687e981b"
+  },
+  "metrics": {
+   "path": "results/runs/r3_base_w7_nce05_v2_lko_pooled__20261026-175304__s0/metrics.json",
+   "sha256": "27eed711d4a8d49d183a0170e34b71c3f9bff31229317f4c55fccabaaeaf888d"
+  }
+ },
+ "fallbacks": {},
+ "source_runs": [
+  "r3_reg1x5_w7_nce05_lko0__20261026-163555__s0",
+  "r3_reg1x5_w7_nce05_lko1__20261026-163914__s0",
+  "r3_reg1x5_w7_nce05_lko2__20261026-164006__s0",
+  "r3_reg1x5_w7_nce05_lko3__20261026-164259__s0",
+  "r3_reg1x5_w7_nce05_lko4__20261026-164548__s0"
+ ],
+ "status": "ok",
+ "error": null,
+ "runtime_s": 257.2,
+ "finished": "2026-10-26 17:57:21 CET"
+}

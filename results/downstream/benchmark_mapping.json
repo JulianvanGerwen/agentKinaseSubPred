@@ -1,0 +1,286 @@
+{
+ "perturbation": {
+  "hernandez": {
+   "source_rows": 61180,
+   "mapped_rows": 55517,
+   "mapped_frac": 0.9074,
+   "unique_sites": 55304,
+   "methods": {
+    "pos_residue_ensg": 54938,
+    "unmapped": 5663,
+    "pos_residue_symbol": 579
+   },
+   "unmapped_reasons": {
+    "residue_mismatch": 5555,
+    "no_candidate": 79,
+    "multiple_candidates": 29
+   },
+   "name": "hernandez"
+  },
+  "hijazi": {
+   "source_rows": 13249,
+   "mapped_rows": 12735,
+   "mapped_frac": 0.9612,
+   "unique_sites": 12735,
+   "methods": {
+    "pos_residue_symbol": 12735,
+    "unmapped": 514
+   },
+   "unmapped_reasons": {
+    "residue_mismatch": 237,
+    "bad_site": 203,
+    "no_candidate": 57,
+    "multiple_candidates": 17
+   },
+   "name": "hijazi"
+  },
+  "kinase_resolution": {
+   "counts": {
+    "symbol": 69
+   },
+   "unresolved": [],
+   "dropped_target_rows": 0
+  }
+ },
+ "tumour": {
+  "BRCA": {
+   "source_rows": 23986,
+   "mapped_rows": 23936,
+   "mapped_frac": 0.9979,
+   "unique_sites": 23837,
+   "methods": {
+    "window_exact_pos": 23386,
+    "window_shifted": 550,
+    "unmapped": 50
+   },
+   "unmapped_reasons": {
+    "no_candidate": 27,
+    "no_match": 23
+   },
+   "name": "BRCA"
+  },
+  "CCRCC": {
+   "source_rows": 21824,
+   "mapped_rows": 21783,
+   "mapped_frac": 0.9981,
+   "unique_sites": 21658,
+   "methods": {
+    "window_exact_pos": 21104,
+    "window_shifted": 679,
+    "unmapped": 41
+   },
+   "unmapped_reasons": {
+    "no_match": 21,
+    "no_candidate": 20
+   },
+   "name": "CCRCC"
+  },
+  "GBM": {
+   "source_rows": 36017,
+   "mapped_rows": 35948,
+   "mapped_frac": 0.9981,
+   "unique_sites": 35714,
+   "methods": {
+    "window_exact_pos": 34986,
+    "window_shifted": 962,
+    "unmapped": 69
+   },
+   "unmapped_reasons": {
+    "no_match": 36,
+    "no_candidate": 33
+   },
+   "name": "GBM"
+  },
+  "HNSCC": {
+   "source_rows": 27785,
+   "mapped_rows": 27715,
+   "mapped_frac": 0.9975,
+   "unique_sites": 27481,
+   "methods": {
+    "window_exact_pos": 26948,
+    "window_shifted": 767,
+    "unmapped": 70
+   },
+   "unmapped_reasons": {
+    "no_match": 37,
+    "no_candidate": 33
+   },
+   "name": "HNSCC"
+  },
+  "LSCC": {
+   "source_rows": 31172,
+   "mapped_rows": 31113,
+   "mapped_frac": 0.9981,
+   "unique_sites": 30939,
+   "methods": {
+    "window_exact_pos": 30228,
+    "window_shifted": 885,
+    "unmapped": 59
+   },
+   "unmapped_reasons": {
+    "no_match": 30,
+    "no_candidate": 29
+   },
+   "name": "LSCC"
+  },
+  "LUAD": {
+   "source_rows": 28167,
+   "mapped_rows": 28114,
+   "mapped_frac": 0.9981,
+   "unique_sites": 27963,
+   "methods": {
+    "window_exact_pos": 27269,
+    "window_shifted": 845,
+    "unmapped": 53
+   },
+   "unmapped_reasons": {
+    "no_match": 29,
+    "no_candidate": 24
+   },
+   "name": "LUAD"
+  },
+  "UCEC": {
+   "source_rows": 31269,
+   "mapped_rows": 31198,
+   "mapped_frac": 0.9977,
+   "unique_sites": 31024,
+   "methods": {
+    "window_exact_pos": 30279,
+    "window_shifted": 919,
+    "unmapped": 71
+   },
+   "unmapped_reasons": {
+    "no_candidate": 40,
+    "no_match": 31
+   },
+   "name": "UCEC"
+  },
+  "kinase_resolution": {
+   "counts": {
+    "symbol": 398,
+    "synonym": 2,
+    "unknown": 111
+   },
+   "n_unresolved_names": 111,
+   "unresolved": [
+    "ADK",
+    "ADPGK",
+    "AGK",
+    "AK1",
+    "AK3",
+    "AK4",
+    "AK5",
+    "AK6",
+    "AK7",
+    "AK8",
+    "AK9",
+    "ALDH18A1",
+    "CERK",
+    "CHKA",
+    "CHKB",
+    "CKMT2",
+    "CMPK1",
+    "CMPK2",
+    "COASY",
+    "DCK",
+    "DGKA",
+    "DGKB",
+    "DGKD",
+    "DGKE",
+    "DGKG",
+    "DGKH",
+    "DGKI",
+    "DGKQ",
+    "DGKZ",
+    "DGUOK",
+    "DOLK",
+    "DTYMK",
+    "ETNK1",
+    "ETNK2",
+    "FCSK",
+    "FGGY",
+    "FN3K",
+    "FN3KRP",
+    "GALK1",
+    "GALK2",
+    "GASK1B",
+    "GK",
+    "GK5",
+    "GLYCTK",
+    "GNE",
+    "GUK1",
+    "HK1",
+    "HK2",
+    "HK3",
+    "HKDC1",
+    "HYKK",
+    "IDNK",
+    "IP6K2",
+    "IPMK",
+    "IPPK",
+    "ITPK1",
+    "ITPKA",
+    "ITPKB",
+    "ITPKC",
+    "MVK",
+    "NADK",
+    "NADK2",
+    "NAGK",
+    "NME3",
+    "NME4",
+    "NME5",
+    "NME6",
+    "NME7",
+    "NME9",
+    "NMRK1",
+    "NOL9",
+    "PANK1",
+    "PANK2",
+    "PANK3",
+    "PAPSS1",
+    "PAPSS2",
+    "PDXK",
+    "PFKFB2",
+    "PFKFB4",
+    "PFKL",
+    "PFKM",
+    "PGK2",
+    "PI4K2A",
+    "PI4K2B",
+    "PIK3C2B",
+    "PIK3C2G",
+    "PIP4K2B",
+    "PIP4K2C",
+    "PIP5K1B",
+    "PIP5K1C",
+    "PIP5KL1",
+    "PKLR",
+    "PNKP",
+    "PPIP5K1",
+    "PRPS1",
+    "PRPS2",
+    "RBKS",
+    "RFK",
+    "SEPHS1",
+    "SEPHS2",
+    "SGMS1",
+    "SGMS2",
+    "SPHK1",
+    "SPHK2",
+    "TK1",
+    "TK2",
+    "TKFC",
+    "TPK1",
+    "UCK1",
+    "UCK2",
+    "XYLB"
+   ],
+   "gs_pairs_total": 17353,
+   "gs_pairs_dropped": 4121
+  }
+ },
+ "n_experiments": {
+  "hernandez": 94,
+  "hijazi": 118
+ }
+}

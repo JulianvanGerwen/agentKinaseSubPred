@@ -21,6 +21,10 @@ import pandas as pd  # noqa: E402
 from ksp.downstream import api, bench_data  # noqa: E402
 
 OUT = ROOT / "results" / "downstream"
+SHUF = [f"PSP_all_shuffled_s{s}" for s in api.SEEDS]
+MATCHED = {"psp": ["PSP_all", "PSP_dev"] + SHUF,
+           "cantley_measured": ["PSP_all", "Cantley_topPSP_measured", "Cantley_top50_measured",
+                                "Cantley_top100_measured", "KL15site_measured", "PSP_all+KL15site"]}
 
 
 def main():
@@ -37,7 +41,7 @@ def main():
     libs = api.standard_libraries(universe_measured=meas)
     api.library_stats(libs, pert, tum).to_csv(OUT / "library_stats.tsv", sep="\t", index=False)
     res = api.run_benchmarks(libs, methods=tuple(a.methods.split(",")), rm_bg_modes=(True, False),
-                             n_iter=a.n_iter, matched=True)
+                             n_iter=a.n_iter, matched=MATCHED)
     s = res["summary"]
     s.to_csv(OUT / "validation_summary.tsv", sep="\t", index=False, float_format="%.4f")
     pk = res["per_kinase"]

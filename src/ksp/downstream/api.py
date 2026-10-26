@@ -26,8 +26,9 @@ SEEDS = (0, 1, 2, 3, 4)
 
 def standard_libraries(universe_measured: set | None = None, shuffle_seeds=SEEDS, cantley_ns=("PSP", 50, 100),
                        include_dev: bool = True) -> dict:
-    """Reference arms: PSP_all, PSP_dev, Cantley top-N (U_obs and, if given, the benchmark-measured universe),
-    and degree-preserving shuffles of PSP_all."""
+    """Reference arms: PSP_all, PSP_dev, Cantley top-N per kinase (U_obs and, if given, the benchmark-measured
+    universe), the paper's Kinase-Library arm (top-15 kinases per measured site, alone and ∪ PSP_all), and
+    degree-preserving shuffles of PSP_all."""
     psp = L.psp_all()
     libs = {"PSP_all": psp}
     if include_dev:
@@ -37,6 +38,10 @@ def standard_libraries(universe_measured: set | None = None, shuffle_seeds=SEEDS
         libs[f"Cantley_top{n}_Uobs"] = L.cantley_topn(nn)
         if universe_measured is not None:
             libs[f"Cantley_top{n}_measured"] = L.cantley_topn(nn, universe=universe_measured)
+    if universe_measured is not None:          # the paper's Kinase Library arm: top-15 kinases per measured site
+        kl = L.cantley_top_kinases_per_site(15, universe_measured)
+        libs["KL15site_measured"] = kl
+        libs["PSP_all+KL15site"] = L.union(psp, kl, "PSP_all+KL15site")
     for s in shuffle_seeds:
         libs[f"PSP_all_shuffled_s{s}"] = L.shuffled(psp, s)
     return libs
@@ -87,14 +92,26 @@ def _match_pert(acts: dict) -> dict:
     return {k: a.reindex(index=idx, columns=cols).where(mask) for k, a in acts.items()}
 
 
+def _groups(libs: dict, matched) -> list:
+    if not matched:
+        return []
+    if matched is True:
+        return [("matched", list(libs))]
+    return [(f"matched:{g}", [n for n in names if n in libs]) for g, names in dict(matched).items()]
+
+
 def run_benchmarks(libs: dict, methods=("zscore",), benchmarks=("perturbation", "tumour"),
-                   perturbation_datasets=(("all", ("hernandez", "hijazi")), ("hernandez", ("hernandez",)),
-                                          ("hijazi", ("hijazi",))),
+                   perturbation_datasets=(("all", ("hernandez", "hijazi", "tyrosine")), ("hernandez", ("hernandez",)),
+                                          ("hijazi", ("hijazi",)), ("tyrosine", ("tyrosine",)),
+                                          ("hernandez+hijazi", ("hernandez", "hijazi"))),
                    experiments=None, rm_bg_modes=(True,), n_iter: int = 1000, min_targets: int = 5,
-                   matched: bool = False, verbose: bool = True) -> dict:
-    """Returns {'summary': DataFrame, 'per_kinase': DataFrame}. matched=True additionally evaluates every method
-    on the (experiment, kinase) cells / tumour kinases scored by ALL libraries in `libs` (DESIGN matched-universe
-    rule); mode column = 'native' | 'matched'."""
+                   matched=False, verbose: bool = True) -> dict:
+    """Returns {'summary': DataFrame, 'per_kinase': DataFrame}.
+    mode 'native' = each library on its own evaluable set (paper protocol). `matched` (DESIGN matched-universe rule):
+    True = one group of all libraries, or {group_name: [library names]}; each group is additionally evaluated on the
+    (experiment, kinase) cells (perturbation) / per-cohort kinases (tumour) scored by ALL its members
+    (mode 'matched:<group>')."""
+    groups = _groups(libs, matched)
     summ, perk = [], []
     if "perturbation" in benchmarks:
         pert = bench_data.load_perturbation()
@@ -103,10 +120,12 @@ def run_benchmarks(libs: dict, methods=("zscore",), benchmarks=("perturbation", 
         for meth in methods:
             t0 = time.time()
             acts = {n: inference.infer(pert.data, lib, meth, min_targets) for n, lib in libs.items()}
-            modes = [("native", acts)] + ([("matched", _match_pert(acts))] if matched else [])
+            modes = [("native", acts)] + [(g, _match_pert({n: acts[n] for n in names})) for g, names in groups]
             for mode, aa in modes:
                 for dname, dsets in perturbation_datasets:
                     b = pert.subset(datasets=dsets)
+                    if b.experiments.empty:
+                        continue
                     for rm_bg in rm_bg_modes:
                         for n, a in aa.items():
                             o, pk = evaluate.perturbation_eval(a, b, rm_bg=rm_bg, n_iter=n_iter)
@@ -123,16 +142,14 @@ def run_benchmarks(libs: dict, methods=("zscore",), benchmarks=("perturbation", 
             t0 = time.time()
             acts = {n: {c: inference.infer(d, lib, meth, min_targets, exclude_autophos=True)
                         for c, d in tum.data.items()} for n, lib in libs.items()}
-            modes = [("native", None)]
-            if matched:
-                common = {}
-                for c in tum.data:
-                    sets = [set(a[c].index[a[c].notna().sum(1) >= 30]) for a in acts.values()]
-                    common[c] = set.intersection(*sets)
-                modes.append(("matched", common))
-            for mode, kins in modes:
-                for n, a in acts.items():
-                    o, pk = evaluate.tumour_eval(a, tum.gs, kinases=kins, n_iter=n_iter)
+            modes = [("native", list(libs), None)]
+            for g, names in groups:
+                common = {c: set.intersection(*[set(acts[n][c].index[acts[n][c].notna().sum(1) >= 30])
+                                                for n in names]) for c in tum.data}
+                modes.append((g, names, common))
+            for mode, names, kins in modes:
+                for n in names:
+                    o, pk = evaluate.tumour_eval(acts[n], tum.gs, kinases=kins, n_iter=n_iter)
                     summ.append({"benchmark": "tumour", "dataset": "cptac7", "library": n, "method": meth,
                                  "mode": mode, "rm_bg": np.nan, **o})
                     if mode == "native":

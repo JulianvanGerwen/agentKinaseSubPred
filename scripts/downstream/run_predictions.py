@@ -31,6 +31,17 @@ from ksp.downstream import libraries as L  # noqa: E402
 OUT = ROOT / "results" / "downstream"
 
 
+def matched_groups(libs: dict, tag: str) -> dict:
+    """Per N: the model arms vs PSP_all / PSP_dev / Cantley top-N, on the cells all of them score."""
+    g = {}
+    for n in ("PSP", 50, 100):
+        names = [f"{tag}_top{n}", f"{tag}_top{n}+PSP", f"{tag}_top{n}-PSP", "PSP_all", "PSP_dev",
+                 f"Cantley_top{n}_Uobs", f"Cantley_top{n}_measured"]
+        g[f"N{n}"] = [x for x in names if x in libs]
+        g[f"N{n}_vsPSPdev"] = [x for x in (f"{tag}_top{n}", "PSP_dev") if x in libs]
+    return g
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--pred", required=True)
@@ -46,10 +57,7 @@ def main():
     meas = bench_data.measured_sites(pert, tum)
     uni = {"U_obs": None, "U_ms": "U_ms", "measured": meas}[a.universe]
     psp = L.psp_all()
-    libs = {} if a.no_reference else api.standard_libraries(universe_measured=meas if a.universe == "measured"
-                                                            else None)
-    if not a.no_reference and a.universe == "measured":
-        libs = {k: v for k, v in libs.items() if not k.endswith("_Uobs")}
+    libs = {} if a.no_reference else api.standard_libraries(universe_measured=meas)
     libs.update(api.prediction_arms(a.pred, a.tag, universe=uni, psp=psp))
     exps = None
     if a.experiments_file:
@@ -57,7 +65,7 @@ def main():
     OUT.mkdir(parents=True, exist_ok=True)
     api.library_stats(libs, pert, tum).to_csv(OUT / f"{a.tag}_library_stats.tsv", sep="\t", index=False)
     res = api.run_benchmarks(libs, methods=tuple(a.methods.split(",")), benchmarks=tuple(a.benchmarks.split(",")),
-                             experiments=exps, n_iter=a.n_iter, matched=True)
+                             experiments=exps, n_iter=a.n_iter, matched=matched_groups(libs, a.tag))
     res["summary"].assign(pred=a.pred, universe=a.universe).to_csv(OUT / f"{a.tag}_summary.tsv", sep="\t",
                                                                    index=False, float_format="%.4f")
     res["per_kinase"].to_csv(OUT / f"{a.tag}_per_kinase.tsv", sep="\t", index=False, float_format="%.4f")

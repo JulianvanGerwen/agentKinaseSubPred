@@ -6617,6 +6617,11 @@
     "B": 1000,
     "resample": "clusters"
    }
-  ]
+  ],
+  "eall_check": {
+   "n_kinases_scored": 503,
+   "n_partial_kinases": 0,
+   "eall_valid": true
+  }
  }
 }

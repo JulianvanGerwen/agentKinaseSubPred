@@ -8,6 +8,9 @@ Perturbation benchmark (one column per experiment; values = log2FC as distribute
              experiment x target; sign +1 = activation expected, -1 = inhibition).
   hijazi     benchmark_data_hijazi.csv rows 'GENE_S12|GENE|S12' -> gene symbol candidates, same position rule.
              Metadata targets ';'-separated (the paper's manually curated TTD-based target list).
+  tyrosine   18 tyrosine-kinase experiments (Dasatinib/Imatinib/Bosutinib/Nilotinib, EGF, HRG, TCR stimulation;
+             6 PMIDs, none in our compendium) from the benchmarKIN GitHub repo data/*.rda (external/benchmarkin_github),
+             same position rule.
 Tumour benchmark (CPTAC BCM v1.2, 7 cohorts, site median-centred, >=30 samples):
   rows 'ENSG.v|ENSP.v|S1053|15-mer|k' -> 15-mer window mapping on the ENSG candidates (ksp.ids map_window), i.e. the
   same rule used for the CPTAC part of the site universe. Gold standard: benchmarking_gold_standard_top5per.Rds
@@ -31,6 +34,7 @@ import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[3]
 BK = ROOT / "external" / "benchmarkin"
+BK_GH = ROOT / "external" / "benchmarkin_github"     # tyrosine set (not in the Zenodo record)
 CACHE = ROOT / "cache" / "downstream"
 RESULTS = ROOT / "results" / "downstream"
 TUMOUR_COHORTS = ("BRCA", "CCRCC", "GBM", "HNSCC", "LSCC", "LUAD", "UCEC")
@@ -160,8 +164,36 @@ def _load_hijazi() -> tuple[pd.DataFrame, pd.DataFrame, dict]:
     return data, meta, _summary(m, "hijazi")
 
 
+def _load_tyrosine() -> tuple[pd.DataFrame, pd.DataFrame, dict]:
+    """18 tyrosine-kinase experiments (paper 'Tyrosine' set; benchmarKIN GitHub data/tyrosine{Data,Meta}.rda, read with
+    the pure-Python rdata parser). Rows 'GENE_Y115|GENE|Y115' -> gene symbol + position rule."""
+    import rdata
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        d = rdata.read_rda(str(BK_GH / "tyrosineData.rda"))["tyrosineData"].reset_index(drop=True)
+        meta = rdata.read_rda(str(BK_GH / "tyrosineMeta.rda"))["tyrosineMeta"].reset_index(drop=True)
+    p = d.ID.str.split("|", expand=True)
+    rp = p[2].str.extract(r"^([STY])(\d+)$")
+    ok = rp[0].notna()
+    m = pd.DataFrame({"site_id": None, "map_method": "unmapped", "map_reason": "bad_site"}, index=d.index)
+    mm = map_by_position(p.loc[ok, 1].tolist(), rp.loc[ok, 0].tolist(), rp.loc[ok, 1].astype(int).tolist())
+    m.loc[ok, ["site_id", "map_method", "map_reason"]] = mm.values
+    data = _collapse(d.drop(columns="ID").astype(float), m.site_id)
+    meta = meta.rename(columns={"id": "experiment", "target": "gene_in"})
+    meta["dataset"] = "tyrosine"
+    meta["Description"] = meta.treatment
+    meta["drug"] = meta.treatment
+    meta["PMID"] = pd.to_numeric(meta.PMID)
+    meta["Time_min"] = np.nan
+    meta["sign"] = meta.sign.astype(int)
+    return data, meta, _summary(m, "tyrosine")
+
+
+PERTURBATION_DATASETS = ("hernandez", "hijazi", "tyrosine")
+
+
 def load_perturbation(refresh: bool = False) -> PerturbationBenchmark:
-    """Both perturbation datasets (Hernandez-Armenta 2017 compilation + Hijazi 2020) mapped to site_id and kinase
+    """The three perturbation datasets (Hernandez-Armenta 2017 compilation, Hijazi 2020, tyrosine set) mapped to site_id and kinase
     accessions. Experiment ids are prefixed by dataset ('hernandez:102_117', 'hijazi:HL60.MK2206'). Cached."""
     CACHE.mkdir(parents=True, exist_ok=True)
     f_data, f_meta, f_map = CACHE / "perturbation_data.parquet", CACHE / "perturbation_meta.parquet", \
@@ -172,7 +204,7 @@ def load_perturbation(refresh: bool = False) -> PerturbationBenchmark:
         mapping = json.loads(f_map.read_text())
     else:
         parts, metas, mapping = [], [], {}
-        for name, fn in [("hernandez", _load_hernandez), ("hijazi", _load_hijazi)]:
+        for name, fn in [("hernandez", _load_hernandez), ("hijazi", _load_hijazi), ("tyrosine", _load_tyrosine)]:
             dd, mt, info = fn()
             dd.columns = [f"{name}:{c}" for c in dd.columns]
             mt["experiment"] = name + ":" + mt.experiment.astype(str)

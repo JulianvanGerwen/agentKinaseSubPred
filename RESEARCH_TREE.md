@@ -80,6 +80,7 @@ Status: literature (4 reviews), data profiling, two acquisition waves (~12.6 GB)
     - [!] Tyr kinases: motif baselines only ~0.53 E-hard AUROC (65 kinases) — Y specificity is the hard part.
     - [!] Pooled-OOF artefact: fold-varying offsets distort per-kinase AUROC (B0-prior → 0.40) → A24 within-fold rank normalisation.
   - [~] 5.2 R2 LightGBM main model + staged search + ablation curve
+    - [!] Ablation (A24, pooled CV M1): F1 0.723 → +F0 0.733 → +F2a 0.738 → +F3 0.748 → +F4 0.753 → +F6a 0.755 → +F6bc (G2) 0.754 → +F5+F7 (full) 0.773. Alarms: +COMPARTMENTS-knowledge 0.776 (no big jump → no strong leak); F6-clean 0.773 (= full → no label-source-study circularity). Y kinases: R2 full 0.644 vs Cantley 0.534.
     - G2 MET 16:27: R2 (F1+F0+F2a+F3+F4+F6) M1 0.746 [0.728–0.760], M3 0.267; vs B1 ΔM1 +0.023 [0.009–0.034], ΔM3 +0.130. Full model (+F5+F7): M1 0.763, M2 0.208, M3 0.308, M4 0.782; canary v2 pass. (Pre-A24; audit pending.)
   - [x] 5.3 R3 neural → docs/model_r3.md (pending independent review)
     - CV pooled OOF: M1 0.729 [0.710–0.747] vs B1 Cantley 0.719; M2 Hit@5 0.176 vs 0.171; M3 0.247 vs 0.133; M4 0.728. LKO T2 (unseen kinase family): M1 0.664, M3 0.203 → descriptors carry zero-shot signal. 2.4 min/fold.
@@ -98,3 +99,5 @@ Status: literature (4 reviews), data profiling, two acquisition waves (~12.6 GB)
     - F9 SH2-docking (Yaron-Barir SH2 matrices, 24/28 SH2 kinases): modest; most GBDT gain is a NaN-indicator artefact (+0.019 [−0.018, 0.057] for kinases with SH2 matrix). Recommended small set → R2 (ablation).
     - Decision A26: hub-site stratum added (reporting only); relabelling A-loop cross-kinase labels rejected.
   - [x] 5.8 Independent audit → docs/audit/audit_cv_r1.md: all numbers reproduce exactly; no leakage. A24 values: R2 full M1 0.773 / M3 0.312; R3 final M1 0.754. M4 & 1–4-label claims NOT trusted pre-A24 (pooling inflation). R2 canary stores for folds 0/3 stale → rebuild. Matched-kinase M2 rule added (A27).
+  - [~] 5.9 R5 fine-tuned ESM cross-encoder (GPUs 1–3; hard stop 00:30)
+  - [~] 5.10 Downstream benchmarKIN harness

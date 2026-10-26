@@ -139,6 +139,31 @@ def cantley_topn(n, universe=None, kinases=None) -> pd.DataFrame:
                             lib_name=f"Cantley_top{tag}_{u or 'U_obs'}")
 
 
+def cantley_top_kinases_per_site(k: int = 15, universe=None, lib_name: str | None = None) -> pd.DataFrame:
+    """The paper's Kinase Library arm (Johnson 2023 convention): for every site in `universe` the k kinases with the
+    highest as-published percentile (ties broken by the raw score)."""
+    from ksp import store
+    from ksp.index import load_kinases, load_sites
+    kacc = load_kinases().uniprot_acc.to_numpy()
+    sids = load_sites().site_id.to_numpy()
+    cols = np.flatnonzero(_universe_mask(universe, sids))
+    X = np.array(store.load_matrix(CANTLEY_PCT)[0])[:, cols]          # to RAM (column gathers on a mmap are slow)
+    T = np.array(store.load_matrix(CANTLEY_SCORE)[0])[:, cols]
+    cols_all, cols = cols, np.arange(len(cols))
+    rows = []
+    for c0 in range(0, len(cols), 20000):
+        cc = cols[c0:c0 + 20000]
+        x = np.asarray(X[:, cc], dtype=np.float64)
+        t = np.asarray(T[:, cc], dtype=np.float64)
+        key = np.where(np.isfinite(x), x + 1e-3 * np.tanh(np.nan_to_num(t) / 10.0), -np.inf)
+        top = np.argsort(-key, axis=0, kind="stable")[:k]                       # k x n_cols kinase indices
+        ok = np.isfinite(np.take_along_axis(key, top, 0))
+        ki, ci = top[ok], np.broadcast_to(np.arange(len(cc)), top.shape)[ok]
+        rows.append(pd.DataFrame({"kinase_acc": kacc[ki], "site_id": sids[cols_all[cc[ci]]],
+                                  "score": np.take_along_axis(x, top, 0)[ok]}))
+    return _lib(pd.concat(rows, ignore_index=True), lib_name or f"KL{k}site")
+
+
 def read_predictions(path_or_store: str) -> pd.DataFrame:
     """Long predictions table -> columns kinase_acc, site_id, score."""
     if str(path_or_store).startswith("store:"):

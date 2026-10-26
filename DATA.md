@@ -651,3 +651,11 @@ All under /workspace/external/<dir>/. Full hash list: logs/dl/sha256_wave2.txt. 
 | file | content | URL | version | accessed | bytes | SHA-256 | License |
 |---|---|---|---|---|---|---|---|
 | GTEx_Analysis_2017-06-05_v8_RNASeQCv1.1.9_gene_median_tpm.gct.gz | gene x 54 tissues median TPM | https://storage.googleapis.com/adult-gtex/bulk-gex/v8/rna-seq/GTEx_Analysis_2017-06-05_v8_RNASeQCv1.1.9_gene_median_tpm.gct.gz | GTEx v8 (2017-06-05) | 2026-10-26 14:40 CET | 6952331 | ee7201ff2f280b0de5657d4b08e9a240362d9757efed7f7bd5dba35a5f8617b8 | GTEx Portal open-access data (cite GTEx Consortium 2020) |
+
+### benchmarkin_github (external/benchmarkin_github/; downstream tyrosine perturbation set, src/ksp/downstream/bench_data.py; added by downstream)
+The paper's 18 tyrosine-kinase experiments are not in Zenodo 12566560; they ship only as R data files in the benchmarKIN repo. Read with the pure-Python `rdata` parser; no R code is run.
+| file | URL | version | accessed | bytes | SHA-256 | License |
+|---|---|---|---|---|---|---|
+| tyrosineData.rda | https://raw.githubusercontent.com/saezlab/benchmarKIN/main/data/tyrosineData.rda | main @ 2aa6e25c4e5c (2025-02-10) | 2026-10-26 18:06 CET | 87270 | 4af4231f20ac8af5b3f646a62cdb48ce47feb702863f4ad6f66d72cd0bccd3db | GPL-3 (benchmarKIN repo) |
+| tyrosineMeta.rda | https://raw.githubusercontent.com/saezlab/benchmarKIN/main/data/tyrosineMeta.rda | same | same | 624 | 949d3ab6d3d520008ea8591705146f854977f0ae1cf0efc47f6b052aadcded2c | GPL-3 |
+The 6 source PMIDs (17016520, 17389395, 24362263, 24804581, 25147952, 30257219) are not in the compendium (checked against data/01 PMID), so they don't affect the clean_bench exclusion list.
