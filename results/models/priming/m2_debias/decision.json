@@ -1,0 +1,21 @@
+{
+ "beta_star_argmax_pooled_M2": 0.0,
+ "M2_beta0": 0.2625788247771237,
+ "M2_beta_star": 0.2625788247771237,
+ "M2_5_19_beta0": 0.14202982524208604,
+ "M2_5_19_beta_star": 0.14202982524208604,
+ "adopt_beta_gt_0": false,
+ "check_beta0_vs_run_metrics_M2": 0.0,
+ "informational_largest_beta_within_tolerance": null,
+ "nested_mean_heldout_M2_selected": 0.2694440106131947,
+ "nested_mean_heldout_M2_beta0": 0.2694440106131947,
+ "full_eval_beta_0.0": {
+  "M1": 0.7864081926249794,
+  "M2": 0.2625788247771237,
+  "M3": 0.3608625756046788,
+  "M4": 0.7743750170157622,
+  "neg_canary_hard": 0.5390572916021936,
+  "pos_canary_hard": 0.9995841164905913
+ },
+ "runtime_s": 429.0
+}

@@ -240,3 +240,47 @@ Unprimed GSK3B positives are hard for every method: R2 scores 0.684 on them. Thi
 - M2 and M3 bootstraps keep the cut-off fixed, as `ksp.eval` does.
 - B1 leaves 4 K_cv kinases unscored, which receive 0.5 under the 'worst' rule. See the matched view.
 - Unrelated to this work: `tests/test_no_test_access.py` currently fails on `src/ksp/models/regime/variants.py` (pattern 'omnipath'), which belongs to another owner.
+
+## 9. A32 follow-ups (run 22:18–23:05; rules in DESIGN §17 A32, applied literally)
+
+**(b) Prior-debiased score_site for M2** (`scripts/models/m2_prior_debias.py`, `results/models/priming/m2_debias/`).
+- Base: OOF fusion `r2_fusion_r3__20261026-191901__s0` (score_site = w 0.5 z-blend of the R2 5-seed ensemble and R3).
+- Prior: log1p of the DEV L2 training count of k in each fold.
+- Scale check, fixed before any M2 was computed (`scale_check.json`):
+  - within-site SD of score_site, median over positive sites, is 0.83;
+  - SD of the prior is 1.50, a ratio of 1.8;
+  - the pre-declared window was 0.25–4, so log1p was used as is, with no rescaling.
+- M2 was computed with the frozen `E._site_centric` + `_endpoints` logic. At β = 0 it matches the run's metrics.json exactly.
+
+| β | 0 | 0.1 | 0.25 | 0.5 | 0.75 | 1 |
+|---|---|---|---|---|---|---|
+| pooled M2 | **0.263** | 0.236 | 0.165 | 0.069 | 0.029 | 0.009 |
+| M2, 5–19 bin | 0.142 | 0.146 | 0.115 | 0.079 | 0.051 | 0.023 |
+| M2, ≥100 bin | 0.621 | 0.526 | 0.321 | 0.075 | 0.014 | 0.001 |
+
+- β* = 0 by pooled M2.
+- Nested leave-one-fold-out selection picks β = 0 in all 5 folds; held-out M2 is 0.269.
+- At β = 0.1, pooled M2 falls by 0.027, more than the 0.003 tolerance.
+- **Decision: not adopted (β = 0).** The global log-count prior is too blunt. Even β = 0.1 costs well-studied kinases far more than understudied ones gain.
+
+**(a) Priming features.**
+- Files: `scripts/models/priming_r2.py`, `priming_compare.py`, `results/models/priming/priming_compare.json`.
+- Run: `priming_r2_s0_cv5__20261026-224631__s0`, logged in REGISTRY.
+- Pre-check: F1 **already contains** the priming-aware Cantley percentiles (`f1_primed_hard_pct_universe` and `f1_primed_soft_pct_universe`), so the experiment reduces to three added columns:
+  - `fp_offset_obs`: the residue at k's best pS/pT offset is an S/T U_ms site;
+  - `fp_offset_score`: preference-weighted observed flanks;
+  - `fp_strength`: the kinase's maximum pS/pT log2.
+- Comparison against `r2_final_s0_cv5`, seed 0, with paired cluster bootstrap B = 1000:
+
+| criterion | result | rule met? |
+|---|---|---|
+| overall M1 Δ | +0.0037 [−0.001, 0.009] | yes (≥ −0.002) |
+| M2 Δ | +0.010 [−0.000, 0.023] | yes (≥ −0.005) |
+| M4 Δ (not a criterion) | +0.006 [0.001, 0.010] | — |
+| canary | 0.566 | passes, narrowly (≤ 0.57) |
+| primed-positives M1 Δ | **−0.006 [−0.022, +0.008]**: 0.893 → 0.888, 8 kinases, 231 positives | **no** (rule is ≥ +0.02 with CI > 0) |
+| primed-positives M1 Δ, Cantley-defined offsets | +0.009 [−0.006, 0.018] | not a criterion |
+
+- The new columns rank 86–167 of 175 by gain. The model already exploits priming through F1 primed_hard/soft, which rank 11–53.
+- **Decision: not adopted.**
+- Note: the baseline r2_final_s0 already scores 0.893 on primed positives, against 0.870 for the knn run in §4. The gap to B1prim (0.945) is therefore smaller than §4 suggests.

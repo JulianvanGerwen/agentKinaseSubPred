@@ -1,0 +1,12 @@
+{
+ "s_site_median_within_site_sd": 0.8272856558967732,
+ "s_prior_sd_log1p_count": 1.5041415765284143,
+ "ratio": 1.8181647001940737,
+ "rule": "use log1p count if 0.25 <= ratio <= 4 else rescale prior to unit variance",
+ "decision": "log1p_count_as_is",
+ "score_site_sd_overall": 0.848459129282446,
+ "prior_mean": 1.6154532164837114,
+ "prior_sd": 1.5041415765284143,
+ "decided_at": "2026-10-26 22:20:45 CET",
+ "note": "written before any M2 was computed"
+}
