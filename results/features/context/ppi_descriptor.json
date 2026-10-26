@@ -1,0 +1,211 @@
+{
+ "module": "F3 PPI (systematic screens only)",
+ "label_derived": false,
+ "rows": "cache/index/kinases.parquet (uniprot_acc order)",
+ "rows_sha256": "e278ec9b4147d04dd33911f27b76e54e5528c1b1125c5140c588a1d1c49f4637",
+ "cols": "cache/index/proteins.parquet (acc order)",
+ "cols_sha256": "996d3bee3a3440ff0fefa99af67422a6e08c18007b8b2fa03311c304cba790e5",
+ "restart": 0.5,
+ "sources": [
+  "bioplex_293t",
+  "bioplex_hct116",
+  "huri",
+  "opencell",
+  "buljan",
+  "hcm"
+ ],
+ "features": {
+  "ppi_edge_bioplex_293t": {
+   "file": "cache/features/context/ppi/ppi_edge_bioplex_293t.npy",
+   "store_name": "context/ppi/ppi_edge_bioplex_293t",
+   "dtype": "int8",
+   "sign": 1,
+   "shape": [
+    503,
+    18702
+   ],
+   "description": "1 if a direct bioplex_293t edge links kinase and protein (undirected)",
+   "missing": "0 = no edge (incl. not screened); see ppi_kinase_in_source / ppi_protein_in_source"
+  },
+  "ppi_edge_bioplex_hct116": {
+   "file": "cache/features/context/ppi/ppi_edge_bioplex_hct116.npy",
+   "store_name": "context/ppi/ppi_edge_bioplex_hct116",
+   "dtype": "int8",
+   "sign": 1,
+   "shape": [
+    503,
+    18702
+   ],
+   "description": "1 if a direct bioplex_hct116 edge links kinase and protein (undirected)",
+   "missing": "0 = no edge (incl. not screened); see ppi_kinase_in_source / ppi_protein_in_source"
+  },
+  "ppi_edge_huri": {
+   "file": "cache/features/context/ppi/ppi_edge_huri.npy",
+   "store_name": "context/ppi/ppi_edge_huri",
+   "dtype": "int8",
+   "sign": 1,
+   "shape": [
+    503,
+    18702
+   ],
+   "description": "1 if a direct huri edge links kinase and protein (undirected)",
+   "missing": "0 = no edge (incl. not screened); see ppi_kinase_in_source / ppi_protein_in_source"
+  },
+  "ppi_edge_opencell": {
+   "file": "cache/features/context/ppi/ppi_edge_opencell.npy",
+   "store_name": "context/ppi/ppi_edge_opencell",
+   "dtype": "int8",
+   "sign": 1,
+   "shape": [
+    503,
+    18702
+   ],
+   "description": "1 if a direct opencell edge links kinase and protein (undirected)",
+   "missing": "0 = no edge (incl. not screened); see ppi_kinase_in_source / ppi_protein_in_source"
+  },
+  "ppi_edge_buljan": {
+   "file": "cache/features/context/ppi/ppi_edge_buljan.npy",
+   "store_name": "context/ppi/ppi_edge_buljan",
+   "dtype": "int8",
+   "sign": 1,
+   "shape": [
+    503,
+    18702
+   ],
+   "description": "1 if a direct buljan edge links kinase and protein (undirected)",
+   "missing": "0 = no edge (incl. not screened); see ppi_kinase_in_source / ppi_protein_in_source"
+  },
+  "ppi_edge_hcm": {
+   "file": "cache/features/context/ppi/ppi_edge_hcm.npy",
+   "store_name": "context/ppi/ppi_edge_hcm",
+   "dtype": "int8",
+   "sign": 1,
+   "shape": [
+    503,
+    18702
+   ],
+   "description": "1 if a direct hcm edge links kinase and protein (undirected)",
+   "missing": "0 = no edge (incl. not screened); see ppi_kinase_in_source / ppi_protein_in_source"
+  },
+  "ppi_edge_any": {
+   "file": "cache/features/context/ppi/ppi_edge_any.npy",
+   "store_name": "context/ppi/ppi_edge_any",
+   "dtype": "int8",
+   "sign": 1,
+   "shape": [
+    503,
+    18702
+   ],
+   "description": "1 if any screen has a direct edge",
+   "missing": "0 = none"
+  },
+  "ppi_n_studies": {
+   "file": "cache/features/context/ppi/ppi_n_studies.npy",
+   "store_name": "context/ppi/ppi_n_studies",
+   "dtype": "int8",
+   "sign": 1,
+   "shape": [
+    503,
+    18702
+   ],
+   "description": "number of independent studies (BioPlex(either line), HuRI, OpenCell, Buljan, HCM) with a direct edge (0-5)",
+   "missing": "0 = none"
+  },
+  "ppi_rwr": {
+   "file": "cache/features/context/ppi/ppi_rwr.npy",
+   "store_name": "context/ppi/ppi_rwr",
+   "dtype": "float32",
+   "sign": 1,
+   "shape": [
+    503,
+    18702
+   ],
+   "description": "RWR (restart 0.5) visiting probability of protein from kinase seed on the combined screens graph (column-stochastic, sums to 1 over graph nodes)",
+   "missing": "NaN = kinase or protein not in graph"
+  },
+  "ppi_rwr_dc": {
+   "file": "cache/features/context/ppi/ppi_rwr_dc.npy",
+   "store_name": "context/ppi/ppi_rwr_dc",
+   "dtype": "float32",
+   "sign": 1,
+   "shape": [
+    503,
+    18702
+   ],
+   "description": "degree-corrected RWR: log2((rwr+eps)/(bg+eps)), bg = mean RWR of the protein over all seeds (hub correction), eps=0.01/N",
+   "missing": "NaN = kinase or protein not in graph"
+  },
+  "ppi_rwr_dc_pct": {
+   "file": "cache/features/context/ppi/ppi_rwr_dc_pct.npy",
+   "store_name": "context/ppi/ppi_rwr_dc_pct",
+   "dtype": "float16",
+   "sign": 1,
+   "shape": [
+    503,
+    18702
+   ],
+   "description": "within-kinase percentile of ppi_rwr_dc over graph proteins",
+   "missing": "NaN as ppi_rwr"
+  },
+  "ppi_dist": {
+   "file": "cache/features/context/ppi/ppi_dist.npy",
+   "store_name": "context/ppi/ppi_dist",
+   "dtype": "float16",
+   "sign": -1,
+   "shape": [
+    503,
+    18702
+   ],
+   "description": "shortest path length (hops) kinase->protein on combined graph, capped at 5",
+   "missing": "NaN = kinase or protein not in graph"
+  }
+ },
+ "presence": {
+  "ppi_kinase_in_source": "cache/features/context/ppi/ppi_kinase_in_source.npy (K x S bool, S in 'sources' order)",
+  "ppi_protein_in_source": "cache/features/context/ppi/ppi_protein_in_source.npy (P x S bool)"
+ },
+ "stats": {
+  "n_nodes": 16178,
+  "n_edges": 279677,
+  "edges_per_source": {
+   "bioplex_293t": 117240,
+   "bioplex_hct116": 70777,
+   "buljan": 7254,
+   "hcm": 34251,
+   "huri": 51286,
+   "opencell": 29231
+  },
+  "nodes_per_source": {
+   "bioplex_293t": 13845,
+   "bioplex_hct116": 10072,
+   "huri": 8143,
+   "opencell": 5217,
+   "buljan": 2376,
+   "hcm": 4439
+  },
+  "kinases_in_graph": 478,
+  "kinases_total": 503,
+  "kinases_in_source": {
+   "bioplex_293t": 428,
+   "bioplex_hct116": 325,
+   "huri": 182,
+   "opencell": 207,
+   "buljan": 351,
+   "hcm": 164
+  },
+  "proteins_in_graph": 15490,
+  "proteins_total": 18702,
+  "proteins_in_source": {
+   "bioplex_293t": 13377,
+   "bioplex_hct116": 9828,
+   "huri": 7705,
+   "opencell": 5175,
+   "buljan": 2364,
+   "hcm": 4422
+  },
+  "median_degree": 19.0,
+  "max_degree": 793.0,
+  "n_components": 5,
+  "runtime_s": 44
+ }
+}

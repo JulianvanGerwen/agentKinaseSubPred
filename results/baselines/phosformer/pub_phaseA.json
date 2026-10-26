@@ -1,0 +1,137 @@
+{
+ "fallbacks": [
+  {
+   "kinase": "Q14296",
+   "gene": "FASTK",
+   "reason": "no kinase-domain coords",
+   "used": "canonical 1-549 of 549"
+  },
+  {
+   "kinase": "Q58A45",
+   "gene": "PAN3",
+   "reason": "no kinase-domain coords",
+   "used": "canonical 1-887 of 887"
+  },
+  {
+   "kinase": "Q6ZS72",
+   "gene": "PEAK3",
+   "reason": "no kinase-domain coords",
+   "used": "canonical 1-473 of 473"
+  },
+  {
+   "kinase": "Q8IXL6",
+   "gene": "FAM20C",
+   "reason": "no kinase-domain coords",
+   "used": "canonical 1-584 of 584"
+  },
+  {
+   "kinase": "Q96MK3",
+   "gene": "FAM20A",
+   "reason": "no kinase-domain coords",
+   "used": "canonical 1-541 of 541"
+  }
+ ],
+ "tokenizer_mismatches": 0,
+ "their_test_pos_neg_fp32": {
+  "n": 5318,
+  "auroc": 0.8854800820504871,
+  "auprc": 0.8770368564719364
+ },
+ "their_test_pos_neg_bf16": {
+  "n": 5318,
+  "auroc": 0.8854319934384502,
+  "auprc": 0.8769847300857069
+ },
+ "bf16_vs_fp32_max_abs_diff": 0.00437086820602417,
+ "bf16_vs_fp32_spearman": 0.9999934105282308,
+ "their_test_neg_only_FPR@0.5": 0.023047977422389464,
+ "kinase_domains": {
+  "n": 503,
+  "n_fallback_full_seq": 5,
+  "len_median": 265.0,
+  "len_max": 887
+ },
+ "sample": {
+  "n_sites": 1000,
+  "n_pairs_residue_matched": 374494
+ },
+ "throughput_pairs_per_s": {
+  "fp32_bs256": 1247.7347216712792,
+  "fp32_bs1024": 1203.9729289056356,
+  "bf16_bs256": 3219.9968036516448,
+  "bf16_bs1024": 3169.3844240013145
+ },
+ "sample_scoring_s": 122.3133852481842,
+ "full_universe": {
+  "n_pairs_residue_matched": 131144410,
+  "gpu_hours_at_best": 11.313366130197826
+ },
+ "motif_peek": {
+  "PRKACA": {
+   "n": 871,
+   "mean": 0.18453963100910187,
+   "top5": [
+    "SSQRGSLRKVA",
+    "GQRRSSSSTGS",
+    "AMRRSSSSSTE",
+    "SWKRESGIPIK",
+    "RCQRDSSCGTG"
+   ]
+  },
+  "CDK1": {
+   "n": 871,
+   "mean": 0.13208256661891937,
+   "top5": [
+    "VSNIKTPKQMD",
+    "EEVLSSPFKQS",
+    "TEDDSSPKKIK",
+    "PGVVKTPVSPT",
+    "VFLNRSPSRCS"
+   ]
+  },
+  "CSNK2A1": {
+   "n": 871,
+   "mean": 0.16195502877235413,
+   "top5": [
+    "MASLDSDEETV",
+    "KLEMQSDEECD",
+    "KRVYLSDSDNN",
+    "QLTYESGEDEE",
+    "APIILSDSEEE"
+   ]
+  },
+  "ATM": {
+   "n": 871,
+   "mean": 0.13388939201831818,
+   "top5": [
+    "MYMADSQCTSP",
+    "HPVETSQPSDK",
+    "MDDNDSQKEEE",
+    "CEKSMSQVDVD",
+    "MGQLSSQGLHA"
+   ]
+  },
+  "SRC": {
+   "n": 129,
+   "mean": 0.4227445721626282,
+   "top5": [
+    "TDTSVYTELPN",
+    "DDEHDYEEILE",
+    "SLENIYSEPEG",
+    "VEESIYNEFLE",
+    "QTEGEYSSLEH"
+   ]
+  },
+  "MAPK1": {
+   "n": 871,
+   "mean": 0.13480837643146515,
+   "top5": [
+    "PGVVKTPVSPT",
+    "VAGPLSPQLLT",
+    "DVKLISPQDCT",
+    "PRDPRTPQDPS",
+    "VIPAKSPPPPT"
+   ]
+  }
+ }
+}

@@ -14,6 +14,9 @@ Outputs (in --out):
   protmean_<worker>.npy           float32 (n_prot, D) mean over all residues of the (window-averaged) embedding
   protmean_index_<worker>.parquet acc, length, n_windows, row
   timing_<worker>.json            throughput
+  (merge) sty_index.parquet, sty_<w>_<shard>.site_ids.npy (explicit row ids per shard), protein_mean.npy +
+          protein_mean_index.parquet + protein_mean.accs.npy. Aligned exports for the feature store:
+          scripts/export_structure_esm_features.py (src/ksp/store.py).
 `merge` subcommand concatenates the per-worker index files into sty_index.parquet / protein_mean.{npy,parquet}.
 
 Usage:
@@ -160,6 +163,11 @@ def merge(args):
     assert idx.site_id.is_unique
     idx = idx.sort_values(["acc", "pos"]).reset_index(drop=True)
     idx.to_parquet(out / "sty_index.parquet", index=False)
+    # explicit site_id array next to every shard (row r of sty_X.npy <-> site_ids[r]); guards against order hazards
+    for f, g in idx.groupby("file"):
+        g = g.sort_values("row")
+        assert (g.row.values == np.arange(len(g))).all() and len(g) == np.load(out / f, mmap_mode="r").shape[0]
+        np.save(out / f.replace(".npy", ".site_ids.npy"), g.site_id.values.astype(str))
     pis, vecs, off = [], [], 0
     for p in sorted(out.glob("protmean_index_*.parquet")):
         d = pd.read_parquet(p)
@@ -174,6 +182,7 @@ def merge(args):
     V = V[pi.row.values]
     pi["row"] = np.arange(len(pi))
     np.save(out / "protein_mean.npy", V)
+    np.save(out / "protein_mean.accs.npy", pi.acc.values.astype(str))
     pi.to_parquet(out / "protein_mean_index.parquet", index=False)
     print(f"merged: {len(idx)} S/T/Y rows in {idx.file.nunique()} shards; {len(pi)} protein means", flush=True)
 

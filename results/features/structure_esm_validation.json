@@ -1,0 +1,110 @@
+{
+ "structure_meta": {
+  "tar": "external/alphafold/UP000005640_9606_HUMAN_v6.tar",
+  "n_models": 23316,
+  "n_proteins_canonical": 20416,
+  "status": {
+   "ok": 20249,
+   "not_in_afdb": 126,
+   "seq_mismatch": 41
+  },
+  "pae_status": {
+   "none": 19893,
+   "ok": 397
+  },
+  "pae_calibration": {
+   "n_proteins": 396,
+   "n_residues": 207002,
+   "idr": {
+    "t_nopae": 71.25,
+    "accuracy": 0.9238364846716457,
+    "kappa": 0.836293778332103,
+    "frac_idr_pae": 0.3786871624428749
+   },
+   "high_acc": {
+    "t_nopae": 11.0,
+    "accuracy": 0.89950821731191,
+    "kappa": 0.6889486342960919,
+    "frac_pae": 0.796243514555415
+   },
+   "spearman": {
+    "pse_12_70": 0.8775884587701318,
+    "pse_12_180": 0.8926686114775747,
+    "pse_24_70": 0.8789471241428417,
+    "pse_24_180": 0.9006493725468648
+   }
+  },
+  "n_sty": 1870491,
+  "n_sty_ok": 1860126,
+  "seconds_parse": 875.7991781234741,
+  "seconds_total": 942.6838059425354
+ },
+ "coverage": {
+  "n_sty": 1870491,
+  "n_with_features": 1860126,
+  "frac": 0.9944586742197636,
+  "af_status": {
+   "ok": 1860126,
+   "not_in_afdb": 5447,
+   "seq_mismatch": 4918
+  }
+ },
+ "idp_panel": {
+  "plddt": {
+   "IDP": 61.691,
+   "folded": 90.598
+  },
+  "idr": {
+   "IDP": 1.0,
+   "folded": 0.173
+  },
+  "disorder_plddt": {
+   "IDP": 0.185,
+   "folded": 0.055
+  },
+  "rsa": {
+   "IDP": 0.675,
+   "folded": 0.334
+  }
+ },
+ "proteome_residue_means": {
+  "plddt": 72.163655740916,
+  "idr": 0.38491438760369967,
+  "disorder_plddt": 0.2597532170017814
+ },
+ "psp": {
+  "n_canonical_rows": 230867,
+  "n_window_matched": 229868
+ },
+ "phospho_vs_non": {
+  "n_phos": 229381,
+  "n_non": 1514604,
+  "n_lt": 14398,
+  "or_idr": 2.2798084587973357,
+  "or_disorder_plddt": 2.088122252290842,
+  "or_idr_by_res": {
+   "S": 2.5334856862285897,
+   "T": 2.0465949441030915,
+   "Y": 1.8639375554953248
+  },
+  "or_idr_LT": 2.5632076567169206,
+  "auc_neg_plddt": 0.602171341148696,
+  "auc_rsa": 0.6063795662944201,
+  "auc_neg_plddt_s10": 0.6020437426356622,
+  "auc_neg_pse_24_180_s10": 0.6256259725550637,
+  "frac_idr_phos": 0.5906984449453093,
+  "frac_idr_non": 0.38764125804500715,
+  "rsa_in_ordered_phos": 0.3050123573753307,
+  "rsa_in_ordered_non": 0.26741625135149794,
+  "auc_rsa_in_ordered": 0.5505878381358141
+ },
+ "esm_probe": {
+  "phospho": 0.7626172120727192,
+  "idr": 0.9692677170523044,
+  "phospho_structure_only": 0.6278636085396518,
+  "n": 120000,
+  "note": "protein-grouped 5-fold CV on a 120k random sample of S/T/Y of PSP-phosphoproteins; sanity only"
+ },
+ "note": "Non-official sanity checks. 'KS-annotated' stats use all PSP KS labels without any split; no feature is produced from labels.",
+ "kinase_vs_proteome_mean_cos_min": 0.9999994791895416
+}

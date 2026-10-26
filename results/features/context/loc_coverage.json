@@ -1,0 +1,52 @@
+{
+ "hpa": {
+  "n_proteins_any": 13269,
+  "kinases": 0.8469,
+  "index_proteins": 0.6889
+ },
+ "opencell": {
+  "n_proteins_any": 1310,
+  "kinases": 0.2406,
+  "index_proteins": 0.0696
+ },
+ "hcm": {
+  "n_proteins_any": 4398,
+  "kinases": 0.328,
+  "index_proteins": 0.2343
+ },
+ "hein": {
+  "n_proteins_any": 6977,
+  "kinases": 0.4115,
+  "index_proteins": 0.3687
+ },
+ "comp_exp": {
+  "n_proteins_any": 8051,
+  "kinases": 0.5268,
+  "index_proteins": 0.4231
+ },
+ "comp_know": {
+  "n_proteins_any": 16672,
+  "kinases": 0.9304,
+  "index_proteins": 0.8524
+ },
+ "hcm_nmf": {
+  "kinases": 0.328,
+  "index_proteins": 0.2343
+ },
+ "hein_profile": {
+  "kinases": 0.5169,
+  "index_proteins": 0.4259
+ },
+ "site_topo_code_counts": {
+  "0:no topology annotation, no signal/TM (default cytoplasmic/nuclear)": 280084,
+  "1:cytoplasmic/nuclear TOPO_DOM": 26901,
+  "2:extracellular/lumenal TOPO_DOM": 13327,
+  "3:transmembrane/intramembrane segment": 2499,
+  "4:signal or transit peptide": 1023,
+  "5:secreted/lumenal (signal peptide, no TM; after signal)": 11457,
+  "6:mitochondrial (intermembrane/matrix TOPO_DOM, or after a mitochondrial transit peptide, no TM)": 5201,
+  "7:peroxisomal TOPO_DOM": 27,
+  "8:unknown (TM protein, position not covered by TOPO_DOM)": 10217
+ },
+ "site_lumenal_frac1": 0.07066283472469322
+}

@@ -267,3 +267,360 @@ def variant_counts(df: pd.DataFrame, mask: pd.Series, name: str) -> dict:
             "kinases_ge5": int((per_k >= 5).sum()), "kinases_ge20": int((per_k >= 20).sum()),
             "kinases_ge50": int((per_k >= 50).sum()),
             "top10_share": float(per_k.sort_values(ascending=False).head(10).sum() / max(per_k.sum(), 1))}
+
+
+# ================================================================================================================
+# Core-infra extensions (DESIGN §3-§5): DEV loader, known-positive sets KP(k), paralog sets Par(k), negative masks.
+# Owner: core-infra. The DEV label table (cache/labels/dev_pairs.parquet) is written by scripts/build_splits.py and
+# physically excludes TEST proteins; TEST labels are sealed (read only by ksp.eval_test).
+# ================================================================================================================
+from functools import lru_cache  # noqa: E402
+from pathlib import Path  # noqa: E402
+
+ROOT = Path(__file__).resolve().parents[2]
+FULL_PAIRS = ROOT / "cache" / "labels" / "ks_pairs.parquet"     # pre-split full table (removed after sealing)
+DEV_PAIRS = ROOT / "cache" / "labels" / "dev_pairs.parquet"     # DEV proteins only (all provenances / flags)
+KINCORE_MSA = ROOT / "external" / "kincore" / "alignment-files_Human-PK-alignment.fasta"
+PSP2021 = (ROOT / "external" / "kinase_library" / "src" / "kinase_library-1.8.0" / "src" / "kinase_library" /
+           "databases" / "substrates" / "Kinase_Substrate_Dataset_count_07_2021.txt")
+VARIANTS = ("L1", "L2", "L3", "L2_vitro", "L2_noauto", "EXT", "EXT_not_in_psp")
+PAR_IDENTITY = 0.60          # DESIGN §5 paralog threshold (kinase-domain identity)
+HAMMING_MAX = 2              # DESIGN §5 Hamming mask (15-mer)
+
+
+def evaluable_positive(df: pd.DataFrame) -> pd.Series:
+    """Evaluation positives (DESIGN §3 'Test positives'): human-native PSP pairs, kinase included, residue in class,
+    not autophosphorylation (L1 already implies included & in class). Used identically for TEST and CV."""
+    return df.provenance.eq("PSP") & df.L1.astype(bool) & ~df.autophos.astype(bool)
+
+
+def select_variant(df: pd.DataFrame, variant: str) -> pd.DataFrame:
+    """One row per (kinase_acc, site_id) for a label variant. 'all' returns every row unchanged."""
+    if variant == "all":
+        return df
+    if variant == "eval":
+        x = df[evaluable_positive(df)]
+    elif variant in VARIANTS:
+        x = df[df[variant].astype(bool)]
+    else:
+        raise ValueError(f"unknown label variant {variant!r}; use one of {VARIANTS + ('eval', 'all')}")
+    # EXT may have OmniPath + UniProt rows for one pair; keep the first by provenance order
+    return x.sort_values(["kinase_acc", "site_id", "provenance"]).drop_duplicates(["kinase_acc", "site_id"]) \
+        .reset_index(drop=True)
+
+
+def load_dev(variant: str = "L2", with_canaries: bool = False, path: Path | None = None) -> pd.DataFrame:
+    """THE canonical DEV label loader (DESIGN §4.3). Returns DEV-protein labels only (TEST proteins are absent from the
+    file). variant: L1/L2/L3/L2_vitro/L2_noauto/EXT/EXT_not_in_psp (one row per pair), 'eval' (evaluation positives),
+    or 'all' (every provenance row; use for KP/negative masks). with_canaries=True appends the canary pseudo-kinase
+    labels (ksp.canary; kinase_acc 'CANARY_*'; flag column is_canary) - they must never enter reported metrics."""
+    p = Path(path) if path else DEV_PAIRS
+    if not p.exists():
+        raise FileNotFoundError(f"{p} missing: run scripts/build_splits.py (splits are frozen at G1)")
+    d = pd.read_parquet(p)
+    d["is_canary"] = False
+    d = select_variant(d, variant)
+    if with_canaries:
+        from . import canary
+        c = canary.canary_labels()
+        if variant not in ("all",):
+            c = select_variant(c, variant) if variant != "eval" else c[evaluable_positive(c)]
+        d = pd.concat([d, c], ignore_index=True)
+    return d
+
+
+def training_counts(variant: str = "L2") -> pd.Series:
+    """kinase_acc -> number of DEV label sites in `variant` (0 for kinases without labels)."""
+    from . import index
+    d = load_dev(variant)
+    n = d.groupby("kinase_acc").site_id.nunique()
+    return index.load_kinases().uniprot_acc.map(n).fillna(0).astype(int).set_axis(index.load_kinases().uniprot_acc)
+
+
+# ------------------------------------------------------------------------------------------------ windows / Hamming
+@lru_cache(maxsize=1)
+def _canonical_seqs() -> dict:
+    from . import uniprot
+    sp = uniprot.read_fasta(uniprot.DEFAULT_DIR / "proteome" / "UP000005640_reviewed_isoforms.fasta.gz")
+    can = sp[(sp.isoform == "") & (sp.db == "sp")]
+    return dict(zip(can.acc, can.seq))
+
+
+def site_windows(site_ids_: pd.Series | list, flank: int = 7) -> pd.Series:
+    """15-mer ('_'-padded) for arbitrary canonical site_ids (index sites read from cache/index, others from sequence)."""
+    from . import index
+    from .ids import window
+    s = pd.Series(list(site_ids_), dtype=object)
+    sites_ = index.load_sites()[["site_id", "window15"]]
+    w = s.map(dict(zip(sites_.site_id, sites_.window15)))
+    miss = w.isna()
+    if miss.any():
+        seqs = _canonical_seqs()
+        out = []
+        for sid in s[miss]:
+            acc, rp = sid.rsplit("_", 1)
+            if acc not in seqs:
+                raise KeyError(f"site {sid}: accession not in canonical store")
+            out.append(window(seqs[acc], int(rp[1:]), flank))
+        w[miss] = out
+    return w
+
+
+def _to_u8(windows) -> np.ndarray:
+    a = np.frombuffer("".join(windows).encode("ascii"), dtype=np.uint8)
+    return a.reshape(len(windows), -1) if len(windows) else np.zeros((0, 15), np.uint8)
+
+
+def hamming_neighbors(query: list[str], ref: list[str], max_d: int = HAMMING_MAX) -> list[np.ndarray]:
+    """For each query 15-mer, indices into `ref` with Hamming distance <= max_d (exact pigeonhole search over
+    max_d+1 blocks: any pair within distance max_d shares >= 1 identical block). Distance 0 (identical) included."""
+    if not query:
+        return []
+    L = len(query[0])
+    if any(len(w) != L for w in query) or any(len(w) != L for w in ref):
+        raise ValueError("all windows must have equal length")
+    nb = max_d + 1
+    edges = np.linspace(0, L, nb + 1).astype(int)
+    R = _to_u8(ref)
+    Q = _to_u8(query)
+    buckets = []
+    for b in range(nb):
+        lo, hi = edges[b], edges[b + 1]
+        key = pd.Series([w[lo:hi] for w in ref])
+        buckets.append(key.groupby(key).indices)
+    out = []
+    for qi, w in enumerate(query):
+        cand = [buckets[b].get(w[edges[b]:edges[b + 1]]) for b in range(nb)]
+        cand = [c for c in cand if c is not None]
+        if not cand:
+            out.append(np.zeros(0, dtype=np.int64))
+            continue
+        c = np.unique(np.concatenate(cand))
+        d = (R[c] != Q[qi]).sum(1)
+        out.append(c[d <= max_d])
+    return out
+
+
+# ------------------------------------------------------------------------------------------------ KP(k)
+def known_positive_sets(pairs: pd.DataFrame, expand_identical: bool = True) -> dict:
+    """KP(k) (DESIGN §3): kinase_acc -> set of site_ids labelled to k in ANY row of `pairs` (all sources PSP/OmniPath/
+    UniProt, all species, any flag incl. out-of-class / not-in-variant), plus (expand_identical) every U_obs site whose
+    15-mer is identical to a labelled site of k. Pass the unfiltered table (load_dev('all') or DEV+TEST at TEST time)."""
+    from . import index
+    p = pairs.dropna(subset=["kinase_acc"])
+    kp = p.groupby("kinase_acc").site_id.agg(lambda s: set(s)).to_dict()
+    if expand_identical:
+        sites_ = index.load_sites()[["site_id", "window15"]]
+        by_w = sites_.groupby("window15").site_id.agg(list).to_dict()
+        ls = pd.Series(sorted(set(p.site_id)))
+        w = dict(zip(ls, site_windows(ls)))
+        for k, ss in kp.items():
+            extra = set()
+            for s in ss:
+                extra.update(by_w.get(w[s], ()))
+            ss |= extra
+    return kp
+
+
+# ------------------------------------------------------------------------------------------------ Par(k)
+def _read_kincore_msa(path: Path = KINCORE_MSA) -> pd.DataFrame:
+    recs, cur = [], None
+    for line in open(path):
+        line = line.rstrip("\n")
+        if line.startswith(">"):
+            h = line[1:].split()
+            cur = [h[0], h[-1], []]
+            recs.append(cur)
+        elif cur is not None:
+            cur[2].append(line.strip())
+    df = pd.DataFrame([(a, b, "".join(c)) for a, b, c in recs], columns=["name", "acc", "aln"])
+    return df[df.acc.ne("P00000")].reset_index(drop=True)   # drop the ANNOTATION row
+
+
+def kinase_domain_identity(cache: Path | None = ROOT / "cache" / "splits" / "kinase_domain_identity.parquet"
+                           ) -> pd.DataFrame:
+    """Pairwise kinase-domain identity from the KinCore human PK multiple alignment (DESIGN §4.5/§5):
+    identity = identical aligned residues / columns where both have a residue (gaps '-'/'.' ignored), requiring the
+    shared columns to cover >= 50% of the shorter domain (else identity 0). Multi-domain kinases (e.g. JAK JH1/JH2,
+    RSK N/C): max over domain pairs. Returns long table (acc_a, acc_b, identity) for acc_a < acc_b, identity > 0.3,
+    restricted to kinases in cache/index/kinases.parquet. Kinases absent from KinCore (28 atypicals: PIKK, PDHK,
+    Alpha, ABC1, RIO, FAM20, FAST) get no identity edges and rely on the Manning family rule."""
+    if cache is not None and Path(cache).exists():
+        return pd.read_parquet(cache)
+    from . import index
+    ka = set(index.load_kinases().uniprot_acc)
+    m = _read_kincore_msa()
+    m = m[m.acc.isin(ka)].reset_index(drop=True)
+    A = np.array([list(s.upper()) for s in m.aln])
+    res = ~np.isin(A, ["-", "."])
+    aa = sorted(set(A[res].ravel()))
+    n, L = A.shape
+    X = np.zeros((n, L * len(aa)), dtype=np.float32)
+    for i, a in enumerate(aa):
+        X[:, i::len(aa)] = (A == a)
+    match = X @ X.T
+    R = res.astype(np.float32)
+    both = R @ R.T
+    lens = R.sum(1)
+    short = np.minimum.outer(lens, lens)
+    ident = np.where((both >= 0.5 * short) & (both > 0), match / np.maximum(both, 1), 0.0)
+    ii, jj = np.triu_indices(n, k=1)
+    long = pd.DataFrame({"acc_a": m.acc.values[ii], "acc_b": m.acc.values[jj], "identity": ident[ii, jj]})
+    sw = long.acc_a > long.acc_b
+    long.loc[sw, ["acc_a", "acc_b"]] = long.loc[sw, ["acc_b", "acc_a"]].values
+    long = long[long.acc_a < long.acc_b].groupby(["acc_a", "acc_b"], as_index=False).identity.max()
+    long = long[long.identity > 0.3].reset_index(drop=True)
+    if cache is not None:
+        Path(cache).parent.mkdir(parents=True, exist_ok=True)
+        long.to_parquet(cache, index=False)
+    return long
+
+
+def _real_family(f) -> str | None:
+    if not isinstance(f, str) or not f or f.endswith("-Unique") or f == "Unique":
+        return None
+    return f
+
+
+def paralog_sets(identity: float = PAR_IDENTITY, kinases: pd.DataFrame | None = None) -> dict:
+    """Par(k) (DESIGN §5): kinase_acc -> set of OTHER kinase accessions with kinase-domain identity >= `identity`
+    (KinCore MSA) OR the same Manning subfamily; for kinases without a subfamily, the same Manning family
+    ('*-Unique' pseudo-families never group). Symmetrised (j in Par(k) <=> k in Par(j)), so conservative."""
+    from . import index
+    k = kinases if kinases is not None else index.load_kinases()
+    par = {a: set() for a in k.uniprot_acc}
+    ide = kinase_domain_identity()
+    for a, b in zip(*[ide[ide.identity >= identity][c] for c in ("acc_a", "acc_b")]):
+        if a in par and b in par:
+            par[a].add(b), par[b].add(a)
+    fam = pd.Series([_real_family(f) for f in k.manning_family], index=k.index, dtype=object)
+    sub = pd.Series([s if isinstance(s, str) and s else None for s in k.manning_subfamily], index=k.index,
+                    dtype=object)
+    by_sub = k.assign(f=fam, s=sub).dropna(subset=["s"]).groupby(["f", "s"]).uniprot_acc.agg(list)
+    by_fam = k.assign(f=fam).dropna(subset=["f"]).groupby("f").uniprot_acc.agg(list)
+    for a, f, s in zip(k.uniprot_acc, fam, sub):
+        if s is not None and f is not None:  # noqa: E501
+            mem = by_sub.get((f, s), [])
+        elif f is not None:
+            mem = by_fam.get(f, [])
+        else:
+            mem = []
+        for b in mem:
+            if b != a:
+                par[a].add(b), par[b].add(a)
+    return par
+
+
+# ------------------------------------------------------------------------------------------------ negative masks
+class NegativeMasks:
+    """Per-kinase negative exclusion over the canonical site index (DESIGN §5).
+
+    excluded(k) = KP(k) (incl. identical 15-mers) U {U_obs sites within Hamming <= 2 of a KP(k) site's 15-mer}
+                  U {sites labelled (any source) to a kinase in Par(k)}
+    hard_pool    : per site, the set of kinases with a human-native PSP non-autophosphorylation label ('eval' labels;
+                   PI r2): a site is an E-hard negative for k if it has such a label to a kinase outside {k} U Par(k).
+    `pairs` must be the unfiltered label table relevant for the evaluation (CV: load_dev('all'); TEST: DEV U TEST).
+    Arrays are site-index positions (row order of cache/index/sites.parquet)."""
+
+    def __init__(self, pairs: pd.DataFrame, paralogs: dict | None = None, max_d: int = HAMMING_MAX):
+        from . import index
+        self.sites = index.load_sites()
+        self.spos = pd.Series(np.arange(len(self.sites)), index=self.sites.site_id)
+        self.par = paralogs if paralogs is not None else paralog_sets()
+        p = pairs.dropna(subset=["kinase_acc"])
+        self.kp = known_positive_sets(p, expand_identical=False)
+        lab_sites = sorted(set(p.site_id))
+        w = site_windows(lab_sites)
+        nb = hamming_neighbors(list(w), list(self.sites.window15), max_d)
+        self._nb = dict(zip(lab_sites, nb))
+        self._own = {s: self.spos.get(s) for s in lab_sites}
+        self._excl_cache: dict = {}
+        hp = p[evaluable_positive(p)]          # PI r2: E-hard membership from human-native PSP labels
+        hp = hp[hp.site_id.isin(self.spos.index)]
+        self.hard_labelers = hp.groupby("site_id").kinase_acc.agg(lambda s: frozenset(s))
+        self.hard_idx = self.spos[self.hard_labelers.index].values
+
+    def _site_block(self, sites_) -> np.ndarray:
+        parts = [self._nb[s] for s in sites_]
+        parts += [np.array([self._own[s]]) for s in sites_ if self._own[s] is not None]
+        return np.unique(np.concatenate(parts)).astype(np.int64) if parts else np.zeros(0, np.int64)
+
+    def kp_block(self, k: str) -> np.ndarray:
+        """Index positions masked because of KP(k): KP sites, identical and Hamming<=2 15-mers."""
+        return self._site_block(self.kp.get(k, ()))
+
+    def excluded(self, k: str) -> np.ndarray:
+        if k not in self._excl_cache:
+            sites_ = set(self.kp.get(k, ()))
+            par_sites = set()
+            for j in self.par.get(k, ()):
+                par_sites |= self.kp.get(j, set())
+            a = self.kp_block(k)
+            b = self.spos.reindex(sorted(par_sites)).dropna().values.astype(np.int64)
+            self._excl_cache[k] = np.union1d(a, b)
+        return self._excl_cache[k]
+
+    def hard_candidates(self, k: str) -> np.ndarray:
+        """Index positions with >= 1 human-native non-autophos label to a kinase outside {k} U Par(k)."""
+        own = {k} | set(self.par.get(k, ()))
+        ok = np.fromiter((len(ls - own) > 0 for ls in self.hard_labelers.values), bool, len(self.hard_labelers))
+        return self.hard_idx[ok]
+
+
+# ------------------------------------------------------------------------------------------------ temporal / external
+def psp2021_keys(path: Path = PSP2021) -> set:
+    """Keys of the PSP Kinase_Substrate_Dataset bundled with kinase-library 1.8.0 (07/2021), human->human rows:
+    {(kinase_acc, substrate_acc, WINDOW15_upper)} and {(kinase_acc, substrate_acc, residue+pos)}."""
+    d = pd.read_csv(path, sep="\t", skiprows=3, dtype=str, encoding="latin1", keep_default_na=False)
+    d = d[d.KIN_ORGANISM.eq("human") & d.SUB_ORGANISM.eq("human")]
+    ka = d.KIN_ACC_ID.str.split("-").str[0]
+    sa = d.SUB_ACC_ID.str.split("-").str[0]
+    keys = set(zip(ka, sa, d["SITE_+/-7_AA"].str.upper()))
+    keys |= set(zip(ka, sa, d.SUB_MOD_RSD.str.upper()))
+    return keys
+
+
+def new_since_2021(pairs: pd.DataFrame, keys: set | None = None) -> pd.Series:
+    """True for PSP human-native pairs absent from the 2021 PSP release (matched by kinase accession + substrate
+    accession + (15-mer or residue/position)). NaN-free bool Series aligned to `pairs`. Non-PSP / non-native -> False.
+    ASSUMPTION: KIN_ACC_ID of 2021 human rows equals today's canonical kinase accession (true for >99% of rows)."""
+    keys = keys if keys is not None else psp2021_keys()
+    w = site_windows(pairs.site_id).str.upper().values
+    rp = pairs.site_id.str.rsplit("_", n=1).str[1].values
+    subs = pairs.psp_sub_accs.fillna("").str.split(";").values
+    out = []
+    for ka, acc, ww, r, ss, prov, nat in zip(pairs.kinase_acc, pairs.acc, w, rp, subs, pairs.provenance,
+                                             pairs.native_human):
+        if prov != "PSP" or not nat:
+            out.append(False)
+            continue
+        cand = {acc} | {s.split("-")[0] for s in ss if s}
+        old = any((ka, a, ww) in keys or (ka, a, r) in keys for a in cand)
+        out.append(not old)
+    return pd.Series(out, index=pairs.index, dtype=bool)
+
+
+def external_test_filter(pairs: pd.DataFrame, paralogs: dict | None = None, window: int = 5) -> pd.Series:
+    """External curated stratum (DESIGN §3, DL-5): EXT_not_in_psp pairs (OmniPath curated / UniProt ECO:0000269,
+    in class, included kinase, single-kinase names) minus near-copies of PSP: (i) the same kinase + protein has a PSP
+    pair within +-`window` residues (renumbering), (ii) the same site is a PSP pair of a paralog (Par) of the kinase.
+    Returns a bool mask over `pairs` (False for non-EXT rows)."""
+    par = paralogs if paralogs is not None else paralog_sets()
+    psp = pairs[pairs.provenance.eq("PSP")]
+    pos_by = psp.groupby(["kinase_acc", "acc"]).pos.agg(lambda s: np.array(sorted(set(s)))).to_dict()
+    kin_by_site = psp.groupby("site_id").kinase_acc.agg(set).to_dict()
+    out = []
+    for ka, acc, pos, sid, ext in zip(pairs.kinase_acc, pairs.acc, pairs.pos, pairs.site_id,
+                                      pairs.EXT_not_in_psp.astype(bool)):
+        if not ext:
+            out.append(False)
+            continue
+        near = pos_by.get((ka, acc))
+        if near is not None and np.any((np.abs(near - pos) <= window) & (near != pos)):
+            out.append(False)
+            continue
+        if kin_by_site.get(sid, set()) & par.get(ka, set()):
+            out.append(False)
+            continue
+        out.append(True)
+    return pd.Series(out, index=pairs.index, dtype=bool)

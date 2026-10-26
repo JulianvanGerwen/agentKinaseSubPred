@@ -8,6 +8,8 @@
 3. ESM-2 linear probe: logistic regression on 650M S/T/Y embeddings, phosphosite vs not, protein-grouped 5-fold CV
    (sanity only; NOT a model result). Also ESM -> structural IDR flag probe.
 4. Consistency: kinases.parquet emb_full vs protein_mean.npy cosine.
+NOTE: the 'KS-annotated' class uses ALL PSP kinase-substrate labels (no split) - a non-official descriptive sanity
+check only; nothing here produces a feature, and no feature is derived from labels.
 Writes results/features/structure_esm_validation.json and results/features/phospho_vs_nonphospho_structure.tsv.
 Usage: python -I scripts/validate_structure_esm_features.py
 """
@@ -91,7 +93,7 @@ def main():
     hi = set(ps.loc[ps.ms_total >= 5, "site_id"])
     ks = set(ps.loc[ps.ks_any, "site_id"])
     d = st[st.acc.isin(set(ps.acc)) & st.plddt.notna()].copy()
-    d["cls"] = np.where(d.site_id.isin(ks), "KS-annotated (PSP)",
+    d["cls"] = np.where(d.site_id.isin(ks), "KS-annotated (PSP, all labels; non-official sanity)",
                         np.where(d.site_id.isin(hi), "phospho MS>=5",
                                  np.where(d.phos, "phospho other", "non-phospho")))
     tab = []
@@ -150,6 +152,8 @@ def main():
     probe["n"] = len(e)
     probe["note"] = "protein-grouped 5-fold CV on a 120k random sample of S/T/Y of PSP-phosphoproteins; sanity only"
     rep["esm_probe"] = probe
+    rep["note"] = ("Non-official sanity checks. 'KS-annotated' stats use all PSP KS labels without any split; "
+                   "no feature is produced from labels.")
 
     # 4. consistency
     km = pd.read_parquet(ROOT / "cache/esm2_650m/kinases.parquet").drop_duplicates("acc")

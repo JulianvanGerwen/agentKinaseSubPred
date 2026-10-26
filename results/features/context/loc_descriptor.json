@@ -1,0 +1,250 @@
+{
+ "module": "F4 localisation",
+ "label_derived": false,
+ "vocab": [
+  "nucleoplasm",
+  "nucleolus",
+  "chromatin",
+  "nuclear_envelope",
+  "cytosol",
+  "plasma_membrane",
+  "cell_junction",
+  "mitochondrion",
+  "er",
+  "golgi",
+  "endolysosome_vesicle",
+  "peroxisome",
+  "centrosome_mt",
+  "actin_if",
+  "extracellular"
+ ],
+ "features": {
+  "loc_cos_hpa": {
+   "file": "cache/features/context/loc/loc_cos_hpa.npy",
+   "store_name": "context/loc/loc_cos_hpa",
+   "dtype": "float16",
+   "shape": [
+    503,
+    18702
+   ],
+   "description": "cosine similarity of hpa coarse compartment vectors (kinase vs protein)",
+   "missing": "NaN = kinase or protein has no annotation in this source",
+   "ablation_only": false,
+   "sign": 1
+  },
+  "loc_cos_opencell": {
+   "file": "cache/features/context/loc/loc_cos_opencell.npy",
+   "store_name": "context/loc/loc_cos_opencell",
+   "dtype": "float16",
+   "shape": [
+    503,
+    18702
+   ],
+   "description": "cosine similarity of opencell coarse compartment vectors (kinase vs protein)",
+   "missing": "NaN = kinase or protein has no annotation in this source",
+   "ablation_only": false,
+   "sign": 1
+  },
+  "loc_cos_hcm": {
+   "file": "cache/features/context/loc/loc_cos_hcm.npy",
+   "store_name": "context/loc/loc_cos_hcm",
+   "dtype": "float16",
+   "shape": [
+    503,
+    18702
+   ],
+   "description": "cosine similarity of hcm coarse compartment vectors (kinase vs protein)",
+   "missing": "NaN = kinase or protein has no annotation in this source",
+   "ablation_only": false,
+   "sign": 1
+  },
+  "loc_cos_hein": {
+   "file": "cache/features/context/loc/loc_cos_hein.npy",
+   "store_name": "context/loc/loc_cos_hein",
+   "dtype": "float16",
+   "shape": [
+    503,
+    18702
+   ],
+   "description": "cosine similarity of hein coarse compartment vectors (kinase vs protein)",
+   "missing": "NaN = kinase or protein has no annotation in this source",
+   "ablation_only": false,
+   "sign": 1
+  },
+  "loc_cos_comp_exp": {
+   "file": "cache/features/context/loc/loc_cos_comp_exp.npy",
+   "store_name": "context/loc/loc_cos_comp_exp",
+   "dtype": "float16",
+   "shape": [
+    503,
+    18702
+   ],
+   "description": "cosine similarity of comp_exp coarse compartment vectors (kinase vs protein)",
+   "missing": "NaN = kinase or protein has no annotation in this source",
+   "ablation_only": false,
+   "sign": 1
+  },
+  "loc_cos_comp_know": {
+   "file": "cache/features/context/loc/loc_cos_comp_know.npy",
+   "store_name": "context/loc/loc_cos_comp_know",
+   "dtype": "float16",
+   "shape": [
+    503,
+    18702
+   ],
+   "description": "cosine similarity of comp_know coarse compartment vectors (kinase vs protein)",
+   "missing": "NaN = kinase or protein has no annotation in this source",
+   "ablation_only": true,
+   "sign": 1
+  },
+  "loc_cos_combined": {
+   "file": "cache/features/context/loc/loc_cos_combined.npy",
+   "store_name": "context/loc/loc_cos_combined",
+   "dtype": "float16",
+   "shape": [
+    503,
+    18702
+   ],
+   "description": "cosine of mean unit compartment vector over HPA, OpenCell, HCM, Hein",
+   "missing": "NaN = no primary source for one side",
+   "ablation_only": false,
+   "sign": 1
+  },
+  "loc_cos_combined_know": {
+   "file": "cache/features/context/loc/loc_cos_combined_know.npy",
+   "store_name": "context/loc/loc_cos_combined_know",
+   "dtype": "float16",
+   "shape": [
+    503,
+    18702
+   ],
+   "description": "ABLATION: combined incl. COMPARTMENTS knowledge channel (GO/UniProt curation)",
+   "missing": "NaN as above",
+   "ablation_only": true,
+   "sign": 1
+  },
+  "loc_n_sources": {
+   "file": "cache/features/context/loc/loc_n_sources.npy",
+   "store_name": "context/loc/loc_n_sources",
+   "dtype": "int8",
+   "shape": [
+    503,
+    18702
+   ],
+   "description": "number of primary localisation sources with both kinase and protein annotated (0-4)",
+   "missing": "0 = none",
+   "ablation_only": false,
+   "sign": 1
+  },
+  "loc_hcm_nmf_cos": {
+   "file": "cache/features/context/loc/loc_hcm_nmf_cos.npy",
+   "store_name": "context/loc/loc_hcm_nmf_cos",
+   "dtype": "float16",
+   "shape": [
+    503,
+    18702
+   ],
+   "description": "cosine of native Human Cell Map NMF rank profiles (20-dim)",
+   "missing": "NaN = not an HCM prey",
+   "ablation_only": false,
+   "sign": 1
+  },
+  "loc_hein_profile_corr": {
+   "file": "cache/features/context/loc/loc_hein_profile_corr.npy",
+   "store_name": "context/loc/loc_hein_profile_corr",
+   "dtype": "float16",
+   "shape": [
+    503,
+    18702
+   ],
+   "description": "Pearson correlation of z-scored Hein 2025 organelle-IP enrichment profiles",
+   "missing": "NaN = not quantified",
+   "ablation_only": false,
+   "sign": 1
+  },
+  "loc_hpa_min_reliability": {
+   "file": "cache/features/context/loc/loc_hpa_min_reliability.npy",
+   "store_name": "context/loc/loc_hpa_min_reliability",
+   "dtype": "float16",
+   "shape": [
+    503,
+    18702
+   ],
+   "description": "min of HPA reliability (Enhanced 1, Supported .8, Approved .5, Uncertain .2) of kinase and protein",
+   "missing": "NaN = not in HPA",
+   "ablation_only": false,
+   "sign": 1
+  }
+ },
+ "site_features": {
+  "site_topo_code": {
+   "store_name": "context/loc/site_topo_code",
+   "codes": {
+    "0": "no topology annotation, no signal/TM (default cytoplasmic/nuclear)",
+    "1": "cytoplasmic/nuclear TOPO_DOM",
+    "2": "extracellular/lumenal TOPO_DOM",
+    "3": "transmembrane/intramembrane segment",
+    "4": "signal or transit peptide",
+    "5": "secreted/lumenal (signal peptide, no TM; after signal)",
+    "6": "mitochondrial (intermembrane/matrix TOPO_DOM, or after a mitochondrial transit peptide, no TM)",
+    "7": "peroxisomal TOPO_DOM",
+    "8": "unknown (TM protein, position not covered by TOPO_DOM)"
+   }
+  },
+  "site_lumenal": {
+   "store_name": "context/loc/site_lumenal"
+  }
+ },
+ "coverage": {
+  "hpa": {
+   "n_proteins_any": 13269,
+   "kinases": 0.8469,
+   "index_proteins": 0.6889
+  },
+  "opencell": {
+   "n_proteins_any": 1310,
+   "kinases": 0.2406,
+   "index_proteins": 0.0696
+  },
+  "hcm": {
+   "n_proteins_any": 4398,
+   "kinases": 0.328,
+   "index_proteins": 0.2343
+  },
+  "hein": {
+   "n_proteins_any": 6977,
+   "kinases": 0.4115,
+   "index_proteins": 0.3687
+  },
+  "comp_exp": {
+   "n_proteins_any": 8051,
+   "kinases": 0.5268,
+   "index_proteins": 0.4231
+  },
+  "comp_know": {
+   "n_proteins_any": 16672,
+   "kinases": 0.9304,
+   "index_proteins": 0.8524
+  },
+  "hcm_nmf": {
+   "kinases": 0.328,
+   "index_proteins": 0.2343
+  },
+  "hein_profile": {
+   "kinases": 0.5169,
+   "index_proteins": 0.4259
+  },
+  "site_topo_code_counts": {
+   "0:no topology annotation, no signal/TM (default cytoplasmic/nuclear)": 280084,
+   "1:cytoplasmic/nuclear TOPO_DOM": 26901,
+   "2:extracellular/lumenal TOPO_DOM": 13327,
+   "3:transmembrane/intramembrane segment": 2499,
+   "4:signal or transit peptide": 1023,
+   "5:secreted/lumenal (signal peptide, no TM; after signal)": 11457,
+   "6:mitochondrial (intermembrane/matrix TOPO_DOM, or after a mitochondrial transit peptide, no TM)": 5201,
+   "7:peroxisomal TOPO_DOM": 27,
+   "8:unknown (TM protein, position not covered by TOPO_DOM)": 10217
+  },
+  "site_lumenal_frac1": 0.07066283472469322
+ }
+}

@@ -2,15 +2,9 @@
 
 Single place for all data requests. Each item: what, why, what we tried, current workaround, priority. Status: OPEN / RESOLVED / WITHDRAWN. The project never waits on these; workarounds are in use.
 
-Last updated: 2026-10-26 14:35
+Last updated: 2026-10-26 15:00
 
 ## OPEN
-
-### 1. Klaeger et al. 2017 (Science, doi 10.1126/science.aan4368) Kinobeads supplementary tables — priority HIGH
-- **Need:** inhibitor → kinase apparent Kd (Table S1/S2 "Kd_app", target lists for 243 drugs) to map inhibitor-perturbation conditions (decryptM, other drug studies in the compendium) to the kinases they inhibit (feature F6b).
-- **Tried:** science.org supplementary → HTTP 403; PMC supplements → reCAPTCHA page; ProteomicsDB API (assay id not found within time box).
-- **Workaround:** Reinecke 2024 (Nat Chem Biol) tables + CurveCurator reprocessed kinobeads (Zenodo 8399823) + Davis 2011 Kd + provided Hijazi matrix.
-- **Ideal file:** the Science supplementary Excel files (aan4368_Tables_S1–S?.xlsx), dropped into `data/`.
 
 ### 2. decryptM (Zecha et al. 2023 Science, doi 10.1126/science.ade3925) supplementary drug/target table — priority MEDIUM
 - **Need:** designated targets of each decryptM drug and experiment metadata to interpret the 790 decryptM contrasts in the compendium.
@@ -44,5 +38,6 @@ Last updated: 2026-10-26 14:35
 - Phosformer code/weights are CC BY-NC-ND: we reimplement the architecture rather than modify their code; released weights used inference-only as a baseline.
 
 ## RESOLVED
+- Klaeger et al. 2017 Kinobeads Tables S1–S3 — provided by user in data/Klaeger/ (2026-10-26 14:26). Thank you.
 - PhosphoSitePlus `Phosphorylation_site_dataset` and `Regulatory_sites` (2025-05-19) — provided by user in data/ (2026-10-26 13:35).
 - CPTAC phosphoproteomics — obtained publicly (LinkedOmics S3 v1.2 + PDC pan-cancer), no login needed.

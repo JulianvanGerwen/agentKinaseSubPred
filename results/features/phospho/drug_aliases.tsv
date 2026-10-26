@@ -1,0 +1,64 @@
+# Curated drug-name aliases for F6b (src/ksp/features/phospho_inhib.py). Hand-curated by feat-phospho, 2026-10-26.
+# alias: token as it appears in compendium Condition/Control text (matched after lower-casing and removing non-alphanumerics;
+#        adjacent-token pairs are also tried, e.g. 'Plk1(as)' -> 'plk1as').
+# maps_to: name of the same compound in an affinity source (Klaeger/Reinecke/CurveCurator/Davis/Hijazi kinhib) -> affinities from there.
+# targets: ';'-separated kinase symbols used when no affinity profile exists (class tokens like 'MEKi', or compounds missing from all
+#          sources). Then occupancy = dose/(dose+kd_nM) if kd_nM is given (dose parsed; unknown dose = 1 uM), else the fixed 'occ'.
+# kd/occ values for 'targets' rows are literature potencies (approximate, from memory; flagged as ASSUMPTION in docs/features_phospho.md).
+alias	maps_to	targets	kd_nM	occ	note
+PLX4032	Vemurafenib				same compound
+Tanziternib	Tanzisertib				typo in compendium (CC-930)
+Dina	Dinaciclib				34663829 abbreviation
+G6976	Go6976				mis-encoded 'Gö-6976' after normalisation
+BIM-1	GF109203X				bisindolylmaleimide I = GF109203X (Hijazi kinhib column)
+GDC0973	Cobimetinib				same compound
+Ku-794	Ku0063794				23532336/26060313 KU-0063794 (Hijazi kinhib column)
+KU-0063794	Ku0063794				same compound
+H-1152		ROCK1;ROCK2	2		ROCK inhibitor H-1152 (Ki ~1.6 nM ROCK2)
+Y-27632		ROCK1;ROCK2	150		ROCK inhibitor (Ki ~140-300 nM)
+ROCKi		ROCK1;ROCK2		0.9	class token; assumed potent
+Torin1		MTOR	3		ATP-competitive mTOR inhibitor (IC50 2-10 nM)
+Torin-1		MTOR	3		same
+AZD8055		MTOR	1		ATP-competitive mTOR (IC50 0.8 nM); mTOR not captured on Kinobeads
+Dactolisib		MTOR;ATR;PRKDC	10		BEZ235 PI3K/mTOR; protein-kinase targets only (PI3K are lipid kinases, not in list)
+Rapamycin		MTOR		0.8	allosteric mTORC1 inhibitor (partial); fixed occupancy
+Everolimus		MTOR		0.8	rapalog
+Temsirolimus		MTOR		0.8	rapalog
+mTORi		MTOR		0.9	class token
+Tideglusib		GSK3B	60		non-ATP-competitive GSK3B inhibitor (IC50 ~60 nM)
+SB216763		GSK3A;GSK3B	30		GSK3 inhibitor (IC50 ~34 nM)
+BIO		GSK3A;GSK3B	5		6-bromoindirubin-3'-oxime (IC50 ~5 nM)
+GSK3i		GSK3A;GSK3B		0.9	class token
+U0126		MAP2K1;MAP2K2	70		MEK1/2 allosteric (IC50 72/58 nM)
+PD184352		MAP2K1;MAP2K2	17		CI-1040
+MEKi		MAP2K1;MAP2K2		0.9	class token
+BRAFi		BRAF		0.9	class token (38047086)
+SB202190		MAPK14;MAPK11	40		p38 inhibitor
+p38i		MAPK14;MAPK11		0.9	class token
+LY228820		MAPK14;MAPK11	10		ralimetinib (LY2228820)
+JNKi		MAPK8;MAPK9;MAPK10		0.9	class token
+ERKi		MAPK1;MAPK3		0.8	class token (26060313 'ERK inhibitor', 'ERK inhibitor II')
+TAKi		MAP3K7		0.9	class token (38047086)
+TPCA		IKBKB	20		TPCA-1 (IKK2 IC50 ~18 nM)
+SC-514		IKBKB	3000		weak IKK2 inhibitor (IC50 ~3-12 uM)
+AKTi		AKT1;AKT2;AKT3		0.9	class token (Akt inhibitor VIII / Akt-1-2 / MK-2206 rows)
+Akt-1-2		AKT1;AKT2;AKT3	60		Akti-1/2 allosteric (IC50 58/210 nM)
+EGFRi		EGFR		0.9	class token
+AG1478		EGFR	3		tyrphostin AG1478
+PD-168393		EGFR	1		irreversible EGFR inhibitor
+CAMK2i		CAMK2A;CAMK2B;CAMK2D;CAMK2G		0.8	class token (KN-62/KN-93 rows)
+P70S6K1i		RPS6KB1		0.9	class token (DG2, PF-4708671 rows)
+DG2		RPS6KB1	100		S6K1 inhibitor DG2
+BI-D1870		RPS6KA1;RPS6KA2;RPS6KA3;RPS6KA6	30		RSK inhibitor (IC50 10-30 nM)
+RO3306		CDK1	35		CDK1 inhibitor (Ki 35 nM)
+KU60019		ATM	6		ATM inhibitor (IC50 6.3 nM)
+ATMi		ATM		0.9	class token
+ATRi		ATR		0.9	class token
+DNA-PKi		PRKDC		0.9	class token
+CHK1i		CHEK1		0.9	class token
+LRRK2-IN-1		LRRK2	13		LRRK2 inhibitor (IC50 13 nM)
+CDK12IN3		CDK12;CDK13	30		CDK12-IN-3
+THZ		CDK7	10		THZ1 (34663829 abbreviation); covalent CDK7
+Cortistatin		CDK8;CDK19	10		cortistatin A (CDK8/19, IC50 ~12 nM)
+SYKinhibition		SYK		0.9	27155012 'SYK inhibition' (drug not named)
+Plk1as		PLK1		0.9	22199227 analog-sensitive PLK1 + 3-MB-PP1 (wild-type control row has no target)

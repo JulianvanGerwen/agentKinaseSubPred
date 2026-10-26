@@ -1,6 +1,6 @@
 # DESIGN — Human kinase–substrate (site-level) predictor
 
-**Version: v1 (2026-10-26 14:30).** This revision follows review round 1 (`docs/reviews/r1_*.md`). §15 maps each accepted or rejected reviewer change to the place it lands.
+**Version: v2 (2026-10-26 15:15) — FROZEN for implementation.** v2 = v1 + the amendments in §16, which take precedence over earlier sections where they conflict. This revision follows review round 1 (`docs/reviews/r1_*.md`). §15 maps each accepted or rejected reviewer change to the place it lands.
 
 Supporting material:
 - `LITERATURE.md` and `docs/lit/*`
@@ -379,6 +379,7 @@ GPU allocation:
 ## 14. Revision log
 - v0 (14:00): initial draft.
 - v1 (14:30): round-1 revisions (see §15).
+- v2 (15:15): round-2 revisions (§16). No round 3: round 2 found no design-level critical issues beyond those fixed here (decision: PI; reason: avoid rework while 6 implementers run, per LESSONS #6/#7).
 
 ## 15. Round-1 change map
 **Accepted, with location:**
@@ -397,3 +398,68 @@ GPU allocation:
 - **Paralog identity threshold.** Reviewers proposed 60–80%. I chose ≥60% domain identity OR same subfamily, to be conservative for negatives.
 - **KB-6 site-within-protein metric:** not a separate endpoint. E-hard plus M2 already isolate site-level specificity; it may be added as a secondary diagnostic if cheap.
 - **External curated pairs as training augmentation** are kept only as the L2+ext ablation, so the external test stays independent.
+
+## 16. v2 amendments (review round 2: docs/reviews/r2_*.md)
+**Interfaces and process**
+- **A1. Cross-fitting driver** (r2 PI-1, critical). There is exactly one driver, `src/ksp/crossfit.py`, owned by core-infra.
+  - Every label-derived feature family is a `LabelDerivedFeature` subclass with `fit(train_pairs, ctx)` / `transform(query, ctx)`, registered with `@register`.
+  - The driver raises `LeakageError` if any fitted label lies on a query protein or cluster.
+  - **Eval rows** are transformed by a randomly assigned inner-fold fit, not by the all-labels fit (DL2-5). This makes their label coverage match the training rows (≈80%), so count-type features are not shifted between training and eval.
+  - A grep test ensures labels enter feature code only through `fit()`.
+- **A2. Feature store** (AIFM2-1, critical): every matrix is saved and loaded through `src/ksp/store.py`, which carries the index hash and raises on mismatch. Cached arrays are never indexed by position.
+- **A3. Label sealing** (AIFM2-2, critical): at split freeze, every label table that contains TEST moves to `sealed/`. `ksp.labels.load_dev()` is the only reader for modelling, and a grep guard over a pattern list enforces it.
+- **A4. Name resolution** (AIFM2-4): one strict resolver, `ksp.kinases.resolve_kinase_names`, with a per-source homonym table (e.g. "PDK1" = PDPK1 in HPRD/SIGNOR/Cantley).
+- **A5. Canaries** (r2 PI-2): negative canaries are sampled clustered by protein (1–4 sites per protein) and injected before the split is frozen. The acceptance threshold is checked on both E-hard and E-all.
+
+**Universe and labels**
+- **A6. Candidate universe** (AIFM2-3, STAT2-3, r2 PI-4): positives and negatives for training and evaluation are both restricted to **U_ms**.
+  - Non-U_ms positives and the 956 positives with no index row are dropped, with counts reported.
+  - Centre-site observation flags are forbidden as features (DL2-7).
+  - The deployment model still scores all of U_obs.
+- **A7. Mask-only positives** (DL2-2): UniProt family-level notes ("by PKA/PKC"), complex-subunit rows and regulatory-subunit rows are added to KP as **mask-only** rows: never positives, never negatives. Text-mining and KEA rows are masked only in a sensitivity analysis.
+- **A8. Paralog fallback** (STAT2-6): the "same family" fallback in Par(k) requires ≥50% domain identity.
+- **A9. External test tiers** (DL2-3):
+  - drop rows that list PhosphoSite among OmniPath sources;
+  - cap 20 pairs per PMID;
+  - tier A = SIGNOR/HPRD/UniProt-ECO with a single kinase and a named residue.
+  - The expected size is small, about 24–32 evaluable kinases, so this set is secondary.
+- **A10. Temporal test** (DL2-4): a pair is "new since 2021" if it is absent from the 2021 PSP file in all species. These pairs are reported with their in-vivo share, which is 40% against 23% for older pairs.
+
+**Features**
+- **A11. Forbidden sources** (DL2-1, DL2-8):
+  - the iKiP-DB combined-with-PSP GMT, the iKiP activity and C-score tables;
+  - COMPARTMENTS integrated;
+  - the Hein literature tables;
+  - HPA reliability as a feature;
+  - Buljan publication counts.
+
+  F8 = Sugiyama 2019 Table S2 only. Any feature source overlapping PSP KS pairs at more than 3× chance fails `tests/test_feature_overlap.py`.
+- **A12. Label-source study circularity** (DL2-6): build the compendium-study ↔ PSP-label list before G2 and run the "F6-clean" sensitivity analysis (studies cited by PSP removed) at G2.
+
+**Models**
+- **A13. R3 integration** (r2 PI-3, DL2-5): nested stacking is replaced by **late fusion**. The R3 out-of-fold score is blended with R2 at score level, with the weight chosen on CV. Six trainings in total (5 CV folds + final), not 36.
+- **A14. Cuts** (r2 PI-3): KolossuS (B6) is cut unless time allows, and so is the L2_noauto variant. The regime search is staged: tree size, then α, then the negative mix, then λ.
+- **A15. Negative grid** (STAT2-2): where the hard-negative pool is smaller than requested, all available hard negatives are taken and the rest are filled with E-all-type negatives.
+
+**Calibration and coverage**
+- **A16. Calibration** (STAT2-2): calibrate on **exhaustive OOF predictions** over U_ms (no sampling, so no single prior-correction offset is needed). The fallback tier uses a family-level slope plus a per-kinase intercept.
+- **A17. Coverage, redefined** (STAT2-1, critical).
+  - **Site-level assignment probability:** P(k | s is a substrate of a kinase in K), a softmax over calibrated kinase scores at site *s*, with the temperature fitted on labelled DEV sites by OOF log-likelihood.
+  - **Coverage@τ** = number of U_obs sites whose top kinase has assignment probability ≥ τ (τ ∈ {0.5, 0.8}).
+  - Its reliability is checked on labelled TEST sites, external and temporal sets.
+  - It is always reported next to a **random-score baseline** and a Cantley-only baseline.
+  - It is conditional on the site being a target of one of the modelled kinases, and is stated as such.
+
+**Endpoints and statistics**
+- **A18. M2 paralog filtering** (STAT2-5): for true kinase *k* at site *s*, the ranking excludes Par(k) members that are not labelled to *s*. Family-level Hit@5 stays as a secondary metric.
+- **A19. Superiority tests** (STAT2-4):
+  - Cantley's "best arm" is chosen on CV, not on TEST.
+  - The final superiority tests use B = 10,000 paired cluster-bootstrap resamples with Holm correction over the 9 tests.
+  - K_eval counts are as computed at G1; about 135 is expected.
+- **A20. Which score each endpoint uses** (r2 PI-6): M1, M3 and M4 use the per-kinase calibrated score. M2 uses the cross-kinase assignment probability (A17). Each component is selected on its own CV endpoint.
+- **A21. Downstream additions** (r2 PI-7): leave-drug-out and "ours minus PSP" library arms.
+- **A22. Phosformer** (AIFM2-8, r2 PI-8):
+  - TEST proteins and clusters are removed from the pretraining corpus;
+  - augmentations follow the paper;
+  - negatives come from the shared `ksp.labels` generator;
+  - if pretraining overruns, steps are reduced, with the change documented.

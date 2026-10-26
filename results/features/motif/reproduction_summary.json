@@ -1,0 +1,203 @@
+{
+ "kl_reference_scores_ser_thr": {
+  "n_sites": 82735,
+  "n_kinases": 311,
+  "n_values": 25730585,
+  "exact_match_3dp": 0.9799418474162169,
+  "within_0.001": 1.0,
+  "max_abs_diff": 0.0010000000000012221,
+  "max_abs_diff_unrounded": 0.000999706834809544,
+  "pearson": 0.9999999985724106,
+  "percentile_exact": 0.9829051302175991,
+  "percentile_max_abs_diff": 0.12999999999999545
+ },
+ "kl_reference_scores_tyrosine": {
+  "n_sites": 5431,
+  "n_kinases": 93,
+  "n_values": 505083,
+  "exact_match_3dp": 0.9782768376682645,
+  "within_0.001": 1.0,
+  "max_abs_diff": 0.0010000000000012221,
+  "max_abs_diff_unrounded": 0.0005000000000014992,
+  "pearson": 0.99999999662671,
+  "percentile_exact": 0.9832284990783693,
+  "percentile_max_abs_diff": 0.4399999999999977
+ },
+ "johnson2023_ST3": {
+  "n_sites": 89784,
+  "n_kinases_compared": 303,
+  "kinases_not_in_1.8.0": [],
+  "windows_with_lowercase_flanks": 0,
+  "n_values": 27204552,
+  "exact_match_2dp": 0.4353437615881342,
+  "within_0.1": 0.908722849029089,
+  "within_1.0": 0.9164313751610392,
+  "pearson_all": 0.9829089708389602,
+  "median_per_kinase_spearman": 0.9999999745632652,
+  "n_kinases_spearman_gt_0.999": 275,
+  "kinases_spearman_lt_0.999 (matrix revised after publication)": [
+   [
+    "CK1D",
+    0.4023
+   ],
+   [
+    "GRK7",
+    0.523
+   ],
+   [
+    "VRK2",
+    0.5294
+   ],
+   [
+    "IKKA",
+    0.5633
+   ],
+   [
+    "CLK3",
+    0.6446
+   ],
+   [
+    "PKN3",
+    0.6909
+   ],
+   [
+    "LATS1",
+    0.6985
+   ],
+   [
+    "GRK5",
+    0.7738
+   ],
+   [
+    "MST1",
+    0.7951
+   ],
+   [
+    "SKMLCK",
+    0.7986
+   ],
+   [
+    "SMG1",
+    0.8384
+   ],
+   [
+    "PASK",
+    0.8536
+   ],
+   [
+    "GRK1",
+    0.8566
+   ],
+   [
+    "MLK3",
+    0.8751
+   ],
+   [
+    "MEKK6",
+    0.8755
+   ],
+   [
+    "CAMKK2",
+    0.8815
+   ],
+   [
+    "WNK3",
+    0.8933
+   ],
+   [
+    "MNK2",
+    0.8964
+   ],
+   [
+    "PBK",
+    0.9178
+   ],
+   [
+    "GRK4",
+    0.9272
+   ],
+   [
+    "CHAK1",
+    0.9303
+   ],
+   [
+    "HUNK",
+    0.9338
+   ],
+   [
+    "CDK5",
+    0.9458
+   ],
+   [
+    "NIM1",
+    0.947
+   ],
+   [
+    "CDK3",
+    0.9487
+   ],
+   [
+    "ICK",
+    0.9501
+   ],
+   [
+    "SRPK2",
+    0.9528
+   ],
+   [
+    "CDK13",
+    0.9822
+   ]
+  ],
+  "exact_match_2dp_unrevised_kinases": 0.47960025272775875,
+  "within_0.1_unrevised_kinases": 0.9999900366941264
+ },
+ "yaronbarir2024_ST3": {
+  "n_sites": 7315,
+  "n_kinases_compared": 93,
+  "kinases_not_in_1.8.0": [],
+  "windows_with_lowercase_flanks": 0,
+  "n_values": 680295,
+  "exact_match_2dp": 0.6327593176489611,
+  "within_0.1": 0.9263113796220758,
+  "within_1.0": 0.9399510506471457,
+  "pearson_all": 0.981731956486033,
+  "median_per_kinase_spearman": 0.999999897710868,
+  "n_kinases_spearman_gt_0.999": 87,
+  "kinases_spearman_lt_0.999 (matrix revised after publication)": [
+   [
+    "BMPR2_TYR",
+    0.3969
+   ],
+   [
+    "PINK1_TYR",
+    0.5504
+   ],
+   [
+    "MKK7_TYR",
+    0.6055
+   ],
+   [
+    "PDHK1_TYR",
+    0.8673
+   ],
+   [
+    "LIMK2_TYR",
+    0.9126
+   ],
+   [
+    "PDHK4_TYR",
+    0.9757
+   ]
+  ],
+  "exact_match_2dp_unrevised_kinases": 0.6763114683259873,
+  "within_0.1_unrevised_kinases": 0.9895538218587222
+ },
+ "johnson2023_ST4_ATM": {
+  "n": 37,
+  "max_abs_diff": 0.012000000000000455,
+  "within_0.1": 1.0,
+  "note": "ST4 percentiles given to 3 dp; ours 2 dp"
+ },
+ "runtime_s": 25.1
+}

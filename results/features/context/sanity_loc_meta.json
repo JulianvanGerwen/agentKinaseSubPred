@@ -1,0 +1,63 @@
+{
+ "n_pos_pairs": 9793,
+ "n_kinases": 388,
+ "n_proteins": 3445,
+ "seeds": [
+  0,
+  1,
+  2,
+  3,
+  4
+ ],
+ "label_set": "L2 & ~autophos, protein-level, kinase in index, protein in index",
+ "site_lumenal_check": {
+  "all_U_obs_sites_frac_lumenal": 0.07354368269443512,
+  "L2_sites_all_kinases_frac_lumenal": 0.007898352108895779,
+  "top_kinases_by_frac_lumenal(min 10 sites)": [
+   {
+    "kinase": "FAM20C",
+    "mean": 0.9229999780654907,
+    "count": 13
+   },
+   {
+    "kinase": "PLK2",
+    "mean": 0.17599999904632568,
+    "count": 17
+   },
+   {
+    "kinase": "PLK3",
+    "mean": 0.15600000321865082,
+    "count": 32
+   },
+   {
+    "kinase": "SRPK2",
+    "mean": 0.10000000149011612,
+    "count": 10
+   },
+   {
+    "kinase": "PRKG2",
+    "mean": 0.09099999815225601,
+    "count": 22
+   },
+   {
+    "kinase": "MAP4K4",
+    "mean": 0.08299999684095383,
+    "count": 12
+   },
+   {
+    "kinase": "MAP3K7",
+    "mean": 0.06499999761581421,
+    "count": 46
+   },
+   {
+    "kinase": "NEK2",
+    "mean": 0.05299999937415123,
+    "count": 38
+   }
+  ],
+  "FAM20C": {
+   "mean": 0.9230769276618958,
+   "count": 13.0
+  }
+ }
+}

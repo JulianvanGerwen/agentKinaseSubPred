@@ -1,0 +1,13 @@
+{
+ "n_pos_pairs": 9793,
+ "n_kinases": 388,
+ "n_proteins": 3445,
+ "seeds": [
+  0,
+  1,
+  2,
+  3,
+  4
+ ],
+ "label_set": "L2 & ~autophos, protein-level, kinase in index, protein in index"
+}

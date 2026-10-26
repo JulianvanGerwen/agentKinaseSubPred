@@ -1,0 +1,107 @@
+{
+ "bioplex_293t:edges(rows)": {
+  "n_mapped": 116992,
+  "n_total": 118162,
+  "n_unmapped": 1170,
+  "note": "row mapped if both endpoints map to >=1 reviewed acc",
+  "rate": 0.9901
+ },
+ "bioplex_hct116:edges(rows)": {
+  "n_mapped": 70581,
+  "n_total": 70966,
+  "n_unmapped": 385,
+  "note": "row mapped if both endpoints map to >=1 reviewed acc",
+  "rate": 0.9946
+ },
+ "buljan:edges(rows)": {
+  "n_mapped": 7303,
+  "n_total": 7317,
+  "n_unmapped": 14,
+  "note": "row mapped if both endpoints map to >=1 reviewed acc",
+  "rate": 0.9981
+ },
+ "compartments_experiments:proteins": {
+  "n_mapped": 8051,
+  "n_total": 8055,
+  "n_unmapped": 4,
+  "note": "",
+  "rate": 0.9995
+ },
+ "compartments_knowledge:proteins": {
+  "n_mapped": 16793,
+  "n_total": 16954,
+  "n_unmapped": 161,
+  "note": "",
+  "rate": 0.9905
+ },
+ "hcm:baits": {
+  "n_mapped": 191,
+  "n_total": 192,
+  "n_unmapped": 1,
+  "note": "",
+  "rate": 0.9948
+ },
+ "hcm:edges(rows)": {
+  "n_mapped": 35612,
+  "n_total": 36038,
+  "n_unmapped": 426,
+  "note": "row mapped if both endpoints map to >=1 reviewed acc",
+  "rate": 0.9882
+ },
+ "hcm_loc:preys": {
+  "n_mapped": 4404,
+  "n_total": 4424,
+  "n_unmapped": 20,
+  "note": "",
+  "rate": 0.9955
+ },
+ "hein_loc:classified_protein_groups": {
+  "n_mapped": 7233,
+  "n_total": 7354,
+  "n_unmapped": 121,
+  "note": "",
+  "rate": 0.9835
+ },
+ "hein_profile:protein_groups": {
+  "n_mapped": 8391,
+  "n_total": 8541,
+  "n_unmapped": 150,
+  "note": "",
+  "rate": 0.9824
+ },
+ "hpa:genes": {
+  "n_mapped": 13442,
+  "n_total": 13603,
+  "n_unmapped": 161,
+  "note": "",
+  "rate": 0.9882
+ },
+ "huri:edges(rows)": {
+  "n_mapped": 51931,
+  "n_total": 52548,
+  "n_unmapped": 617,
+  "note": "row mapped if both endpoints map to >=1 reviewed acc",
+  "rate": 0.9883
+ },
+ "huri:ensg_nodes": {
+  "n_mapped": 8211,
+  "n_total": 8272,
+  "n_unmapped": 61,
+  "note": "",
+  "rate": 0.9926
+ },
+ "opencell:edges(rows)": {
+  "n_mapped": 29871,
+  "n_total": 29922,
+  "n_unmapped": 51,
+  "note": "row mapped if both endpoints map to >=1 reviewed acc",
+  "rate": 0.9983
+ },
+ "opencell_loc:targets": {
+  "n_mapped": 1310,
+  "n_total": 1310,
+  "n_unmapped": 0,
+  "note": "",
+  "rate": 1.0
+ }
+}

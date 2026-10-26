@@ -1,0 +1,44 @@
+{
+ "n_nodes": 16178,
+ "n_edges": 279677,
+ "edges_per_source": {
+  "bioplex_293t": 117240,
+  "bioplex_hct116": 70777,
+  "buljan": 7254,
+  "hcm": 34251,
+  "huri": 51286,
+  "opencell": 29231
+ },
+ "nodes_per_source": {
+  "bioplex_293t": 13845,
+  "bioplex_hct116": 10072,
+  "huri": 8143,
+  "opencell": 5217,
+  "buljan": 2376,
+  "hcm": 4439
+ },
+ "kinases_in_graph": 478,
+ "kinases_total": 503,
+ "kinases_in_source": {
+  "bioplex_293t": 428,
+  "bioplex_hct116": 325,
+  "huri": 182,
+  "opencell": 207,
+  "buljan": 351,
+  "hcm": 164
+ },
+ "proteins_in_graph": 15490,
+ "proteins_total": 18702,
+ "proteins_in_source": {
+  "bioplex_293t": 13377,
+  "bioplex_hct116": 9828,
+  "huri": 7705,
+  "opencell": 5175,
+  "buljan": 2364,
+  "hcm": 4422
+ },
+ "median_degree": 19.0,
+ "max_degree": 793.0,
+ "n_components": 5,
+ "runtime_s": 44
+}
