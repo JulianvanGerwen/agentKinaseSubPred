@@ -38,6 +38,8 @@ from ksp.baselines.phosformer.tokens import AA20_IDS, BOS, EOS, MASK, PAD
 
 p = argparse.ArgumentParser()
 p.add_argument("--run-dir", default=str(ROOT / "cache/phosformer/pretrain"))
+p.add_argument("--corpus-dir", default=str(ROOT / "cache/phosformer/corpus_filtered"),
+               help="tokenised corpus dir (must exist; built by phosformer_corpus_filter.py)")
 p.add_argument("--epochs", type=float, default=50.0)
 p.add_argument("--batch-seqs", type=int, default=384)
 p.add_argument("--token-budget", type=int, default=49152, help="max padded tokens per micro-batch")
@@ -71,7 +73,10 @@ def log(msg):
 
 
 # ---------------- data ---------------------------------------------------------------------------------------
-tokens, offsets, source = load_corpus()
+if not (Path(args.corpus_dir) / "offsets.npy").exists():
+    raise SystemExit(f"corpus {args.corpus_dir} not built (run phosformer_corpus_filter.py after splits exist)")
+tokens, offsets, source = load_corpus(Path(args.corpus_dir))
+corpus_meta = json.loads((Path(args.corpus_dir) / "meta.json").read_text())
 n_all = len(offsets) - 1
 lens_all = np.diff(offsets)
 rng0 = np.random.default_rng(args.seed)
@@ -175,7 +180,7 @@ if ckpt_last.exists() and not args.pilot_steps:
 def save(path: Path, extra=None):
     tmp = path.with_suffix(".tmp")
     d = {"model": model.state_dict(), "opt": opt.state_dict(), "sched": sched.state_dict(), "step": step,
-         "total_steps": total_steps, "args": vars(args), "config": cfg.to_dict()}
+         "total_steps": total_steps, "corpus_meta": corpus_meta, "args": vars(args), "config": cfg.to_dict()}
     if extra:
         d.update(extra)
     torch.save(d, tmp)
@@ -265,7 +270,7 @@ if args.pilot_steps:
     (run_dir / "pilot.json").write_text(json.dumps(res, indent=1))
 else:
     vl, va = validate()
-    final = {"step": step, "total_steps": total_steps, "epochs": args.epochs, "val_mlm_loss": vl, "val_mlm_acc": va}
+    final = {"corpus_dir": args.corpus_dir, "corpus_meta": corpus_meta, "step": step, "total_steps": total_steps, "epochs": args.epochs, "val_mlm_loss": vl, "val_mlm_acc": va}
     (run_dir / "final.json").write_text(json.dumps(final, indent=1))
     torch.save({"model": model.state_dict(), "config": cfg.to_dict(), "step": step}, run_dir / "mlm_final.pt")
     log("DONE " + json.dumps(final))

@@ -367,14 +367,20 @@ def build_inhibition_matrix(resolver, kin: pd.DataFrame, max_minutes: float = 12
                     o = occupancy(did, dose, aff_by_drug, aliases, kpos, resolver, n_k)
                     occ_not *= 1 - o
                     parts.append(f"{side}:{tok}@{dose:g}nM[{how}]")
+                    if how != "default_1uM":
+                        rec["dose_parsed"] = True
                 vec += sign * (1 - occ_not)
             rec.update(source="affinity" if parts else "", drugs=" | ".join(parts))
         vec[np.abs(vec) < min_occ] = 0
         rec["n_kinases_occ50"] = int((np.abs(vec) >= 0.5).sum())
         rec["max_occ"] = float(np.abs(vec).max())
         if "dropped" not in rec:
-            if rec["max_occ"] < 0.5:
-                rec["dropped"] = "no_kinase_target_occ50" if rec.get("drugs") else "no_drug"
+            # dose-series members below 50 % occupancy are kept as low-inhibition anchors (A row may be ~0);
+            # conditions without a parsed dose need >= 50 % occupancy of some kinase
+            if not rec.get("drugs"):
+                rec["dropped"] = "no_drug"
+            elif rec["max_occ"] < 0.5 and not rec.get("dose_parsed", False):
+                rec["dropped"] = "no_kinase_target_occ50"
             elif not (np.isnan(r.minutes) or r.minutes <= max_minutes):
                 rec["dropped"] = f"time>{max_minutes:g}min"
             elif int(r.PMID) in {int(p) for p in exclude_pmids}:

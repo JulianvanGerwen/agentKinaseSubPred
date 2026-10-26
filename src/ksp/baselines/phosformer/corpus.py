@@ -4,6 +4,9 @@ The authors released exactly this corpus (external/phosformer/hf_dataset_curated
 counts verified: 295,320 / 5,338 sequences; 86,944,788 / 3,845,761 residues — identical to the paper), so we use it
 unchanged rather than reconstructing it from UniProt/Pfam.
 
+FILTERED corpus (used for B3a; PI AIFM2-8): cache/phosformer/corpus_filtered/ built by
+scripts/baselines/phosformer_corpus_filter.py (TEST proteins + homologs removed).
+
 Cached form: cache/phosformer/corpus/{tokens.npy (uint8 ids), offsets.npy (int64, n+1), source.npy (0=kinase,
 1=substrate)} + meta.json with input SHA-256s.
 """
@@ -22,19 +25,24 @@ CORPUS_SRC = ROOT / "external" / "phosformer" / "hf_dataset_curated" / "corpus"
 CORPUS_DIR = ROOT / "cache" / "phosformer" / "corpus"
 
 
-def read_fasta_seqs(path: Path) -> list[str]:
-    out, cur = [], []
+def read_fasta(path: Path) -> list[tuple[str, str]]:
+    """[(header without '>', sequence)]"""
+    out, hdr, cur = [], None, []
     with open(path) as f:
         for line in f:
             if line.startswith(">"):
-                if cur:
-                    out.append("".join(cur))
-                cur = []
+                if hdr is not None:
+                    out.append((hdr, "".join(cur)))
+                hdr, cur = line[1:].rstrip("\n"), []
             else:
                 cur.append(line.strip())
-    if cur:
-        out.append("".join(cur))
+    if hdr is not None:
+        out.append((hdr, "".join(cur)))
     return out
+
+
+def read_fasta_seqs(path: Path) -> list[str]:
+    return [s for _, s in read_fasta(path)]
 
 
 def _sha(p: Path) -> str:
@@ -45,9 +53,9 @@ def _sha(p: Path) -> str:
     return h.hexdigest()
 
 
-def build_corpus(out_dir: Path = CORPUS_DIR) -> dict:
+def build_corpus(out_dir: Path = CORPUS_DIR, src_dir: Path = CORPUS_SRC) -> dict:
     out_dir.mkdir(parents=True, exist_ok=True)
-    files = [CORPUS_SRC / "kinases.fa", CORPUS_SRC / "substrates.fa"]
+    files = [src_dir / "kinases.fa", src_dir / "substrates.fa"]
     toks, offs, src = [], [0], []
     meta = {"inputs": {}, "counts": {}}
     for si, p in enumerate(files):
@@ -66,8 +74,8 @@ def build_corpus(out_dir: Path = CORPUS_DIR) -> dict:
     return meta
 
 
-def load_corpus(out_dir: Path = CORPUS_DIR):
+def load_corpus(out_dir: Path = CORPUS_DIR, src_dir: Path = CORPUS_SRC):
     if not (out_dir / "offsets.npy").exists():
-        build_corpus(out_dir)
+        build_corpus(out_dir, src_dir)
     return (np.load(out_dir / "tokens.npy", mmap_mode="r"), np.load(out_dir / "offsets.npy"),
             np.load(out_dir / "source.npy"))

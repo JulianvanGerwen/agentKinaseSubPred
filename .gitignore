@@ -13,3 +13,4 @@ env/
 __pycache__/
 *.log
 !results/**/*.log.txt
+sealed/

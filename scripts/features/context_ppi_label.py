@@ -2,8 +2,8 @@
 
 1. Unit tests on toy inputs (self / same-cluster / autophos exclusion; pair vs dense mode agree).
 2. Timing: dense mode, all 503 kinases x 18,702 proteins, training = all L2 pairs.
-3. Cross-fitted sanity (NOT an official metric): proteins split into 5 random folds (seed 0); feature for proteins in
-   fold f uses training pairs whose substrate is outside f. Cluster maps: (a) none (self only), (b) dummy
+3. Cross-fitted sanity (NOT an official metric): DEV proteins in the official 5 CV folds (results/splits/cv_folds.tsv);
+   feature for proteins in fold f uses training pairs (load_dev L2) whose substrate is outside f. Cluster maps: (a) none (self only), (b) dummy
    gene-family map (HGNC symbol with trailing digits/letters stripped, e.g. CDK1/CDK2 -> CDK) as a stand-in for
    results/splits/substrate_clusters.tsv, (c) the real cluster map if that file exists (columns acc, cluster).
    Enrichment vs RAND/SHUF backgrounds as in context_sanity.py.
@@ -73,7 +73,7 @@ def main():
     report = {"graph_load_s": round(t_load, 1), "unit_tests": unit_tests(g)}
     kin = load_kinases().uniprot_acc.tolist()
     prot = load_proteins().acc.tolist()
-    pi, pj, known, K, P = positives()
+    pi, pj, known, K, P, dev = positives()
     train_all = pd.DataFrame({"kinase_acc": np.array(kin)[pi], "acc": np.array(prot)[pj]})
     t1 = time.time()
     dense = substrate_neighbourhood(train_all, None, graph=g)
@@ -81,15 +81,15 @@ def main():
     print(report, flush=True)
 
     # cross-fitted sanity
-    rng = np.random.default_rng(0)
-    fold = rng.integers(0, 5, size=P)
+    from ksp import splits
+    cvf = splits.load_cv_folds()
+    fold = np.array([cvf.get(a, -1) for a in prot])  # -1 = TEST protein (never queried, never trained on)
     sites = pd.read_parquet(ROOT / "cache" / "index" / "sites.parquet", columns=["acc", "gene"]).drop_duplicates("acc")
     gene = dict(zip(sites.acc, sites.gene.fillna("")))
     cmaps = {"self_only": None, "dummy_gene_family": {a: family(str(gene.get(a, a))) for a in prot}}
     if CL_FILE.exists():
-        c = pd.read_csv(CL_FILE, sep="\t")
-        cmaps["substrate_clusters"] = dict(zip(c.iloc[:, 0].astype(str), c.iloc[:, 1].astype(str)))
-    bgs = [backgrounds(pi, pj, known, P, s) for s in SEEDS]
+        cmaps["substrate_clusters"] = splits.load_clusters().to_dict()
+    bgs = [backgrounds(pi, pj, known, dev, s) for s in SEEDS]
     rows = []
     for cname, cmap in cmaps.items():
         cf = {n: np.full((K, P), np.nan, np.float32) for n in OUT_NAMES}

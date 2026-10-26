@@ -1,10 +1,10 @@
 """Sanity check of context features: enrichment of PSP/HMR KS protein pairs vs random pairs (NOT an official metric).
 
-Positives: cache/labels/ks_pairs.parquet rows with L2 & ~autophos, kinase in the 503-kinase index, substrate in the
+Positives: ksp.labels.load_dev('L2') (DEV proteins only) minus autophos, kinase in the 503-kinase index, substrate in the
 protein index; collapsed to unique (kinase, protein) pairs.
 Backgrounds (same kinase multiset as positives, seeds 0-4):
-  RAND: kinase x uniformly random index protein, excluding any protein that is a known substrate (any row in
-        ks_pairs, any evidence level) of that kinase.
+  RAND: kinase x uniformly random DEV protein, excluding any protein that is a known substrate (any row of
+        load_dev('all'), any evidence level) of that kinase.
   SHUF: kinase x random L2 substrate protein of ANOTHER kinase (controls substrate study bias / degree).
 For each kinase x protein feature in the descriptors (cache/features/context/*/descriptor.json):
   coverage = fraction of positives with a non-missing value; frac_pos>0 / frac_bg>0 (for count/flag features);
@@ -33,21 +33,26 @@ SEEDS = [0, 1, 2, 3, 4]
 
 
 def positives():
+    """Non-official sanity labels: ksp.labels.load_dev('L2') minus autophos (DEV proteins only; TEST is sealed).
+    Returns (kinase idx, protein idx, known-pair set from load_dev('all'), K, P, DEV protein indices)."""
+    from ksp import labels, splits
     kin = load_kinases().uniprot_acc.tolist()
     prot = load_proteins().acc.tolist()
     kpos = {a: i for i, a in enumerate(kin)}
     ppos = {a: i for i, a in enumerate(prot)}
-    ks = pd.read_parquet(ROOT / "cache" / "labels" / "ks_pairs.parquet")
-    known = ks[["kinase_acc", "acc"]].drop_duplicates()
-    known = set(zip(known.kinase_acc.map(kpos), known.acc.map(ppos)))
-    pos = ks[ks.L2 & ~ks.autophos][["kinase_acc", "acc"]].drop_duplicates()
+    allp = labels.load_dev("all")[["kinase_acc", "acc"]].drop_duplicates()
+    allp = allp[allp.kinase_acc.isin(kpos) & allp.acc.isin(ppos)]
+    known = set(zip(allp.kinase_acc.map(kpos), allp.acc.map(ppos)))
+    ks = labels.load_dev("L2")
+    pos = ks[~ks.autophos.astype(bool)][["kinase_acc", "acc"]].drop_duplicates()
     pos = pos[pos.kinase_acc.isin(kpos) & pos.acc.isin(ppos)]
     pi = pos.kinase_acc.map(kpos).to_numpy()
     pj = pos.acc.map(ppos).to_numpy()
-    return pi, pj, known, len(kin), len(prot)
+    dev = np.array(sorted(ppos[a] for a in splits.load_cv_folds().index if a in ppos))
+    return pi, pj, known, len(kin), len(prot), dev
 
 
-def backgrounds(pi, pj, known, P, seed):
+def backgrounds(pi, pj, known, dev, seed):
     rng = np.random.default_rng(seed)
     rand = np.empty_like(pj)
     shuf = np.empty_like(pj)
@@ -57,7 +62,7 @@ def backgrounds(pi, pj, known, P, seed):
         by_k.setdefault(k, set()).add(j)
     for n, k in enumerate(pi):
         while True:
-            j = rng.integers(P)
+            j = dev[rng.integers(len(dev))]
             if (k, j) not in known:
                 rand[n] = j
                 break
@@ -117,8 +122,9 @@ def site_checks():
         return None
     from ksp.index import site_pos
     sp_ = site_pos()
-    ks = pd.read_parquet(ROOT / "cache" / "labels" / "ks_pairs.parquet")
-    ks = ks[ks.L2 & ks.site_id.isin(sp_)][["kinase", "site_id"]].drop_duplicates()
+    from ksp import labels
+    ks = labels.load_dev("L2")
+    ks = ks[ks & ks.site_id.isin(sp_)][["kinase", "site_id"]].drop_duplicates()
     ks["lum"] = lum[ks.site_id.map(sp_).to_numpy()]
     g = ks.groupby("kinase").lum.agg(["mean", "count"])
     out = {"all_U_obs_sites_frac_lumenal": float(np.nanmean(lum)),
@@ -134,8 +140,8 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--only", default="")
     args = ap.parse_args()
-    pi, pj, known, K, P = positives()
-    bgs = [backgrounds(pi, pj, known, P, s) for s in SEEDS]
+    pi, pj, known, K, P, dev = positives()
+    bgs = [backgrounds(pi, pj, known, dev, s) for s in SEEDS]
     print(f"positives: {len(pi)} pairs, {len(np.unique(pi))} kinases, {len(np.unique(pj))} proteins", flush=True)
     mods = [d for d in sorted(CTX.glob("*/descriptor.json"))]
     if args.only:
@@ -162,7 +168,7 @@ def main():
     tag = args.only.replace(",", "_") if args.only else "all"
     df.to_csv(RES / f"sanity_{tag}.tsv", sep="\t", index=False, float_format="%.4f")
     meta = {"n_pos_pairs": int(len(pi)), "n_kinases": int(len(np.unique(pi))), "n_proteins": int(len(np.unique(pj))),
-            "seeds": SEEDS, "label_set": "L2 & ~autophos, protein-level, kinase in index, protein in index"}
+            "seeds": SEEDS, "label_set": "load_dev(L2) & ~autophos (DEV only), protein-level, kinase in index, protein in index"}
     if not args.only or "loc" in args.only:
         meta["site_lumenal_check"] = site_checks()
         print(json.dumps(meta["site_lumenal_check"], indent=1))

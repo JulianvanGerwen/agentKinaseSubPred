@@ -309,17 +309,24 @@ def select_variant(df: pd.DataFrame, variant: str) -> pd.DataFrame:
         .reset_index(drop=True)
 
 
-def load_dev(variant: str = "L2", with_canaries: bool = False, path: Path | None = None) -> pd.DataFrame:
+def load_dev(variant: str = "L2", with_canaries: bool = False, path: Path | None = None,
+             ums_only: bool | None = None) -> pd.DataFrame:
     """THE canonical DEV label loader (DESIGN §4.3). Returns DEV-protein labels only (TEST proteins are absent from the
     file). variant: L1/L2/L3/L2_vitro/L2_noauto/EXT/EXT_not_in_psp (one row per pair), 'eval' (evaluation positives),
     or 'all' (every provenance row; use for KP/negative masks). with_canaries=True appends the canary pseudo-kinase
-    labels (ksp.canary; kinase_acc 'CANARY_*'; flag column is_canary) - they must never enter reported metrics."""
+    labels (ksp.canary; kinase_acc 'CANARY_*'; flag column is_canary) - they must never enter reported metrics.
+    ums_only (default: True for every variant except 'all'): keep only sites in U_ms (A6). Use variant='all' (all
+    sites, all rows) for KP / negative masks."""
     p = Path(path) if path else DEV_PAIRS
     if not p.exists():
         raise FileNotFoundError(f"{p} missing: run scripts/build_splits.py (splits are frozen at G1)")
     d = pd.read_parquet(p)
     d["is_canary"] = False
     d = select_variant(d, variant)
+    if ums_only is None:
+        ums_only = variant != "all"
+    if ums_only:   # A6 (DESIGN §16): training/eval positives restricted to U_ms (flag written at split freeze)
+        d = d[d.in_U_ms.astype(bool)].reset_index(drop=True)
     if with_canaries:
         from . import canary
         c = canary.canary_labels()
@@ -470,10 +477,49 @@ def kinase_domain_identity(cache: Path | None = ROOT / "cache" / "splits" / "kin
     long.loc[sw, ["acc_a", "acc_b"]] = long.loc[sw, ["acc_b", "acc_a"]].values
     long = long[long.acc_a < long.acc_b].groupby(["acc_a", "acc_b"], as_index=False).identity.max()
     long = long[long.identity > 0.3].reset_index(drop=True)
+    long["method"] = "kincore_msa"
+    extra = _atypical_identity(index.load_kinases(), set(m.acc))
+    long = pd.concat([long, extra], ignore_index=True)
     if cache is not None:
         Path(cache).parent.mkdir(parents=True, exist_ok=True)
         long.to_parquet(cache, index=False)
     return long
+
+
+def _atypical_identity(k: pd.DataFrame, in_kincore: set) -> pd.DataFrame:
+    """Kinases absent from KinCore: pairwise global alignment (Biopython PairwiseAligner, BLOSUM62, open -10,
+    extend -0.5) of UniProt kinase domains (full sequence when no domain feature) against every kinase of the same
+    Manning family. identity = identical / aligned (both non-gap) columns, 0 if those cover < 50% of the shorter."""
+    from Bio import Align
+    from Bio.Align import substitution_matrices
+    al = Align.PairwiseAligner()
+    al.substitution_matrix = substitution_matrices.load("BLOSUM62")
+    al.open_gap_score, al.extend_gap_score = -10, -0.5
+    al.mode = "global"
+    seqs = _canonical_seqs()
+
+    def dom(r):
+        sq = seqs[r.uniprot_acc]
+        if pd.notna(r.kinase_domain_start) and pd.notna(r.kinase_domain_end):
+            return sq[int(r.kinase_domain_start) - 1:int(r.kinase_domain_end)]
+        return sq
+    rows = []
+    fam = k.manning_family.map(_real_family)
+    for f, sub in k.assign(f=fam).dropna(subset=["f"]).groupby("f"):
+        recs = list(sub.itertuples(index=False))
+        for i in range(len(recs)):
+            for j in range(i + 1, len(recs)):
+                a, b = recs[i], recs[j]
+                if a.uniprot_acc in in_kincore and b.uniprot_acc in in_kincore:
+                    continue
+                sa, sb = dom(a), dom(b)
+                aln = al.align(sa, sb)[0]
+                ca = aln.counts()
+                both = ca.identities + ca.mismatches
+                ident = ca.identities / both if both >= 0.5 * min(len(sa), len(sb)) else 0.0
+                x, y = sorted([a.uniprot_acc, b.uniprot_acc])
+                rows.append((x, y, float(ident), "pairwise_uniprot_domain"))
+    return pd.DataFrame(rows, columns=["acc_a", "acc_b", "identity", "method"])
 
 
 def _real_family(f) -> str | None:
@@ -482,14 +528,18 @@ def _real_family(f) -> str | None:
     return f
 
 
-def paralog_sets(identity: float = PAR_IDENTITY, kinases: pd.DataFrame | None = None) -> dict:
+def paralog_sets(identity: float = PAR_IDENTITY, kinases: pd.DataFrame | None = None,
+                 fam_min_identity: float | None = 0.50) -> dict:
     """Par(k) (DESIGN §5): kinase_acc -> set of OTHER kinase accessions with kinase-domain identity >= `identity`
     (KinCore MSA) OR the same Manning subfamily; for kinases without a subfamily, the same Manning family
-    ('*-Unique' pseudo-families never group). Symmetrised (j in Par(k) <=> k in Par(j)), so conservative."""
+    ('*-Unique' pseudo-families never group) AND (A8, DESIGN §16) >= fam_min_identity (50%) KinCore domain identity
+    (kinases absent from KinCore - atypicals - therefore get no family-fallback paralogs unless fam_min_identity=None).
+    Symmetrised (j in Par(k) <=> k in Par(j))."""
     from . import index
     k = kinases if kinases is not None else index.load_kinases()
     par = {a: set() for a in k.uniprot_acc}
     ide = kinase_domain_identity()
+    ide_d = dict(zip(zip(ide.acc_a, ide.acc_b), ide.identity))
     for a, b in zip(*[ide[ide.identity >= identity][c] for c in ("acc_a", "acc_b")]):
         if a in par and b in par:
             par[a].add(b), par[b].add(a)
@@ -506,8 +556,13 @@ def paralog_sets(identity: float = PAR_IDENTITY, kinases: pd.DataFrame | None = 
         else:
             mem = []
         for b in mem:
-            if b != a:
-                par[a].add(b), par[b].add(a)
+            if b == a:
+                continue
+            if s is None and f is not None and fam_min_identity is not None:
+                # A8 (DESIGN §16): the family fallback requires >= fam_min_identity domain identity
+                if ide_d.get((min(a, b), max(a, b)), 0.0) < fam_min_identity:
+                    continue
+            par[a].add(b), par[b].add(a)
     return par
 
 

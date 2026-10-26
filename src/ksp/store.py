@@ -31,8 +31,9 @@ def _index_ids(axis: str) -> np.ndarray:
 
 
 def _index_hash(axis: str) -> str:
-    fname, _ = _AXIS_FILE[axis]
-    return hashlib.sha256((INDEX_DIR / fname).read_bytes()).hexdigest()
+    """Hash of the ordered ID column only, so annotation-column edits don't invalidate stores."""
+    ids = _index_ids(axis)
+    return hashlib.sha256("\n".join(map(str, ids)).encode()).hexdigest()
 
 
 def reorder_to_index(arr: np.ndarray, ids, axis: str, dim: int, fill=np.nan) -> np.ndarray:
