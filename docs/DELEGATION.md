@@ -14,11 +14,11 @@ Agents write only in their assigned paths; shared modules are changed only by th
 | B4-selphi2 | src/ksp/baselines/selphi2/, cache/selphi2, results/baselines/selphi2, scripts/baselines/selphi2_*.py | 0 / 12 | done |
 | B3-phosformer | src/ksp/baselines/phosformer/, cache/phosformer, results/baselines/phosformer | GPU 0–3 / 6 | done 23:30 |
 | simple-baselines | src/ksp/baselines/simple.py, results/baselines/simple | 0/8 | done 17:00 |
-| R2-main | src/ksp/models/r2/, cache/r2, results/models/r2 | 0/24 | running (seeds, fusion, calibration) |
+| R2-main | src/ksp/models/r2/, cache/r2, results/models/r2 | 0/24 | done 23:03 (TEST/T3 delivered) |
 | auditor-1 | docs/audit/ | 0/8 | done 18:10 |
 | feat-knn | src/ksp/features/knn*.py, cache/features/knn | GPU 2 / 6 | done |
 | feat-tyr | src/ksp/features/tyr*.py, cache/features/tyr | 0/6 | done |
 | R5-crossenc | src/ksp/models/r5/, scripts/models/r5_*.py, results/models/r5 | GPU 1–3 | done 19:53 (negative) |
-| core-infra (G4) | src/ksp/eval_test.py, tests/, docs/G4_RUNBOOK.md | 0/8 | running (19:58) |
-| strata | src/ksp/strata.py, tests/test_strata.py, results/strata, docs/strata_cv.md | 0/8 | running (19:59) |
-| regimes | scripts/models/regime_*.py, src/ksp/models/regime/, results/models/regime, docs/regimes_labels.md | 0/24 | running (20:00) |
+| core-infra (G4) | src/ksp/eval_test.py, tests/, docs/G4_RUNBOOK.md | 0/8 | done 22:00; deploy loader running (00:12) |
+| strata | src/ksp/strata.py, tests/test_strata.py, results/strata, docs/strata_cv.md | 0/8 | done 23:05 |
+| regimes | scripts/models/regime_*.py, src/ksp/models/regime/, results/models/regime, docs/regimes_labels.md | 0/24 | done 00:03 |

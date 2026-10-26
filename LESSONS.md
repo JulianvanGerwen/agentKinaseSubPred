@@ -1,20 +1,17 @@
 # LESSONS — process rules for running this project efficiently
-(One-line rule + evidence. Pruned at each milestone; last prune M2 2026-10-26 17:35 — see docs/retro/M1_retro.md, M2_retro.md.)
+(One-line rule + evidence. Pruned at each milestone; last prune M3 2026-10-27 00:20 — see docs/retro/M1_retro.md, M2_retro.md, M3_retro.md.)
 
-1. Give reviewers read-only data access and require a measured number per change — r1: 6/7 found quantified leaks (68% same-protein co-labelled pairs; >50% paralog-contaminated SRC hard negatives).
-2. Key by UniProt accession, never symbol — 174/404 Cantley names ≠ gene symbols; "PDK1" = PDPK1 vs PDHK1.
-3. Benchmark compute before planning — co-regulation 3.6 s on GPU vs the guessed bottleneck; LightGBM 400k×160 took 15 min.
-4. Label-derived features are leaky until cross-fitted by substrate cluster — 68% co-labelled same-protein sites.
-5. Audit "unbiased" resources for KS-label leakage — STRING experiments 34% vs 4% controls; iKiP "combined" GMT contains 61% of PSP.
-6. Fan out implementers only against frozen interfaces, and get a measured baseline before more review — r2 interface changes (crossfit, store) had to be broadcast to 6 running agents.
-7. An auditor (or PI) recomputes headline numbers from saved predictions — audit r1 reproduced everything and caught 4 major issues.
-8. Freeze the eval harness and stamp every number with its harness version — A24 landed mid-audit and made all docs stale (eval frozen at commit after A24, 17:35).
-9. Pooled-OOF metrics need fold-invariant scores; always report per-fold values — B0-prior pooled M1 0.40 instead of 0.5.
-10. Log every config tried and the selection rule before looking; report DEV optimism — ~20 fold-0 configs for R2, 0.0017 picks for R3.
-11. Verify artefacts by mtime/hash before claiming they were rebuilt — R2 folds 0/3 canary stores were stale despite the doc saying otherwise.
-12. One owner per path, PI-only git, status updated per event, timestamps from `date` — PI notes drifted ~40 min twice.
-13. Null controls must match the positives' distribution on every label-free axis — canary v1 (uniform proteins) was separable by protein site density alone (AUROC 0.76).
-14. Verify file identities before recording them — paper1/paper2 were swapped in LITERATURE.md until an agent read the PDFs.
-15. The node is shared with other users' jobs — budget memory per agent (≤60 GB) and check `free -g` before parallel launches — a re-eval worker was OOM-killed at ~100 GB total (17:50).
-16. Audit PROMPT.md's explicit asks against the leaderboard at every milestone: at 20:00 the label-variant (in vivo/in vitro, species) and per-kinase-vs-global comparisons were still unrun with 5 h of CV time left. (2026-10-26 20:00)
-17. Our job cgroup caps memory at 128 GiB, not the node's 375 GB — budget against the cgroup; the regimes agent at ~60–67 GB triggered 3 OOM kills of co-running jobs (2026-10-26 ~23:00).
+1. Reviewers get read-only data access and must give a measured number per change (r1: 6/7 found quantified leaks).
+2. Key by UniProt accession, never symbol (174/404 Cantley names differ).
+3. Treat label-derived features and "unbiased" resources as leaky until cross-fitted by substrate cluster or audited (68% co-labelled; STRING 34% vs 4%; iKiP 61% of PSP).
+4. Null controls must match positives on every label-free axis (canary v1 AUROC 0.76 by site density alone).
+5. Freeze the eval harness; version every number; log each post-freeze amendment and its reason (A24 made all docs stale).
+6. Pooled-OOF metrics need fold-invariant scores; report per-fold (B0-prior 0.40 vs 0.5; M4 0.821 vs 0.764).
+7. Write the config log, selection rule and adoption threshold before running (A32 8107905, R5 gate); count configs, not rows.
+8. Compare against the strongest comparator with paired CIs, and label contaminated references "reference only" (Phosformer 0.796).
+9. An auditor or the PI recomputes headline numbers from saved predictions; agent claims are untrusted (audit r1 caught 4 majors).
+10. Verify artefacts by mtime/hash before claiming "rebuilt" (R2 folds 0/3 stale).
+11. Fan out implementers only against frozen interfaces; a measured baseline comes before more review (M1: 84 changes, no baseline at T+1.5h).
+12. One owner per path, PI-only git, status per event, timestamps from `date`; delete status columns that aren't maintained (drifted at M1, M2, M3).
+13. Audit PROMPT.md asks against the leaderboard at every milestone (regimes unrun at 20:00), and budget memory against the job cgroup (128 GiB, not the node's 375 GB): ≤60 GB per agent (OOM kills at 17:50 and ~23:00).
+14. After FREEZE, no protocol amendments and no reselection after seeing TEST; deploy only frozen configs (M3 retro: A23–A33 landed ~1/h before the freeze).
