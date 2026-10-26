@@ -481,3 +481,6 @@ GPU allocation:
   - A24 is confirmed by the PI as a correctness fix applied to all methods equally. Documents show pre-A24 and A24 values where both exist. TEST is unaffected.
   - **Matched-kinase M2:** for head-to-head M2 comparisons (e.g. vs Cantley), the competitor kinase set is restricted to kinases scored by *both* methods. Unscored kinases are otherwise "worst", which inflates the M2 of low-coverage methods by about 0.02.
   - The canary gate remains on pooled CV; per-fold values are reported.
+- **A28. Harness freeze** (2026-10-26 17:35). `src/ksp/eval.py`, `labels.py`, `splits.py`, `crossfit.py` and `canary.py` are frozen at the current commit; the harness version is that commit's hash.
+  - Any further change needs a PI decision logged here, and must be applied to all methods.
+  - Exploration on CV closes at **01:00**. After that, only the pre-declared final selection rule (§8.6: best M1-CV; ties → M2-CV) and the seed runs happen before FREEZE.json (G4).
