@@ -53,16 +53,26 @@ Status: literature (4 reviews), data profiling, two acquisition waves (~12.6 GB)
     - [!] 18% of human-native positives lack MS evidence vs 0.4% of unlabelled → U_ms-only candidates (A6).
     - [!] Cache row order ≠ index order for 94% of sites → ksp.store with index-hash checks (A2).
 - [x] 3.3 Klaeger 2017 Kinobeads tables provided by user (data/Klaeger) → F6b primary drug→target source
-- [~] 4. Foundations (design-independent, parallel with review)
+- [x] 4. Foundations (design-independent, parallel with review)
   - [x] 4.1 ids.py, kinase list (503 incl.), site universe (350,736), labels (L2 18,638 pairs/401 kinases), external curated (3,788 non-PSP pairs) → docs/labels_universe.md
   - [x] 4.1b canonical feature index cache/index (src/ksp/index.py)
   - [~] 4.4 core infra: splits, seal, eval harness, canaries, manifests, tests
-  - [~] 4.5 F1/F2a motif features (Cantley reproduction, priming-aware, learned PSSM)
+  - [x] 4.5 F1/F2a motif features → docs/features_motif.md
+    - [!] Cantley engine reproduces kinase-library 1.8.0 (100% within 1e-3); 396/503 kinases have own matrix. Sanity (fold 0, random negs, 94 kinases): Cantley 0.785, learned PSSM 0.766 (+phospho channel 0.782) — complementary.
+    - [!] Priming-aware scoring helps GSK3B 0.67→0.79, GSK3A 0.77→0.87, CK1 family; hurts AKT1/PKC/CHEK1 slightly → keep as separate feature.
   - [x] 4.6 F3/F4/F5 context features → docs/features_context.md (43 matrices)
     - PPI screens graph 16,178 proteins/279,677 edges; 3.6% of KS pairs have a direct edge (4.5× vs shuffled). RWR AUROC 0.67 vs random but 0.54 vs shuffled → mostly 'studied-ness'.
     - COMPARTMENTS knowledge strongest (0.74) but imports GO/UniProt curation → ablation only. FAM20C sites 87.5% lumenal.
-  - [~] 4.7 F6 phospho features (inhibitor deconvolution, CPTAC kinase-state, co-regulation fn)
+  - [x] 4.7 F6 phospho features → docs/features_phospho.md
+    - Sanity macro AUROC: F6a coreg compendium 0.63, CPTAC 0.61; F6b inhibitor 0.61 (384 kinases); F6c 0.53–0.56. Labelled sites 2–2.5× more often covered → B0-miss floor mandatory.
+    - Note: ridge strength picked on DEV sanity AUROC (5 values) — mild DEV optimism, logged. Some drug potencies hand-curated (documented in results/features/phospho).
   - [~] 4.8 B3 Phosformer reimplementation + MLM pretraining (GPU 0)
   - [x] 4.2 Structure (AFDB v6, 99.45% S/T/Y) + ESM-2 650M & 3B embeddings (2.8 / 7.9 GPU-min) → docs/features_structure_esm.md
   - [x] 4.4a G1 split freeze (11,609 clusters; TEST 20.0%; K_eval 119, K_any 256, K_cv 203; 13 canaries) → results/splits/
   - [x] 4.3 Data acquisition wave 2 (Buljan2020, Kinobeads/Davis/DTC, Sugiyama, Phosformer weights, SELPHI2 code, KinCore, HGNC, SIGNOR retry)
+- [~] 5. Models & baselines on CV (G2 20:50)
+  - [~] 5.1 Simple baselines B0-prior/pop/miss, B1 Cantley arms, B2 PSSM, B7
+  - [~] 5.2 R2 LightGBM main model + staged search + ablation curve
+  - [~] 5.3 R3 neural (GPUs 2–3)
+  - [~] 5.4 B3 Phosformer reimplementation (GPU 0)
+  - [~] 5.5 B4 SELPHI2.0 retrain
