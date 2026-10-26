@@ -1,8 +1,8 @@
 # Simple baselines on the 5-fold DEV CV (B0 / B1 / B2 / B7)
 
-Generated 2026-10-26 16:43 by `scripts/baselines/simple_summary.py` from `results/baselines/simple/<method>.json` (each = one `ksp.manifest` run; metrics only from `ksp.eval`).
+Generated 2026-10-26 16:54 by `scripts/baselines/simple_summary.py` from `results/baselines/simple/<method>.json` (each = one `ksp.manifest` run; metrics only from `ksp.eval`).
 
-Pooled out-of-fold predictions over **all** evaluation candidates (every kinase with >=1 DEV positive x every DEV U_ms site of its class, plus all real kinases x labelled sites for M2). Missing pairs = 'worst' (ties at the bottom). 95% CI: cluster bootstrap over substrate clusters, B=1000 (`ksp.eval.bootstrap`). M1 = M5 on CV (K_cv, E-hard); M4 = CV analogue over K_any_cv (>=1 DEV positive). M2 = filtered site-centric Hit@5 (A18), M3 = recall in top 1% of E-all.
+Pooled out-of-fold predictions over **all** evaluation candidates (every kinase with >=1 DEV positive x every DEV U_ms site of its class, plus all real kinases x labelled sites for M2). Missing pairs = 'worst' (ties at the bottom). 95% CI: cluster bootstrap over substrate clusters, B=1000 (`ksp.eval.bootstrap`). M1 = M5 on CV (K_cv, E-hard); M4 = CV analogue over K_any_cv (>=1 DEV positive). M2 = filtered site-centric Hit@5 (A18), M3 = recall in top 1% of E-all. Runtime: 'fit+predict' = all 5 folds over ~71M candidates (<=8 cores, shared node); 'total' = wall time of the latest (re-)evaluation run incl. ksp.eval + bootstrap.
 
 ## Endpoints (CV, pooled OOF; point [95% CI])
 
@@ -18,6 +18,7 @@ Pooled out-of-fold predictions over **all** evaluation candidates (every kinase 
 | `b1_primed_hard_published` | B1 suppl.: primed hard, published pct | 0.713 [0.698, 0.729] | 0.122 [0.109, 0.137] | 0.116 [0.103, 0.132] | 0.688 [0.680, 0.711] | 0.089 | 0.750 | 7 | 412 |
 | `b1_primed_soft_published` | B1 suppl.: primed soft, published pct | 0.711 [0.696, 0.727] | 0.137 [0.122, 0.154] | 0.123 [0.109, 0.141] | 0.686 [0.677, 0.710] | 0.100 | 0.749 | 8 | 379 |
 | `b1_imputed_universe` | B1 suppl.: universe pct + nearest-atlas imputed | 0.722 [0.705, 0.737] | 0.149 [0.133, 0.168] | 0.132 [0.117, 0.150] | 0.701 [0.689, 0.722] | 0.106 | 0.763 | 5 | 274 |
+| `b1_imputed_published` | B1 suppl.: published pct + nearest-atlas imputed | 0.721 [0.705, 0.736] | 0.134 [0.119, 0.151] | 0.132 [0.117, 0.150] | 0.700 [0.688, 0.722] | 0.094 | 0.762 | 10 | 269 |
 | `b2_pssm` | B2 learned PSSM (F2a, family prior) | 0.660 [0.646, 0.679] | 0.118 [0.108, 0.131] | 0.108 [0.093, 0.125] | 0.639 [0.630, 0.663] | 0.094 | 0.735 | 146 | 324 |
 | `b2_pssm_ph` | B2 learned PSSM + phospho channel | 0.654 [0.642, 0.672] | 0.128 [0.115, 0.140] | 0.129 [0.105, 0.151] | 0.633 [0.625, 0.658] | 0.098 | 0.751 | 142 | 289 |
 | `b7_lr` | B7 simple strong (LR) | 0.726 [0.710, 0.742] | 0.196 [0.179, 0.213] | 0.177 [0.155, 0.199] | 0.709 [0.695, 0.731] | 0.146 | 0.799 | 925 | 290 |
@@ -38,6 +39,7 @@ Covered-only = `missing='drop'` restricted to kinases with >=1 scored pair (not 
 | `b1_primed_hard_published` | 318/339 | 199/203 | 0.913 | 0.716 (n=199) | 0.125 | 0.118 |
 | `b1_primed_soft_published` | 318/339 | 199/203 | 0.913 | 0.715 (n=199) | 0.140 | 0.126 |
 | `b1_imputed_universe` | 339/339 | 203/203 | 1.000 |  |  |  |
+| `b1_imputed_published` | 339/339 | 203/203 | 1.000 |  |  |  |
 | `b2_pssm` | 339/339 | 203/203 | 1.000 |  |  |  |
 | `b2_pssm_ph` | 339/339 | 203/203 | 1.000 |  |  |  |
 | `b7_lr` | 339/339 | 203/203 | 1.000 |  |  |  |
@@ -57,18 +59,41 @@ Paired cluster bootstrap (B=1000), best minus other:
 
 | comparison | endpoint | diff | lo95 | hi95 | p_boot |
 |---|---|---|---|---|---|
-| b1_published - b1_universe | M1 | 0.0 | -0.0 | 0.0 | 0.6633 |
-| b1_published - b1_universe | M2 | -0.0135 | -0.0201 | -0.007 | 0.002 |
-| b1_published - b1_universe | M3 | 0.0 | -0.0002 | 0.0002 | 0.7433 |
-| b1_published - b1_universe | M4 | -0.0 | -0.0 | 0.0 | 0.9331 |
-| b1_published - b1_primed_hard | M1 | 0.0031 | -0.0024 | 0.0082 | 0.2897 |
-| b1_published - b1_primed_hard | M2 | 0.0 | -0.0127 | 0.0111 | 0.9211 |
-| b1_published - b1_primed_hard | M3 | 0.0164 | 0.0066 | 0.0275 | 0.006 |
-| b1_published - b1_primed_hard | M4 | 0.002 | -0.004 | 0.0068 | 0.5994 |
-| b1_published - b1_primed_soft | M1 | 0.0055 | 0.0011 | 0.0092 | 0.016 |
-| b1_published - b1_primed_soft | M2 | -0.0031 | -0.0146 | 0.0061 | 0.4316 |
-| b1_published - b1_primed_soft | M3 | 0.0087 | 0.0013 | 0.0177 | 0.024 |
-| b1_published - b1_primed_soft | M4 | 0.0039 | -0.001 | 0.0075 | 0.1578 |
+| b1_published - b1_universe | M1 | 1e-06 | -5e-06 | 8e-06 | 0.663337 |
+| b1_published - b1_universe | M2 | -0.013534 | -0.020117 | -0.00698 | 0.001998 |
+| b1_published - b1_universe | M3 | 2.9e-05 | -0.000191 | 0.00024 | 0.743257 |
+| b1_published - b1_universe | M4 | -0.0 | -9e-06 | 1e-05 | 0.933067 |
+| b1_published - b1_primed_hard | M1 | 0.003061 | -0.002434 | 0.008182 | 0.28971 |
+| b1_published - b1_primed_hard | M2 | 7e-06 | -0.012702 | 0.011098 | 0.921079 |
+| b1_published - b1_primed_hard | M3 | 0.016359 | 0.006569 | 0.027527 | 0.005994 |
+| b1_published - b1_primed_hard | M4 | 0.002045 | -0.00395 | 0.006803 | 0.599401 |
+| b1_published - b1_primed_soft | M1 | 0.005474 | 0.001122 | 0.009169 | 0.015984 |
+| b1_published - b1_primed_soft | M2 | -0.00314 | -0.014641 | 0.006078 | 0.431568 |
+| b1_published - b1_primed_soft | M3 | 0.008678 | 0.001256 | 0.017703 | 0.023976 |
+| b1_published - b1_primed_soft | M4 | 0.003852 | -0.001035 | 0.007484 | 0.157842 |
+
+## Paired cluster bootstrap between baselines (B=1000; `ksp.eval.paired_bootstrap`)
+
+'full' = all candidates, missing='worst'; 'matched' = pairs both score (PRIOR-1), missing='drop'.
+
+| comparison | view | endpoint | diff | lo95 | hi95 | p_boot |
+|---|---|---|---|---|---|---|
+| b7_lr - b1_published | full | M1 | 0.0094 | -0.0022 | 0.0193 | 0.0959 |
+| b7_lr - b1_published | full | M2 | 0.0389 | 0.0219 | 0.0542 | 0.002 |
+| b7_lr - b1_published | full | M3 | 0.0441 | 0.0218 | 0.0633 | 0.002 |
+| b7_lr - b1_published | full | M4 | 0.0185 | 0.003 | 0.0276 | 0.018 |
+| b7_lr - b1_published | matched | M1 | 0.0047 | -0.0052 | 0.0154 | 0.3197 |
+| b7_lr - b1_published | matched | M2 | 0.0416 | 0.0232 | 0.0567 | 0.002 |
+| b7_lr - b1_published | matched | M3 | 0.0452 | 0.0223 | 0.0629 | 0.002 |
+| b7_lr - b1_published | matched | M4 | 0.0129 | 0.0 | 0.023 | 0.0519 |
+| b2_pssm - b1_published | full | M1 | -0.0562 | -0.0711 | -0.0378 | 0.002 |
+| b2_pssm - b1_published | full | M2 | -0.0387 | -0.0584 | -0.0188 | 0.002 |
+| b2_pssm - b1_published | full | M3 | -0.0244 | -0.0446 | -0.0059 | 0.008 |
+| b2_pssm - b1_published | full | M4 | -0.0509 | -0.0675 | -0.0327 | 0.002 |
+| b2_pssm - b1_published | matched | M1 | -0.0599 | -0.0736 | -0.041 | 0.002 |
+| b2_pssm - b1_published | matched | M2 | -0.0277 | -0.0475 | -0.0058 | 0.012 |
+| b2_pssm - b1_published | matched | M3 | -0.0263 | -0.0455 | -0.008 | 0.006 |
+| b2_pssm - b1_published | matched | M4 | -0.0582 | -0.0735 | -0.0388 | 0.002 |
 
 ## Canaries (trained with `load_dev(with_canaries=True)`; `ksp.eval.canary_check`)
 
@@ -98,6 +123,7 @@ Paired cluster bootstrap (B=1000), best minus other:
 | b1_primed_hard_published | 0.685 | 0.857 | 0.684 | 0.792 | 0.729 | 0.556 | 0.537 | 0.628 | 0.723 | 0.681 | 0.768 |
 | b1_primed_soft_published | 0.684 | 0.861 | 0.683 | 0.783 | 0.728 | 0.555 | 0.534 | 0.625 | 0.719 | 0.681 | 0.77 |
 | b1_imputed_universe | 0.699 | 0.866 | 0.701 | 0.706 | 0.742 | 0.64 | 0.542 | 0.652 | 0.726 | 0.698 | 0.766 |
+| b1_imputed_published | 0.698 | 0.866 | 0.7 | 0.706 | 0.742 | 0.603 | 0.542 | 0.651 | 0.725 | 0.696 | 0.766 |
 | b2_pssm | 0.636 | 0.843 | 0.635 | 0.762 | 0.66 | 0.82 | 0.53 | 0.578 | 0.67 | 0.629 | 0.748 |
 | b2_pssm_ph | 0.63 | 0.833 | 0.629 | 0.752 | 0.648 | 0.843 | 0.544 | 0.576 | 0.663 | 0.624 | 0.737 |
 | b7_lr | 0.706 | 0.899 | 0.707 | 0.761 | 0.744 | 0.851 | 0.543 | 0.654 | 0.727 | 0.712 | 0.776 |
@@ -177,3 +203,11 @@ Full strata (incl. manning group, M2/M3 per stratum, pair-level evidence/tempora
   variants are listed in the canary table.
 - Negative canaries: E-all AUROC is 0.58-0.67. This is expected under v2 (generic labelled-site-likeness) and is not
   gated. E-hard is 0.53-0.55, which passes the 0.57 gate but sits above 0.5.
+- **Official B1 = `b1_published`, but it is a near-tie.** It beats (ii) on M1 by 9e-7. That gap is a tie-handling
+  artefact of the 2-dp published percentile; the paired CI on M1 is [-5e-6, 8e-6]. The pre-declared rule (max M1)
+  is applied as written. Arm (ii), the universe percentile, is significantly better on M2 (+0.0135, CI
+  [0.007, 0.020]). **The PI should decide** whether the M2 superiority test (A19) uses arm (i) as declared, or arm (ii)
+  as the stronger and more conservative comparator. B7 uses arm (i).
+- **Tyrosine kinases are weak for every motif baseline.** Over 65 Y-class kinases, E-hard AUROC is about 0.53-0.54
+  (Cantley, B2, B7). Their E-hard negatives are mostly other TKs' substrates with near-identical motifs. Priming arms
+  help the priming kinases (0.71 -> 0.79) but lose overall.

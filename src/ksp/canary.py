@@ -45,7 +45,8 @@ def canary_kinases() -> pd.DataFrame:
     """Rows in the format of cache/index/kinases.parquet; appended AFTER the 503 real kinases (index 503..515)."""
     cls = NEG_CLASSES + ["ST"]
     return pd.DataFrame({"uniprot_acc": CANARY_IDS, "gene": CANARY_IDS, "residue_class": cls,
-                         "manning_group": "CANARY", "manning_family": [f"CANARY{i}" for i in range(len(cls))],
+                         "manning_group": [f"CANARY_G{i}" for i in range(len(cls))],  # PI: own group per canary
+                         "manning_family": [f"CANARY{i}" for i in range(len(cls))],
                          "manning_subfamily": None, "is_pseudokinase": False,
                          "kinase_domain_start": np.nan, "kinase_domain_end": np.nan})
 

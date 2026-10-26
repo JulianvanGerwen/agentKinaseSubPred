@@ -71,3 +71,11 @@
   variants are listed in the canary table.
 - Negative canaries: E-all AUROC is 0.58-0.67. This is expected under v2 (generic labelled-site-likeness) and is not
   gated. E-hard is 0.53-0.55, which passes the 0.57 gate but sits above 0.5.
+- **Official B1 = `b1_published`, but it is a near-tie.** It beats (ii) on M1 by 9e-7. That gap is a tie-handling
+  artefact of the 2-dp published percentile; the paired CI on M1 is [-5e-6, 8e-6]. The pre-declared rule (max M1)
+  is applied as written. Arm (ii), the universe percentile, is significantly better on M2 (+0.0135, CI
+  [0.007, 0.020]). **The PI should decide** whether the M2 superiority test (A19) uses arm (i) as declared, or arm (ii)
+  as the stronger and more conservative comparator. B7 uses arm (i).
+- **Tyrosine kinases are weak for every motif baseline.** Over 65 Y-class kinases, E-hard AUROC is about 0.53-0.54
+  (Cantley, B2, B7). Their E-hard negatives are mostly other TKs' substrates with near-identical motifs. Priming arms
+  help the priming kinases (0.71 -> 0.79) but lose overall.
