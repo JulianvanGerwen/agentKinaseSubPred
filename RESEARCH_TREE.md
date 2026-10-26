@@ -35,6 +35,9 @@ User notes: PSP full downloads will be provided by user; CPTAC/others: try to fe
     - [!] Compendium = 1,937 contrasts/178 PMIDs/189,962 sites, 4.6% dense; contains decryptM (790 contrasts, 41% of columns) + Hijazi (183). Study-structured → need study-aware aggregation.
     - [!] CPTAC 10 cohorts public on LinkedOmics S3 (no login); benchmarKIN Zenodo 12566560.
     - [!] Leakage: CoPheeMap trained on PSP; SELPHI2.0 splits on pairs and uses Hijazi as both feature and test; Ochoa functional score trained on PSP → ablate.
-  - [ ] 1.4 Other modalities (PPI, localisation, co-expression, structure, PLMs)
+  - [x] 1.4 Other modalities -> docs/lit/04_other_modalities.md; leakage audit results/leakage/
+    - [!] STRING 'experiments/physical' is NOT leak-free: 34% of PSP KS pairs have a score vs ~4% controls (imports BioGRID Biochemical Activity = kinase assays). Use only unbiased screens (BioPlex, HuRI, OpenCell, Buljan2020 kinase AP-MS, HumanCellMap) for PPI; ~7-8x enriched but 0.3–1.5% coverage.
+    - Localisation: HPA IF, OpenCell, COMPARTMENTS knowledge+experiments (not textmining). Structure: AFDB pLDDT/RSA via structuremap. PLMs: ESM-2 650M/3B (MIT) downloadable; ESM-C via plm_env transformers 5.17.
+    - Structure-based KS (AF-multimer) infeasible at scale; optional pilot only.
 - [~] 2. Data profiling of provided data (agent -> docs/data_profile.md, src/ksp/io_psp.py)
 - [ ] 3. DESIGN.md + review rounds (≤3)

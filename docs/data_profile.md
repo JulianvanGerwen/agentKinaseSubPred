@@ -25,7 +25,7 @@ Definitions used throughout: **site** = (human UniProt accession incl. isoform s
 |---|---|
 | rows | 23,904 (all 15-mers length 15, centre residue lower-case and equal to SUB_MOD_RSD in 100%) |
 | human kinase × human substrate rows | 14,724 |
-| non-S/T/Y rows (junk, dropped) | 17 (H 8, K 5, R 2, D 1, I 1 — NME1/2 His, histone/“K” sites, TP53 R249, …) → `psp_nonsty_rows.tsv` |
+| non-S/T/Y rows (junk, dropped) | 17 (H 8, K 5, R 2, D 1, I 1 — NME1/2 His, histone/“K” sites, TP53 R249, …) → `cache/psp_nonsty_rows.tsv` |
 | exact duplicate rows | 0 by accession; 45 rows duplicate (kinase gene, organism, site) via different kinase isoform accessions |
 
 **Organisms** (`psp_organism_crosstab.tsv`): kinase organism human 19,062 / mouse 2,805 / rat 1,419 / cow 405 / other 213;
