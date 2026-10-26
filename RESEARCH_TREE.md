@@ -93,4 +93,4 @@ Status: literature (4 reviews), data profiling, two acquisition waves (~12.6 GB)
     - [!] Y gap real but partly artefactual: macro dilution (42% of Y kinases ≤3 positives); E-hard Y pool dominated by promiscuous hub sites (GLO1 Y136 → 15 TKs, STAT5A Y694 → 9); Cantley Tyr atlas within-family discrimination ≈0.51 and some matrices (FGFR1, BTK, Eph, VEGFR, TAM) anti-correlated with own labels.
     - F9 SH2-docking (Yaron-Barir SH2 matrices, 24/28 SH2 kinases): modest; most GBDT gain is a NaN-indicator artefact (+0.019 [−0.018, 0.057] for kinases with SH2 matrix). Recommended small set → R2 (ablation).
     - Decision A26: hub-site stratum added (reporting only); relabelling A-loop cross-kinase labels rejected.
-  - [~] 5.8 Independent audit of CV results (R3, baselines, R2)
+  - [x] 5.8 Independent audit → docs/audit/audit_cv_r1.md: all numbers reproduce exactly; no leakage. A24 values: R2 full M1 0.773 / M3 0.312; R3 final M1 0.754. M4 & 1–4-label claims NOT trusted pre-A24 (pooling inflation). R2 canary stores for folds 0/3 stale → rebuild. Matched-kinase M2 rule added (A27).

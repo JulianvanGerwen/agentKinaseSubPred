@@ -477,3 +477,7 @@ GPU allocation:
 - **A26. Tyrosine-kinase analyses** (2026-10-26 17:40; `docs/features_tyr.md` §1.6).
   - (a) A **hub-site stratum** is ADDED as a secondary, reporting-only analysis: sites labelled to ≥5 non-paralog kinases (e.g. GLO1 Y136 with 15 TKs). It does not change any endpoint.
   - (b) Treating cross-kinase activation-loop labels as mask-only is **REJECTED** for all endpoints: it would change labels after seeing results. It may be reported as a clearly-labelled sensitivity analysis only.
+- **A27. Audit follow-ups** (`docs/audit/audit_cv_r1.md`, 2026-10-26 17:55).
+  - A24 is confirmed by the PI as a correctness fix applied to all methods equally. Documents show pre-A24 and A24 values where both exist. TEST is unaffected.
+  - **Matched-kinase M2:** for head-to-head M2 comparisons (e.g. vs Cantley), the competitor kinase set is restricted to kinases scored by *both* methods. Unscored kinases are otherwise "worst", which inflates the M2 of low-coverage methods by about 0.02.
+  - The canary gate remains on pooled CV; per-fold values are reported.

@@ -61,5 +61,37 @@
   "global_slope": 17
  },
  "runtime_s": 86.0,
- "note": "PU: calibrated probabilities estimate P(curated human-native PSP positive | score), a lower bound; coverage is conditional on the site being a target of a modelled kinase (A17)."
+ "note": "PU: calibrated probabilities estimate P(curated human-native PSP positive | score), a lower bound; coverage is conditional on the site being a target of a modelled kinase (A17).",
+ "endpoints_with_assignment_score_site": {
+  "K_primary_name": "K_cv",
+  "n_K_primary": 203,
+  "n_K_primary_evaluated": 203,
+  "n_K_any": 339,
+  "n_K_any_evaluated": 339,
+  "M1_auroc_hard": 0.7728996170448086,
+  "M1_n_kinases_defined": 203,
+  "M2_hit5": 0.18087165377632616,
+  "M3_top1_recall": 0.31174035817837,
+  "M4_auroc_hard_Kany": 0.7697366992084841,
+  "M5_auroc_hard_Kcv": 0.7728996170448086,
+  "sec_hit1": 0.07169836544312037,
+  "sec_hit10": 0.2591689595342039,
+  "sec_mrr": 0.13673932190387642,
+  "sec_fam_hit5": 0.3284860620501915,
+  "sec_pauroc01_all": 0.6062317548528248,
+  "sec_ap_all": 0.021677718700489252,
+  "sec_ap_lift_all": 276.9095442064659,
+  "sec_auroc_all": 0.8674198172028345,
+  "fold_normalised": true,
+  "M1_per_fold": [
+   0.7536903966693168,
+   0.772559048328005,
+   0.76685894855208,
+   0.7898856211390879,
+   0.7559689823935319
+  ],
+  "M1_fold_mean": 0.7677925994164043,
+  "n_missing_pairs": 0,
+  "n_required_pairs": 71331065
+ }
 }
