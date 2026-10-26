@@ -3,31 +3,31 @@
   "name": "B1_i",
   "role": "baseline",
   "baseline_id": "B1_arm_i",
-  "run_id": "simple_test_b1_arm_i__20261026-212701__s0",
-  "predictions": "cache/runs/simple_test_b1_arm_i__20261026-212701__s0/test_predictions.parquet",
+  "run_id": "simple_test_b1_arm_i__20261026-214815__s0",
+  "predictions": "cache/runs/simple_test_b1_arm_i__20261026-214815__s0/test_predictions.parquet",
   "score_site_predictions": null,
   "t3_predictions": null,
   "runtime": {
    "train_wall_s": 0.0,
-   "inference_wall_s": 5.33
+   "inference_wall_s": 4.36
   },
   "missing": "worst",
   "description": "Cantley arm (i) as-published percentile (own matrices only)",
-  "predictions_sha256": "4e6df8e9c5841b852ec8e6a172dd6b1087f372ecc6a98e026bc06d76bbb3a97d"
+  "predictions_sha256": "609988b9e84a48dc9857403071f6f56a1641172d249ea7608e68eda80d493655"
  },
  "preflight": {
-  "rows": 19910114,
+  "rows": 19215814,
   "rows_outside_candidates": 0,
-  "kinases_full": 396,
-  "kinases_unscored": 107,
+  "kinases_full": 386,
+  "kinases_unscored": 117,
   "kinases_partial": 0,
   "partial_kinase_idx": [],
   "ok": true
  },
  "log": {
   "kinases_full": 386,
-  "kinases_unscored": 107,
-  "kinases_partial_floor_filled": [
+  "kinases_unscored_no_matrix": 107,
+  "kinases_unscored_single_residue_matrix": [
    "MAP2K7",
    "TTK",
    "MAP2K2",
@@ -39,7 +39,8 @@
    "NEK10",
    "PKMYT1"
   ],
-  "n_floor_filled_pairs": 398166,
+  "n_pairs_dropped_single_residue": 296134,
+  "policy": "PI 21:50: single-residue-matrix STY kinases unscored entirely",
   "store": "motif/cantley_unprimed_pct_published"
  }
 }

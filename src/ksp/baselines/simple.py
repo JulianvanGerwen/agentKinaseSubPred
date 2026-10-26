@@ -522,18 +522,20 @@ def test_candidates() -> pd.DataFrame:
 
 def cantley_test(cand: pd.DataFrame, arm_store: str, log: dict) -> np.ndarray:
     """Own-matrix Cantley arm over the TEST candidates, all-or-nothing per kinase. Kinases without any in-class atlas
-    matrix -> NaN (unscored, NOT imputed). STY kinases with a matrix for only one residue type (MAP2Ks, TTK, TESK1,
-    NEK10, PKMYT1): the residue type without a matrix gets percentile -1 (below every real percentile) so the kinase
-    is fully scored - the same ranking ksp.eval's missing='worst' gave these pairs on CV."""
+    matrix -> NaN (unscored, NOT imputed). PI decision 21:50: STY kinases with a matrix for only ONE residue type
+    (MAP2Ks, TTK, TESK1, NEK10, PKMYT1) are also left entirely unscored (no placeholder score). On CV those pairs
+    were scored for the covered residue type and ranked last ('worst') for the other."""
     v = cantley(cand, arm_store).astype(np.float64)
     nan = np.isnan(v)
     g = pd.Series(nan).groupby(cand.kinase_idx.values).mean()
     part = g.index[(g > 0) & (g < 1)].values
-    fill = np.isin(cand.kinase_idx.values, part) & nan
-    v[fill] = -1.0
+    drop = np.isin(cand.kinase_idx.values, part)
+    v[drop] = np.nan
     K = index.load_kinases()
-    log.update(kinases_full=int((g == 0).sum()), kinases_unscored=int((g == 1).sum()),
-               kinases_partial_floor_filled=K.gene.values[part].tolist(), n_floor_filled_pairs=int(fill.sum()))
+    log.update(kinases_full=int((g == 0).sum()), kinases_unscored_no_matrix=int((g == 1).sum()),
+               kinases_unscored_single_residue_matrix=K.gene.values[part].tolist(),
+               n_pairs_dropped_single_residue=int((drop & ~nan).sum()),
+               policy="PI 21:50: single-residue-matrix STY kinases unscored entirely")
     return v
 
 

@@ -84,10 +84,16 @@
 - **Common to all files.** All models trained on all DEV (L2; no canaries; sealed/ never read). Every file scores the
   exhaustive `ksp.eval_test.test_candidate_pairs()` set. Each passed `--check-predictions` with `ok: true`, and each is
   pinned with `eval_test.pin_files`.
-- **B1 arms (i) and (ii).** Own atlas matrices only: 396 kinases scored, 107 unscored and not imputed (the imputed arm
-  was not the CV-selected arm). 10 STY kinases have a matrix for one residue type only: MAP2K1/2/4/5/6/7, TTK, TESK1,
-  NEK10, PKMYT1. Their other residue type gets percentile -1, so the kinase is fully scored (398,166 pairs). This
-  reproduces CV's `missing='worst'` ranking; the alternative is to leave these 10 kinases unscored.
+- **B1 arms (i) and (ii)** (regenerated 21:48 per PI decision 21:50). Own atlas matrices only: **386 kinases
+  scored, 117 unscored**. The 117 are 107 kinases with no in-class atlas matrix (not imputed: the imputed arm was not
+  CV-selected) plus 10 STY kinases with a matrix for only one residue type: MAP2K1/2/4/5/6/7, TTK, TESK1, NEK10,
+  PKMYT1. Those 10 are left unscored entirely, with no placeholder score, so they drop out of the matched-universe
+  head-to-heads (conservative for superiority claims).
+  - **Difference from CV:** on CV, these 10 kinases were scored with their one matrix on the covered residue type,
+    and their other-residue pairs were ranked last (`missing='worst'`). They counted in the CV B1 numbers.
+  - The first TEST files used a -1 placeholder for the uncovered residue type and are **superseded; do not use**:
+    `simple_test_b1_arm_i__20261026-212701__s0` and `simple_test_b1_arm_ii__20261026-212755__s0`.
+  - Current files: `simple_test_b1_arm_i__20261026-214815__s0` and `simple_test_b1_arm_ii__20261026-214850__s0`.
 - **B2** = `fit_pssm` (family prior) on all DEV L2, scored as the U_ms percentile.
 - **B7** = the same configuration as on CV, all-DEV fit.
   - The B2 feature for training rows is cross-fitted (inner 5-fold). TEST rows come from a second `crossfit` call
