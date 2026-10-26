@@ -12,7 +12,7 @@ Agents write only in their assigned paths; shared modules are changed only by th
 | feat-phospho | src/ksp/features/phospho*.py, cache/features/phospho, results/features/phospho | GPU 1 / 10 | done |
 | R3-neural | src/ksp/models/r3/, cache/r3, results/models/r3, scripts/models/r3_*.py | GPU 2,3 / 8 | done |
 | B4-selphi2 | src/ksp/baselines/selphi2/, cache/selphi2, results/baselines/selphi2, scripts/baselines/selphi2_*.py | 0 / 12 | done |
-| B3-phosformer | src/ksp/baselines/phosformer/, cache/phosformer, results/baselines/phosformer | GPU 0–3 / 6 | running (CV folds; GPUs 1–3 freed 19:55) |
+| B3-phosformer | src/ksp/baselines/phosformer/, cache/phosformer, results/baselines/phosformer | GPU 0–3 / 6 | done 23:30 |
 | simple-baselines | src/ksp/baselines/simple.py, results/baselines/simple | 0/8 | done 17:00 |
 | R2-main | src/ksp/models/r2/, cache/r2, results/models/r2 | 0/24 | running (seeds, fusion, calibration) |
 | auditor-1 | docs/audit/ | 0/8 | done 18:10 |
