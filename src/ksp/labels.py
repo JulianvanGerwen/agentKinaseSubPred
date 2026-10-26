@@ -152,7 +152,8 @@ def psp_pairs(d: pd.DataFrame, kl: pd.DataFrame, universe_ids: set | None = None
               kin_map_hows=("kin_map_how", lambda s: ";".join(sorted(set(s)))),
               res_changed=("res_changed", "any"), sgid_multi=("sgid_n_human_sites", lambda s: bool((s > 1).any())),
               n_rows=("_row", "nunique"), psp_mod_rsd=("mod_rsd", lambda s: ";".join(sorted(set(s)))),
-              psp_sub_accs=("sub_acc_full", lambda s: ";".join(sorted(set(s))))).reset_index()
+              psp_sub_accs=("sub_acc_full", lambda s: ";".join(sorted(set(s)))),
+              psp_sgids=("site_grp_id", lambda s: ";".join(sorted({str(x) for x in s if pd.notna(x)})))).reset_index()
     p["provenance"] = "PSP"
     return p
 
@@ -229,13 +230,16 @@ def uniprot_pairs(path, store: CanonicalStore, res: KinaseResolver) -> tuple[pd.
                          "substrate": u.acc[~u.eco269], "site": u.res[~u.eco269] + u.pos[~u.eco269].astype(str),
                          "detail": u.note[~u.eco269]})]
     u = u[u.eco269].copy()
+    from .kinases import resolve_kinase_names
+    rr, _ = resolve_kinase_names(u.kinase_name, "uniprot", res)   # strict resolver + homonym rules (A4)
     kin, how = [], []
-    for name, acc in zip(u.kinase_name, u.acc):
+    for name, acc, g, h in zip(u.kinase_name, u.acc, rr.gene, rr.how):
         if name.lower() == "autocatalysis":
             k, h = res.resolve(acc=acc)
             h = "autocatalysis" if k is not None else "autocatalysis_not_kinase"
         else:
-            k, h = res.resolve_note(name)
+            k = g if isinstance(g, str) else None
+            h = "family_name" if h == "family_name" else h
         kin.append(k), how.append(h)
     u["kinase"], u["kin_map_how"] = kin, how
     sid, reason = [], []
@@ -409,12 +413,14 @@ def hamming_neighbors(query: list[str], ref: list[str], max_d: int = HAMMING_MAX
 
 
 # ------------------------------------------------------------------------------------------------ KP(k)
-def known_positive_sets(pairs: pd.DataFrame, expand_identical: bool = True) -> dict:
+def known_positive_sets(pairs: pd.DataFrame, expand_identical: bool = True, include_sensitivity: bool = False) -> dict:
     """KP(k) (DESIGN §3): kinase_acc -> set of site_ids labelled to k in ANY row of `pairs` (all sources PSP/OmniPath/
     UniProt, all species, any flag incl. out-of-class / not-in-variant), plus (expand_identical) every U_obs site whose
     15-mer is identical to a labelled site of k. Pass the unfiltered table (load_dev('all') or DEV+TEST at TEST time)."""
     from . import index
     p = pairs.dropna(subset=["kinase_acc"])
+    if not include_sensitivity and "mask_sensitivity_only" in p:
+        p = p[~p.mask_sensitivity_only.fillna(False).astype(bool)]
     kp = p.groupby("kinase_acc").site_id.agg(lambda s: set(s)).to_dict()
     if expand_identical:
         sites_ = index.load_sites()[["site_id", "window15"]]
@@ -577,12 +583,15 @@ class NegativeMasks:
     `pairs` must be the unfiltered label table relevant for the evaluation (CV: load_dev('all'); TEST: DEV U TEST).
     Arrays are site-index positions (row order of cache/index/sites.parquet)."""
 
-    def __init__(self, pairs: pd.DataFrame, paralogs: dict | None = None, max_d: int = HAMMING_MAX):
+    def __init__(self, pairs: pd.DataFrame, paralogs: dict | None = None, max_d: int = HAMMING_MAX,
+                 include_sensitivity: bool = False):
         from . import index
         self.sites = index.load_sites()
         self.spos = pd.Series(np.arange(len(self.sites)), index=self.sites.site_id)
         self.par = paralogs if paralogs is not None else paralog_sets()
         p = pairs.dropna(subset=["kinase_acc"])
+        if not include_sensitivity and "mask_sensitivity_only" in p:   # A7: text-mining/KEA rows: sensitivity only
+            p = p[~p.mask_sensitivity_only.fillna(False).astype(bool)]
         self.kp = known_positive_sets(p, expand_identical=False)
         lab_sites = sorted(set(p.site_id))
         w = site_windows(lab_sites)
@@ -624,33 +633,38 @@ class NegativeMasks:
 
 # ------------------------------------------------------------------------------------------------ temporal / external
 def psp2021_keys(path: Path = PSP2021) -> set:
-    """Keys of the PSP Kinase_Substrate_Dataset bundled with kinase-library 1.8.0 (07/2021), human->human rows:
-    {(kinase_acc, substrate_acc, WINDOW15_upper)} and {(kinase_acc, substrate_acc, residue+pos)}."""
+    """Keys of the PSP Kinase_Substrate_Dataset bundled with kinase-library 1.8.0 (07/2021), ALL species (A10):
+    {(KIN_ACC, SUB_ACC, WINDOW15_upper)}, {(KIN_ACC, SUB_ACC, residue+pos)}, and {('G', KINASE_GENE_upper, SGID)}
+    (kinase symbol upper-cased = ortholog assumption, as in the label build) for cross-species matching."""
     d = pd.read_csv(path, sep="\t", skiprows=3, dtype=str, encoding="latin1", keep_default_na=False)
-    d = d[d.KIN_ORGANISM.eq("human") & d.SUB_ORGANISM.eq("human")]
     ka = d.KIN_ACC_ID.str.split("-").str[0]
     sa = d.SUB_ACC_ID.str.split("-").str[0]
     keys = set(zip(ka, sa, d["SITE_+/-7_AA"].str.upper()))
     keys |= set(zip(ka, sa, d.SUB_MOD_RSD.str.upper()))
+    keys |= {("G", g, sg) for g, sg in zip(d.GENE.str.upper(), d.SITE_GRP_ID) if sg}
     return keys
 
 
 def new_since_2021(pairs: pd.DataFrame, keys: set | None = None) -> pd.Series:
-    """True for PSP human-native pairs absent from the 2021 PSP release (matched by kinase accession + substrate
-    accession + (15-mer or residue/position)). NaN-free bool Series aligned to `pairs`. Non-PSP / non-native -> False.
-    ASSUMPTION: KIN_ACC_ID of 2021 human rows equals today's canonical kinase accession (true for >99% of rows)."""
+    """True for PSP human-native pairs absent from the 2021 PSP release in ALL species (A10): no 2021 row with the
+    same kinase accession + substrate accession + (15-mer or residue/position), and no 2021 row with the same
+    kinase symbol (upper) + SITE_GRP_ID (any organism). Non-PSP / non-native -> False.
+    ASSUMPTION: 2021 KIN_ACC_ID / symbols are comparable with today's (kinase symbol = ortholog, as in the build)."""
     keys = keys if keys is not None else psp2021_keys()
     w = site_windows(pairs.site_id).str.upper().values
     rp = pairs.site_id.str.rsplit("_", n=1).str[1].values
     subs = pairs.psp_sub_accs.fillna("").str.split(";").values
+    sg = (pairs.psp_sgids.fillna("") if "psp_sgids" in pairs else pd.Series("", index=pairs.index)).str.split(";")
     out = []
-    for ka, acc, ww, r, ss, prov, nat in zip(pairs.kinase_acc, pairs.acc, w, rp, subs, pairs.provenance,
-                                             pairs.native_human):
+    for ka, kg, acc, ww, r, ss, sgs, prov, nat in zip(pairs.kinase_acc, pairs.kinase.astype(str).str.upper(),
+                                                     pairs.acc, w, rp, subs, sg.values, pairs.provenance,
+                                                     pairs.native_human):
         if prov != "PSP" or not nat:
             out.append(False)
             continue
         cand = {acc} | {s.split("-")[0] for s in ss if s}
         old = any((ka, a, ww) in keys or (ka, a, r) in keys for a in cand)
+        old = old or any(("G", kg, x.split(".")[0]) in keys for x in sgs if x)
         out.append(not old)
     return pd.Series(out, index=pairs.index, dtype=bool)
 
@@ -659,15 +673,18 @@ def external_test_filter(pairs: pd.DataFrame, paralogs: dict | None = None, wind
     """External curated stratum (DESIGN §3, DL-5): EXT_not_in_psp pairs (OmniPath curated / UniProt ECO:0000269,
     in class, included kinase, single-kinase names) minus near-copies of PSP: (i) the same kinase + protein has a PSP
     pair within +-`window` residues (renumbering), (ii) the same site is a PSP pair of a paralog (Par) of the kinase.
-    Returns a bool mask over `pairs` (False for non-EXT rows)."""
+    (iii) A9: OmniPath rows listing PhosphoSite among their sources. Then ext_test_tiers() applies the per-PMID cap and
+    tier A/B. Returns a bool mask over `pairs` (False for non-EXT rows)."""
     par = paralogs if paralogs is not None else paralog_sets()
     psp = pairs[pairs.provenance.eq("PSP")]
     pos_by = psp.groupby(["kinase_acc", "acc"]).pos.agg(lambda s: np.array(sorted(set(s)))).to_dict()
+    lists_psp = pairs.omnipath_lists_psp.fillna(False).astype(bool) if "omnipath_lists_psp" in pairs else \
+        pd.Series(False, index=pairs.index)
     kin_by_site = psp.groupby("site_id").kinase_acc.agg(set).to_dict()
     out = []
-    for ka, acc, pos, sid, ext in zip(pairs.kinase_acc, pairs.acc, pairs.pos, pairs.site_id,
-                                      pairs.EXT_not_in_psp.astype(bool)):
-        if not ext:
+    for ka, acc, pos, sid, ext, lp in zip(pairs.kinase_acc, pairs.acc, pairs.pos, pairs.site_id,
+                                          pairs.EXT_not_in_psp.astype(bool), lists_psp):
+        if not ext or lp:                      # A9: drop OmniPath rows that list PhosphoSite among sources
             out.append(False)
             continue
         near = pos_by.get((ka, acc))
@@ -679,3 +696,92 @@ def external_test_filter(pairs: pd.DataFrame, paralogs: dict | None = None, wind
             continue
         out.append(True)
     return pd.Series(out, index=pairs.index, dtype=bool)
+
+
+def ext_test_tiers(pairs: pd.DataFrame, keep: pd.Series, cap_per_pmid: int = 20, seed: int = 0) -> pd.Series:
+    """A9 (DESIGN §16): among rows with keep=True, cap 20 pairs per PMID (pairs supported by any PMID with <= cap
+    pairs are kept; pairs supported only by larger PMIDs: at most `cap` per PMID, chosen by a seeded shuffle), then
+    tier 'A' = SIGNOR / HPRD (OmniPath curated) or UniProt ECO:0000269 (single named kinase + named residue - all
+    EXT rows have both), tier 'B' = other curated sources (phosphoELM, ProtMapper-derived). Returns '' / 'A' / 'B'."""
+    x = pairs[keep].copy()
+    refs = x.ext_refs.fillna("").str.split(";").map(lambda r: [t for t in r if t])
+    cnt = pd.Series([t for r in refs for t in r]).value_counts()
+    rng = np.random.default_rng(seed)
+    order = rng.permutation(len(x))
+    used: dict = {}
+    ok = np.zeros(len(x), bool)
+    for i in order:
+        r = refs.iloc[i]
+        if not r or any(cnt[t] <= cap_per_pmid for t in r):
+            ok[i] = True
+            continue
+        big = [t for t in r if used.get(t, 0) < cap_per_pmid]
+        if big:
+            ok[i] = True
+            for t in r:
+                used[t] = used.get(t, 0) + 1
+    src = x.ext_sources.fillna("")
+    tierA = src.str.contains(r"(?:^|;)(?:SIGNOR|HPRD)(?:;|$)") | x.provenance.eq("UniProt")
+    tier = pd.Series("", index=pairs.index, dtype=object)
+    tier.loc[x.index[ok]] = np.where(tierA.values[ok], "A", "B")
+    return tier
+
+
+MASK_PROVENANCES = ("MASK:PSP_subunit", "MASK:EXT_subunit", "MASK:OmniPath_subunit", "MASK:UniProt_family",
+                    "MASK:OmniPath_textmining")
+
+
+def mask_only_pairs(allp: pd.DataFrame, olog: pd.DataFrame, ulog: pd.DataFrame, store, res,
+                    textmining: pd.DataFrame | None = None) -> pd.DataFrame:
+    """A7 (DESIGN §16) mask-only rows (never positives, never negatives): kinase_acc, site_id, provenance, flags.
+    (1) PSP/EXT pairs whose kinase is a regulatory/complex subunit (config/complex_subunits.tsv) -> catalytic kinases;
+    (2) OmniPath rows whose enzyme is such a subunit (unresolved enzymes) -> catalytic kinases;
+    (3) UniProt ECO:0000269 family-level notes ('by PKA', 'by CK2') -> all family members;
+    (4) sensitivity-only: OmniPath rows without a curated non-PSP source (text mining, KEA, ...) resolved by symbol,
+        flagged mask_sensitivity_only=True (used only when NegativeMasks(include_sensitivity=True))."""
+    from .kinases import family_members, load_complex_subunits, resolve_kinase_names
+    cx = load_complex_subunits()
+    fam = family_members(res)
+    acc_of = dict(zip(res.kl.gene, res.kl.uniprot_acc))
+    rec = []
+    sub = allp[allp.kinase.astype(str).str.upper().isin(cx)]
+    for g, sid, prov in zip(sub.kinase.str.upper(), sub.site_id, sub.provenance):
+        for c in cx[g]:
+            rec.append((c, sid, "MASK:PSP_subunit" if prov == "PSP" else "MASK:EXT_subunit", False, g))
+    for lg, kind in [(olog, "omni"), (ulog, "uni")]:
+        if lg is None or not len(lg):
+            continue
+        if kind == "omni":
+            x = lg[lg.reason.str.startswith("kinase_") & lg.kinase_name.str.upper().isin(cx)]
+            for g, a, st in zip(x.kinase_name.str.upper(), x.substrate, x.site):
+                m = store.map_position(a, int(st[1:]), st[0])
+                if m.site_id:
+                    for c in cx[g]:
+                        rec.append((c, m.site_id, "MASK:OmniPath_subunit", False, g))
+        else:
+            x = lg[lg.reason.eq("kinase_family_name")]
+            rr, _ = resolve_kinase_names(x.kinase_name, "uniprot", res)
+            for mem, a, st, nm in zip(rr.family_members, x.substrate, x.site, x.kinase_name):
+                if not mem:
+                    mem = " ".join(fam.get(str(nm).upper(), []))
+                if not mem:
+                    continue
+                m = store.map_position(a, int(st[1:]), st[0])
+                if m.site_id:
+                    for c in mem.split():
+                        rec.append((c, m.site_id, "MASK:UniProt_family", False, nm))
+    if textmining is not None and len(textmining):
+        rr, _ = resolve_kinase_names(textmining.kinase_name, "omnipath", res)
+        for g, a, st in zip(rr.gene, textmining.substrate, textmining.site):
+            if not isinstance(g, str):
+                continue
+            try:
+                m = store.map_position(a, int(st[1:]), st[0])
+            except (ValueError, KeyError):
+                continue
+            if m.site_id:
+                rec.append((g, m.site_id, "MASK:OmniPath_textmining", True, g))
+    d = pd.DataFrame(rec, columns=["kinase", "site_id", "provenance", "mask_sensitivity_only", "mask_source_name"])
+    d = d[d.kinase.isin(acc_of)].drop_duplicates(["kinase", "site_id", "provenance"]).reset_index(drop=True)
+    d["mask_only"] = True
+    return d

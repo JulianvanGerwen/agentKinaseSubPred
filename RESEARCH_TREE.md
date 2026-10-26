@@ -58,7 +58,9 @@ Status: literature (4 reviews), data profiling, two acquisition waves (~12.6 GB)
   - [x] 4.1b canonical feature index cache/index (src/ksp/index.py)
   - [~] 4.4 core infra: splits, seal, eval harness, canaries, manifests, tests
   - [~] 4.5 F1/F2a motif features (Cantley reproduction, priming-aware, learned PSSM)
-  - [~] 4.6 F3/F4/F5 context features (screen-only PPI, RWR, localisation)
+  - [x] 4.6 F3/F4/F5 context features → docs/features_context.md (43 matrices)
+    - PPI screens graph 16,178 proteins/279,677 edges; 3.6% of KS pairs have a direct edge (4.5× vs shuffled). RWR AUROC 0.67 vs random but 0.54 vs shuffled → mostly 'studied-ness'.
+    - COMPARTMENTS knowledge strongest (0.74) but imports GO/UniProt curation → ablation only. FAM20C sites 87.5% lumenal.
   - [~] 4.7 F6 phospho features (inhibitor deconvolution, CPTAC kinase-state, co-regulation fn)
   - [~] 4.8 B3 Phosformer reimplementation + MLM pretraining (GPU 0)
   - [x] 4.2 Structure (AFDB v6, 99.45% S/T/Y) + ESM-2 650M & 3B embeddings (2.8 / 7.9 GPU-min) → docs/features_structure_esm.md

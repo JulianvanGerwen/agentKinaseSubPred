@@ -29,7 +29,7 @@ from ksp.features import phospho as ph  # noqa: E402
 from ksp.features import phospho_inhib as pi  # noqa: E402
 
 
-def run(variant="", exclude_pmids=(), exclude_drugs=(), lam=1.0, max_minutes=120.0, device="cuda"):
+def run(variant="", exclude_pmids=(), exclude_drugs=(), lam=1000.0, max_minutes=120.0, device="cuda"):
     t0 = time.time()
     sfx = f"_{variant}" if variant else ""
     res = load_resolver()
@@ -77,7 +77,7 @@ def main():
     ap.add_argument("--variant", default="")
     ap.add_argument("--exclude-pmids", default="")
     ap.add_argument("--exclude-drugs", default="")
-    ap.add_argument("--lam", type=float, default=1.0)
+    ap.add_argument("--lam", type=float, default=1000.0)
     ap.add_argument("--max-minutes", type=float, default=120.0)
     a = ap.parse_args()
     run(a.variant, [int(x) for x in a.exclude_pmids.split(",") if x],

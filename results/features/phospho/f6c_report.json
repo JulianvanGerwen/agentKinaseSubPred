@@ -22,7 +22,7 @@
   "COAD": 34,
   "GBM": 64,
   "HNSCC": 58,
-  "LSCC": 71,
+  "LSCC": 72,
   "LUAD": 67,
   "OV": 31,
   "PDAC": 50,
@@ -41,16 +41,16 @@
   "UCEC": 355
  },
  "f6c_prot": {
-  "n_finite": 25435280,
+  "n_finite": 25570025,
   "n_kinases": 427,
-  "n_sites": 69058,
-  "mean_abs_z": 0.1089572012424469
+  "n_sites": 69350,
+  "mean_abs_z": 0.10875820368528366
  },
  "f6c_aloop": {
-  "n_finite": 4407056,
+  "n_finite": 4439330,
   "n_kinases": 99,
-  "n_sites": 69058,
-  "mean_abs_z": 0.1400144100189209
+  "n_sites": 69350,
+  "mean_abs_z": 0.1397678256034851
  },
- "seconds": 14.9
+ "seconds": 15.8
 }

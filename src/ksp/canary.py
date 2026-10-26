@@ -129,6 +129,13 @@ def _as_pairs(d: pd.DataFrame) -> pd.DataFrame:
     out["evidence_hmr"] = "both"
     out["species_origin"] = "canary"
     out["is_canary"] = True
+    out["in_index"] = True
+    out["in_U_ms"] = True
+    out["new_since_2021"] = False
+    out["ext_test"] = False
+    out["ext_tier"] = ""
+    out["mask_only"] = False
+    out["mask_sensitivity_only"] = False
     return out
 
 

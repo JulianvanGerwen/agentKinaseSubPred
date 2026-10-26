@@ -1,14 +1,15 @@
 {
  "n_conditions_total": 1937,
- "n_used": 692,
+ "n_used": 676,
  "n_used_hijazi": 165,
- "n_used_affinity": 527,
- "n_used_unknown_time": 67,
+ "n_used_affinity": 511,
+ "n_used_unknown_time": 57,
  "dropped": {
   "no_drug": 1169,
-  "": 692,
+  "": 676,
   "time>120min": 40,
   "no_kinase_target_occ50": 33,
+  "exclude_pmids": 16,
   "no_kinhib_column": 3
  },
  "hijazi_kinhib_rows_unresolved": [
@@ -155,29 +156,29 @@
    "n_unresolved_gene_names_total": 329
   }
  ],
- "variant": "lam10",
- "lam": 10.0,
- "s0_sq": 1.4849152565002441,
+ "variant": "f6_clean",
+ "lam": 1000.0,
+ "s0_sq": 1.900577187538147,
  "n_exposed_kinases": 384,
- "n_sites": 76380,
+ "n_sites": 75152,
  "n_nonseparable_pairs": 191,
- "n_nonseparable_kinases": 109,
+ "n_nonseparable_kinases": 111,
  "features": {
   "f6b_ridge_beta": {
-   "n_finite": 9986812,
+   "n_finite": 9949689,
    "n_kinases": 384,
-   "n_sites": 75366
+   "n_sites": 74200
   },
   "f6b_ridge_z": {
-   "n_finite": 9986812,
+   "n_finite": 9949689,
    "n_kinases": 384,
-   "n_sites": 75366
+   "n_sites": 74200
   },
   "f6b_contrast": {
-   "n_finite": 8195308,
+   "n_finite": 8156975,
    "n_kinases": 378,
-   "n_sites": 63446
+   "n_sites": 62450
   }
  },
- "seconds": 23.6
+ "seconds": 23.3
 }

@@ -122,7 +122,7 @@ def merge(args):
         raise RuntimeError(f"{bad} window residues disagree with cache/index window31")
     np.save(OUT / "win_rows.npy", W)
     s[["site_id"]].to_parquet(OUT / "win_sites.parquet", index=False)
-    np.save(OUT / "win_sites.site_ids.npy", s.site_id.values.astype(str))
+    np.save(OUT / "win_sites.site_ids.npy", np.array(s.site_id.tolist(), dtype="U"))
     # consistency check vs struct+ESM S/T/Y cache (centre residues, random 5000 sites)
     rng = np.random.default_rng(0)
     pick = rng.choice(len(s), size=5000, replace=False)

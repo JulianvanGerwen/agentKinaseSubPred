@@ -13,7 +13,8 @@ Contract (feature agents implement this; register with @register):
             # return: DataFrame with len(query) rows, SAME ROW ORDER, feature columns only (float; NaN allowed)
 
 Driver (`crossfit`), for one outer split (CV fold f, or final DEV->TEST):
-  * eval rows (validation fold f / TEST): fit on ALL outer-training labels, transform eval rows.
+  * eval rows (validation fold f / TEST): DEFAULT (A1) transformed by a randomly assigned inner-fold fit (the same
+    fits used for training rows); eval_mode='all' = one fit on ALL outer-training labels (PI decision only).
   * training rows: inner k-fold (default 5) over substrate clusters of the training rows (ksp.splits.inner_folds);
     for inner fold i, fit on training labels whose substrate cluster is NOT in inner fold i, transform rows of fold i.
   * enforcement: for every fit/transform block the driver asserts that no fitted label lies on a protein or substrate
@@ -91,15 +92,23 @@ def _run(family_factory, fit_pairs, query, ctx) -> pd.DataFrame:
 
 def crossfit(family_factory, train_labels: pd.DataFrame, train_rows: pd.DataFrame, eval_rows: pd.DataFrame | None,
              k_inner: int = 5, seed: int = 0, outer_fold: int | None = None, clusters: pd.Series | None = None,
-             extra: dict | None = None) -> tuple[pd.DataFrame, pd.DataFrame | None]:
+             extra: dict | None = None, eval_mode: str = "inner") -> tuple[pd.DataFrame, pd.DataFrame | None]:
     """Return (features for train_rows, features for eval_rows), each aligned to the input row order.
     family_factory: zero-arg callable returning a fresh LabelDerivedFeature (e.g. the class itself, or REGISTRY[n]).
     train_labels: outer-training label pairs [kinase_acc, site_id, ...]; train_rows / eval_rows: [kinase_acc,
-    site_id(, kinase_idx, site_idx)] rows needing features (pairs; training rows usually = positives + negatives)."""
+    site_id(, kinase_idx, site_idx)] rows needing features (pairs; training rows usually = positives + negatives).
+    eval_mode='inner' (default, DESIGN §16 A1): each eval row's substrate cluster is randomly assigned (seed) to one
+      inner fold i and the row is transformed by the SAME fit as training rows of fold i (labels of the other inner
+      folds, ~80% coverage) -> count-type features have the same distribution for training and eval rows.
+    eval_mode='all': eval rows use one fit on ALL outer-training labels (only if the PI decides so, e.g. deployment).
+    Base (non-label) matrices must be read through ksp.store.load_matrix inside the family (A2)."""
+    if eval_mode not in ("inner", "all"):
+        raise ValueError("eval_mode must be 'inner' or 'all'")
     cl = clusters if clusters is not None else splits.load_clusters()
     ex = extra or {}
+    have_eval = eval_rows is not None and len(eval_rows)
     eval_feat = None
-    if eval_rows is not None and len(eval_rows):
+    if have_eval and eval_mode == "all":
         ctx = FitContext(cl, "eval", outer_fold, seed, ex)
         eval_feat = _run(family_factory, train_labels, eval_rows, ctx)
     # inner folds over the clusters of training rows AND training labels (so every label has an inner fold)
@@ -108,18 +117,34 @@ def crossfit(family_factory, train_labels: pd.DataFrame, train_rows: pd.DataFram
     f_of = pd.Series(splits.inner_folds(uniq, k_inner, seed, cl), index=uniq.values)
     row_f = train_rows.site_id.map(f_of).values
     lab_f = train_labels.site_id.map(f_of).values
-    parts = [None] * len(train_rows)
-    out = None
+    if have_eval and eval_mode == "inner":
+        ec = splits.site_cluster(eval_rows.site_id, cl)
+        uc = np.unique(ec)
+        rng = np.random.default_rng(seed + 7919)
+        cf = dict(zip(uc, rng.integers(0, k_inner, len(uc))))
+        ev_f = np.array([cf[c] for c in ec])
+    out = ev_out = None
     for i in range(k_inner):
         qi = np.where(row_f == i)[0]
-        if len(qi) == 0:
+        qe = np.where(ev_f == i)[0] if (have_eval and eval_mode == "inner") else np.zeros(0, int)
+        if len(qi) == 0 and len(qe) == 0:
             continue
         ctx = FitContext(cl, f"inner{i}", outer_fold, seed, ex)
-        fi = _run(family_factory, train_labels[lab_f != i], train_rows.iloc[qi], ctx)
+        q = pd.concat([train_rows.iloc[qi][["kinase_acc", "site_id"] + [c for c in ("kinase_idx", "site_idx")
+                                                                          if c in train_rows]],
+                       eval_rows.iloc[qe][["kinase_acc", "site_id"] + [c for c in ("kinase_idx", "site_idx")
+                                                                         if c in eval_rows]]
+                       if len(qe) else None], ignore_index=True)
+        fi = _run(family_factory, train_labels[lab_f != i], q, ctx)
         if out is None:
-            out = pd.DataFrame(index=range(len(train_rows)), columns=fi.columns, dtype=float)
-        out.iloc[qi] = fi.values
-    del parts
+            out = pd.DataFrame(np.nan, index=range(len(train_rows)), columns=fi.columns)
+            if have_eval and eval_mode == "inner":
+                ev_out = pd.DataFrame(np.nan, index=range(len(eval_rows)), columns=fi.columns)
+        out.iloc[qi] = fi.values[:len(qi)]
+        if len(qe):
+            ev_out.iloc[qe] = fi.values[len(qi):]
+    if have_eval and eval_mode == "inner":
+        eval_feat = ev_out
     return (out if out is not None else pd.DataFrame(index=range(len(train_rows)))), eval_feat
 
 

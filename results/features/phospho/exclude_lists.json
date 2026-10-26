@@ -1,0 +1,85 @@
+{
+ "clean_bench": {
+  "exclude_pmids": [
+   18669648,
+   19651622,
+   20068231,
+   21406692,
+   21659604,
+   21712546,
+   21857030,
+   21955146,
+   22115753,
+   22210691,
+   22424773,
+   22777824,
+   23898821,
+   24117733,
+   24247654,
+   24324209,
+   25003641,
+   25247763,
+   25850435,
+   26060313,
+   26546556,
+   31959955
+  ],
+  "exclude_cptac": true,
+  "note": "DESIGN 6.7: benchmarKIN perturbation PMIDs in the compendium + all CPTAC (the tumour benchmark uses 7 of our 10 cohorts; all are dropped)"
+ },
+ "clean_bench_perturbation": {
+  "exclude_pmids": [
+   18669648,
+   19651622,
+   20068231,
+   21406692,
+   21659604,
+   21712546,
+   21857030,
+   21955146,
+   22115753,
+   22210691,
+   22424773,
+   22777824,
+   23898821,
+   24117733,
+   24247654,
+   24324209,
+   25003641,
+   25247763,
+   25850435,
+   26060313,
+   26546556,
+   31959955
+  ],
+  "exclude_cptac": false
+ },
+ "clean_bench_tumour": {
+  "exclude_pmids": [],
+  "exclude_cptac": true
+ },
+ "f6_clean": {
+  "exclude_pmids": [
+   17081983,
+   18669648,
+   18691976,
+   19651622,
+   19691289,
+   20068231,
+   21659604,
+   22424773,
+   23836654,
+   25002506,
+   25247763,
+   25332170,
+   25849741,
+   26471730,
+   27050516,
+   27080861,
+   29523821,
+   30631047
+  ],
+  "exclude_cptac": false,
+  "note": "DESIGN 16 A12: compendium studies cited as evidence for KS records (OmniPath/iPTMnet)"
+ }
+}

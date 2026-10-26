@@ -3,8 +3,8 @@ conditionID	PMID	Condition	Control	minutes	block_id	source	drugs	n_kinases_occ50
 28302921_2_log2	28302921	proton	control	120.0	pooled_small			0	0.0	no_drug	True				
 28302921_3_log2	28302921	carbon	control	120.0	pooled_small			0	0.0	no_drug	True				
 29523821_1_log2	29523821	UV	control		pooled_small			0	0.0	no_drug	False				
-29523821_2_log2	29523821	p38i + UV	control		pooled_small	affinity	cond:p38i@1000nM[default_1uM]	2	0.8999999761581421		False				
-29523821_3_log2	29523821	p38i + UV	UV		pooled_small	affinity	cond:p38i@1000nM[default_1uM]	2	0.8999999761581421		False				
+29523821_2_log2	29523821	p38i + UV	control		pooled_small	affinity	cond:p38i@1000nM[default_1uM]	2	0.8999999761581421	exclude_pmids	False				
+29523821_3_log2	29523821	p38i + UV	UV		pooled_small	affinity	cond:p38i@1000nM[default_1uM]	2	0.8999999761581421	exclude_pmids	False				
 29970458_1_log2	29970458	wt_serum_control_2h	wt_serum_control_0h	120.0	pmid:29970458			0	0.0	no_drug	True				
 29970458_2_log2	29970458	wt_serum_control_6h	wt_serum_control_0h	360.0	pmid:29970458			0	0.0	no_drug	True				
 29970458_3_log2	29970458	wt_serum_control_24h	wt_serum_control_0h	1440.0	pmid:29970458			0	0.0	no_drug	True				
@@ -1439,14 +1439,14 @@ conditionID	PMID	Condition	Control	minutes	block_id	source	drugs	n_kinases_occ50
 17081983_qPTM_1_log2	17081983	EGF 5min	control	5.0	pooled_small			0	0.0	no_drug	True				
 17081983_qPTM_3_log2	17081983	EGF 10min	control	10.0	pooled_small			0	0.0	no_drug	True				
 18691976_qPTM_1_log2	18691976	M	S		pooled_small			0	0.0	no_drug	False				
-19651622_qPTM_1_log2	19651622	EGF 15min, U0126 20min	control	20.0	pmid:19651622	affinity	cond:U0126@1000nM[default_1uM]	2	0.9345794320106506		True				
-19651622_qPTM_2_log2	19651622	Dasatinib 5nM	control		pmid:19651622	affinity	cond:Dasatinib@5nM[parsed]	20	0.9817396402359009		False	True			
-19651622_qPTM_3_log2	19651622	EGF 15min, SB202190 20min	control	20.0	pmid:19651622	affinity	cond:SB202190@1000nM[default_1uM]	2	0.9615384340286255		True				
-19651622_qPTM_4_log2	19651622	U0126 20min+EGF 15min	control	20.0	pmid:19651622	affinity	cond:U0126@1000nM[default_1uM]	2	0.9345794320106506		True				
-19651622_qPTM_5_log2	19651622	SB202190 20min+EGF 15min	control	20.0	pmid:19651622	affinity	cond:SB202190@1000nM[default_1uM]	2	0.9615384340286255		True				
+19651622_qPTM_1_log2	19651622	EGF 15min, U0126 20min	control	20.0	pmid:19651622	affinity	cond:U0126@1000nM[default_1uM]	2	0.9345794320106506	exclude_pmids	True				
+19651622_qPTM_2_log2	19651622	Dasatinib 5nM	control		pmid:19651622	affinity	cond:Dasatinib@5nM[parsed]	20	0.9817396402359009	exclude_pmids	False	True			
+19651622_qPTM_3_log2	19651622	EGF 15min, SB202190 20min	control	20.0	pmid:19651622	affinity	cond:SB202190@1000nM[default_1uM]	2	0.9615384340286255	exclude_pmids	True				
+19651622_qPTM_4_log2	19651622	U0126 20min+EGF 15min	control	20.0	pmid:19651622	affinity	cond:U0126@1000nM[default_1uM]	2	0.9345794320106506	exclude_pmids	True				
+19651622_qPTM_5_log2	19651622	SB202190 20min+EGF 15min	control	20.0	pmid:19651622	affinity	cond:SB202190@1000nM[default_1uM]	2	0.9615384340286255	exclude_pmids	True				
 19651622_qPTM_6_log2	19651622	EGF 15min	control	15.0	pmid:19651622			0	0.0	no_drug	True				
-19651622_qPTM_7_log2	19651622	Dasatinib 50nM	control		pmid:19651622	affinity	cond:Dasatinib@50nM[parsed]	37	0.9981434345245361		False	True			
-19651622_qPTM_8_log2	19651622	Dasatinib 50nM	5nM		pmid:19651622	affinity	cond:Dasatinib@50nM[parsed]	37	0.9981434345245361		False	True			
+19651622_qPTM_7_log2	19651622	Dasatinib 50nM	control		pmid:19651622	affinity	cond:Dasatinib@50nM[parsed]	37	0.9981434345245361	exclude_pmids	False	True			
+19651622_qPTM_8_log2	19651622	Dasatinib 50nM	5nM		pmid:19651622	affinity	cond:Dasatinib@50nM[parsed]	37	0.9981434345245361	exclude_pmids	False	True			
 19691289_qPTM_1_log2	19691289	Noscapine 15min	control	15.0	pooled_small			0	0.0	no_drug	True				
 19691289_qPTM_2_log2	19691289	Noscapine 60min	control	60.0	pooled_small			0	0.0	no_drug	True				
 20068231_qPTM_1_log2	20068231	Ctr	G1-S		pooled_small			0	0.0	no_drug	False				
@@ -1575,11 +1575,11 @@ conditionID	PMID	Condition	Control	minutes	block_id	source	drugs	n_kinases_occ50
 24961811_qPTM_5_log2	24961811	OIS 9d	control	12960.0	pooled_small			0	0.0	no_drug	True				
 24961811_qPTM_6_log2	24961811	OISb 9d	control	12960.0	pooled_small			0	0.0	no_drug	True				
 25002506_qPTM_1_log2	25002506	PMA, RSK1/2 RNAi	control		pooled_small			0	0.0	no_drug	False				
-25002506_qPTM_2_log2	25002506	BI-D1870	DMSO		pooled_small	affinity	cond:BI-D1870@1000nM[default_1uM]	4	0.9708737730979919		False				
+25002506_qPTM_2_log2	25002506	BI-D1870	DMSO		pooled_small	affinity	cond:BI-D1870@1000nM[default_1uM]	4	0.9708737730979919	exclude_pmids	False				
 25002506_qPTM_3_log2	25002506	RSK1/2 RNAi	control		pooled_small			0	0.0	no_drug	False				
-25002506_qPTM_4_log2	25002506	PMA, BI-D1870	control		pooled_small	affinity	cond:BI-D1870@1000nM[default_1uM]	4	0.9708737730979919		False				
-25002506_qPTM_5_log2	25002506	PD184352	DMSO		pooled_small	affinity	cond:PD184352@1000nM[default_1uM]	2	0.9832841753959656		False				
-25002506_qPTM_6_log2	25002506	PMA, PD184352	control		pooled_small	affinity	cond:PD184352@1000nM[default_1uM]	2	0.9832841753959656		False				
+25002506_qPTM_4_log2	25002506	PMA, BI-D1870	control		pooled_small	affinity	cond:BI-D1870@1000nM[default_1uM]	4	0.9708737730979919	exclude_pmids	False				
+25002506_qPTM_5_log2	25002506	PD184352	DMSO		pooled_small	affinity	cond:PD184352@1000nM[default_1uM]	2	0.9832841753959656	exclude_pmids	False				
+25002506_qPTM_6_log2	25002506	PMA, PD184352	control		pooled_small	affinity	cond:PD184352@1000nM[default_1uM]	2	0.9832841753959656	exclude_pmids	False				
 25003641_qPTM_1_log2	25003641	VE-821	control		pooled_small	affinity	cond:VE-821@1000nM[default_1uM]	2	0.6779654622077942		False				
 25056879_qPTM_1_log2	25056879	TGFB 5min	control	5.0	pooled_small			0	0.0	no_drug	True				
 25056879_qPTM_2_log2	25056879	TGFB 20min	control	20.0	pooled_small			0	0.0	no_drug	True				
@@ -1651,7 +1651,7 @@ conditionID	PMID	Condition	Control	minutes	block_id	source	drugs	n_kinases_occ50
 26853621_qPTM_4_log2	26853621	FADU	(OKF6/TERT1)		pooled_small			0	0.0	no_drug	False				
 26853621_qPTM_5_log2	26853621	JHU-O22	(OKF6/TERT1)		pooled_small			0	0.0	no_drug	False				
 26853621_qPTM_6_log2	26853621	CAL27	(OKF6/TERT1)		pooled_small			0	0.0	no_drug	False				
-27050516_qPTM_1_log2	27050516	Cortistatin A	control		pooled_small	affinity	cond:Cortistatin@1000nM[default_1uM]	2	0.9900990128517151		False				
+27050516_qPTM_1_log2	27050516	Cortistatin A	control		pooled_small	affinity	cond:Cortistatin@1000nM[default_1uM]	2	0.9900990128517151	exclude_pmids	False				
 27080861_qPTM_1_log2	27080861	IL-23 30min	control	30.0	pooled_small			0	0.0	no_drug	True				
 27134283_qPTM_1_log2	27134283	Flavopiridol	control		pooled_small	affinity	cond:Flavopiridol@1000nM[default_1uM]	31	0.9940357804298401		False				
 27134283_qPTM_2_log2	27134283	RO-3306	control		pooled_small	affinity	cond:RO-3306@1000nM[default_1uM]	1	0.966183602809906		False				
@@ -1898,8 +1898,8 @@ conditionID	PMID	Condition	Control	minutes	block_id	source	drugs	n_kinases_occ50
 32606318_qPTM_7_log2	32606318	PRL3i 6h	control	360.0	pmid:32606318			0	0.0	no_drug	True				
 32606318_qPTM_8_log2	32606318	PRL3i 24h	control	1440.0	pmid:32606318			0	0.0	no_drug	True				
 21659604_Ochoa_114_48_log2	21659604	Starved	Insulin	20.0	pooled_small			0	0.0	no_drug	True				
-21659604_Ochoa_117_48_log2	21659604	Torin1	Insulin	20.0	pooled_small	affinity	cond:Torin1@1000nM[default_1uM]	1	0.9970089793205261		True				
-21659604_Ochoa_120_48_log2	21659604	Rapamycin	Insulin	20.0	pooled_small	affinity	cond:Rapamycin@1000nM[default_1uM]	1	0.800000011920929		True				
+21659604_Ochoa_117_48_log2	21659604	Torin1	Insulin	20.0	pooled_small	affinity	cond:Torin1@1000nM[default_1uM]	1	0.9970089793205261	exclude_pmids	True				
+21659604_Ochoa_120_48_log2	21659604	Rapamycin	Insulin	20.0	pooled_small	affinity	cond:Rapamycin@1000nM[default_1uM]	1	0.800000011920929	exclude_pmids	True				
 18669648_Ochoa_267_72_log2	18669648	Mitosis (Nocodazole)	Async cells		pooled_small			0	0.0	no_drug	False				
 18669648_Ochoa_72_72_log2	18669648	G1_S (Thymidine)	Async cells		pooled_small			0	0.0	no_drug	False				
 23749302_Ochoa_432_156_log2	23749302	Bortezomib	Untreated	240.0	pooled_small			0	0.0	no_drug	True				

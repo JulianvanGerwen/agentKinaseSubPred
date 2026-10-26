@@ -424,3 +424,86 @@ def load_resolver(results_dir=ROOT / "results" / "labels") -> KinaseResolver:
     kl = read_kinase_list(Path(results_dir) / "kinase_list.tsv")
     kl["include"] = kl.include.astype(str).eq("True")
     return KinaseResolver(kl, read_synonyms(Path(results_dir) / "kinase_synonyms.tsv"))
+
+
+# ------------------------------------------------------------------------------------------------ strict bulk resolver
+HOMONYMS = ROOT / "config" / "kinase_homonyms.tsv"
+COMPLEX = ROOT / "config" / "complex_subunits.tsv"
+
+
+def load_homonyms(path=HOMONYMS) -> pd.DataFrame:
+    return pd.read_csv(path, sep="\t", comment="#", dtype=str).fillna("")
+
+
+def load_complex_subunits(path=COMPLEX) -> dict:
+    d = pd.read_csv(path, sep="\t", comment="#", dtype=str).fillna("")
+    return {s.upper(): c.split() for s, c in zip(d.subunit, d.catalytic)}
+
+
+def family_members(resolver: "KinaseResolver | None" = None) -> dict:
+    """Curated family name (upper) -> list of member kinase-list genes (from kinase_curation.tsv 'family_name'
+    values; range notation like 'PLK1-4' and wildcards like 'MAP3K*' / 'EPHA*' are expanded against the list)."""
+    import re as _re
+    res = resolver or load_resolver()
+    genes = sorted(res.kl.gene[res.kl.include.astype(bool)])
+    cur = load_curation()
+    out = {}
+    for name, val in zip(cur.gene[cur.action.eq("family_name")], cur.value[cur.action.eq("family_name")]):
+        mem = []
+        for tok in str(val).replace("/", " ").split():
+            m = _re.fullmatch(r"([A-Z0-9]*?[A-Z])(\d+)-(\d+)", tok)
+            if tok.endswith("*"):
+                mem += [g for g in genes if g.startswith(tok[:-1])]
+            elif m:
+                mem += [f"{m.group(1)}{i}" for i in range(int(m.group(2)), int(m.group(3)) + 1)]
+            elif tok in genes:
+                mem.append(tok)
+        out[str(name).upper()] = [g for g in dict.fromkeys(mem) if g in genes]
+    return out
+
+
+def resolve_kinase_names(names, source: str, resolver: "KinaseResolver | None" = None, accs=None,
+                         on_unknown: str = "collect") -> tuple[pd.DataFrame, dict]:
+    """THE strict bulk name resolver (DESIGN §16 A4). For each name (optionally with a UniProt accession, which wins)
+    returns gene, uniprot_acc, how in {acc, homonym_rule, symbol, synonym, family_name, homonym_drop, ambiguous,
+    unknown}, and family members for family-level names (mask-only use). Unknown/ambiguous names are collected and
+    counted (on_unknown='collect') or raise (on_unknown='raise'). Per-source homonym rules: config/kinase_homonyms.tsv.
+    """
+    res = resolver or load_resolver()
+    hom = load_homonyms()
+    rule = {}
+    for n, s, t in zip(hom.name.str.upper(), hom.source, hom.target):
+        if s == source or (s == "*" and (n, source) not in rule):
+            rule[(n, source)] = t
+    fam = family_members(res)
+    acc_of = dict(zip(res.kl.gene, res.kl.uniprot_acc))
+    names = list(names)
+    accs = list(accs) if accs is not None else [None] * len(names)
+    rows, counts = [], {}
+    for nm, ac in zip(names, accs):
+        key = str(nm).strip().upper() if nm is not None else ""
+        g, how, members = None, "unknown", ""
+        if ac:
+            g, how = res.resolve(acc=ac)
+        if g is None:
+            t = rule.get((key, source))
+            if t is not None:
+                if t == "DROP":
+                    how = "homonym_drop"
+                elif t.startswith("FAMILY:"):
+                    how, members = "family_name", " ".join(fam.get(t[7:].upper(), []))
+                else:
+                    g, how = t, "homonym_rule"
+            else:
+                g, how = res.resolve(nm)
+                if g is None and how not in ("family_name", "ambiguous"):
+                    g, how = res.resolve_note(nm)          # normalised names (GSK3-beta, PKB/AKT1, ...)
+                if how == "family_name":
+                    members = " ".join(fam.get(key, fam.get(res._normalise(str(nm)).upper(), [])))
+        counts[how] = counts.get(how, 0) + 1
+        rows.append((nm, ac, g, acc_of.get(g) if g else None, how, members))
+    out = pd.DataFrame(rows, columns=["name", "acc_in", "gene", "uniprot_acc", "how", "family_members"])
+    bad = out[out.how.isin(["unknown", "ambiguous"])]
+    if len(bad) and on_unknown == "raise":
+        raise KeyError(f"{len(bad)} unresolved kinase names from {source}: {sorted(set(bad.name))[:20]}")
+    return out, {"source": source, "counts": counts, "unresolved": sorted(set(map(str, bad.name)))}

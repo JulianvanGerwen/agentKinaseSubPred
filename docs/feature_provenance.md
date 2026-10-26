@@ -18,3 +18,14 @@ One row per feature family: source, label-derived?, leakage risk, coverage. Each
 | `loc/site_topo_code`, `loc/site_lumenal` (site vectors) | UniProt 2026_03 topology (TOPO_DOM/TRANSMEM/SIGNAL/TRANSIT) | no | low to moderate: UniProt topology is curated, but it is not KS information | all 350,736 sites; 7.4 % lumenal; FAM20C KS sites 87.5 % lumenal |
 | `coexpr/coexpr_hpa_tissue_spearman` | HPA RNA tissue consensus v25 | no | none | 100 % / 96 % |
 | `coexpr/coexpr_depmap_pearson`, `_pc5` | DepMap 26Q1 Chronos (figshare) | no | none | 99.6 % / 94 % |
+
+## Phosphoproteomics features F6 (feat-phospho; details in docs/features_phospho.md)
+| feature (store `phospho/...`) | source(s) | label-derived? | leakage risk | coverage (non-NaN) |
+|---|---|---|---|---|
+| `f6b_ridge_beta`, `f6b_ridge_z` | compendium log2FC (692 inhibitor conditions ≤ 2 h: Hijazi 2020 + decryptM + 40 other studies) × inhibition matrix (Hijazi kinhib; Klaeger 2017 / Reinecke 2024 / CurveCurator / Davis 2011 Kd; curated aliases) | no | low–moderate: PSP in-vivo labels may come from the same inhibitor papers (DESIGN §13); study-removal variants `_clean_bench`, `_f6_clean`; ascertainment: labelled sites 2.2× more often non-missing | 384 kinases × 75k sites (10.0 M pairs); range: β scaled log2FC per unit occupancy, z ~ N(0,1)-like |
+| `f6b_contrast` | same | no | same | 378 kinases × 63k sites |
+| `f6b_kinase_maxcos` (kinase vector) | inhibition matrix | no | none (kinase-level) | 384 kinases; [−1, 1] |
+| `f6c_prot` | CPTAC BCM v1.2 tumours (10 cohorts), site residualised on host protein + ESTIMATE stromal/immune + WES purity; kinase protein residualised on confounders | no | low; tumour benchmark (benchmarKIN) overlap → excluded in clean variant | 427 kinases × 69k sites; mean Fisher z |
+| `f6c_aloop` | same + A-loop sites (DFG…APE in UniProt kinase domain) | no | low; kinase's own sites set NaN | 99 kinases × 69k sites |
+| `f6a_coreg` family (crossfit; `ksp.features.phospho.CoregF6a`): `f6a_{comp,cptac}_{top,med}` | compendium study blocks / CPTAC residualised cohorts + training KS pairs | **yes**: cross-fit via ksp.crossfit; same-protein, same-cluster and self substrates excluded inside the function as well | high if not cross-fitted; ascertainment as above | ~300 kinases × 60k sites per fold; Fisher z |
+| `sanity_f6a_*` | temporary protein-grouped 5-fold cross-fit | yes | **sanity only, never a model input** | — |

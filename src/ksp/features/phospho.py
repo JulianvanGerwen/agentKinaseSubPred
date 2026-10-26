@@ -114,12 +114,17 @@ def save_block(b: Block, out_dir: Path = BLOCK_DIR) -> dict:
 
 def load_blocks(kinds: Sequence[str] = ("compendium", "cptac"), exclude_pmids: Iterable = (),
                 exclude_cptac: bool | Iterable[str] = False, block_dir: Path = BLOCK_DIR,
-                conditions: pd.DataFrame | None = None) -> list[Block]:
+                conditions: pd.DataFrame | None = None, exclude_drugs: Iterable[str] = (),
+                exclude_condition_ids: Iterable[str] = ()) -> list[Block]:
     """Load cached blocks. ``exclude_pmids`` removes the compendium columns (conditions) of those PMIDs from every
     block (a block that loses all columns is dropped); ``exclude_cptac`` = True drops all CPTAC blocks, or give a list
     of cohort names to drop only those."""
     man = pd.read_parquet(block_dir / "manifest.parquet")
     excl = {int(p) for p in exclude_pmids}
+    excl_c = set(exclude_condition_ids)
+    if exclude_drugs:
+        from .phospho_inhib import condition_ids_for_drugs
+        excl_c |= condition_ids_for_drugs(exclude_drugs)
     if conditions is None and excl:
         conditions = pd.read_parquet(CACHE / "conditions.parquet")
     if exclude_cptac is True:
@@ -139,9 +144,11 @@ def load_blocks(kinds: Sequence[str] = ("compendium", "cptac"), exclude_pmids: I
         cols = pd.read_parquet(block_dir / f"{r.file}.cols.parquet").col.tolist()
         b = Block(r.block_id, r.kind, rows, np.asarray(X), cols,
                   tuple(int(p) for p in str(r.pmids).split(";") if p), r.cohort or None)
-        if r.kind == "compendium" and excl:
+        if r.kind == "compendium" and (excl or excl_c):
+            if conditions is None:
+                conditions = pd.read_parquet(CACHE / "conditions.parquet")
             pm = conditions.set_index("conditionID").PMID.reindex(cols).astype("Int64")
-            keep = ~pm.isin(list(excl)).to_numpy()
+            keep = ~pm.isin(list(excl)).to_numpy() & ~np.isin(np.array(cols, dtype=object), list(excl_c))
             if not keep.any():
                 continue
             if not keep.all():
@@ -406,11 +413,13 @@ def load_feature(name: str, mmap: bool = True) -> np.ndarray:
 _BLOCK_CACHE: dict = {}
 
 
-def cached_blocks(kind: str, exclude_pmids=(), exclude_cptac=False) -> list:
+def cached_blocks(kind: str, exclude_pmids=(), exclude_cptac=False, exclude_drugs=()) -> list:
     key = (kind, tuple(sorted(int(p) for p in exclude_pmids)),
-           exclude_cptac if isinstance(exclude_cptac, bool) else tuple(sorted(exclude_cptac)))
+           exclude_cptac if isinstance(exclude_cptac, bool) else tuple(sorted(exclude_cptac)),
+           tuple(sorted(exclude_drugs)))
     if key not in _BLOCK_CACHE:
-        _BLOCK_CACHE[key] = load_blocks(kinds=(kind,), exclude_pmids=exclude_pmids, exclude_cptac=exclude_cptac)
+        _BLOCK_CACHE[key] = load_blocks(kinds=(kind,), exclude_pmids=exclude_pmids, exclude_cptac=exclude_cptac,
+                                        exclude_drugs=exclude_drugs)
     return _BLOCK_CACHE[key]
 
 
@@ -449,6 +458,7 @@ class CoregF6a(LabelDerivedFeature):
     kinds = ("compendium", "cptac")
     exclude_pmids: tuple = ()
     exclude_cptac = False
+    exclude_drugs: tuple = ()
     m, min_shared, min_blocks = 3, 8, 2
     device = "cuda"
 
@@ -477,7 +487,8 @@ class CoregF6a(LabelDerivedFeature):
                 out[f"f6a_{tag}_med"] = np.full(len(query), np.nan, np.float32)
                 continue
             blocks = cached_blocks(kind, self.exclude_pmids if kind == "compendium" else (),
-                                   self.exclude_cptac if kind == "cptac" else False)
+                                   self.exclude_cptac if kind == "cptac" else False,
+                                   self.exclude_drugs if kind == "compendium" else ())
             r = coreg_features(self.train, uq, blocks, cluster_of_site=clus, m=self.m, min_shared=self.min_shared,
                                min_blocks=self.min_blocks, n_kinases=len(kin), device=self.device)
             out[f"f6a_{tag}_top"] = r["top"][kidx, inv]

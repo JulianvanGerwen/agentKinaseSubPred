@@ -156,8 +156,8 @@
   }
  ],
  "variant": "",
- "lam": 1.0,
- "s0_sq": 1.2281086444854736,
+ "lam": 1000.0,
+ "s0_sq": 1.922713041305542,
  "n_exposed_kinases": 384,
  "n_sites": 76380,
  "n_nonseparable_pairs": 191,
@@ -179,5 +179,5 @@
    "n_sites": 63446
   }
  },
- "seconds": 20.0
+ "seconds": 24.4
 }

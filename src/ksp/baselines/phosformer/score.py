@@ -25,7 +25,8 @@ def score_pairs(model, kinase_seq: dict, pairs: pd.DataFrame, batch_size: int = 
     bounds, b0 = [], 0
     while b0 < len(order):  # batches of <= batch_size rows and <= max_tokens padded tokens
         b1, mx = b0, 0
-        while b1 < len(order) and b1 - b0 < batch_size and max(mx, klen[b1]) * (b1 - b0 + 1) <= max_tokens:
+        while b1 < len(order) and b1 - b0 < batch_size and max(mx, klen[b1]) * (b1 - b0 + 1) <= max_tokens \
+                and kin[b1] == kin[b0]:  # never mix kinases -> equal lengths, no padding mask needed
             mx = max(mx, klen[b1])
             b1 += 1
         b1 = max(b1, b0 + 1)
@@ -35,7 +36,9 @@ def score_pairs(model, kinase_seq: dict, pairs: pd.DataFrame, batch_size: int = 
         sl = slice(b0, b1)
         ids, att = collate_pairs([encode_pair(p, kinase_seq[k]) for k, p in zip(kin[sl], pep[sl])])
         ids = torch.from_numpy(ids).to(device, non_blocking=True)
-        att = torch.from_numpy(att).to(device, non_blocking=True)
+        # all rows share one kinase -> no padding; attention_mask=None lets SDPA use flash kernels (identical math:
+        # in-peptide <pad> tokens have attention_mask 1 anyway)
+        att = None if att.all() else torch.from_numpy(att).to(device, non_blocking=True)
         with torch.autocast("cuda", dtype=torch.bfloat16, enabled=amp):
             pr = model.prob(ids, att)
         out[order[sl]] = pr.float().cpu().numpy()

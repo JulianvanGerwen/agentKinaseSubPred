@@ -390,7 +390,7 @@ def evaluate(preds: pd.DataFrame, data: EvalData, missing: str = "worst", frac_t
         rows.append(r)
         if keep_items:
             items[k] = {"pos_s": sp, "pos_c": data.site_cluster[ip], "hard_s": sh, "hard_c": data.site_cluster[ih],
-                        "top_hits": hits}
+                        "top_hits": hits, "all_idx_hash": hash(ia.tobytes()) ^ hash(ip.tobytes())}
         # pair-level strata (positives subsets vs the same E-hard negatives)
         sub = pm[pm.kinase_acc.eq(k)]
         sub_s = pd.Series(sc[sub.site_idx.values], index=sub.site_idx.values)
@@ -664,7 +664,8 @@ def paired_bootstrap(resA: EvalResult, resB: EvalResult, B: int = 1000, seed: in
     for k in set(resA.items) | set(resB.items):
         a, b = resA.items.get(k), resB.items.get(k)
         if a is None or b is None or len(a["pos_c"]) != len(b["pos_c"]) or len(a["hard_c"]) != len(b["hard_c"]) \
-                or not np.array_equal(a["pos_c"], b["pos_c"]) or not np.array_equal(a["hard_c"], b["hard_c"]):
+                or not np.array_equal(a["pos_c"], b["pos_c"]) or not np.array_equal(a["hard_c"], b["hard_c"]) \
+                or a["all_idx_hash"] != b["all_idx_hash"]:
             raise ValueError(f"unmatched evaluation items for kinase {k}: compare on a matched universe")
     pa, pb = resA.per_kinase.set_index("kinase_acc"), resB.per_kinase.set_index("kinase_acc")
     kp = list(pa.index[pa.in_K_primary])

@@ -73,8 +73,16 @@ def main():
     funnel.append(("OmniPath", "pairs_mapped", len(op)))
     funnel.append(("UniProt", "pairs_mapped", len(up)))
 
+    # ------------------------------------------------------------------ mask-only rows (DESIGN §16 A7)
+    tm = olog[olog.reason.eq("no_curated_non_psp_source")]
+    mo = labels.mask_only_pairs(pd.concat([pp, op, up], ignore_index=True), olog, ulog, st, res, textmining=tm)
+    for pv, n in mo.groupby(["provenance", "mask_sensitivity_only"]).size().items():
+        funnel.append(("MASK", f"mask_only_pairs:{pv[0]}:sensitivity_only={pv[1]}", int(n)))
+
     # ------------------------------------------------------------------ combine + flags
-    allp = pd.concat([pp, op, up], ignore_index=True)
+    allp = pd.concat([pp, op, up, mo], ignore_index=True)
+    allp["mask_only"] = allp.mask_only.astype("boolean").fillna(False).astype(bool)
+    allp["mask_sensitivity_only"] = allp.mask_sensitivity_only.astype("boolean").fillna(False).astype(bool)
     cls = dict(zip(kl.gene, kl.residue_class))
     inc = dict(zip(kl.gene, kl.include))
     allp["kinase_acc"] = allp.kinase.map(dict(zip(kl.gene, kl.uniprot_acc)))
@@ -88,8 +96,9 @@ def main():
     for c in ["native_human", "hmr", "sub_native_human", "in_vivo", "in_vitro", "in_vivo_native", "in_vitro_native",
               "in_vivo_hmr", "in_vitro_hmr", "autophos", "res_changed", "sgid_multi", "omnipath_lists_psp"]:
         allp[c] = allp[c].astype("boolean").fillna(False).astype(bool)
-    ext = allp.provenance.ne("PSP")
-    allp.loc[ext, "autophos"] = allp.loc[ext, "kinase_acc"].eq(allp.loc[ext, "acc"])
+    ext = allp.provenance.isin(["OmniPath", "UniProt"])
+    nonpsp = allp.provenance.ne("PSP")
+    allp.loc[nonpsp, "autophos"] = allp.loc[nonpsp, "kinase_acc"].eq(allp.loc[nonpsp, "acc"])
     allp["species_origin"] = allp.species_origin.fillna("")
     psp_raw_pairs = set(zip(pp.kinase, pp.site_id))
     allp["in_psp_ks"] = [(k, s) in psp_raw_pairs for k, s in zip(allp.kinase, allp.site_id)]
@@ -110,7 +119,8 @@ def main():
             "evidence_native", "evidence_hmr", "autophos", "psp_autophos_flag", "kinase_included",
             "kinase_residue_class", "residue_in_class", "in_universe", "in_psp_ks", "sub_map_methods", "kin_map_hows",
             "res_changed", "sgid_multi", "n_rows", "psp_mod_rsd", "psp_sub_accs", "ext_sources", "ext_refs",
-            "omnipath_lists_psp", "omnipath_all_sources", "uniprot_note"]
+            "omnipath_lists_psp", "omnipath_all_sources", "uniprot_note", "psp_sgids", "mask_only",
+            "mask_sensitivity_only", "mask_source_name"]
     allp = allp[cols].sort_values(["provenance", "kinase", "acc", "pos"]).reset_index(drop=True)
     allp["n_rows"] = allp.n_rows.astype("Int64")
     allp["psp_autophos_flag"] = allp.psp_autophos_flag.astype("boolean")

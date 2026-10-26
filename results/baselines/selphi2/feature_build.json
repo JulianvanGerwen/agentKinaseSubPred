@@ -1,0 +1,35 @@
+{
+ "site_table": {
+  "ochoa_rows": 116258,
+  "sites_mapped": 111141,
+  "sites_mapped_in_U_ms": 111141,
+  "by_residue_in_U_ms": {
+   "S": 81819,
+   "T": 23256,
+   "Y": 6066
+  },
+  "U_ms_sites_total": 347354,
+  "seconds": 41.7
+ },
+ "expression": {
+  "gtex": {
+   "n_genes": 56200,
+   "n_genes_mapped": 20185,
+   "n_tissues": 54
+  },
+  "rna_cell": {
+   "n_genes": 20162,
+   "n_genes_mapped": 19584,
+   "n_lines": 1206
+  },
+  "sel": {
+   "n_tissues": 51,
+   "n_proteins": 19504
+  },
+  "seconds": 16.7
+ },
+ "cantley_norm": {
+  "seconds": 3.3
+ },
+ "total_seconds": 63.5
+}

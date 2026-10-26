@@ -1,0 +1,52 @@
+# Non-catalytic complex / regulatory subunits -> catalytic kinase(s) (DESIGN §16 A7). Label rows naming a subunit
+# become MASK-ONLY rows for the catalytic kinases (never positives, never negatives).
+subunit	catalytic	rationale
+CSNK2B	CSNK2A1 CSNK2A2 CSNK2A3	CK2 beta regulatory subunit
+PRKAB1	PRKAA1 PRKAA2	AMPK beta
+PRKAB2	PRKAA1 PRKAA2	AMPK beta
+PRKAG1	PRKAA1 PRKAA2	AMPK gamma
+PRKAG2	PRKAA1 PRKAA2	AMPK gamma
+PRKAG3	PRKAA1 PRKAA2	AMPK gamma
+PRKAR1A	PRKACA PRKACB PRKACG	PKA regulatory
+PRKAR1B	PRKACA PRKACB PRKACG	PKA regulatory
+PRKAR2A	PRKACA PRKACB PRKACG	PKA regulatory
+PRKAR2B	PRKACA PRKACB PRKACG	PKA regulatory
+PHKA1	PHKG1 PHKG2	phosphorylase kinase alpha
+PHKA2	PHKG1 PHKG2	phosphorylase kinase alpha
+PHKB	PHKG1 PHKG2	phosphorylase kinase beta
+CCNB1	CDK1	cyclin B1-CDK1
+CCNB2	CDK1	cyclin B2-CDK1
+CCNA1	CDK1 CDK2	cyclin A
+CCNA2	CDK1 CDK2	cyclin A
+CCNE1	CDK2	cyclin E
+CCNE2	CDK2	cyclin E
+CCND1	CDK4 CDK6	cyclin D
+CCND2	CDK4 CDK6	cyclin D
+CCND3	CDK4 CDK6	cyclin D
+CCNH	CDK7	CAK
+MNAT1	CDK7	CAK
+GTF2H1	CDK7	TFIIH
+GTF2H2	CDK7	TFIIH
+GTF2H2C	CDK7	TFIIH
+GTF2H2C_2	CDK7	TFIIH (OmniPath symbol)
+GTF2H3	CDK7	TFIIH
+GTF2H4	CDK7	TFIIH
+GTF2H5	CDK7	TFIIH
+ERCC2	CDK7	TFIIH
+ERCC3	CDK7	TFIIH
+CCNT1	CDK9	P-TEFb
+CCNT2	CDK9	P-TEFb
+CCNK	CDK9 CDK12 CDK13	cyclin K
+CCNC	CDK8 CDK19	mediator kinase module
+MED12	CDK8 CDK19	mediator kinase module
+CDK5R1	CDK5	p35
+CDK5R2	CDK5	p39
+RPTOR	MTOR	mTORC1
+RICTOR	MTOR	mTORC2
+MLST8	MTOR	mTORC1/2
+MAPKAP1	MTOR	mTORC2
+DEPTOR	MTOR	mTOR complex member (OmniPath complex expansion)
+AKT1S1	MTOR	mTORC1 member (PRAS40)
+XRCC5	PRKDC	DNA-PK holoenzyme (Ku80)
+XRCC6	PRKDC	DNA-PK holoenzyme (Ku70)
+IKBKG	CHUK IKBKB	IKK complex (NEMO)

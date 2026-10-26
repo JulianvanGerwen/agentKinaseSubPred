@@ -1,28 +1,28 @@
 {
- "cantley_auroc_s": 17.3,
- "site_centric_s": 3.3,
- "fit_pssm_family_s": 2.28,
+ "cantley_auroc_s": 7.6,
+ "site_centric_s": 2.4,
+ "fit_pssm_family_s": 2.64,
  "fit_pssm_family_alpha_beta": [
   64.0,
   256.0
  ],
- "fit_pssm_group_s": 0.52,
+ "fit_pssm_group_s": 0.55,
  "fit_pssm_group_alpha_beta": [
   64.0,
   4.0
  ],
- "fit_pssm_none_s": 0.52,
+ "fit_pssm_none_s": 0.62,
  "fit_pssm_none_alpha_beta": [
   32.0,
   4.0
  ],
- "fit_pssm_family_phospho_s": 3.14,
+ "fit_pssm_family_phospho_s": 3.65,
  "fit_pssm_family_phospho_alpha_beta": [
   128.0,
   256.0
  ],
- "score_all_503x350736_s": 6.0,
- "crossfit_driver_5inner+eval_s": 62.2,
+ "score_all_503x350736_s": 6.2,
+ "crossfit_driver_5inner+eval_s": 66.4,
  "crossfit_columns": [
   "f2a_pssm",
   "f2a_pssm_pct",

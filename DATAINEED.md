@@ -32,6 +32,16 @@ Last updated: 2026-10-26 15:00
 ### 7. Hein et al. 2025 (Cell) final localisation table — priority LOW
 - **Tried:** Cell supplement → 403. Workaround: Zenodo analysis repo (per-protein enrichment tables) obtained.
 
+### 8. decryptM curve fits (PRIDE PXD037285, `*_Curves.zip`) — priority LOW-MEDIUM (feat-phospho, 2026-10-26)
+- **Need:** per-site EC50 / curve class for the decryptM kinase-inhibitor dose series, to build a "potency coherence" F6b variant (|log EC50_site − log Kd(k, drug)|), which is closer to direct-substrate evidence than the per-dose log2FC we use now.
+- **Tried:** not attempted (open CC0 data, ~3–5 GB; out of the time box for this round).
+- **Workaround:** dose series used as per-dose log2FC with occupancy = dose/(dose+Kd) in the ridge (F6b).
+
+### 9. CPTAC TMT plex / batch and ischemia time per tumour sample — priority LOW (feat-phospho, 2026-10-26)
+- **Need:** confounders for the CPTAC residualisation (DESIGN KB-9). The LinkedOmics `*_meta.txt` and PDC `Clinical_meta_data_v1` have only ESTIMATE stromal/immune scores and WES purity (used).
+- **Tried:** both metadata files inspected; no plex/batch/ischemia columns.
+- **Workaround:** residualise on host protein + stromal + immune + purity only. Ideal file: per-cohort sample → TMT plex table (PDC study biospecimen manifests) and ischemia time.
+
 ## Licence decisions (for your information; no action unless you disagree)
 - Phospho.ELM requires an academic click-through licence: **not accepted, skipped** (adds almost nothing beyond PSP).
 - PSP, Kinase Library (Cantley) data and iPTMnet are CC BY-NC-SA / non-commercial: used for research; outputs derived from them inherit non-commercial terms.

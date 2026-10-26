@@ -37,9 +37,14 @@ def main():
     ap.add_argument("--threads", type=int, default=12)
     ap.add_argument("--force", action="store_true")
     ap.add_argument("--dry-run", action="store_true", help="optimise + report only; write/move/seal nothing")
+    ap.add_argument("--relabel", action="store_true",
+                    help="keep the FROZEN split; rebuild DEV/TEST label tables from a rebuilt ks_pairs.parquet and "
+                         "re-seal (verifies that evaluation positives / kinase sets are unchanged)")
     ap.add_argument("--iter-test", type=int, default=400_000)
     ap.add_argument("--iter-cv", type=int, default=800_000)
     a = ap.parse_args()
+    if a.relabel:
+        return relabel()
     t0 = time.time()
     out = splits.SPLIT_DIR if not a.dry_run else splits.CACHE / "dry_run"
     if (out / "SEAL.json").exists() and not a.force:
@@ -58,13 +63,7 @@ def main():
     kpos = {acc: i for i, acc in enumerate(K.uniprot_acc)}
     ums = set(S.site_id[S.in_U_ms])
     in_idx = set(S.site_id)
-    full = pd.read_parquet(labels.FULL_PAIRS)
-    full["in_index"] = full.site_id.isin(in_idx)
-    full["in_U_ms"] = full.site_id.isin(ums)
-    full["is_canary"] = False
-    full["new_since_2021"] = labels.new_since_2021(full)
-    par = labels.paralog_sets()
-    full["ext_test"] = labels.external_test_filter(full, par)
+    full = annotate_full(pd.read_parquet(labels.FULL_PAIRS), ums, in_idx)
     L2 = labels.select_variant(full, "L2")
     EV = labels.select_variant(full, "eval")
     R["L2_pairs"] = len(L2)
@@ -293,6 +292,83 @@ def main():
     R["runtime_s"] = round(time.time() - t0, 1)
     (out / "split_numbers.json").write_text(json.dumps(R, indent=1, default=str))
     print(json.dumps(R, indent=1, default=str))
+
+
+def annotate_full(full: pd.DataFrame, ums: set, in_idx: set) -> pd.DataFrame:
+    full = full.copy()
+    full["in_index"] = full.site_id.isin(in_idx)
+    full["in_U_ms"] = full.site_id.isin(ums)
+    full["is_canary"] = False
+    full["new_since_2021"] = labels.new_since_2021(full)
+    par = labels.paralog_sets()
+    keep = labels.external_test_filter(full, par)
+    full["ext_tier"] = labels.ext_test_tiers(full, keep)
+    full["ext_test"] = full.ext_tier.ne("")
+    return full
+
+
+def relabel():
+    """Rebuild label tables for the frozen split (after a label-build change) and re-seal."""
+    t0 = time.time()
+    out = splits.SPLIT_DIR
+    if not labels.FULL_PAIRS.exists():
+        sys.exit(f"{labels.FULL_PAIRS} missing - rerun scripts/build_labels.py first")
+    S = index.load_sites()
+    P = set(index.load_proteins().acc)
+    ums, in_idx = set(S.site_id[S.in_U_ms]), set(S.site_id)
+    test_prot = splits.load_test_proteins()
+    full = annotate_full(pd.read_parquet(labels.FULL_PAIRS), ums, in_idx)
+    # canaries: deterministic; must equal the frozen DEV canaries
+    L2 = labels.select_variant(full, "L2")
+    n2 = L2.groupby("kinase_acc").site_id.nunique()
+    can, _ = canary.generate_all(tuple(sorted(int(x) for x in n2[(n2 >= 10) & (n2 <= 100)])))
+    can_dev_old = pd.read_parquet(labels.DEV_PAIRS.parent / canary.CANARY_FILE_DEV)
+    can_t = can.acc.isin(test_prot)
+    if set(zip(can[~can_t].kinase_acc, can[~can_t].site_id)) != set(zip(can_dev_old.kinase_acc, can_dev_old.site_id)):
+        sys.exit("canary labels changed (L2 counts changed?) - not allowed in --relabel")
+    inp = full.acc.isin(P)
+    dev = full[inp & ~full.acc.isin(test_prot)].reset_index(drop=True)
+    tst = pd.concat([full[inp & full.acc.isin(test_prot)], can[can_t]], ignore_index=True)
+    # verify evaluation positives unchanged vs frozen kinase sets
+    es = splits.load_eval_kinase_sets()
+    EV = labels.select_variant(full, "eval")
+    EV = EV[EV.in_U_ms]
+    nt = EV[EV.acc.isin(test_prot)].groupby("kinase_acc").site_id.nunique()
+    nd = EV[~EV.acc.isin(test_prot)].groupby("kinase_acc").site_id.nunique()
+    d_t = (es.kinase_acc.map(nt).fillna(0) != es.n_test_pos).sum()
+    d_d = (es.kinase_acc.map(nd).fillna(0) != es.n_dev_pos).sum()
+    if d_t or d_d:
+        sys.exit(f"evaluation positives changed for {d_t} (TEST) / {d_d} (DEV) kinases - kinase sets are frozen")
+    dev.to_parquet(labels.DEV_PAIRS, index=False)
+    can[~can_t].reset_index(drop=True).to_parquet(labels.DEV_PAIRS.parent / canary.CANARY_FILE_DEV, index=False)
+    tst.to_parquet(SEALED / "test_labels.parquet", index=False)
+    shutil.move(str(labels.FULL_PAIRS), str(SEALED / "ks_pairs_full.parquet"))
+    um = labels.FULL_PAIRS.parent / "ks_unmapped.parquet"
+    if um.exists():
+        shutil.move(str(um), str(SEALED / "ks_unmapped.parquet"))
+    kc = ROOT / "results/labels/kinase_label_counts.tsv"
+    if kc.exists():
+        shutil.move(str(kc), str(SEALED / "kinase_label_counts.tsv"))
+    seal = json.loads((out / "SEAL.json").read_text())
+    hist = seal.setdefault("history", [])
+    hist.append({"relabel": time.strftime("%Y-%m-%d %H:%M:%S %Z"), "previous_files": seal["files"]})
+    seal["files"] = {f.name: {"sha256": sha(f), "bytes": f.stat().st_size} for f in sorted(SEALED.glob("*"))
+                     if f.is_file()}
+    seal["public"][str(labels.DEV_PAIRS.relative_to(ROOT))] = sha(labels.DEV_PAIRS)
+    cdf = labels.DEV_PAIRS.parent / canary.CANARY_FILE_DEV
+    seal["public"][str(cdf.relative_to(ROOT))] = sha(cdf)
+    seal["test_label_rows"] = len(tst)
+    (out / "SEAL.json").write_text(json.dumps(seal, indent=1))
+    R = json.loads((out / "split_numbers.json").read_text())
+    R["relabel"] = {"when": hist[-1]["relabel"], "dev_label_rows": len(dev), "test_label_rows": len(tst),
+                    "mask_only_rows_dev": int(dev.mask_only.sum()), "mask_only_rows_test": int(tst.mask_only.fillna(False).astype(bool).sum()),
+                    "test_eval_pos_new_since_2021": int((labels.evaluable_positive(tst) & tst.new_since_2021.astype(bool)
+                                                         & tst.in_U_ms.astype(bool)).sum()),
+                    "test_ext_pairs_U_ms": int((tst.ext_test.fillna(False).astype(bool) & tst.in_U_ms.astype(bool)).sum()),
+                    "test_ext_tierA_U_ms": int((tst.ext_tier.eq("A") & tst.in_U_ms.astype(bool)).sum()),
+                    "runtime_s": round(time.time() - t0, 1)}
+    (out / "split_numbers.json").write_text(json.dumps(R, indent=1, default=str))
+    print(json.dumps(R["relabel"], indent=1))
 
 
 if __name__ == "__main__":

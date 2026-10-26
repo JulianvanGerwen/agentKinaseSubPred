@@ -503,3 +503,27 @@ def nonseparable_pairs(A: np.ndarray, kin: pd.DataFrame, thr: float = 0.95, min_
                                 most_similar=partner))
     kin_tab["nonseparable"] = kin_tab.max_cosine_other >= thr
     return pairs.sort_values("cosine", ascending=False), kin_tab
+
+
+def condition_ids_for_drugs(drugs, path: Path | None = None) -> set:
+    """Compendium conditionIDs whose Condition/Control text names any of `drugs` (leave-drug-out; matching by the
+    F6b parser: union-find drug identity incl. synonyms/aliases, or the Hijazi inhibitor name)."""
+    path = path or RESULTS / "f6b_conditions.tsv"
+    tab = pd.read_csv(path, sep="\t", dtype=str, keep_default_na=False)
+    from ksp.kinases import load_resolver  # noqa: F401  (only for parity with build_affinity; not needed here)
+    uf = UnionFind()
+    for name, fn in (("klaeger2017", load_klaeger), ("reinecke2024", load_reinecke), ("davis2011", load_davis)):
+        _, syn = fn()
+        for a, b in syn:
+            if norm(a) and norm(b) and len(norm(b)) >= 4:
+                uf.union(norm(a), norm(b))
+    for r in read_aliases().itertuples():
+        if r.maps_to:
+            uf.union(norm(r.alias), norm(r.maps_to))
+    want = {uf.find(norm(d)) for d in drugs}
+    out = set()
+    for cid, txt in zip(tab.conditionID, tab.drugs):
+        toks = re.findall(r"(?:cond|ctrl):([^@|]+)@", txt) or ([txt] if txt else [])
+        if any(uf.find(norm(t)) in want for t in toks):
+            out.add(cid)
+    return out

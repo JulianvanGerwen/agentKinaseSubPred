@@ -449,189 +449,189 @@ conditionID	PMID	Condition	Control	minutes	block_id	source	drugs	n_kinases_occ50
 38047086_40_log2	38047086	TNFalpha_CRC13	control_CRC13	60.0	pmid:38047086			0	0.0	no_drug	True				
 38047086_41_log2	38047086	TNFalpha_CRC26	control_CRC26	60.0	pmid:38047086			0	0.0	no_drug	True				
 38047086_42_log2	38047086	TNFalpha_CRC26LM	control_CRC26LM	60.0	pmid:38047086			0	0.0	no_drug	True				
-31959955_1_log2	31959955	HL60_AC220	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	AC220	2	1.0		True			binary	ac220
+31959955_1_log2	31959955	HL60_AC220	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	AC220	2	1.0	exclude_pmids	True			binary	ac220
 31959955_2_log2	31959955	HL60_Edelfosine	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	Edelfosine	0	0.0	no_kinhib_column	True				
-31959955_3_log2	31959955	HL60_GF109203X	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	GF109203X	33	1.0		True			binary	gf109203x
-31959955_4_log2	31959955	HL60_Go6976	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	Go6976	45	1.0		True			binary	go6976
-31959955_5_log2	31959955	HL60_PF4708671	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	PF4708671	1	1.0		True			binary	pf4708671
-31959955_6_log2	31959955	HL60_SP600125	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	SP600125	3	1.0		True			binary	sp600125
-31959955_7_log2	31959955	HL60_TAK715	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	TAK715	4	1.0		True			binary	tak715
-31959955_8_log2	31959955	HL60_TBCA	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	TBCA	2	1.0		True			binary	tbca
-31959955_9_log2	31959955	MCF7_AC220	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	AC220	2	1.0		True			binary	ac220
+31959955_3_log2	31959955	HL60_GF109203X	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	GF109203X	33	1.0	exclude_pmids	True			binary	gf109203x
+31959955_4_log2	31959955	HL60_Go6976	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	Go6976	45	1.0	exclude_pmids	True			binary	go6976
+31959955_5_log2	31959955	HL60_PF4708671	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	PF4708671	1	1.0	exclude_pmids	True			binary	pf4708671
+31959955_6_log2	31959955	HL60_SP600125	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	SP600125	3	1.0	exclude_pmids	True			binary	sp600125
+31959955_7_log2	31959955	HL60_TAK715	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	TAK715	4	1.0	exclude_pmids	True			binary	tak715
+31959955_8_log2	31959955	HL60_TBCA	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	TBCA	2	1.0	exclude_pmids	True			binary	tbca
+31959955_9_log2	31959955	MCF7_AC220	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	AC220	2	1.0	exclude_pmids	True			binary	ac220
 31959955_10_log2	31959955	MCF7_Edelfosine	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	Edelfosine	0	0.0	no_kinhib_column	True				
-31959955_11_log2	31959955	MCF7_GF109203X	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	GF109203X	33	1.0		True			binary	gf109203x
-31959955_12_log2	31959955	MCF7_Go6976	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	Go6976	45	1.0		True			binary	go6976
-31959955_13_log2	31959955	MCF7_PF4708671	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	PF4708671	1	1.0		True			binary	pf4708671
-31959955_14_log2	31959955	MCF7_SP600125	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	SP600125	3	1.0		True			binary	sp600125
-31959955_15_log2	31959955	MCF7_TAK715	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	TAK715	4	1.0		True			binary	tak715
-31959955_16_log2	31959955	MCF7_TBCA	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	TBCA	2	1.0		True			binary	tbca
-31959955_17_log2	31959955	NTERA2_AC220	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	AC220	2	1.0		True			binary	ac220
+31959955_11_log2	31959955	MCF7_GF109203X	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	GF109203X	33	1.0	exclude_pmids	True			binary	gf109203x
+31959955_12_log2	31959955	MCF7_Go6976	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	Go6976	45	1.0	exclude_pmids	True			binary	go6976
+31959955_13_log2	31959955	MCF7_PF4708671	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	PF4708671	1	1.0	exclude_pmids	True			binary	pf4708671
+31959955_14_log2	31959955	MCF7_SP600125	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	SP600125	3	1.0	exclude_pmids	True			binary	sp600125
+31959955_15_log2	31959955	MCF7_TAK715	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	TAK715	4	1.0	exclude_pmids	True			binary	tak715
+31959955_16_log2	31959955	MCF7_TBCA	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	TBCA	2	1.0	exclude_pmids	True			binary	tbca
+31959955_17_log2	31959955	NTERA2_AC220	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	AC220	2	1.0	exclude_pmids	True			binary	ac220
 31959955_18_log2	31959955	NTERA2_Edelfosine	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	Edelfosine	0	0.0	no_kinhib_column	True				
-31959955_19_log2	31959955	NTERA2_GF109203X	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	GF109203X	33	1.0		True			binary	gf109203x
-31959955_20_log2	31959955	NTERA2_Go6976	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	Go6976	45	1.0		True			binary	go6976
-31959955_21_log2	31959955	NTERA2_PF4708671	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	PF4708671	1	1.0		True			binary	pf4708671
-31959955_22_log2	31959955	NTERA2_SP600125	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	SP600125	3	1.0		True			binary	sp600125
-31959955_23_log2	31959955	NTERA2_TAK715	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	TAK715	4	1.0		True			binary	tak715
-31959955_24_log2	31959955	NTERA2_TBCA	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	TBCA	2	1.0		True			binary	tbca
-31959955_25_log2	31959955	HL60_AT13148	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	AT13148	13	1.0		True			binary	at13148
-31959955_26_log2	31959955	HL60_AZ20	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	AZ20	2	1.0		True			binary	az20
-31959955_27_log2	31959955	HL60_AZD6738	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	AZD6738	1	1.0		True			binary	azd6738
-31959955_28_log2	31959955	HL60_Bosutinib	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	Bosutinib	30	1.0		True			binary	bosutinib
-31959955_29_log2	31959955	HL60_Dabrafenib	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	Dabrafenib	30	1.0		True			binary	dabrafenib
-31959955_30_log2	31959955	HL60_Dasatinib	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	Dasatinib	43	1.0		True			binary	dasatinib
-31959955_31_log2	31959955	HL60_DNA_PK_IV	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	DNA_PK_IV	1	1.0		True			binary	dnapkiv
-31959955_32_log2	31959955	HL60_H89_2HCl	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	H89_2HCl	1	1.0		True			binary	h892hcl
-31959955_33_log2	31959955	HL60_KD025	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	KD025	1	1.0		True			binary	kd025
-31959955_34_log2	31959955	HL60_NU7441	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	NU7441	1	1.0		True			binary	nu7441
-31959955_35_log2	31959955	HL60_Ripasudil	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	Ripasudil	5	1.0		True			binary	ripasudil
-31959955_36_log2	31959955	HL60_Vemurafenib	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	Vemurafenib	4	1.0		True			binary	vemurafenib
-31959955_37_log2	31959955	MCF7_AT13148	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	AT13148	13	1.0		True			binary	at13148
-31959955_38_log2	31959955	MCF7_AZ20	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	AZ20	2	1.0		True			binary	az20
-31959955_39_log2	31959955	MCF7_AZD6738	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	AZD6738	1	1.0		True			binary	azd6738
-31959955_40_log2	31959955	MCF7_Bosutinib	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	Bosutinib	30	1.0		True			binary	bosutinib
-31959955_41_log2	31959955	MCF7_Dabrafenib	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	Dabrafenib	30	1.0		True			binary	dabrafenib
-31959955_42_log2	31959955	MCF7_Dasatinib	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	Dasatinib	43	1.0		True			binary	dasatinib
-31959955_43_log2	31959955	MCF7_DNA_PK_IV	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	DNA_PK_IV	1	1.0		True			binary	dnapkiv
-31959955_44_log2	31959955	MCF7_H89_2HCl	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	H89_2HCl	1	1.0		True			binary	h892hcl
-31959955_45_log2	31959955	MCF7_KD025	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	KD025	1	1.0		True			binary	kd025
-31959955_46_log2	31959955	MCF7_NU7441	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	NU7441	1	1.0		True			binary	nu7441
-31959955_47_log2	31959955	MCF7_Ripasudil	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	Ripasudil	5	1.0		True			binary	ripasudil
-31959955_48_log2	31959955	MCF7_Vemurafenib	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	Vemurafenib	4	1.0		True			binary	vemurafenib
-31959955_49_log2	31959955	NTERA2_AT13148	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	AT13148	13	1.0		True			binary	at13148
-31959955_50_log2	31959955	NTERA2_AZ20	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	AZ20	2	1.0		True			binary	az20
-31959955_51_log2	31959955	NTERA2_AZD6738	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	AZD6738	1	1.0		True			binary	azd6738
-31959955_52_log2	31959955	NTERA2_Bosutinib	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	Bosutinib	30	1.0		True			binary	bosutinib
-31959955_53_log2	31959955	NTERA2_Dabrafenib	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	Dabrafenib	30	1.0		True			binary	dabrafenib
-31959955_54_log2	31959955	NTERA2_Dasatinib	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	Dasatinib	43	1.0		True			binary	dasatinib
-31959955_55_log2	31959955	NTERA2_DNA_PK_IV	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	DNA_PK_IV	1	1.0		True			binary	dnapkiv
-31959955_56_log2	31959955	NTERA2_H89_2HCl	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	H89_2HCl	1	1.0		True			binary	h892hcl
-31959955_57_log2	31959955	NTERA2_KD025	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	KD025	1	1.0		True			binary	kd025
-31959955_58_log2	31959955	NTERA2_NU7441	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	NU7441	1	1.0		True			binary	nu7441
-31959955_59_log2	31959955	NTERA2_Ripasudil	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	Ripasudil	5	1.0		True			binary	ripasudil
-31959955_60_log2	31959955	NTERA2_Vemurafenib	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	Vemurafenib	4	1.0		True			binary	vemurafenib
-31959955_61_log2	31959955	HL60_AZD1480	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	AZD1480	52	1.0		True			binary	azd1480
-31959955_62_log2	31959955	HL60_AZD5363	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	AZD5363	23	1.0		True			binary	azd5363
-31959955_63_log2	31959955	HL60_BX912	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	BX912	1	1.0		True			binary	bx912
-31959955_64_log2	31959955	HL60_CHIR99021	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	CHIR99021	2	1.0		True			binary	chir99021
-31959955_65_log2	31959955	HL60_GDC0068	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	GDC0068	3	1.0		True			binary	gdc0068
-31959955_66_log2	31959955	HL60_GSK2334470	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	GSK2334470	7	1.0		True			binary	gsk2334470
-31959955_67_log2	31959955	HL60_LY2090314	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	LY2090314	13	1.0		True			binary	ly2090314
-31959955_68_log2	31959955	HL60_Tofacitinib	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	Tofacitinib	5	1.0		True			binary	tofacitinib
-31959955_69_log2	31959955	MCF7_AZD1480	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	AZD1480	52	1.0		True			binary	azd1480
-31959955_70_log2	31959955	MCF7_AZD5363	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	AZD5363	23	1.0		True			binary	azd5363
-31959955_71_log2	31959955	MCF7_BX912	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	BX912	1	1.0		True			binary	bx912
-31959955_72_log2	31959955	MCF7_CHIR99021	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	CHIR99021	2	1.0		True			binary	chir99021
-31959955_73_log2	31959955	MCF7_GDC0068	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	GDC0068	3	1.0		True			binary	gdc0068
-31959955_74_log2	31959955	MCF7_GSK2334470	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	GSK2334470	7	1.0		True			binary	gsk2334470
-31959955_75_log2	31959955	MCF7_LY2090314	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	LY2090314	13	1.0		True			binary	ly2090314
-31959955_76_log2	31959955	MCF7_Tofacitinib	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	Tofacitinib	5	1.0		True			binary	tofacitinib
-31959955_77_log2	31959955	NTERA2_AZD1480	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	AZD1480	52	1.0		True			binary	azd1480
-31959955_78_log2	31959955	NTERA2_AZD5363	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	AZD5363	23	1.0		True			binary	azd5363
-31959955_79_log2	31959955	NTERA2_BX912	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	BX912	1	1.0		True			binary	bx912
-31959955_80_log2	31959955	NTERA2_CHIR99021	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	CHIR99021	2	1.0		True			binary	chir99021
-31959955_81_log2	31959955	NTERA2_GDC0068	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	GDC0068	3	1.0		True			binary	gdc0068
-31959955_82_log2	31959955	NTERA2_GSK2334470	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	GSK2334470	7	1.0		True			binary	gsk2334470
-31959955_83_log2	31959955	NTERA2_LY2090314	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	LY2090314	13	1.0		True			binary	ly2090314
-31959955_84_log2	31959955	NTERA2_Tofacitinib	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	Tofacitinib	5	1.0		True			binary	tofacitinib
-31959955_85_log2	31959955	HL60_AZD3759	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	AZD3759	7	1.0		True			binary	azd3759
-31959955_86_log2	31959955	HL60_GSK690693	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	GSK690693	20	1.0		True			binary	gsk690693
-31959955_87_log2	31959955	HL60_JNJ38877605	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	JNJ38877605	1	1.0		True			binary	jnj38877605
-31959955_88_log2	31959955	HL60_KN62	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	KN62	4	1.0		True			binary	kn62
-31959955_89_log2	31959955	HL60_LEE011	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	LEE011	5	1.0		True			binary	lee011
-31959955_90_log2	31959955	HL60_LY2835219	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	LY2835219	79	1.0		True			binary	ly2835219
-31959955_91_log2	31959955	HL60_MP470	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	MP470	7	1.0		True			binary	mp470
-31959955_92_log2	31959955	HL60_OSI906	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	OSI906	8	1.0		True			binary	osi906
-31959955_93_log2	31959955	MCF7_AZD3759	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	AZD3759	7	1.0		True			binary	azd3759
-31959955_94_log2	31959955	MCF7_GSK690693	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	GSK690693	20	1.0		True			binary	gsk690693
-31959955_95_log2	31959955	MCF7_JNJ38877605	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	JNJ38877605	1	1.0		True			binary	jnj38877605
-31959955_96_log2	31959955	MCF7_KN62	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	KN62	4	1.0		True			binary	kn62
-31959955_97_log2	31959955	MCF7_LEE011	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	LEE011	5	1.0		True			binary	lee011
-31959955_98_log2	31959955	MCF7_LY2835219	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	LY2835219	79	1.0		True			binary	ly2835219
-31959955_99_log2	31959955	MCF7_MP470	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	MP470	7	1.0		True			binary	mp470
-31959955_100_log2	31959955	MCF7_OSI906	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	OSI906	8	1.0		True			binary	osi906
-31959955_101_log2	31959955	NTERA2_AZD3759	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	AZD3759	7	1.0		True			binary	azd3759
-31959955_102_log2	31959955	NTERA2_GSK690693	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	GSK690693	20	1.0		True			binary	gsk690693
-31959955_103_log2	31959955	NTERA2_JNJ38877605	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	JNJ38877605	1	1.0		True			binary	jnj38877605
-31959955_104_log2	31959955	NTERA2_KN62	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	KN62	4	1.0		True			binary	kn62
-31959955_105_log2	31959955	NTERA2_LEE011	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	LEE011	5	1.0		True			binary	lee011
-31959955_106_log2	31959955	NTERA2_LY2835219	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	LY2835219	79	1.0		True			binary	ly2835219
-31959955_107_log2	31959955	NTERA2_MP470	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	MP470	7	1.0		True			binary	mp470
-31959955_108_log2	31959955	NTERA2_OSI906	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	OSI906	8	1.0		True			binary	osi906
-31959955_109_log2	31959955	HL60_AZD5438	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	AZD5438	38	1.0		True			binary	azd5438
-31959955_110_log2	31959955	HL60_FRAX486	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	FRAX486	3	1.0		True			binary	frax486
-31959955_111_log2	31959955	HL60_Ku0063794	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	Ku0063794	1	1.0		True			binary	ku0063794
-31959955_112_log2	31959955	HL60_PD153035	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	PD153035	1	1.0		True			binary	pd153035
-31959955_113_log2	31959955	HL60_PF3758309	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	PF3758309	97	1.0		True			binary	pf3758309
-31959955_114_log2	31959955	HL60_Torin1	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	Torin1	1	1.0		True			binary	torin1
-31959955_115_log2	31959955	HL60_Trametinib	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	Trametinib	2	1.0		True			binary	trametinib
-31959955_116_log2	31959955	MCF7_AZD5438	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	AZD5438	38	1.0		True			binary	azd5438
-31959955_117_log2	31959955	MCF7_FRAX486	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	FRAX486	3	1.0		True			binary	frax486
-31959955_118_log2	31959955	MCF7_Ku0063794	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	Ku0063794	1	1.0		True			binary	ku0063794
-31959955_119_log2	31959955	MCF7_PD153035	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	PD153035	1	1.0		True			binary	pd153035
-31959955_120_log2	31959955	MCF7_PF3758309	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	PF3758309	97	1.0		True			binary	pf3758309
-31959955_121_log2	31959955	MCF7_Torin1	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	Torin1	1	1.0		True			binary	torin1
-31959955_122_log2	31959955	MCF7_Trametinib	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	Trametinib	2	1.0		True			binary	trametinib
-31959955_123_log2	31959955	NTERA2_AZD5438	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	AZD5438	38	1.0		True			binary	azd5438
-31959955_124_log2	31959955	NTERA2_FRAX486	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	FRAX486	3	1.0		True			binary	frax486
-31959955_125_log2	31959955	NTERA2_Ku0063794	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	Ku0063794	1	1.0		True			binary	ku0063794
-31959955_126_log2	31959955	NTERA2_PD153035	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	PD153035	1	1.0		True			binary	pd153035
-31959955_127_log2	31959955	NTERA2_PF3758309	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	PF3758309	97	1.0		True			binary	pf3758309
-31959955_128_log2	31959955	NTERA2_Torin1	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	Torin1	1	1.0		True			binary	torin1
-31959955_129_log2	31959955	NTERA2_Trametinib	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	Trametinib	2	1.0		True			binary	trametinib
-31959955_130_log2	31959955	HL60_AZD6244	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	AZD6244	2	1.0		True			binary	azd6244
-31959955_131_log2	31959955	HL60_AZD8055	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	AZD8055	12	1.0		True			binary	azd8055
-31959955_132_log2	31959955	HL60_GDC0994	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	GDC0994	15	1.0		True			binary	gdc0994
-31959955_133_log2	31959955	HL60_JNKIN8	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	JNKIN8	5	1.0		True			binary	jnkin8
-31959955_134_log2	31959955	HL60_LY2584702	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	LY2584702	6	1.0		True			binary	ly2584702
-31959955_135_log2	31959955	HL60_PH797804	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	PH797804	2	1.0		True			binary	ph797804
+31959955_19_log2	31959955	NTERA2_GF109203X	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	GF109203X	33	1.0	exclude_pmids	True			binary	gf109203x
+31959955_20_log2	31959955	NTERA2_Go6976	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	Go6976	45	1.0	exclude_pmids	True			binary	go6976
+31959955_21_log2	31959955	NTERA2_PF4708671	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	PF4708671	1	1.0	exclude_pmids	True			binary	pf4708671
+31959955_22_log2	31959955	NTERA2_SP600125	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	SP600125	3	1.0	exclude_pmids	True			binary	sp600125
+31959955_23_log2	31959955	NTERA2_TAK715	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	TAK715	4	1.0	exclude_pmids	True			binary	tak715
+31959955_24_log2	31959955	NTERA2_TBCA	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	TBCA	2	1.0	exclude_pmids	True			binary	tbca
+31959955_25_log2	31959955	HL60_AT13148	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	AT13148	13	1.0	exclude_pmids	True			binary	at13148
+31959955_26_log2	31959955	HL60_AZ20	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	AZ20	2	1.0	exclude_pmids	True			binary	az20
+31959955_27_log2	31959955	HL60_AZD6738	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	AZD6738	1	1.0	exclude_pmids	True			binary	azd6738
+31959955_28_log2	31959955	HL60_Bosutinib	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	Bosutinib	30	1.0	exclude_pmids	True			binary	bosutinib
+31959955_29_log2	31959955	HL60_Dabrafenib	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	Dabrafenib	30	1.0	exclude_pmids	True			binary	dabrafenib
+31959955_30_log2	31959955	HL60_Dasatinib	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	Dasatinib	43	1.0	exclude_pmids	True			binary	dasatinib
+31959955_31_log2	31959955	HL60_DNA_PK_IV	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	DNA_PK_IV	1	1.0	exclude_pmids	True			binary	dnapkiv
+31959955_32_log2	31959955	HL60_H89_2HCl	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	H89_2HCl	1	1.0	exclude_pmids	True			binary	h892hcl
+31959955_33_log2	31959955	HL60_KD025	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	KD025	1	1.0	exclude_pmids	True			binary	kd025
+31959955_34_log2	31959955	HL60_NU7441	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	NU7441	1	1.0	exclude_pmids	True			binary	nu7441
+31959955_35_log2	31959955	HL60_Ripasudil	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	Ripasudil	5	1.0	exclude_pmids	True			binary	ripasudil
+31959955_36_log2	31959955	HL60_Vemurafenib	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	Vemurafenib	4	1.0	exclude_pmids	True			binary	vemurafenib
+31959955_37_log2	31959955	MCF7_AT13148	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	AT13148	13	1.0	exclude_pmids	True			binary	at13148
+31959955_38_log2	31959955	MCF7_AZ20	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	AZ20	2	1.0	exclude_pmids	True			binary	az20
+31959955_39_log2	31959955	MCF7_AZD6738	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	AZD6738	1	1.0	exclude_pmids	True			binary	azd6738
+31959955_40_log2	31959955	MCF7_Bosutinib	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	Bosutinib	30	1.0	exclude_pmids	True			binary	bosutinib
+31959955_41_log2	31959955	MCF7_Dabrafenib	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	Dabrafenib	30	1.0	exclude_pmids	True			binary	dabrafenib
+31959955_42_log2	31959955	MCF7_Dasatinib	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	Dasatinib	43	1.0	exclude_pmids	True			binary	dasatinib
+31959955_43_log2	31959955	MCF7_DNA_PK_IV	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	DNA_PK_IV	1	1.0	exclude_pmids	True			binary	dnapkiv
+31959955_44_log2	31959955	MCF7_H89_2HCl	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	H89_2HCl	1	1.0	exclude_pmids	True			binary	h892hcl
+31959955_45_log2	31959955	MCF7_KD025	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	KD025	1	1.0	exclude_pmids	True			binary	kd025
+31959955_46_log2	31959955	MCF7_NU7441	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	NU7441	1	1.0	exclude_pmids	True			binary	nu7441
+31959955_47_log2	31959955	MCF7_Ripasudil	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	Ripasudil	5	1.0	exclude_pmids	True			binary	ripasudil
+31959955_48_log2	31959955	MCF7_Vemurafenib	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	Vemurafenib	4	1.0	exclude_pmids	True			binary	vemurafenib
+31959955_49_log2	31959955	NTERA2_AT13148	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	AT13148	13	1.0	exclude_pmids	True			binary	at13148
+31959955_50_log2	31959955	NTERA2_AZ20	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	AZ20	2	1.0	exclude_pmids	True			binary	az20
+31959955_51_log2	31959955	NTERA2_AZD6738	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	AZD6738	1	1.0	exclude_pmids	True			binary	azd6738
+31959955_52_log2	31959955	NTERA2_Bosutinib	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	Bosutinib	30	1.0	exclude_pmids	True			binary	bosutinib
+31959955_53_log2	31959955	NTERA2_Dabrafenib	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	Dabrafenib	30	1.0	exclude_pmids	True			binary	dabrafenib
+31959955_54_log2	31959955	NTERA2_Dasatinib	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	Dasatinib	43	1.0	exclude_pmids	True			binary	dasatinib
+31959955_55_log2	31959955	NTERA2_DNA_PK_IV	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	DNA_PK_IV	1	1.0	exclude_pmids	True			binary	dnapkiv
+31959955_56_log2	31959955	NTERA2_H89_2HCl	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	H89_2HCl	1	1.0	exclude_pmids	True			binary	h892hcl
+31959955_57_log2	31959955	NTERA2_KD025	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	KD025	1	1.0	exclude_pmids	True			binary	kd025
+31959955_58_log2	31959955	NTERA2_NU7441	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	NU7441	1	1.0	exclude_pmids	True			binary	nu7441
+31959955_59_log2	31959955	NTERA2_Ripasudil	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	Ripasudil	5	1.0	exclude_pmids	True			binary	ripasudil
+31959955_60_log2	31959955	NTERA2_Vemurafenib	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	Vemurafenib	4	1.0	exclude_pmids	True			binary	vemurafenib
+31959955_61_log2	31959955	HL60_AZD1480	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	AZD1480	52	1.0	exclude_pmids	True			binary	azd1480
+31959955_62_log2	31959955	HL60_AZD5363	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	AZD5363	23	1.0	exclude_pmids	True			binary	azd5363
+31959955_63_log2	31959955	HL60_BX912	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	BX912	1	1.0	exclude_pmids	True			binary	bx912
+31959955_64_log2	31959955	HL60_CHIR99021	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	CHIR99021	2	1.0	exclude_pmids	True			binary	chir99021
+31959955_65_log2	31959955	HL60_GDC0068	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	GDC0068	3	1.0	exclude_pmids	True			binary	gdc0068
+31959955_66_log2	31959955	HL60_GSK2334470	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	GSK2334470	7	1.0	exclude_pmids	True			binary	gsk2334470
+31959955_67_log2	31959955	HL60_LY2090314	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	LY2090314	13	1.0	exclude_pmids	True			binary	ly2090314
+31959955_68_log2	31959955	HL60_Tofacitinib	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	Tofacitinib	5	1.0	exclude_pmids	True			binary	tofacitinib
+31959955_69_log2	31959955	MCF7_AZD1480	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	AZD1480	52	1.0	exclude_pmids	True			binary	azd1480
+31959955_70_log2	31959955	MCF7_AZD5363	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	AZD5363	23	1.0	exclude_pmids	True			binary	azd5363
+31959955_71_log2	31959955	MCF7_BX912	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	BX912	1	1.0	exclude_pmids	True			binary	bx912
+31959955_72_log2	31959955	MCF7_CHIR99021	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	CHIR99021	2	1.0	exclude_pmids	True			binary	chir99021
+31959955_73_log2	31959955	MCF7_GDC0068	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	GDC0068	3	1.0	exclude_pmids	True			binary	gdc0068
+31959955_74_log2	31959955	MCF7_GSK2334470	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	GSK2334470	7	1.0	exclude_pmids	True			binary	gsk2334470
+31959955_75_log2	31959955	MCF7_LY2090314	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	LY2090314	13	1.0	exclude_pmids	True			binary	ly2090314
+31959955_76_log2	31959955	MCF7_Tofacitinib	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	Tofacitinib	5	1.0	exclude_pmids	True			binary	tofacitinib
+31959955_77_log2	31959955	NTERA2_AZD1480	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	AZD1480	52	1.0	exclude_pmids	True			binary	azd1480
+31959955_78_log2	31959955	NTERA2_AZD5363	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	AZD5363	23	1.0	exclude_pmids	True			binary	azd5363
+31959955_79_log2	31959955	NTERA2_BX912	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	BX912	1	1.0	exclude_pmids	True			binary	bx912
+31959955_80_log2	31959955	NTERA2_CHIR99021	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	CHIR99021	2	1.0	exclude_pmids	True			binary	chir99021
+31959955_81_log2	31959955	NTERA2_GDC0068	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	GDC0068	3	1.0	exclude_pmids	True			binary	gdc0068
+31959955_82_log2	31959955	NTERA2_GSK2334470	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	GSK2334470	7	1.0	exclude_pmids	True			binary	gsk2334470
+31959955_83_log2	31959955	NTERA2_LY2090314	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	LY2090314	13	1.0	exclude_pmids	True			binary	ly2090314
+31959955_84_log2	31959955	NTERA2_Tofacitinib	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	Tofacitinib	5	1.0	exclude_pmids	True			binary	tofacitinib
+31959955_85_log2	31959955	HL60_AZD3759	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	AZD3759	7	1.0	exclude_pmids	True			binary	azd3759
+31959955_86_log2	31959955	HL60_GSK690693	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	GSK690693	20	1.0	exclude_pmids	True			binary	gsk690693
+31959955_87_log2	31959955	HL60_JNJ38877605	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	JNJ38877605	1	1.0	exclude_pmids	True			binary	jnj38877605
+31959955_88_log2	31959955	HL60_KN62	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	KN62	4	1.0	exclude_pmids	True			binary	kn62
+31959955_89_log2	31959955	HL60_LEE011	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	LEE011	5	1.0	exclude_pmids	True			binary	lee011
+31959955_90_log2	31959955	HL60_LY2835219	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	LY2835219	79	1.0	exclude_pmids	True			binary	ly2835219
+31959955_91_log2	31959955	HL60_MP470	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	MP470	7	1.0	exclude_pmids	True			binary	mp470
+31959955_92_log2	31959955	HL60_OSI906	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	OSI906	8	1.0	exclude_pmids	True			binary	osi906
+31959955_93_log2	31959955	MCF7_AZD3759	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	AZD3759	7	1.0	exclude_pmids	True			binary	azd3759
+31959955_94_log2	31959955	MCF7_GSK690693	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	GSK690693	20	1.0	exclude_pmids	True			binary	gsk690693
+31959955_95_log2	31959955	MCF7_JNJ38877605	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	JNJ38877605	1	1.0	exclude_pmids	True			binary	jnj38877605
+31959955_96_log2	31959955	MCF7_KN62	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	KN62	4	1.0	exclude_pmids	True			binary	kn62
+31959955_97_log2	31959955	MCF7_LEE011	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	LEE011	5	1.0	exclude_pmids	True			binary	lee011
+31959955_98_log2	31959955	MCF7_LY2835219	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	LY2835219	79	1.0	exclude_pmids	True			binary	ly2835219
+31959955_99_log2	31959955	MCF7_MP470	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	MP470	7	1.0	exclude_pmids	True			binary	mp470
+31959955_100_log2	31959955	MCF7_OSI906	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	OSI906	8	1.0	exclude_pmids	True			binary	osi906
+31959955_101_log2	31959955	NTERA2_AZD3759	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	AZD3759	7	1.0	exclude_pmids	True			binary	azd3759
+31959955_102_log2	31959955	NTERA2_GSK690693	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	GSK690693	20	1.0	exclude_pmids	True			binary	gsk690693
+31959955_103_log2	31959955	NTERA2_JNJ38877605	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	JNJ38877605	1	1.0	exclude_pmids	True			binary	jnj38877605
+31959955_104_log2	31959955	NTERA2_KN62	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	KN62	4	1.0	exclude_pmids	True			binary	kn62
+31959955_105_log2	31959955	NTERA2_LEE011	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	LEE011	5	1.0	exclude_pmids	True			binary	lee011
+31959955_106_log2	31959955	NTERA2_LY2835219	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	LY2835219	79	1.0	exclude_pmids	True			binary	ly2835219
+31959955_107_log2	31959955	NTERA2_MP470	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	MP470	7	1.0	exclude_pmids	True			binary	mp470
+31959955_108_log2	31959955	NTERA2_OSI906	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	OSI906	8	1.0	exclude_pmids	True			binary	osi906
+31959955_109_log2	31959955	HL60_AZD5438	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	AZD5438	38	1.0	exclude_pmids	True			binary	azd5438
+31959955_110_log2	31959955	HL60_FRAX486	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	FRAX486	3	1.0	exclude_pmids	True			binary	frax486
+31959955_111_log2	31959955	HL60_Ku0063794	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	Ku0063794	1	1.0	exclude_pmids	True			binary	ku0063794
+31959955_112_log2	31959955	HL60_PD153035	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	PD153035	1	1.0	exclude_pmids	True			binary	pd153035
+31959955_113_log2	31959955	HL60_PF3758309	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	PF3758309	97	1.0	exclude_pmids	True			binary	pf3758309
+31959955_114_log2	31959955	HL60_Torin1	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	Torin1	1	1.0	exclude_pmids	True			binary	torin1
+31959955_115_log2	31959955	HL60_Trametinib	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	Trametinib	2	1.0	exclude_pmids	True			binary	trametinib
+31959955_116_log2	31959955	MCF7_AZD5438	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	AZD5438	38	1.0	exclude_pmids	True			binary	azd5438
+31959955_117_log2	31959955	MCF7_FRAX486	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	FRAX486	3	1.0	exclude_pmids	True			binary	frax486
+31959955_118_log2	31959955	MCF7_Ku0063794	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	Ku0063794	1	1.0	exclude_pmids	True			binary	ku0063794
+31959955_119_log2	31959955	MCF7_PD153035	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	PD153035	1	1.0	exclude_pmids	True			binary	pd153035
+31959955_120_log2	31959955	MCF7_PF3758309	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	PF3758309	97	1.0	exclude_pmids	True			binary	pf3758309
+31959955_121_log2	31959955	MCF7_Torin1	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	Torin1	1	1.0	exclude_pmids	True			binary	torin1
+31959955_122_log2	31959955	MCF7_Trametinib	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	Trametinib	2	1.0	exclude_pmids	True			binary	trametinib
+31959955_123_log2	31959955	NTERA2_AZD5438	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	AZD5438	38	1.0	exclude_pmids	True			binary	azd5438
+31959955_124_log2	31959955	NTERA2_FRAX486	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	FRAX486	3	1.0	exclude_pmids	True			binary	frax486
+31959955_125_log2	31959955	NTERA2_Ku0063794	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	Ku0063794	1	1.0	exclude_pmids	True			binary	ku0063794
+31959955_126_log2	31959955	NTERA2_PD153035	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	PD153035	1	1.0	exclude_pmids	True			binary	pd153035
+31959955_127_log2	31959955	NTERA2_PF3758309	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	PF3758309	97	1.0	exclude_pmids	True			binary	pf3758309
+31959955_128_log2	31959955	NTERA2_Torin1	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	Torin1	1	1.0	exclude_pmids	True			binary	torin1
+31959955_129_log2	31959955	NTERA2_Trametinib	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	Trametinib	2	1.0	exclude_pmids	True			binary	trametinib
+31959955_130_log2	31959955	HL60_AZD6244	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	AZD6244	2	1.0	exclude_pmids	True			binary	azd6244
+31959955_131_log2	31959955	HL60_AZD8055	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	AZD8055	12	1.0	exclude_pmids	True			binary	azd8055
+31959955_132_log2	31959955	HL60_GDC0994	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	GDC0994	15	1.0	exclude_pmids	True			binary	gdc0994
+31959955_133_log2	31959955	HL60_JNKIN8	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	JNKIN8	5	1.0	exclude_pmids	True			binary	jnkin8
+31959955_134_log2	31959955	HL60_LY2584702	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	LY2584702	6	1.0	exclude_pmids	True			binary	ly2584702
+31959955_135_log2	31959955	HL60_PH797804	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	PH797804	2	1.0	exclude_pmids	True			binary	ph797804
 31959955_136_log2	31959955	HL60_U73122	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	U73122	0	0.0	no_kinase_target_occ50	True			binary	u73122
-31959955_137_log2	31959955	HL60_Ulixertinib	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	Ulixertinib	3	1.0		True			binary	ulixertinib
-31959955_138_log2	31959955	MCF7_AZD6244	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	AZD6244	2	1.0		True			binary	azd6244
-31959955_139_log2	31959955	MCF7_AZD8055	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	AZD8055	12	1.0		True			binary	azd8055
-31959955_140_log2	31959955	MCF7_GDC0994	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	GDC0994	15	1.0		True			binary	gdc0994
-31959955_141_log2	31959955	MCF7_JNKIN8	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	JNKIN8	5	1.0		True			binary	jnkin8
-31959955_142_log2	31959955	MCF7_LY2584702	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	LY2584702	6	1.0		True			binary	ly2584702
-31959955_143_log2	31959955	MCF7_PH797804	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	PH797804	2	1.0		True			binary	ph797804
+31959955_137_log2	31959955	HL60_Ulixertinib	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	Ulixertinib	3	1.0	exclude_pmids	True			binary	ulixertinib
+31959955_138_log2	31959955	MCF7_AZD6244	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	AZD6244	2	1.0	exclude_pmids	True			binary	azd6244
+31959955_139_log2	31959955	MCF7_AZD8055	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	AZD8055	12	1.0	exclude_pmids	True			binary	azd8055
+31959955_140_log2	31959955	MCF7_GDC0994	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	GDC0994	15	1.0	exclude_pmids	True			binary	gdc0994
+31959955_141_log2	31959955	MCF7_JNKIN8	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	JNKIN8	5	1.0	exclude_pmids	True			binary	jnkin8
+31959955_142_log2	31959955	MCF7_LY2584702	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	LY2584702	6	1.0	exclude_pmids	True			binary	ly2584702
+31959955_143_log2	31959955	MCF7_PH797804	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	PH797804	2	1.0	exclude_pmids	True			binary	ph797804
 31959955_144_log2	31959955	MCF7_U73122	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	U73122	0	0.0	no_kinase_target_occ50	True			binary	u73122
-31959955_145_log2	31959955	MCF7_Ulixertinib	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	Ulixertinib	3	1.0		True			binary	ulixertinib
-31959955_146_log2	31959955	NTERA2_AZD6244	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	AZD6244	2	1.0		True			binary	azd6244
-31959955_147_log2	31959955	NTERA2_AZD8055	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	AZD8055	12	1.0		True			binary	azd8055
-31959955_148_log2	31959955	NTERA2_GDC0994	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	GDC0994	15	1.0		True			binary	gdc0994
-31959955_149_log2	31959955	NTERA2_JNKIN8	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	JNKIN8	5	1.0		True			binary	jnkin8
-31959955_150_log2	31959955	NTERA2_LY2584702	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	LY2584702	6	1.0		True			binary	ly2584702
-31959955_151_log2	31959955	NTERA2_PH797804	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	PH797804	2	1.0		True			binary	ph797804
+31959955_145_log2	31959955	MCF7_Ulixertinib	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	Ulixertinib	3	1.0	exclude_pmids	True			binary	ulixertinib
+31959955_146_log2	31959955	NTERA2_AZD6244	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	AZD6244	2	1.0	exclude_pmids	True			binary	azd6244
+31959955_147_log2	31959955	NTERA2_AZD8055	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	AZD8055	12	1.0	exclude_pmids	True			binary	azd8055
+31959955_148_log2	31959955	NTERA2_GDC0994	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	GDC0994	15	1.0	exclude_pmids	True			binary	gdc0994
+31959955_149_log2	31959955	NTERA2_JNKIN8	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	JNKIN8	5	1.0	exclude_pmids	True			binary	jnkin8
+31959955_150_log2	31959955	NTERA2_LY2584702	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	LY2584702	6	1.0	exclude_pmids	True			binary	ly2584702
+31959955_151_log2	31959955	NTERA2_PH797804	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	PH797804	2	1.0	exclude_pmids	True			binary	ph797804
 31959955_152_log2	31959955	NTERA2_U73122	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	U73122	0	0.0	no_kinase_target_occ50	True			binary	u73122
-31959955_153_log2	31959955	NTERA2_Ulixertinib	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	Ulixertinib	3	1.0		True			binary	ulixertinib
+31959955_153_log2	31959955	NTERA2_Ulixertinib	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	Ulixertinib	3	1.0	exclude_pmids	True			binary	ulixertinib
 31959955_154_log2	31959955	HL60_AZD6432	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	AZD6432	0	0.0	no_kinase_target_occ50	True			binary	azd6432
 31959955_155_log2	31959955	HL60_CAL101	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	CAL101	0	0.0	no_kinase_target_occ50	True			binary	cal101
-31959955_156_log2	31959955	HL60_GDC0941	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	GDC0941	1	1.0		True			binary	gdc0941
-31959955_157_log2	31959955	HL60_HS173	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	HS173	1	1.0		True			binary	hs173
+31959955_156_log2	31959955	HL60_GDC0941	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	GDC0941	1	1.0	exclude_pmids	True			binary	gdc0941
+31959955_157_log2	31959955	HL60_HS173	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	HS173	1	1.0	exclude_pmids	True			binary	hs173
 31959955_158_log2	31959955	HL60_PIK294	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	PIK294	0	0.0	no_kinase_target_occ50	True			binary	pik294
 31959955_159_log2	31959955	HL60_TGX221	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	TGX221	0	0.0	no_kinase_target_occ50	True			binary	tgx221
 31959955_160_log2	31959955	MCF7_AZD6432	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	AZD6432	0	0.0	no_kinase_target_occ50	True			binary	azd6432
 31959955_161_log2	31959955	MCF7_CAL101	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	CAL101	0	0.0	no_kinase_target_occ50	True			binary	cal101
-31959955_162_log2	31959955	MCF7_GDC0941	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	GDC0941	1	1.0		True			binary	gdc0941
-31959955_163_log2	31959955	MCF7_HS173	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	HS173	1	1.0		True			binary	hs173
+31959955_162_log2	31959955	MCF7_GDC0941	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	GDC0941	1	1.0	exclude_pmids	True			binary	gdc0941
+31959955_163_log2	31959955	MCF7_HS173	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	HS173	1	1.0	exclude_pmids	True			binary	hs173
 31959955_164_log2	31959955	MCF7_PIK294	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	PIK294	0	0.0	no_kinase_target_occ50	True			binary	pik294
 31959955_165_log2	31959955	MCF7_TGX221	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	TGX221	0	0.0	no_kinase_target_occ50	True			binary	tgx221
 31959955_166_log2	31959955	NTERA2_AZD6432	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	AZD6432	0	0.0	no_kinase_target_occ50	True			binary	azd6432
 31959955_167_log2	31959955	NTERA2_CAL101	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	CAL101	0	0.0	no_kinase_target_occ50	True			binary	cal101
-31959955_168_log2	31959955	NTERA2_GDC0941	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	GDC0941	1	1.0		True			binary	gdc0941
-31959955_169_log2	31959955	NTERA2_HS173	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	HS173	1	1.0		True			binary	hs173
+31959955_168_log2	31959955	NTERA2_GDC0941	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	GDC0941	1	1.0	exclude_pmids	True			binary	gdc0941
+31959955_169_log2	31959955	NTERA2_HS173	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	HS173	1	1.0	exclude_pmids	True			binary	hs173
 31959955_170_log2	31959955	NTERA2_PIK294	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	PIK294	0	0.0	no_kinase_target_occ50	True			binary	pik294
 31959955_171_log2	31959955	NTERA2_TGX221	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	TGX221	0	0.0	no_kinase_target_occ50	True			binary	tgx221
-31959955_172_log2	31959955	HL60_CX4945	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	CX4945	39	1.0		True			binary	cx4945
-31959955_173_log2	31959955	HL60_Go6983	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	Go6983	25	1.0		True			binary	go6983
-31959955_174_log2	31959955	HL60_KN93	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	KN93	4	1.0		True			binary	kn93
-31959955_175_log2	31959955	HL60_MK2206	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	MK2206	3	1.0		True			binary	mk2206
-31959955_176_log2	31959955	MCF7_CX4945	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	CX4945	39	1.0		True			binary	cx4945
-31959955_177_log2	31959955	MCF7_Go6983	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	Go6983	25	1.0		True			binary	go6983
-31959955_178_log2	31959955	MCF7_KN93	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	KN93	4	1.0		True			binary	kn93
-31959955_179_log2	31959955	MCF7_MK2206	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	MK2206	3	1.0		True			binary	mk2206
-31959955_180_log2	31959955	NTERA2_CX4945	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	CX4945	39	1.0		True			binary	cx4945
-31959955_181_log2	31959955	NTERA2_Go6983	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	Go6983	25	1.0		True			binary	go6983
-31959955_182_log2	31959955	NTERA2_KN93	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	KN93	4	1.0		True			binary	kn93
-31959955_183_log2	31959955	NTERA2_MK2206	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	MK2206	3	1.0		True			binary	mk2206
+31959955_172_log2	31959955	HL60_CX4945	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	CX4945	39	1.0	exclude_pmids	True			binary	cx4945
+31959955_173_log2	31959955	HL60_Go6983	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	Go6983	25	1.0	exclude_pmids	True			binary	go6983
+31959955_174_log2	31959955	HL60_KN93	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	KN93	4	1.0	exclude_pmids	True			binary	kn93
+31959955_175_log2	31959955	HL60_MK2206	HL60_DMSO	60.0	pmid:31959955	hijazi_kinhib	MK2206	3	1.0	exclude_pmids	True			binary	mk2206
+31959955_176_log2	31959955	MCF7_CX4945	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	CX4945	39	1.0	exclude_pmids	True			binary	cx4945
+31959955_177_log2	31959955	MCF7_Go6983	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	Go6983	25	1.0	exclude_pmids	True			binary	go6983
+31959955_178_log2	31959955	MCF7_KN93	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	KN93	4	1.0	exclude_pmids	True			binary	kn93
+31959955_179_log2	31959955	MCF7_MK2206	MCF7_DMSO	60.0	pmid:31959955	hijazi_kinhib	MK2206	3	1.0	exclude_pmids	True			binary	mk2206
+31959955_180_log2	31959955	NTERA2_CX4945	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	CX4945	39	1.0	exclude_pmids	True			binary	cx4945
+31959955_181_log2	31959955	NTERA2_Go6983	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	Go6983	25	1.0	exclude_pmids	True			binary	go6983
+31959955_182_log2	31959955	NTERA2_KN93	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	KN93	4	1.0	exclude_pmids	True			binary	kn93
+31959955_183_log2	31959955	NTERA2_MK2206	NTERA2_DMSO	60.0	pmid:31959955	hijazi_kinhib	MK2206	3	1.0	exclude_pmids	True			binary	mk2206
 29535314_1_log2	29535314	5uM doxorubicin _LFQM	DMSO	120.0	pmid:29535314			0	0.0	no_drug	True				
 29535314_2_log2	29535314	5uM doxorubicin _SILAC	DMSO	120.0	pmid:29535314			0	0.0	no_drug	True				
 29535314_3_log2	29535314	5uM doxorubicin _TMTMS2	DMSO	120.0	pmid:29535314			0	0.0	no_drug	True				
@@ -1439,14 +1439,14 @@ conditionID	PMID	Condition	Control	minutes	block_id	source	drugs	n_kinases_occ50
 17081983_qPTM_1_log2	17081983	EGF 5min	control	5.0	pooled_small			0	0.0	no_drug	True				
 17081983_qPTM_3_log2	17081983	EGF 10min	control	10.0	pooled_small			0	0.0	no_drug	True				
 18691976_qPTM_1_log2	18691976	M	S		pooled_small			0	0.0	no_drug	False				
-19651622_qPTM_1_log2	19651622	EGF 15min, U0126 20min	control	20.0	pmid:19651622	affinity	cond:U0126@1000nM[default_1uM]	2	0.9345794320106506		True				
-19651622_qPTM_2_log2	19651622	Dasatinib 5nM	control		pmid:19651622	affinity	cond:Dasatinib@5nM[parsed]	20	0.9817396402359009		False	True			
-19651622_qPTM_3_log2	19651622	EGF 15min, SB202190 20min	control	20.0	pmid:19651622	affinity	cond:SB202190@1000nM[default_1uM]	2	0.9615384340286255		True				
-19651622_qPTM_4_log2	19651622	U0126 20min+EGF 15min	control	20.0	pmid:19651622	affinity	cond:U0126@1000nM[default_1uM]	2	0.9345794320106506		True				
-19651622_qPTM_5_log2	19651622	SB202190 20min+EGF 15min	control	20.0	pmid:19651622	affinity	cond:SB202190@1000nM[default_1uM]	2	0.9615384340286255		True				
+19651622_qPTM_1_log2	19651622	EGF 15min, U0126 20min	control	20.0	pmid:19651622	affinity	cond:U0126@1000nM[default_1uM]	2	0.9345794320106506	exclude_pmids	True				
+19651622_qPTM_2_log2	19651622	Dasatinib 5nM	control		pmid:19651622	affinity	cond:Dasatinib@5nM[parsed]	20	0.9817396402359009	exclude_pmids	False	True			
+19651622_qPTM_3_log2	19651622	EGF 15min, SB202190 20min	control	20.0	pmid:19651622	affinity	cond:SB202190@1000nM[default_1uM]	2	0.9615384340286255	exclude_pmids	True				
+19651622_qPTM_4_log2	19651622	U0126 20min+EGF 15min	control	20.0	pmid:19651622	affinity	cond:U0126@1000nM[default_1uM]	2	0.9345794320106506	exclude_pmids	True				
+19651622_qPTM_5_log2	19651622	SB202190 20min+EGF 15min	control	20.0	pmid:19651622	affinity	cond:SB202190@1000nM[default_1uM]	2	0.9615384340286255	exclude_pmids	True				
 19651622_qPTM_6_log2	19651622	EGF 15min	control	15.0	pmid:19651622			0	0.0	no_drug	True				
-19651622_qPTM_7_log2	19651622	Dasatinib 50nM	control		pmid:19651622	affinity	cond:Dasatinib@50nM[parsed]	37	0.9981434345245361		False	True			
-19651622_qPTM_8_log2	19651622	Dasatinib 50nM	5nM		pmid:19651622	affinity	cond:Dasatinib@50nM[parsed]	37	0.9981434345245361		False	True			
+19651622_qPTM_7_log2	19651622	Dasatinib 50nM	control		pmid:19651622	affinity	cond:Dasatinib@50nM[parsed]	37	0.9981434345245361	exclude_pmids	False	True			
+19651622_qPTM_8_log2	19651622	Dasatinib 50nM	5nM		pmid:19651622	affinity	cond:Dasatinib@50nM[parsed]	37	0.9981434345245361	exclude_pmids	False	True			
 19691289_qPTM_1_log2	19691289	Noscapine 15min	control	15.0	pooled_small			0	0.0	no_drug	True				
 19691289_qPTM_2_log2	19691289	Noscapine 60min	control	60.0	pooled_small			0	0.0	no_drug	True				
 20068231_qPTM_1_log2	20068231	Ctr	G1-S		pooled_small			0	0.0	no_drug	False				
@@ -1470,13 +1470,13 @@ conditionID	PMID	Condition	Control	minutes	block_id	source	drugs	n_kinases_occ50
 21406692_qPTM_6_log2	21406692	NCM 0.5h	control	300.0	pmid:21406692			0	0.0	no_drug	True				
 21406692_qPTM_7_log2	21406692	PMA 0.5h	control	300.0	pmid:21406692			0	0.0	no_drug	True				
 21406692_qPTM_8_log2	21406692	NCM 24h	control	1440.0	pmid:21406692			0	0.0	no_drug	True				
-21712546_qPTM_1_log2	21712546	MLN8054 0.25uM	control		pooled_small	affinity	cond:MLN8054@250nM[parsed]	6	0.9920634627342224		False	True			
-21712546_qPTM_2_log2	21712546	AZD1152 1uM+ZM447439 5uM	control		pooled_small	affinity	cond:AZD1152@1000nM[default_1uM]	4	0.9532888531684875		False				
+21712546_qPTM_1_log2	21712546	MLN8054 0.25uM	control		pooled_small	affinity	cond:MLN8054@250nM[parsed]	6	0.9920634627342224	exclude_pmids	False	True			
+21712546_qPTM_2_log2	21712546	AZD1152 1uM+ZM447439 5uM	control		pooled_small	affinity	cond:AZD1152@1000nM[default_1uM]	4	0.9532888531684875	exclude_pmids	False				
 21712546_qPTM_3_log2	21712546	Taxol	control		pooled_small			0	0.0	no_drug	False				
-21712546_qPTM_4_log2	21712546	BI2536 0.1uM  entry	control		pooled_small	affinity	cond:BI2536@100nM[parsed]	4	0.9919650554656982		False	True			
-21712546_qPTM_5_log2	21712546	BI2536 0.1uM  mitosis	control		pooled_small	affinity	cond:BI2536@100nM[parsed]	4	0.9919650554656982		False	True			
-21712546_qPTM_6_log2	21712546	MLN8054 1uM	control		pooled_small	affinity	cond:MLN8054@1000nM[parsed]	14	0.9980040192604065		False	True			
-21712546_qPTM_7_log2	21712546	MLN8054 5uM	control		pooled_small	affinity	cond:MLN8054@5000nM[parsed]	33	0.9996001720428467		False	True			
+21712546_qPTM_4_log2	21712546	BI2536 0.1uM  entry	control		pooled_small	affinity	cond:BI2536@100nM[parsed]	4	0.9919650554656982	exclude_pmids	False	True			
+21712546_qPTM_5_log2	21712546	BI2536 0.1uM  mitosis	control		pooled_small	affinity	cond:BI2536@100nM[parsed]	4	0.9919650554656982	exclude_pmids	False	True			
+21712546_qPTM_6_log2	21712546	MLN8054 1uM	control		pooled_small	affinity	cond:MLN8054@1000nM[parsed]	14	0.9980040192604065	exclude_pmids	False	True			
+21712546_qPTM_7_log2	21712546	MLN8054 5uM	control		pooled_small	affinity	cond:MLN8054@5000nM[parsed]	33	0.9996001720428467	exclude_pmids	False	True			
 21857030_qPTM_1_log2	21857030	Ctr	BI 4834		pooled_small			0	0.0	no_drug	False				
 21902226_qPTM_1_log2	21902226	HCC	Normal		pooled_small			0	0.0	no_drug	False				
 21936566_qPTM_1_log2	21936566	PF-04217903 24h	control	1440.0	pooled_small	affinity	cond:PF-04217903@1000nM[default_1uM]	1	0.9980040192604065	time>120min	True				
@@ -1485,9 +1485,9 @@ conditionID	PMID	Condition	Control	minutes	block_id	source	drugs	n_kinases_occ50
 21936566_qPTM_4_log2	21936566	PF-04217903 6h	control	360.0	pooled_small	affinity	cond:PF-04217903@1000nM[default_1uM]	1	0.9980040192604065	time>120min	True				
 21949786_qPTM_1_log2	21949786	CXCL12	control		pooled_small			0	0.0	no_drug	False				
 21955146_qPTM_1_log2	21955146	EGF	control		pooled_small			0	0.0	no_drug	False				
-22115753_qPTM_1_log2	22115753	Erlotinib	Gefitinib		pooled_small	affinity	cond:Erlotinib@1000nM[default_1uM] | ctrl:Gefitinib@1000nM[default_1uM]	6	0.8984726071357727		False				
-22115753_qPTM_2_log2	22115753	Ctr	Gefitinib		pooled_small	affinity	ctrl:Gefitinib@1000nM[default_1uM]	11	0.8064516186714172		False				
-22115753_qPTM_3_log2	22115753	Erlotinib	control		pooled_small	affinity	cond:Erlotinib@1000nM[default_1uM]	18	0.9756097793579102		False				
+22115753_qPTM_1_log2	22115753	Erlotinib	Gefitinib		pooled_small	affinity	cond:Erlotinib@1000nM[default_1uM] | ctrl:Gefitinib@1000nM[default_1uM]	6	0.8984726071357727	exclude_pmids	False				
+22115753_qPTM_2_log2	22115753	Ctr	Gefitinib		pooled_small	affinity	ctrl:Gefitinib@1000nM[default_1uM]	11	0.8064516186714172	exclude_pmids	False				
+22115753_qPTM_3_log2	22115753	Erlotinib	control		pooled_small	affinity	cond:Erlotinib@1000nM[default_1uM]	18	0.9756097793579102	exclude_pmids	False				
 22199227_qPTM_1_log2	22199227	Plk1(wt) 3-MB-PP1	control		pooled_small			0	0.0	no_drug	False				
 22199227_qPTM_2_log2	22199227	Plk1(as) 3-MB-PP1	control		pooled_small	affinity	cond:Plk1as@1000nM[default_1uM]	1	0.8999999761581421		False				
 22210691_qPTM_1_log2	22210691	EGF 24h	control	1440.0	pooled_small			0	0.0	no_drug	True				
@@ -1538,8 +1538,8 @@ conditionID	PMID	Condition	Control	minutes	block_id	source	drugs	n_kinases_occ50
 23828894_qPTM_11_log2	23828894	S. flexneri wt infected 30min	ospF infected	30.0	pmid:23828894			0	0.0	no_drug	True				
 23828894_qPTM_12_log2	23828894	S. flexneri ospF infected 30min+MAPKi	ospF infected	30.0	pmid:23828894			0	0.0	no_drug	True				
 23836654_qPTM_1_log2	23836654	sh-TBK1	control		pooled_small			0	0.0	no_drug	False				
-23898821_qPTM_1_log2	23898821	Crizotinib	control		pooled_small	affinity	cond:Crizotinib@1000nM[default_1uM]	45	0.9967108368873596		False				
-24117733_qPTM_1_log2	24117733	LRRK2-IN-1	control		pooled_small	affinity	cond:LRRK2-IN-1@1000nM[default_1uM]	1	0.9871668219566345		False				
+23898821_qPTM_1_log2	23898821	Crizotinib	control		pooled_small	affinity	cond:Crizotinib@1000nM[default_1uM]	45	0.9967108368873596	exclude_pmids	False				
+24117733_qPTM_1_log2	24117733	LRRK2-IN-1	control		pooled_small	affinity	cond:LRRK2-IN-1@1000nM[default_1uM]	1	0.9871668219566345	exclude_pmids	False				
 24211406_qPTM_1_log2	24211406	SCC-9	HaCaT		pooled_small			0	0.0	no_drug	False				
 24275748_qPTM_1_log2	24275748	Rapamycin 15min	control	15.0	pooled_small	affinity	cond:Rapamycin@1000nM[default_1uM]	1	0.800000011920929		True				
 24275748_qPTM_5_log2	24275748	Rapamycin 7min	control	7.0	pooled_small	affinity	cond:Rapamycin@1000nM[default_1uM]	1	0.800000011920929		True				
@@ -1580,7 +1580,7 @@ conditionID	PMID	Condition	Control	minutes	block_id	source	drugs	n_kinases_occ50
 25002506_qPTM_4_log2	25002506	PMA, BI-D1870	control		pooled_small	affinity	cond:BI-D1870@1000nM[default_1uM]	4	0.9708737730979919		False				
 25002506_qPTM_5_log2	25002506	PD184352	DMSO		pooled_small	affinity	cond:PD184352@1000nM[default_1uM]	2	0.9832841753959656		False				
 25002506_qPTM_6_log2	25002506	PMA, PD184352	control		pooled_small	affinity	cond:PD184352@1000nM[default_1uM]	2	0.9832841753959656		False				
-25003641_qPTM_1_log2	25003641	VE-821	control		pooled_small	affinity	cond:VE-821@1000nM[default_1uM]	2	0.6779654622077942		False				
+25003641_qPTM_1_log2	25003641	VE-821	control		pooled_small	affinity	cond:VE-821@1000nM[default_1uM]	2	0.6779654622077942	exclude_pmids	False				
 25056879_qPTM_1_log2	25056879	TGFB 5min	control	5.0	pooled_small			0	0.0	no_drug	True				
 25056879_qPTM_2_log2	25056879	TGFB 20min	control	20.0	pooled_small			0	0.0	no_drug	True				
 25056879_qPTM_3_log2	25056879	TGFB 10min	control	10.0	pooled_small			0	0.0	no_drug	True				
@@ -1603,9 +1603,9 @@ conditionID	PMID	Condition	Control	minutes	block_id	source	drugs	n_kinases_occ50
 25849741_qPTM_9_log2	25849741	SC-514	control		pmid:25849741	affinity	cond:SC-514@1000nM[default_1uM]	0	0.25	no_kinase_target_occ50	False				
 25849741_qPTM_10_log2	25849741	TNFA	IKK-B(WT)		pmid:25849741			0	0.0	no_drug	False				
 25849741_qPTM_11_log2	25849741	TNFA, IKKB(K44M)	control		pmid:25849741			0	0.0	no_drug	False				
-25850435_qPTM_1_log2	25850435	AZD6244	control		pooled_small	affinity	cond:AZD6244@1000nM[default_1uM]	2	0.960614800453186		False				
-25850435_qPTM_2_log2	25850435	PLX4032	AZD6244		pooled_small	affinity	cond:PLX4032@1000nM[default_1uM] | ctrl:AZD6244@1000nM[default_1uM]	6	1.0		False				
-25850435_qPTM_3_log2	25850435	PLX4032	control		pooled_small	affinity	cond:PLX4032@1000nM[default_1uM]	4	1.0		False				
+25850435_qPTM_1_log2	25850435	AZD6244	control		pooled_small	affinity	cond:AZD6244@1000nM[default_1uM]	2	0.960614800453186	exclude_pmids	False				
+25850435_qPTM_2_log2	25850435	PLX4032	AZD6244		pooled_small	affinity	cond:PLX4032@1000nM[default_1uM] | ctrl:AZD6244@1000nM[default_1uM]	6	1.0	exclude_pmids	False				
+25850435_qPTM_3_log2	25850435	PLX4032	control		pooled_small	affinity	cond:PLX4032@1000nM[default_1uM]	4	1.0	exclude_pmids	False				
 25907765_qPTM_1_log2	25907765	Starve	Insulin+aa		pooled_small			0	0.0	no_drug	False				
 25907765_qPTM_2_log2	25907765	Insulin+aa, Raptor KD	control		pooled_small			0	0.0	no_drug	False				
 25921289_qPTM_1_log2	25921289	NGF 45min	control	45.0	pooled_small			0	0.0	no_drug	True				
@@ -1898,8 +1898,8 @@ conditionID	PMID	Condition	Control	minutes	block_id	source	drugs	n_kinases_occ50
 32606318_qPTM_7_log2	32606318	PRL3i 6h	control	360.0	pmid:32606318			0	0.0	no_drug	True				
 32606318_qPTM_8_log2	32606318	PRL3i 24h	control	1440.0	pmid:32606318			0	0.0	no_drug	True				
 21659604_Ochoa_114_48_log2	21659604	Starved	Insulin	20.0	pooled_small			0	0.0	no_drug	True				
-21659604_Ochoa_117_48_log2	21659604	Torin1	Insulin	20.0	pooled_small	affinity	cond:Torin1@1000nM[default_1uM]	1	0.9970089793205261		True				
-21659604_Ochoa_120_48_log2	21659604	Rapamycin	Insulin	20.0	pooled_small	affinity	cond:Rapamycin@1000nM[default_1uM]	1	0.800000011920929		True				
+21659604_Ochoa_117_48_log2	21659604	Torin1	Insulin	20.0	pooled_small	affinity	cond:Torin1@1000nM[default_1uM]	1	0.9970089793205261	exclude_pmids	True				
+21659604_Ochoa_120_48_log2	21659604	Rapamycin	Insulin	20.0	pooled_small	affinity	cond:Rapamycin@1000nM[default_1uM]	1	0.800000011920929	exclude_pmids	True				
 18669648_Ochoa_267_72_log2	18669648	Mitosis (Nocodazole)	Async cells		pooled_small			0	0.0	no_drug	False				
 18669648_Ochoa_72_72_log2	18669648	G1_S (Thymidine)	Async cells		pooled_small			0	0.0	no_drug	False				
 23749302_Ochoa_432_156_log2	23749302	Bortezomib	Untreated	240.0	pooled_small			0	0.0	no_drug	True				
@@ -1913,26 +1913,26 @@ conditionID	PMID	Condition	Control	minutes	block_id	source	drugs	n_kinases_occ50
 24324209_Ochoa_480_177_log2	24324209	Iloprost (5 nM)	Vehicle	1.0	pooled_small			0	0.0	no_drug	True				
 24247654_Ochoa_483_180_log2	24247654	Quizartinib-sensitive AML cells	Quizartinib-insensitive AML cells		pooled_small			0	0.0	no_drug	False				
 24247654_Ochoa_483_183_log2	24247654	Quizartinib-sensitive AML cells	Quizartinib-insensitive AML cells		pooled_small			0	0.0	no_drug	False				
-26060313_Ochoa_1288_272_log2	26060313	AKTi (Akt inhibitor VIII)	Control	60.0	pmid:26060313	affinity	cond:AKTi@1000nM[default_1uM]	3	0.8999999761581421		True				
-26060313_Ochoa_1289_272_log2	26060313	AKTi (MK-2206)	Control	60.0	pmid:26060313	affinity	cond:AKTi@1000nM[default_1uM] | cond:MK-2206@1000nM[default_1uM]	3	0.99891197681427		True				
-26060313_Ochoa_1290_272_log2	26060313	CAMK2i (KN-93)	Control	60.0	pmid:26060313	affinity	cond:CAMK2i@1000nM[default_1uM] | cond:KN-93@1000nM[default_1uM]	4	1.0		True				
-26060313_Ochoa_1291_272_log2	26060313	CAMK2i (KN-62)	Control	60.0	pmid:26060313	affinity	cond:CAMK2i@1000nM[default_1uM] | cond:KN-62@1000nM[default_1uM]	4	1.0		True				
-26060313_Ochoa_1292_272_log2	26060313	EGFRi (PD-168393)	Control	60.0	pmid:26060313	affinity	cond:EGFRi@1000nM[default_1uM] | cond:PD-168393@1000nM[default_1uM]	1	0.9999001026153564		True				
-26060313_Ochoa_1293_272_log2	26060313	EGFRi (PD-153035)	Control	60.0	pmid:26060313	affinity	cond:EGFRi@1000nM[default_1uM] | cond:PD-153035@1000nM[default_1uM]	1	1.0		True				
-26060313_Ochoa_1294_272_log2	26060313	ERKi (ERK inhibitor)	Control	60.0	pmid:26060313	affinity	cond:ERKi@1000nM[default_1uM]	2	0.800000011920929		True				
-26060313_Ochoa_1295_272_log2	26060313	ERKi (ERK inhibitor II)	Control	60.0	pmid:26060313	affinity	cond:ERKi@1000nM[default_1uM]	2	0.800000011920929		True				
-26060313_Ochoa_1296_272_log2	26060313	MEKi (GSK-1120212)	Control	60.0	pmid:26060313	affinity	cond:MEKi@1000nM[default_1uM] | cond:GSK-1120212@1000nM[default_1uM]	2	0.9991080164909363		True				
-26060313_Ochoa_1297_272_log2	26060313	MEKi (U0126)	Control	60.0	pmid:26060313	affinity	cond:MEKi@1000nM[default_1uM] | cond:U0126@1000nM[default_1uM]	2	0.9934579133987427		True				
-26060313_Ochoa_1298_272_log2	26060313	mTORi (KU-0063794)	Control	60.0	pmid:26060313	affinity	cond:mTORi@1000nM[default_1uM] | cond:KU-0063794@1000nM[default_1uM]	1	1.0		True				
-26060313_Ochoa_1299_272_log2	26060313	mTORi (Torin-1)	Control	60.0	pmid:26060313	affinity	cond:mTORi@1000nM[default_1uM] | cond:Torin-1@1000nM[default_1uM]	1	0.9997009038925171		True				
-26060313_Ochoa_1300_272_log2	26060313	P70S6K1i (PF-4708671)	Control	60.0	pmid:26060313	affinity	cond:P70S6K1i@1000nM[default_1uM] | cond:PF-4708671@1000nM[default_1uM]	1	1.0		True				
-26060313_Ochoa_1301_272_log2	26060313	P70S6K1i (DG2)	Control	60.0	pmid:26060313	affinity	cond:P70S6K1i@1000nM[default_1uM] | cond:DG2@1000nM[default_1uM]	1	0.9909090995788574		True				
-26060313_Ochoa_1302_272_log2	26060313	PI3Ki (GDC-0941)	Control	60.0	pmid:26060313	affinity	cond:GDC-0941@1000nM[default_1uM]	5	0.8333333134651184		True				
-26060313_Ochoa_1303_272_log2	26060313	PI3Ki (PI-103)	Control	60.0	pmid:26060313	affinity	cond:PI-103@1000nM[default_1uM]	6	0.9881423115730286		True				
-26060313_Ochoa_1304_272_log2	26060313	PKCi (GÃ¶-6976)	Control	60.0	pmid:26060313	affinity	cond:GÃ¶-6976@1000nM[default_1uM]	45	1.0		True				
-26060313_Ochoa_1305_272_log2	26060313	PKCi (BIM-1)	Control	60.0	pmid:26060313	affinity	cond:BIM-1@1000nM[default_1uM]	33	1.0		True				
+26060313_Ochoa_1288_272_log2	26060313	AKTi (Akt inhibitor VIII)	Control	60.0	pmid:26060313	affinity	cond:AKTi@1000nM[default_1uM]	3	0.8999999761581421	exclude_pmids	True				
+26060313_Ochoa_1289_272_log2	26060313	AKTi (MK-2206)	Control	60.0	pmid:26060313	affinity	cond:AKTi@1000nM[default_1uM] | cond:MK-2206@1000nM[default_1uM]	3	0.99891197681427	exclude_pmids	True				
+26060313_Ochoa_1290_272_log2	26060313	CAMK2i (KN-93)	Control	60.0	pmid:26060313	affinity	cond:CAMK2i@1000nM[default_1uM] | cond:KN-93@1000nM[default_1uM]	4	1.0	exclude_pmids	True				
+26060313_Ochoa_1291_272_log2	26060313	CAMK2i (KN-62)	Control	60.0	pmid:26060313	affinity	cond:CAMK2i@1000nM[default_1uM] | cond:KN-62@1000nM[default_1uM]	4	1.0	exclude_pmids	True				
+26060313_Ochoa_1292_272_log2	26060313	EGFRi (PD-168393)	Control	60.0	pmid:26060313	affinity	cond:EGFRi@1000nM[default_1uM] | cond:PD-168393@1000nM[default_1uM]	1	0.9999001026153564	exclude_pmids	True				
+26060313_Ochoa_1293_272_log2	26060313	EGFRi (PD-153035)	Control	60.0	pmid:26060313	affinity	cond:EGFRi@1000nM[default_1uM] | cond:PD-153035@1000nM[default_1uM]	1	1.0	exclude_pmids	True				
+26060313_Ochoa_1294_272_log2	26060313	ERKi (ERK inhibitor)	Control	60.0	pmid:26060313	affinity	cond:ERKi@1000nM[default_1uM]	2	0.800000011920929	exclude_pmids	True				
+26060313_Ochoa_1295_272_log2	26060313	ERKi (ERK inhibitor II)	Control	60.0	pmid:26060313	affinity	cond:ERKi@1000nM[default_1uM]	2	0.800000011920929	exclude_pmids	True				
+26060313_Ochoa_1296_272_log2	26060313	MEKi (GSK-1120212)	Control	60.0	pmid:26060313	affinity	cond:MEKi@1000nM[default_1uM] | cond:GSK-1120212@1000nM[default_1uM]	2	0.9991080164909363	exclude_pmids	True				
+26060313_Ochoa_1297_272_log2	26060313	MEKi (U0126)	Control	60.0	pmid:26060313	affinity	cond:MEKi@1000nM[default_1uM] | cond:U0126@1000nM[default_1uM]	2	0.9934579133987427	exclude_pmids	True				
+26060313_Ochoa_1298_272_log2	26060313	mTORi (KU-0063794)	Control	60.0	pmid:26060313	affinity	cond:mTORi@1000nM[default_1uM] | cond:KU-0063794@1000nM[default_1uM]	1	1.0	exclude_pmids	True				
+26060313_Ochoa_1299_272_log2	26060313	mTORi (Torin-1)	Control	60.0	pmid:26060313	affinity	cond:mTORi@1000nM[default_1uM] | cond:Torin-1@1000nM[default_1uM]	1	0.9997009038925171	exclude_pmids	True				
+26060313_Ochoa_1300_272_log2	26060313	P70S6K1i (PF-4708671)	Control	60.0	pmid:26060313	affinity	cond:P70S6K1i@1000nM[default_1uM] | cond:PF-4708671@1000nM[default_1uM]	1	1.0	exclude_pmids	True				
+26060313_Ochoa_1301_272_log2	26060313	P70S6K1i (DG2)	Control	60.0	pmid:26060313	affinity	cond:P70S6K1i@1000nM[default_1uM] | cond:DG2@1000nM[default_1uM]	1	0.9909090995788574	exclude_pmids	True				
+26060313_Ochoa_1302_272_log2	26060313	PI3Ki (GDC-0941)	Control	60.0	pmid:26060313	affinity	cond:GDC-0941@1000nM[default_1uM]	5	0.8333333134651184	exclude_pmids	True				
+26060313_Ochoa_1303_272_log2	26060313	PI3Ki (PI-103)	Control	60.0	pmid:26060313	affinity	cond:PI-103@1000nM[default_1uM]	6	0.9881423115730286	exclude_pmids	True				
+26060313_Ochoa_1304_272_log2	26060313	PKCi (GÃ¶-6976)	Control	60.0	pmid:26060313	affinity	cond:GÃ¶-6976@1000nM[default_1uM]	45	1.0	exclude_pmids	True				
+26060313_Ochoa_1305_272_log2	26060313	PKCi (BIM-1)	Control	60.0	pmid:26060313	affinity	cond:BIM-1@1000nM[default_1uM]	33	1.0	exclude_pmids	True				
 26060313_Ochoa_1306_272_log2	26060313	PP2Ai (Okadaic acid)	Control	60.0	pmid:26060313			0	0.0	no_drug	True				
 26060313_Ochoa_1307_272_log2	26060313	PP2Ai (Cantharidic acid)	Control	60.0	pmid:26060313			0	0.0	no_drug	True				
-26060313_Ochoa_1308_272_log2	26060313	ROCKi (H-1152)	Control	60.0	pmid:26060313	affinity	cond:ROCKi@1000nM[default_1uM] | cond:H-1152@1000nM[default_1uM]	2	0.9998003840446472		True				
-26060313_Ochoa_1309_272_log2	26060313	ROCKi (Y-27632)	Control	60.0	pmid:26060313	affinity	cond:ROCKi@1000nM[default_1uM] | cond:Y-27632@1000nM[default_1uM]	2	0.9869565367698669		True				
+26060313_Ochoa_1308_272_log2	26060313	ROCKi (H-1152)	Control	60.0	pmid:26060313	affinity	cond:ROCKi@1000nM[default_1uM] | cond:H-1152@1000nM[default_1uM]	2	0.9998003840446472	exclude_pmids	True				
+26060313_Ochoa_1309_272_log2	26060313	ROCKi (Y-27632)	Control	60.0	pmid:26060313	affinity	cond:ROCKi@1000nM[default_1uM] | cond:Y-27632@1000nM[default_1uM]	2	0.9869565367698669	exclude_pmids	True				
 26462736_Ochoa_1314_274_log2	26462736	shPP6c (Taxol)	Control		pooled_small			0	0.0	no_drug	False				

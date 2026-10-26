@@ -1,0 +1,250 @@
+{
+ "run_id": "r3_w7_nce0_fold0__20261026-144600__s0",
+ "name": "r3_w7_nce0_fold0",
+ "git_hash": "not_queried(agent no-git rule)",
+ "config": {
+  "flank": 7,
+  "lambda_nce": 0.0,
+  "alpha": 0.5,
+  "p_lab": 0.5,
+  "batch": 1024,
+  "lr": 0.001,
+  "wd": 0.01,
+  "max_steps": 6000,
+  "eval_every": 200,
+  "patience": 6,
+  "desc_dropout": 0.2,
+  "d_site": 192,
+  "h": 128,
+  "d_kin": 256,
+  "n_layers": 2,
+  "dropout": 0.1,
+  "valid_frac": 0.2,
+  "seed": 0,
+  "variant": "L2",
+  "warmup": 200
+ },
+ "seed": 0,
+ "split": "cv",
+ "notes": "R3 neural kinase-site model (DESIGN \u00a78.4)",
+ "inputs": [
+  {
+   "path": "/workspace/cache/r3/win_embed_meta.json",
+   "type": "file",
+   "bytes": 622,
+   "sha256": "95ffd8497c88afa57ede9a5bff0472282aabeff982ff97b6d8fccb4430f56572"
+  },
+  {
+   "path": "/workspace/cache/r3/win_rows.npy",
+   "type": "file",
+   "bytes": 58355600,
+   "sha256": "83559927bc16322a78d112b21b180b1c82021c6b1b258d48508c3229be422af9"
+  },
+  {
+   "path": "/workspace/cache/r3/win_sites.parquet",
+   "type": "file",
+   "bytes": 2021758,
+   "sha256": "5058ab3245c63747c2c631d38f83762933b24ef5a15fd8220c7159fbd4ea1de9"
+  },
+  {
+   "path": "/workspace/cache/features/esm2_650m/kinase_domain.npy",
+   "type": "file",
+   "bytes": 2575488,
+   "sha256": "428b7fda7221240cf36aa64287aded1b2df613be50a649400257de2f66943650"
+  },
+  {
+   "path": "/workspace/cache/labels/dev_pairs.parquet",
+   "type": "file",
+   "bytes": 565726,
+   "sha256": "55e684aca09c8a100f52c9d1e80e1d0a9cd883733498be951b37d6a4434ea132"
+  },
+  {
+   "path": "/workspace/cache/labels/canary_dev.parquet",
+   "type": "file",
+   "bytes": 24269,
+   "sha256": "f7668c656aef24891d44afe7f09614f354678f1053173245b49de4215f9c769d"
+  },
+  {
+   "path": "/workspace/results/splits/cv_folds.tsv",
+   "type": "file",
+   "bytes": 203997,
+   "sha256": "aa01e43d7a064269ddf58cf00a2e3130486aee973cba3e6cf52f994f6a265dc8"
+  },
+  {
+   "path": "/workspace/results/splits/kinase_folds.tsv",
+   "type": "file",
+   "bytes": 15014,
+   "sha256": "d4acaafd16342d59c7a24286f1c69e3d4b439a1efe1b911a49f48e761f3831ae"
+  },
+  {
+   "path": "/workspace/cache/features/motif/cantley_unprimed_score.json",
+   "type": "file",
+   "bytes": 479,
+   "sha256": "05c8289459f3d934831e2573bc71e02654e37969a158425ddb8da5d9a9b13071"
+  }
+ ],
+ "host": "eu-g6-076",
+ "python": "3.12.3",
+ "platform": "Linux-5.15.0-198-generic-x86_64-with-glibc2.39",
+ "argv": [
+  "scripts/models/r3_cv.py",
+  "train",
+  "--fold",
+  "0",
+  "--config",
+  "w7_nce0",
+  "--note",
+  "fold-0 config pilot"
+ ],
+ "pid": 158339,
+ "started": "2026-10-26 14:46:00 CET",
+ "n_rows": {
+  "predictions": 21283695
+ },
+ "outputs": {
+  "predictions": {
+   "path": "cache/runs/r3_w7_nce0_fold0__20261026-144600__s0/predictions.parquet",
+   "sha256": "c7132d5bc4ad438ccc52e647cfb932ff1176b13085cb279080e43948b1c3fbb3"
+  },
+  "metrics": {
+   "path": "results/runs/r3_w7_nce0_fold0__20261026-144600__s0/metrics.json",
+   "sha256": "d48014adeecdb832ba798a47694370d77b548acaf88c6fb40fdace06d3a73dbc"
+  },
+  "summary": {
+   "path": "results/runs/r3_w7_nce0_fold0__20261026-144600__s0/summary.json",
+   "sha256": "6c35c95c93aea65644d80799c14caefa880f6467ba09329d80ad3abdd739d308"
+  }
+ },
+ "fallbacks": {},
+ "train_info": {
+  "fold": 0,
+  "lko_fold": null,
+  "cfg": {
+   "flank": 7,
+   "lambda_nce": 0.0,
+   "alpha": 0.5,
+   "p_lab": 0.5,
+   "batch": 1024,
+   "lr": 0.001,
+   "wd": 0.01,
+   "max_steps": 6000,
+   "eval_every": 200,
+   "patience": 6,
+   "desc_dropout": 0.2,
+   "d_site": 192,
+   "h": 128,
+   "d_kin": 256,
+   "n_layers": 2,
+   "dropout": 0.1,
+   "valid_frac": 0.2,
+   "seed": 0,
+   "variant": "L2",
+   "warmup": 200
+  },
+  "n_train_rows": 222292,
+  "n_score_rows": 55632,
+  "targets": {
+   "pos_pairs_loaded": 9721,
+   "pos_pairs_not_in_r3_sites": 0,
+   "pos_pairs_unknown_kinase": 0,
+   "pos_pairs_out_of_class": 0,
+   "n_trained_kinases": 367,
+   "n_pos_entries": 9721,
+   "n_masked_negatives": 33087
+  },
+  "t_targets_s": 5.6,
+  "n_fit_rows": 177834,
+  "n_val_rows": 44458,
+  "n_lab_fit_rows": 4746,
+  "n_trained_kinases": 341,
+  "n_pos_fit": 7311,
+  "t_gpu_load_s": 1.4,
+  "best_val_auroc_hard": 0.7555656603999905,
+  "best_step": 600,
+  "t_train_s": 20.5,
+  "t_score_s": 0.6,
+  "n_pred_rows": 21283695,
+  "t_total_s": 36.7,
+  "peak_gpu_mem_gb": 11.3,
+  "gpu": "NVIDIA GeForce RTX 4090"
+ },
+ "history": [
+  {
+   "step": 200,
+   "loss_bce": 0.48722386360168457,
+   "loss_nce": 0.0,
+   "val_auroc_hard": 0.7517420647444425,
+   "val_n_kinases": 143,
+   "t": 3.0
+  },
+  {
+   "step": 400,
+   "loss_bce": 0.22263924777507782,
+   "loss_nce": 0.0,
+   "val_auroc_hard": 0.7506224815245275,
+   "val_n_kinases": 143,
+   "t": 5.2
+  },
+  {
+   "step": 600,
+   "loss_bce": 0.16601204872131348,
+   "loss_nce": 0.0,
+   "val_auroc_hard": 0.7555656603999905,
+   "val_n_kinases": 143,
+   "t": 7.4
+  },
+  {
+   "step": 800,
+   "loss_bce": 0.1036672294139862,
+   "loss_nce": 0.0,
+   "val_auroc_hard": 0.7469054542846613,
+   "val_n_kinases": 143,
+   "t": 9.6
+  },
+  {
+   "step": 1000,
+   "loss_bce": 0.08128562569618225,
+   "loss_nce": 0.0,
+   "val_auroc_hard": 0.7254969418257267,
+   "val_n_kinases": 143,
+   "t": 11.8
+  },
+  {
+   "step": 1200,
+   "loss_bce": 0.06443768739700317,
+   "loss_nce": 0.0,
+   "val_auroc_hard": 0.7354139157316901,
+   "val_n_kinases": 143,
+   "t": 13.9
+  },
+  {
+   "step": 1400,
+   "loss_bce": 0.06333138048648834,
+   "loss_nce": 0.0,
+   "val_auroc_hard": 0.7268017506995401,
+   "val_n_kinases": 143,
+   "t": 16.1
+  },
+  {
+   "step": 1600,
+   "loss_bce": 0.07720333337783813,
+   "loss_nce": 0.0,
+   "val_auroc_hard": 0.7175497294410126,
+   "val_n_kinases": 143,
+   "t": 18.3
+  },
+  {
+   "step": 1800,
+   "loss_bce": 0.057820674031972885,
+   "loss_nce": 0.0,
+   "val_auroc_hard": 0.7306302513901171,
+   "val_n_kinases": 143,
+   "t": 20.5
+  }
+ ],
+ "runtime_train_and_score_s": 36.7,
+ "status": "ok",
+ "error": null,
+ "runtime_s": 71.5,
+ "finished": "2026-10-26 14:47:11 CET"
+}

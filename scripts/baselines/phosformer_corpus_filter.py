@@ -70,13 +70,13 @@ for name, recs, pre in [("kin", kin, "k"), ("sub", sub, "s")]:
             f.write(f">{pre}{i}\n{s}\n")
 
 
-def search(q: str, min_id: float, cov: float, cov_mode: int, tag: str) -> pd.DataFrame:
+def search(q: str, min_id: float, cov: float, cov_mode: int, tag: str, sens: float = 7.5) -> pd.DataFrame:
     m8 = tmp / f"{tag}.m8"
     wd = tmp / f"wd_{tag}"
     if wd.exists():
         shutil.rmtree(wd)
     cmd = [MMSEQS, "easy-search", str(tmp / f"{q}.fa"), str(tmp / "test.fa"), str(m8), str(wd),
-           "--threads", str(args.threads), "-s", "7.5", "--max-seqs", "300", "-e", "1e-3",
+           "--threads", str(args.threads), "-s", str(sens), "--max-seqs", "300", "-e", "1e-3",
            "--min-seq-id", str(min_id), "-c", str(cov), "--cov-mode", str(cov_mode),
            "--format-output", "query,target,fident,alnlen,qcov,tcov,evalue,bits"]
     subprocess.run(cmd, check=True, stdout=subprocess.DEVNULL)
@@ -102,7 +102,7 @@ for q, g in hs.groupby("query"):
         b = g.sort_values("fident", ascending=False).iloc[0]
         removed.append(("substrates.fa", i, sub[i][0][:80], "homolog_40id_50cov", b.target, float(b.fident)))
 # kinase domains: query-coverage mode (cov-mode 2 = coverage of query)
-hk = search("kin", 0.40, 0.50, 2, "kin")
+hk = search("kin", 0.40, 0.50, 2, "kin", sens=4.0)  # -s 4: ample for the >=90% removal rule; 40/50% counts approximate
 best = hk.sort_values("fident", ascending=False).drop_duplicates("query")
 info = {"kin_domains_with_hit_id>=0.40_qcov>=0.50": int(len(best)),
         "kin_domains_with_hit_id>=0.50_qcov>=0.50": int((best.fident >= 0.50).sum()),

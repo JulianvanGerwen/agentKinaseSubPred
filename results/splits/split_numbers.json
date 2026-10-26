@@ -188,5 +188,16 @@
  "test_ext_pairs(DL-5 filtered, U_ms)": 314,
  "dev_label_rows": 25450,
  "test_label_rows": 6234,
- "runtime_s": 67.5
+ "runtime_s": 67.5,
+ "relabel": {
+  "when": "2026-10-26 14:50:01 CET",
+  "dev_label_rows": 44660,
+  "test_label_rows": 10800,
+  "mask_only_rows_dev": 19214,
+  "mask_only_rows_test": 4566,
+  "test_eval_pos_new_since_2021": 263,
+  "test_ext_pairs_U_ms": 215,
+  "test_ext_tierA_U_ms": 158,
+  "runtime_s": 6.2
+ }
 }

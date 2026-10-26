@@ -37,7 +37,8 @@ CONFOUNDERS = ["ESTIMATE_StromalScore", "ESTIMATE_ImmuneScore", "WES_purity"]
 
 def read_matrix(path: Path) -> pd.DataFrame:
     d = pd.read_csv(path, sep="\t", index_col=0, low_memory=False)
-    return d.apply(pd.to_numeric, errors="coerce").astype(np.float32)
+    d = d.apply(pd.to_numeric, errors="coerce").astype(np.float32)
+    return d.mask(~np.isfinite(d))  # the BCM phospho files contain 'Inf' entries (e.g. 551 in BRCA) -> missing
 
 
 def read_confounders(cohort: str) -> tuple[pd.DataFrame, dict]:

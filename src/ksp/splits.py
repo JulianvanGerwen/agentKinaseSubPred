@@ -8,7 +8,7 @@ Frozen outputs (results/splits/, written by scripts/build_splits.py):
   eval_kinase_sets.tsv    kinase_acc, gene, in_K_eval, in_K_any, in_K_cv, n_test_pos, n_test_clusters, ...
   split_report.md         numbers + constraint checks
 
-Readers here never touch sealed/ (TEST labels are read only by ksp.eval_test).
+Readers here never touch the sealed TEST labels (read only by ksp.eval_test).
 
 Definitions
   * Substrate clusters = connected components of the protein graph whose edges are (a) mmseqs2 all-vs-all hits with

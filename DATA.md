@@ -646,3 +646,8 @@ All under /workspace/external/<dir>/. Full hash list: logs/dl/sha256_wave2.txt. 
 | file | content | URL | version | accessed (UTC) | SHA-256 | License |
 |---|---|---|---|---|---|---|
 | external/uniprot_topology/UP000005640_reviewed_topology.tsv.gz | 20,416 reviewed human entries: accession, primary gene, Entrez GeneID, Ensembl transcripts, RefSeq, seq version, length, Topological domain, Transmembrane, Intramembrane, Signal peptide, Transit peptide | https://rest.uniprot.org/uniprotkb/stream?query=proteome%3AUP000005640+AND+reviewed%3Atrue&format=tsv&fields=accession%2Cgene_primary%2Cxref_geneid%2Cxref_ensembl%2Cxref_refseq%2Csequence_version%2Clength%2Cft_topo_dom%2Cft_transmem%2Cft_intramem%2Cft_signal%2Cft_transit&compressed=true | 2026_03 (02-September-2026) | 2026-10-26T13:22:35 | 47daa7b776faebc0cdb045aee993bd37e8294d7a878de53663bce52001997dcf | CC BY 4.0 (UniProt) |
+
+### gtex_v8 (external/gtex_v8/; B4 SELPHI2.0 `gtex` feature, src/ksp/baselines/selphi2/features.py; added by B4-selphi2)
+| file | content | URL | version | accessed | bytes | SHA-256 | License |
+|---|---|---|---|---|---|---|---|
+| GTEx_Analysis_2017-06-05_v8_RNASeQCv1.1.9_gene_median_tpm.gct.gz | gene x 54 tissues median TPM | https://storage.googleapis.com/adult-gtex/bulk-gex/v8/rna-seq/GTEx_Analysis_2017-06-05_v8_RNASeQCv1.1.9_gene_median_tpm.gct.gz | GTEx v8 (2017-06-05) | 2026-10-26 14:40 CET | 6952331 | ee7201ff2f280b0de5657d4b08e9a240362d9757efed7f7bd5dba35a5f8617b8 | GTEx Portal open-access data (cite GTEx Consortium 2020) |
