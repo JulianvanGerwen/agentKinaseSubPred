@@ -1,0 +1,53 @@
+{
+ "module": "F5 co-expression / co-dependency",
+ "label_derived": false,
+ "features": {
+  "coexpr_hpa_tissue_spearman": {
+   "file": "cache/features/context/coexpr/coexpr_hpa_tissue_spearman.npy",
+   "store_name": "context/coexpr/coexpr_hpa_tissue_spearman",
+   "dtype": "float16",
+   "shape": [
+    503,
+    18702
+   ],
+   "description": "Spearman correlation of HPA RNA tissue consensus profiles (51 tissues)",
+   "sign": 1
+  },
+  "coexpr_depmap_pearson": {
+   "file": "cache/features/context/coexpr/coexpr_depmap_pearson.npy",
+   "store_name": "context/coexpr/coexpr_depmap_pearson",
+   "dtype": "float16",
+   "shape": [
+    503,
+    18702
+   ],
+   "description": "Pearson correlation of DepMap 26Q1 Chronos gene effects (1208 cell lines)",
+   "sign": 1
+  },
+  "coexpr_depmap_pearson_pc5": {
+   "file": "cache/features/context/coexpr/coexpr_depmap_pearson_pc5.npy",
+   "store_name": "context/coexpr/coexpr_depmap_pearson_pc5",
+   "dtype": "float16",
+   "shape": [
+    503,
+    18702
+   ],
+   "description": "as coexpr_depmap_pearson after removing the top 5 principal components",
+   "sign": 1
+  }
+ },
+ "coverage": {
+  "coexpr_hpa_tissue_spearman": {
+   "kinases": 1.0,
+   "index_proteins": 0.9582
+  },
+  "coexpr_depmap_pearson": {
+   "kinases": 0.996,
+   "index_proteins": 0.9408
+  },
+  "coexpr_depmap_pearson_pc5": {
+   "kinases": 0.996,
+   "index_proteins": 0.9408
+  }
+ }
+}

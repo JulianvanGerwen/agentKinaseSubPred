@@ -305,7 +305,8 @@ def occupancy(drug_id: str, dose_nM: float, aff_by_drug: dict, aliases: pd.DataF
     if d is None:
         return v
     kd = d.kd_nM.to_numpy()
-    o = np.where(np.isfinite(kd), dose_nM / (dose_nM + kd), 0.0)
+    with np.errstate(invalid="ignore", divide="ignore"):
+        o = np.where(np.isfinite(kd) & (dose_nM > 0), dose_nM / (dose_nM + kd), 0.0)
     for acc, oo in zip(d.kinase_acc, o):
         if acc in kpos:
             v[kpos[acc]] = oo

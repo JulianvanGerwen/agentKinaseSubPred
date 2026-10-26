@@ -4,48 +4,48 @@
 # Every site_id verified to exist in cache/index/sites.parquet; window15 (centre = index 7) checked against the expected motif.
 # Kinases verified include==True in results/labels/kinase_list.tsv; residue in kinase residue_class; no autophosphorylation pairs.
 # in_psp / in_ext = pair present in cache/labels/ks_pairs.parquet with provenance PSP / (OmniPath|UniProt) at build time. group = manning_group.
-kinase_gene	kinase_acc	substrate_gene	site_id	site_label_literature	window15	in_psp	in_ext	in_U_ms	group	rationale
-AKT1	P31749	GSK3B	P49841_S9	S9	SGRPRTTSFAESCKP	True	True	True	AGC	Cross et al. 1995 Nature
-AKT1	P31749	TSC2	P49815_T1462	T1462	GLRPRGYTISDSAPS	True	True	True	AGC	Inoki et al. 2002 NCB; Manning et al. 2002 Mol Cell
-PDPK1	O15530	AKT1	P31749_T308	T308 (activation loop)	KDGATMKTFCGTPEY	True	True	True	AGC	Alessi et al. 1997 Curr Biol; Stokoe et al. 1997 Science
-PRKACA	P17612	CREB1	P16220_S119	S133 (CREB-A/341 numbering; canonical isoform lacks 14-aa alpha exon -> S119)	EILSRRPSYRKILND	True	False	True	AGC	Gonzalez & Montminy 1989 Cell; RRPS motif
-ROCK1	Q13464	PPP1R12A	O14974_T696	T696 (MYPT1; T697 in rodent/chicken numbering)	ARQSRRSTQGVTLTD	True	True	True	AGC	Kimura et al. 1996 Science; Feng et al. 1999 JBC
-RPS6KB1	P23443	RPS6	P62753_S236	S236 (S235/S236)	AKRRRLSSLRASTSK	True	True	True	AGC	Ferrari et al. 1991 JBC; Krieg et al. 1988
-ATM	Q13315	TP53	P04637_S15	S15 (SQ)	PSVEPPLSQETFSDL	True	True	True	Atypical	Banin et al. 1998 Science; Canman et al. 1998 Science
-ATR	Q13535	CHEK1	O14757_S345	S345 (SQ)	LVQGISFSQPTCPDH	True	True	True	Atypical	Liu et al. 2000 Genes Dev; Zhao & Piwnica-Worms 2001 MCB
-MTOR	P42345	RPS6KB1	P23443_T412	T389 (p70 isoform) = T412 canonical (p85 isoform)	NQVFLGFTYVAPSVL	True	True	True	Atypical	Burnett et al. 1998 PNAS; Isotani et al. 1999
-CAMK2A	Q9UQM7	PLN	P26678_T17	T17	SAIRRASTIEMPQQA	True	False	True	CAMK	Simmerman et al. 1986 JBC; Wegener et al. 1989
-CHEK1	O14757	CDC25C	P30307_S216	S216	SGLYRSPSMPENLNR	True	True	True	CAMK	Sanchez et al. 1997 Science; Peng et al. 1997 Science
-MAPKAPK2	P49137	HSPB1	P04792_S82	S82 (S78/S82)	RALSRQLSSGVSEIR	True	True	True	CAMK	Stokoe et al. 1992 FEBS Lett; Landry et al. 1992
-PRKAA1	Q13131	ACACA	Q13085_S80	S79 (rat) = S80 (human canonical)	LHIRSSMSGLHLVKQ	True	True	True	CAMK	Munday et al. 1988; Davies et al. 1990 EJB; Ha et al. 1994
-STK11	Q15831	PRKAA1	Q13131_T183	T172 (classic AMPKalpha numbering) = T183 in human PRKAA1 canonical	SDGEFLRTSCGSPNY	True	True	True	CAMK	Hawley et al. 2003 J Biol; Woods et al. 2003; Shaw et al. 2004 PNAS
-CSNK1A1	P48729	CTNNB1	P35222_S45	S45 (priming site; not GSK3)	GATTTAPSLSGKGNP	True	True	True	CK1	Liu et al. 2002 Cell; Amit et al. 2002 Genes Dev
-CDK1	P06493	LMNA	P02545_S22	S22	QASSTPLSPTRITRL	True	True	True	CMGC	Heald & McKeon 1990 Cell; Peter et al. 1990 Cell
-CDK4	P11802	RB1	P06400_S780	S780	STRPPTLSPIPHIPR	True	True	True	CMGC	Kitagawa et al. 1996 EMBO J
-CDK7	P50613	CDK1	P06493_T161	T161 (CAK site)	GIPIRVYTHEVVTLW	True	True	True	CMGC	Fesquet et al. 1993; Solomon et al. 1993 EMBO J; Fisher & Morgan 1994
-CSNK2A1	P68400	CDC37	Q16543_S13	S13	VWDHIEVSDDEDETH	True	True	True	CMGC	Bandhakavi et al. 2003; Miyata & Nishida 2004 MCB
-GSK3B	P49841	CTNNB1	P35222_S33	S33 (primed by S45)	QQQSYLDSGIHSGAT	True	True	True	CMGC	Liu et al. 2002 Cell; Yost et al. 1996
-MAPK1	P28482	ELK1	P19419_S383	S383	IHFWSTLSPIAPRSP	True	True	False	CMGC	Marais et al. 1993 Cell; Gille et al. 1995 EMBO J
-MAPK14	Q16539	MAPKAPK2	P49137_T334	T334	QSTKVPQTPLHTSRV	True	True	True	CMGC	Ben-Levy et al. 1995 EMBO J; Engel et al. 1995
-MAPK8	P45983	JUN	P05412_S63	S63	KNSDLLTSPDVGLLK	True	True	True	CMGC	Hibi et al. 1993 Genes Dev; Derijard et al. 1994 Cell
-AURKA	O14965	PLK1	P53350_T210	T210 (activation loop)	YDGERKKTLCGTPNY	True	True	True	Other	Macurek et al. 2008 Nature; Seki et al. 2008 Science
-AURKB	Q96GD4	H3C1	P68431_S11	S10 (H3; canonical S11 incl. Met1)	TKQTARKSTGGKAPR	True	True	True	Other	Hsu et al. 2000 Cell; Giet & Glover 2001; Crosio et al. 2002
-EIF2AK3	Q9NZJ5	EIF2S1	P05198_S52	S51 (classic, mature numbering) = S52 canonical incl. Met1	MILLSELSRRRIRSI	True	True	True	Other	Harding et al. 1999 Nature
-IKBKB	O14920	NFKBIA	P25963_S32	S32 (S32/S36)	LLDDRHDSGLDSMKD	True	True	True	Other	DiDonato et al. 1997 Nature; Mercurio et al. 1997; Zandi et al. 1997
-PKMYT1	Q99640	CDK1	P06493_T14	T14	IEKIGEGTYGVVYKG	True	True	True	Other	Mueller et al. 1995 Science; Liu et al. 1997
-PLK1	P53350	CDC25C	P30307_S198	S198	SDELMEFSLKDQEAK	True	True	True	Other	Toyoshima-Morimoto et al. 2002 EMBO Rep
-TBK1	Q9UHD2	IRF3	Q14653_S396	S396	NTVDLHISNSHPLSL	True	True	True	Other	Fitzgerald et al. 2003 Nat Immunol; Sharma et al. 2003 Science; Mori et al. 2004
-WEE1	P30291	CDK1	P06493_Y15	Y15	EKIGEGTYGVVYKGR	True	True	True	Other	Parker & Piwnica-Worms 1992 Science; McGowan & Russell 1993
-MAP2K1	Q02750	MAPK1	P28482_T185	T185 (ERK2 TEY; T183 in rodent)	HDHTGFLTEYVATRW	True	True	True	STE	Payne et al. 1991 EMBO J; Crews et al. 1992 Science
-MAP2K1	Q02750	MAPK1	P28482_Y187	Y187 (ERK2 TEY; Y185 in rodent)	HTGFLTEYVATRWYR	True	True	True	STE	Payne et al. 1991 EMBO J; Crews et al. 1992 Science
-MAP2K6	P52564	MAPK14	Q16539_T180	T180 (TGY)	RHTDDEMTGYVATRW	True	True	True	STE	Raingeaud et al. 1996 MCB; Han et al. 1996
-ABL1	P00519	CRKL	P46109_Y207	Y207	IPEPAHAYAQPQTTT	True	True	True	TK	de Jong et al. 1997 Oncogene; Feller 1994
-EGFR	P00533	PLCG1	P19174_Y783	Y783	EGRNPGFYVEANPMP	True	True	True	TK	Kim et al. 1991 Cell; Wahl et al. 1989
-JAK1	P23458	STAT3	P40763_Y705	Y705	DPGSAAPYLKTKFIC	True	True	True	TK	Zhong et al. 1994 Science; Guschin et al. 1995 EMBO J
-JAK2	O60674	STAT5A	P42229_Y694	Y694	LAKAVDGYVKPQIKQ	True	True	True	TK	Gouilleux et al. 1994 EMBO J
-LCK	P06239	ZAP70	P43403_Y493	Y493 (activation loop)	LGADDSYYTARSAGK	True	True	True	TK	Chan et al. 1995 Science; Wange et al. 1995 JBC
-SRC	P12931	PTK2	Q05397_Y576	Y576 (FAK activation loop Y576/Y577)	RYMEDSTYYKASKGK	True	True	True	TK	Calalb et al. 1995 MCB
-ZAP70	P43403	LAT	O43561_Y220	Y191 (short-isoform literature numbering) = Y220 canonical	SLDGSREYVNVSQEL	True	True	True	TK	Zhang et al. 1998 Cell; Paz et al. 2001
-BRAF	P15056	MAP2K1	Q02750_S218	S218	VSGQLIDSMANSFVG	True	True	True	TKL	Zheng & Guan 1994 EMBO J; Papin et al. 1995
-RAF1	P04049	MAP2K1	Q02750_S222	S222	LIDSMANSFVGTRSY	True	True	True	TKL	Alessi et al. 1994 EMBO J
-TGFBR1	P36897	SMAD2	Q15796_S467	S467 (C-terminal SSxS)	SVRCSSMS_______	True	True	True	TKL	Abdollah et al. 1997 JBC; Souchelnytskyi et al. 1997 JBC
+kinase_gene	kinase_acc	substrate_gene	site_id	site_label_literature	window15	in_psp	in_ext	in_U_ms	group	rationale	in_test_split
+AKT1	P31749	GSK3B	P49841_S9	S9	SGRPRTTSFAESCKP	True	True	True	AGC	Cross et al. 1995 Nature	True
+AKT1	P31749	TSC2	P49815_T1462	T1462	GLRPRGYTISDSAPS	True	True	True	AGC	Inoki et al. 2002 NCB; Manning et al. 2002 Mol Cell	False
+PDPK1	O15530	AKT1	P31749_T308	T308 (activation loop)	KDGATMKTFCGTPEY	True	True	True	AGC	Alessi et al. 1997 Curr Biol; Stokoe et al. 1997 Science	False
+PRKACA	P17612	CREB1	P16220_S119	S133 (CREB-A/341 numbering; canonical isoform lacks 14-aa alpha exon -> S119)	EILSRRPSYRKILND	True	False	True	AGC	Gonzalez & Montminy 1989 Cell; RRPS motif	False
+ROCK1	Q13464	PPP1R12A	O14974_T696	T696 (MYPT1; T697 in rodent/chicken numbering)	ARQSRRSTQGVTLTD	True	True	True	AGC	Kimura et al. 1996 Science; Feng et al. 1999 JBC	False
+RPS6KB1	P23443	RPS6	P62753_S236	S236 (S235/S236)	AKRRRLSSLRASTSK	True	True	True	AGC	Ferrari et al. 1991 JBC; Krieg et al. 1988	False
+ATM	Q13315	TP53	P04637_S15	S15 (SQ)	PSVEPPLSQETFSDL	True	True	True	Atypical	Banin et al. 1998 Science; Canman et al. 1998 Science	True
+ATR	Q13535	CHEK1	O14757_S345	S345 (SQ)	LVQGISFSQPTCPDH	True	True	True	Atypical	Liu et al. 2000 Genes Dev; Zhao & Piwnica-Worms 2001 MCB	False
+MTOR	P42345	RPS6KB1	P23443_T412	T389 (p70 isoform) = T412 canonical (p85 isoform)	NQVFLGFTYVAPSVL	True	True	True	Atypical	Burnett et al. 1998 PNAS; Isotani et al. 1999	False
+CAMK2A	Q9UQM7	PLN	P26678_T17	T17	SAIRRASTIEMPQQA	True	False	True	CAMK	Simmerman et al. 1986 JBC; Wegener et al. 1989	False
+CHEK1	O14757	CDC25C	P30307_S216	S216	SGLYRSPSMPENLNR	True	True	True	CAMK	Sanchez et al. 1997 Science; Peng et al. 1997 Science	False
+MAPKAPK2	P49137	HSPB1	P04792_S82	S82 (S78/S82)	RALSRQLSSGVSEIR	True	True	True	CAMK	Stokoe et al. 1992 FEBS Lett; Landry et al. 1992	False
+PRKAA1	Q13131	ACACA	Q13085_S80	S79 (rat) = S80 (human canonical)	LHIRSSMSGLHLVKQ	True	True	True	CAMK	Munday et al. 1988; Davies et al. 1990 EJB; Ha et al. 1994	True
+STK11	Q15831	PRKAA1	Q13131_T183	T172 (classic AMPKalpha numbering) = T183 in human PRKAA1 canonical	SDGEFLRTSCGSPNY	True	True	True	CAMK	Hawley et al. 2003 J Biol; Woods et al. 2003; Shaw et al. 2004 PNAS	False
+CSNK1A1	P48729	CTNNB1	P35222_S45	S45 (priming site; not GSK3)	GATTTAPSLSGKGNP	True	True	True	CK1	Liu et al. 2002 Cell; Amit et al. 2002 Genes Dev	True
+CDK1	P06493	LMNA	P02545_S22	S22	QASSTPLSPTRITRL	True	True	True	CMGC	Heald & McKeon 1990 Cell; Peter et al. 1990 Cell	False
+CDK4	P11802	RB1	P06400_S780	S780	STRPPTLSPIPHIPR	True	True	True	CMGC	Kitagawa et al. 1996 EMBO J	True
+CDK7	P50613	CDK1	P06493_T161	T161 (CAK site)	GIPIRVYTHEVVTLW	True	True	True	CMGC	Fesquet et al. 1993; Solomon et al. 1993 EMBO J; Fisher & Morgan 1994	False
+CSNK2A1	P68400	CDC37	Q16543_S13	S13	VWDHIEVSDDEDETH	True	True	True	CMGC	Bandhakavi et al. 2003; Miyata & Nishida 2004 MCB	False
+GSK3B	P49841	CTNNB1	P35222_S33	S33 (primed by S45)	QQQSYLDSGIHSGAT	True	True	True	CMGC	Liu et al. 2002 Cell; Yost et al. 1996	True
+MAPK1	P28482	ELK1	P19419_S383	S383	IHFWSTLSPIAPRSP	True	True	False	CMGC	Marais et al. 1993 Cell; Gille et al. 1995 EMBO J	False
+MAPK14	Q16539	MAPKAPK2	P49137_T334	T334	QSTKVPQTPLHTSRV	True	True	True	CMGC	Ben-Levy et al. 1995 EMBO J; Engel et al. 1995	False
+MAPK8	P45983	JUN	P05412_S63	S63	KNSDLLTSPDVGLLK	True	True	True	CMGC	Hibi et al. 1993 Genes Dev; Derijard et al. 1994 Cell	False
+AURKA	O14965	PLK1	P53350_T210	T210 (activation loop)	YDGERKKTLCGTPNY	True	True	True	Other	Macurek et al. 2008 Nature; Seki et al. 2008 Science	True
+AURKB	Q96GD4	H3C1	P68431_S11	S10 (H3; canonical S11 incl. Met1)	TKQTARKSTGGKAPR	True	True	True	Other	Hsu et al. 2000 Cell; Giet & Glover 2001; Crosio et al. 2002	False
+EIF2AK3	Q9NZJ5	EIF2S1	P05198_S52	S51 (classic, mature numbering) = S52 canonical incl. Met1	MILLSELSRRRIRSI	True	True	True	Other	Harding et al. 1999 Nature	False
+IKBKB	O14920	NFKBIA	P25963_S32	S32 (S32/S36)	LLDDRHDSGLDSMKD	True	True	True	Other	DiDonato et al. 1997 Nature; Mercurio et al. 1997; Zandi et al. 1997	False
+PKMYT1	Q99640	CDK1	P06493_T14	T14	IEKIGEGTYGVVYKG	True	True	True	Other	Mueller et al. 1995 Science; Liu et al. 1997	False
+PLK1	P53350	CDC25C	P30307_S198	S198	SDELMEFSLKDQEAK	True	True	True	Other	Toyoshima-Morimoto et al. 2002 EMBO Rep	False
+TBK1	Q9UHD2	IRF3	Q14653_S396	S396	NTVDLHISNSHPLSL	True	True	True	Other	Fitzgerald et al. 2003 Nat Immunol; Sharma et al. 2003 Science; Mori et al. 2004	False
+WEE1	P30291	CDK1	P06493_Y15	Y15	EKIGEGTYGVVYKGR	True	True	True	Other	Parker & Piwnica-Worms 1992 Science; McGowan & Russell 1993	False
+MAP2K1	Q02750	MAPK1	P28482_T185	T185 (ERK2 TEY; T183 in rodent)	HDHTGFLTEYVATRW	True	True	True	STE	Payne et al. 1991 EMBO J; Crews et al. 1992 Science	False
+MAP2K1	Q02750	MAPK1	P28482_Y187	Y187 (ERK2 TEY; Y185 in rodent)	HTGFLTEYVATRWYR	True	True	True	STE	Payne et al. 1991 EMBO J; Crews et al. 1992 Science	False
+MAP2K6	P52564	MAPK14	Q16539_T180	T180 (TGY)	RHTDDEMTGYVATRW	True	True	True	STE	Raingeaud et al. 1996 MCB; Han et al. 1996	False
+ABL1	P00519	CRKL	P46109_Y207	Y207	IPEPAHAYAQPQTTT	True	True	True	TK	de Jong et al. 1997 Oncogene; Feller 1994	False
+EGFR	P00533	PLCG1	P19174_Y783	Y783	EGRNPGFYVEANPMP	True	True	True	TK	Kim et al. 1991 Cell; Wahl et al. 1989	False
+JAK1	P23458	STAT3	P40763_Y705	Y705	DPGSAAPYLKTKFIC	True	True	True	TK	Zhong et al. 1994 Science; Guschin et al. 1995 EMBO J	True
+JAK2	O60674	STAT5A	P42229_Y694	Y694	LAKAVDGYVKPQIKQ	True	True	True	TK	Gouilleux et al. 1994 EMBO J	False
+LCK	P06239	ZAP70	P43403_Y493	Y493 (activation loop)	LGADDSYYTARSAGK	True	True	True	TK	Chan et al. 1995 Science; Wange et al. 1995 JBC	False
+SRC	P12931	PTK2	Q05397_Y576	Y576 (FAK activation loop Y576/Y577)	RYMEDSTYYKASKGK	True	True	True	TK	Calalb et al. 1995 MCB	False
+ZAP70	P43403	LAT	O43561_Y220	Y191 (short-isoform literature numbering) = Y220 canonical	SLDGSREYVNVSQEL	True	True	True	TK	Zhang et al. 1998 Cell; Paz et al. 2001	False
+BRAF	P15056	MAP2K1	Q02750_S218	S218	VSGQLIDSMANSFVG	True	True	True	TKL	Zheng & Guan 1994 EMBO J; Papin et al. 1995	False
+RAF1	P04049	MAP2K1	Q02750_S222	S222	LIDSMANSFVGTRSY	True	True	True	TKL	Alessi et al. 1994 EMBO J	False
+TGFBR1	P36897	SMAD2	Q15796_S467	S467 (C-terminal SSxS)	SVRCSSMS_______	True	True	True	TKL	Abdollah et al. 1997 JBC; Souchelnytskyi et al. 1997 JBC	False

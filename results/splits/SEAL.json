@@ -1,0 +1,39 @@
+{
+ "created": "2026-10-26 14:34:05 CET",
+ "seed": 0,
+ "moved_into_sealed": {
+  "cache/labels/ks_pairs.parquet": "sealed/ks_pairs_full.parquet",
+  "cache/labels/ks_unmapped.parquet": "sealed/ks_unmapped.parquet",
+  "results/labels/kinase_label_counts.tsv": "sealed/kinase_label_counts.tsv"
+ },
+ "files": {
+  "kinase_label_counts.tsv": {
+   "sha256": "23754276d788dc29e4cf9cebefe8d55191756263127a6ad6ffa3f4d450ded19e",
+   "bytes": 21790
+  },
+  "ks_pairs_full.parquet": {
+   "sha256": "eeca1f39899cd7447c24d4d7cecc71739b5b6cb2ce52a4e3eb62890e8a6be9ef",
+   "bytes": 678360
+  },
+  "ks_unmapped.parquet": {
+   "sha256": "ffd55f5debbf32e973a48b62daab94b2975b02ddb3202a818f3cce689cfc0f7d",
+   "bytes": 212029
+  },
+  "test_labels.parquet": {
+   "sha256": "7a56c963de64f3a3bbbe6ce41bc5503e1b16ff75e134357c1ea2ffce83f0d6bf",
+   "bytes": 174601
+  }
+ },
+ "public": {
+  "results/splits/substrate_clusters.tsv": "35bd202fdadc7775a30e1840980cd4683b299376d0807e376e2a8ffe70130321",
+  "results/splits/test_proteins.tsv": "762d21c2d4bc7889f6d312e729bdd143df018be2aa1456f548ee31eb0e8dffba",
+  "results/splits/cv_folds.tsv": "aa01e43d7a064269ddf58cf00a2e3130486aee973cba3e6cf52f994f6a265dc8",
+  "results/splits/kinase_folds.tsv": "d4acaafd16342d59c7a24286f1c69e3d4b439a1efe1b911a49f48e761f3831ae",
+  "results/splits/eval_kinase_sets.tsv": "62b51eb652abdeff15be69a0081925b23079d504266e001297ff05e1b24f892d",
+  "results/splits/canary_ppi_partners.tsv": "ba9970d056d079c6250e91275d4b9e3d3f4dbab9d61f4b6ed88cf6a008c48a91",
+  "cache/labels/dev_pairs.parquet": "55e684aca09c8a100f52c9d1e80e1d0a9cd883733498be951b37d6a4434ea132",
+  "cache/labels/canary_dev.parquet": "f7668c656aef24891d44afe7f09614f354678f1053173245b49de4215f9c769d"
+ },
+ "test_label_rows": 6234,
+ "test_proteins": 3957
+}

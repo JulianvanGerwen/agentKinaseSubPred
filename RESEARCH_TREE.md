@@ -47,7 +47,12 @@ Status: literature (4 reviews), data profiling, two acquisition waves (~12.6 GB)
 - [~] 3. DESIGN.md + review rounds (≤3)
   - [x] 3.0 LITERATURE.md synthesis; DESIGN.md v0
   - [x] 3.1 Review round 1 (7 reviewers) → docs/reviews/r1_*.md; DESIGN v1 (§15 change map)
-  - [~] 3.2 Review round 2 (external PI, statistics, AI failure modes, data leakage) → docs/reviews/r2_*.md
+  - [x] 3.2 Review round 2 (4 reviewers) → docs/reviews/r2_*.md; DESIGN v2 FROZEN (§16 A1–A22). Round 3 skipped (no design-level critical left).
+    - [!] Coverage metric as planned was vacuous (random scores put 98.5% of S/T sites in some kinase's top 1%) → redefined as site-level assignment probability vs random baseline (A17).
+    - [!] iKiP-DB 'combined' GMT contains 61% of PSP pairs → forbidden (A11). Sugiyama S2 clean.
+    - [!] 18% of human-native positives lack MS evidence vs 0.4% of unlabelled → U_ms-only candidates (A6).
+    - [!] Cache row order ≠ index order for 94% of sites → ksp.store with index-hash checks (A2).
+- [x] 3.3 Klaeger 2017 Kinobeads tables provided by user (data/Klaeger) → F6b primary drug→target source
 - [~] 4. Foundations (design-independent, parallel with review)
   - [x] 4.1 ids.py, kinase list (503 incl.), site universe (350,736), labels (L2 18,638 pairs/401 kinases), external curated (3,788 non-PSP pairs) → docs/labels_universe.md
   - [x] 4.1b canonical feature index cache/index (src/ksp/index.py)

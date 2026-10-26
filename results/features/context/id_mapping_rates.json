@@ -34,6 +34,13 @@
   "note": "",
   "rate": 0.9905
  },
+ "depmap_chronos:genes": {
+  "n_mapped": 18529,
+  "n_total": 18531,
+  "n_unmapped": 2,
+  "note": "",
+  "rate": 0.9999
+ },
  "hcm:baits": {
   "n_mapped": 191,
   "n_total": 192,
@@ -75,6 +82,13 @@
   "n_unmapped": 161,
   "note": "",
   "rate": 0.9882
+ },
+ "hpa_rna_tissue:genes": {
+  "n_mapped": 19584,
+  "n_total": 20162,
+  "n_unmapped": 578,
+  "note": "",
+  "rate": 0.9713
  },
  "huri:edges(rows)": {
   "n_mapped": 51931,
