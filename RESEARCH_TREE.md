@@ -71,8 +71,12 @@ Status: literature (4 reviews), data profiling, two acquisition waves (~12.6 GB)
   - [x] 4.4a G1 split freeze (11,609 clusters; TEST 20.0%; K_eval 119, K_any 256, K_cv 203; 13 canaries) → results/splits/
   - [x] 4.3 Data acquisition wave 2 (Buljan2020, Kinobeads/Davis/DTC, Sugiyama, Phosformer weights, SELPHI2 code, KinCore, HGNC, SIGNOR retry)
 - [~] 5. Models & baselines on CV (G2 20:50)
-  - [~] 5.1 Simple baselines B0-prior/pop/miss, B1 Cantley arms, B2 PSSM, B7
+  - [x] 5.1 Simple baselines → results/baselines/simple/summary.md (audit pending)
+    - CV pooled OOF (K_cv=203): B1 Cantley published M1 0.717 / M2 0.157 / M3 0.133 (official B1; arm (ii) better on M2 → A23); B7 LR 0.726/0.196/0.177; B2 learned PSSM 0.660; floors B0-pop 0.552 (E-all AUROC 0.782!), B0-miss 0.538.
+    - [!] Tyr kinases: motif baselines only ~0.53 E-hard AUROC (65 kinases) — Y specificity is the hard part.
+    - [!] Pooled-OOF artefact: fold-varying offsets distort per-kinase AUROC (B0-prior → 0.40) → A24 within-fold rank normalisation.
   - [~] 5.2 R2 LightGBM main model + staged search + ablation curve
+    - G2 MET 16:27: R2 (F1+F0+F2a+F3+F4+F6) M1 0.746 [0.728–0.760], M3 0.267; vs B1 ΔM1 +0.023 [0.009–0.034], ΔM3 +0.130. Full model (+F5+F7): M1 0.763, M2 0.208, M3 0.308, M4 0.782; canary v2 pass. (Pre-A24; audit pending.)
   - [x] 5.3 R3 neural → docs/model_r3.md (pending independent review)
     - CV pooled OOF: M1 0.729 [0.710–0.747] vs B1 Cantley 0.719; M2 Hit@5 0.176 vs 0.171; M3 0.247 vs 0.133; M4 0.728. LKO T2 (unseen kinase family): M1 0.664, M3 0.203 → descriptors carry zero-shot signal. 2.4 min/fold.
     - [!] Canary v1 sampler biased (sites on low-density proteins; label-free score gets 0.76) → canary v2 from real labelled sites, gate on E-hard (PI decision).
