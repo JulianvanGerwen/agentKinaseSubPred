@@ -21,10 +21,10 @@ import torch.nn.functional as F
 
 class SiteEncoder(nn.Module):
     def __init__(self, d_esm=1280, d=192, h=128, n_layers=2, n_heads=4, flank=7, n_aa=22, dropout=0.1,
-                 esm_dropout=0.1, use_esm=True, use_prot=True):
+                 esm_dropout=0.1, use_esm=True, use_prot=True, use_phos=True):
         super().__init__()
         self.flank = flank
-        self.use_esm, self.use_prot = use_esm, use_prot
+        self.use_esm, self.use_prot, self.use_phos = use_esm, use_prot, use_phos
         L = 2 * flank + 1
         self.proj = nn.Linear(d_esm, d)
         self.esm_drop = nn.Dropout(esm_dropout)
@@ -43,7 +43,7 @@ class SiteEncoder(nn.Module):
     def forward(self, emb, aa, phos, valid, prot):
         """emb (B,L,1280) float, aa (B,L) long, phos (B,L) long (centre already 0), valid (B,L) bool,
         prot (B,1280)."""
-        x = self.aa(aa) + self.phos(phos)
+        x = self.aa(aa) + self.phos(phos if self.use_phos else torch.zeros_like(phos))
         if self.use_esm:
             x = x + self.proj(self.esm_drop(emb))
         x = torch.where(valid[..., None], x, self.pad.to(x.dtype).expand_as(x))
@@ -80,10 +80,10 @@ class KinaseEncoder(nn.Module):
 
 class R3Net(nn.Module):
     def __init__(self, d_esm, d_cantley, n_groups, n_families, flank=7, d_site=192, h=128, d_kin=256,
-                 n_layers=2, desc_dropout=0.2, dropout=0.1, esm_dropout=0.1, use_esm=True, use_prot=True):
+                 n_layers=2, desc_dropout=0.2, dropout=0.1, esm_dropout=0.1, use_esm=True, use_prot=True, use_phos=True):
         super().__init__()
         self.site = SiteEncoder(d_esm, d_site, h, n_layers, 4, flank, dropout=dropout, esm_dropout=esm_dropout,
-                                use_esm=use_esm, use_prot=use_prot)
+                                use_esm=use_esm, use_prot=use_prot, use_phos=use_phos)
         self.kin = KinaseEncoder(d_esm, d_cantley, n_groups, n_families, d_kin, h, desc_dropout)
         self.W = nn.Linear(h, h, bias=False)
         self.pair = nn.Sequential(nn.Linear(h, 64), nn.GELU(), nn.Linear(64, 1))

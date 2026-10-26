@@ -32,6 +32,8 @@ CONFIGS = {
     "w7_nce05": dict(flank=7, lambda_nce=0.5),
     "w10_nce05": dict(flank=10, lambda_nce=0.5),
     "w7_nce0": dict(flank=7, lambda_nce=0.0),
+    # diagnostic ablation (not eligible for selection): no protein-context token, no phospho channel
+    "w7_nce05_noctx": dict(flank=7, lambda_nce=0.5, use_prot=False, use_phos=False),
 }
 # Base hyper-parameters ("reg1"), chosen by the fold-0 INNER-validation dev sweep (scripts/models/r3_dev_sweep.sh;
 # REGISTRY split=inner_dev); 5-seed ensemble (seeds [0..4]) per training run, logits averaged.
@@ -184,7 +186,7 @@ def cmd_pool(a, lko=False):
         if not lko:
             try:
                 bs = kev.bootstrap(res, B=a.boot)
-                summ["bootstrap"] = bs if isinstance(bs, dict) else str(bs)
+                summ["bootstrap"] = bs.to_dict(orient="records")
             except Exception as e:  # recorded, not hidden
                 summ["bootstrap_error"] = repr(e)
                 run.count_fallback("bootstrap_failed")

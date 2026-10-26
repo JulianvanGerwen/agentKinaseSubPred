@@ -1,0 +1,68 @@
+{
+ "run_id": "simple_b0_miss__20261026-150214__s0",
+ "name": "simple_b0_miss",
+ "git_hash": "0001ce4f3c9d0ba1c789ca01393846565e078868",
+ "config": {
+  "method": "b0_miss",
+  "canary": false,
+  "seed": 0,
+  "neg_ratio": 50,
+  "hard_frac": 0.5,
+  "lgb": "lr0.05 leaves31 minleaf100 es50 on inner-cluster 20% split"
+ },
+ "seed": 0,
+ "split": "cv",
+ "notes": "",
+ "inputs": [
+  {
+   "path": "/workspace/cache/labels/dev_pairs.parquet",
+   "type": "file",
+   "bytes": 797455,
+   "sha256": "b6c1aaa8f67396b535ac392c08f77068e6eec1615e2debdf63ce20d6986be449"
+  },
+  {
+   "path": "/workspace/results/splits/cv_folds.tsv",
+   "type": "file",
+   "bytes": 203997,
+   "sha256": "aa01e43d7a064269ddf58cf00a2e3130486aee973cba3e6cf52f994f6a265dc8"
+  }
+ ],
+ "host": "eu-g6-076",
+ "python": "3.12.3",
+ "platform": "Linux-5.15.0-198-generic-x86_64-with-glibc2.39",
+ "argv": [
+  "scripts/baselines/simple_run.py",
+  "--method",
+  "b0_miss"
+ ],
+ "pid": 179460,
+ "started": "2026-10-26 15:02:14 CET",
+ "n_rows": {
+  "predictions": 69697833
+ },
+ "outputs": {
+  "predictions": {
+   "path": "cache/runs/simple_b0_miss__20261026-150214__s0/predictions.parquet",
+   "sha256": "363215e9f9bbdb620ac16718262930052f2d38bcdb37fb9d6b37b7182bf182aa"
+  },
+  "bootstrap": {
+   "path": "results/runs/simple_b0_miss__20261026-150214__s0/bootstrap.json",
+   "sha256": "14404511bd24ab5454e123266634314accdf6054053a74f06ac91c4163da56af"
+  },
+  "metrics": {
+   "path": "results/runs/simple_b0_miss__20261026-150214__s0/metrics.json",
+   "sha256": "a014b25c455d3441b451a0be7474da67406629f9212d0a65d77378fdeb1f8570"
+  },
+  "extra": {
+   "path": "results/runs/simple_b0_miss__20261026-150214__s0/extra.json",
+   "sha256": "3915f4f89ad714be00cdf12f2d73904a36850c9b6c5deb1ff4d0693a0c8c8186"
+  }
+ },
+ "fallbacks": {
+  "candidate_pairs_not_scored": 0
+ },
+ "status": "ok",
+ "error": null,
+ "runtime_s": 320.65,
+ "finished": "2026-10-26 15:07:35 CET"
+}

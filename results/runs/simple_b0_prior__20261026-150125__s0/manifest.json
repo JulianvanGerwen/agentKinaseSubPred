@@ -1,0 +1,65 @@
+{
+ "run_id": "simple_b0_prior__20261026-150125__s0",
+ "name": "simple_b0_prior",
+ "git_hash": "0001ce4f3c9d0ba1c789ca01393846565e078868",
+ "config": {
+  "method": "b0_prior",
+  "canary": false,
+  "seed": 0
+ },
+ "seed": 0,
+ "split": "cv",
+ "notes": "",
+ "inputs": [
+  {
+   "path": "/workspace/cache/labels/dev_pairs.parquet",
+   "type": "file",
+   "bytes": 797455,
+   "sha256": "b6c1aaa8f67396b535ac392c08f77068e6eec1615e2debdf63ce20d6986be449"
+  },
+  {
+   "path": "/workspace/results/splits/cv_folds.tsv",
+   "type": "file",
+   "bytes": 203997,
+   "sha256": "aa01e43d7a064269ddf58cf00a2e3130486aee973cba3e6cf52f994f6a265dc8"
+  }
+ ],
+ "host": "eu-g6-076",
+ "python": "3.12.3",
+ "platform": "Linux-5.15.0-198-generic-x86_64-with-glibc2.39",
+ "argv": [
+  "scripts/baselines/simple_run.py",
+  "--method",
+  "b0_prior"
+ ],
+ "pid": 178580,
+ "started": "2026-10-26 15:01:25 CET",
+ "n_rows": {
+  "predictions": 69697833
+ },
+ "outputs": {
+  "predictions": {
+   "path": "cache/runs/simple_b0_prior__20261026-150125__s0/predictions.parquet",
+   "sha256": "d0800409ed7054bbbee5e836390876713b5b87183620fb9fe7778eecbf588315"
+  },
+  "bootstrap": {
+   "path": "results/runs/simple_b0_prior__20261026-150125__s0/bootstrap.json",
+   "sha256": "1a2ba0ed2ffb11a7099c947dc8d30c91a0ee3cd4df7919653347ea04d44f61d0"
+  },
+  "metrics": {
+   "path": "results/runs/simple_b0_prior__20261026-150125__s0/metrics.json",
+   "sha256": "042ab4738e1f95578824e52ee584aa3c6cf5462f31f436fe33a991026a518710"
+  },
+  "extra": {
+   "path": "results/runs/simple_b0_prior__20261026-150125__s0/extra.json",
+   "sha256": "05070e1e42c073d6c84dd23bfa704cb278c51e95bb834812d7ef2c5b19afd612"
+  }
+ },
+ "fallbacks": {
+  "candidate_pairs_not_scored": 0
+ },
+ "status": "ok",
+ "error": null,
+ "runtime_s": 131.59,
+ "finished": "2026-10-26 15:03:37 CET"
+}

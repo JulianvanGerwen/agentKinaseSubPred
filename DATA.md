@@ -15,8 +15,8 @@ Restricted/large data live in `data/` (provided) and `external/` (downloaded); n
 | 02_phosphosite_information.csv | Same compendium (peptide_UID → 15-mer window) | 56cab92d90ea1760302169674552161bee405d946ff32c8221935f483dac8bfc | as above |
 | 03_phosphosite_quantifications.csv | Same compendium (long-format log2FC) | 8877144f25cc95b4625e9c55e05d33ffe2ef11af07b1297bf27791d13d3198d7 | as above |
 | kinhib_inhib_comb__1.csv | Kinase × inhibitor target matrix for Hijazi et al. 2020 (PMID 31959955) | b0217e7962ba936f18a7e4d060d849d10d0b38d2f0e04d3aa730d0c0861ee545 | Provided by user |
-| paper1.pdf | Provided paper | f33d8ab5fd2bd3cab05c2b7deceb11ed7b7770f330a918f8a065bf6800ef99af | Publisher copyright; not redistributed |
-| paper2.pdf | Provided paper | 57b46d368a07f0d1ddc9693f6f901ad583fe11802c7ae9a80497449ffd12b0b0 | Publisher copyright; not redistributed |
+| paper1.pdf | Provided paper: SELPHI2.0 (Maier et al. 2025 MCP, doi 10.1016/j.mcpro.2025.100994) | f33d8ab5fd2bd3cab05c2b7deceb11ed7b7770f330a918f8a065bf6800ef99af | Publisher copyright; not redistributed |
+| paper2.pdf | Provided paper: Phosformer (Zhou et al. 2023 Bioinformatics, doi 10.1093/bioinformatics/btad046) | 57b46d368a07f0d1ddc9693f6f901ad583fe11802c7ae9a80497449ffd12b0b0 | Publisher copyright; not redistributed |
 
 ## Downloaded (external/)
 (added as acquired; each with URL, access date, version, SHA-256, license)

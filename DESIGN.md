@@ -240,7 +240,7 @@ This family is ablated.
 
 **B2:** per-kinase learned log-odds PSSM (F2a alone).
 
-**B3 Phosformer**, faithful reimplementation of paper1 (PRIOR-3, CMP-2):
+**B3 Phosformer**, faithful reimplementation of paper2.pdf (PRIOR-3, CMP-2):
 - 6 layers, 12 heads, d=768;
 - MLM pretraining on kinase domains as in the paper (about 6 GPU-h; GPU 0);
 - fine-tuning with focal loss (γ=2) at lr 2e-5, using the paper's input format (kinase domain plus 11-mer, ±5), on our folds;

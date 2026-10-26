@@ -62,6 +62,7 @@ ap.add_argument("--shift", type=int, default=5)
 ap.add_argument("--mask-frac", type=float, default=0.05)
 ap.add_argument("--no-aug", action="store_true", help="ablation: no upsampling/shift/mask")
 ap.add_argument("--eall", action="store_true", help="also score E-all (set B)")
+ap.add_argument("--skip-train", action="store_true", help="load <ckdir>/best.pt from an earlier run and only score")
 ap.add_argument("--max-train-rows", type=int, default=0, help="debug: cap rows per epoch")
 ap.add_argument("--name", default=None)
 ap.add_argument("--threads", type=int, default=6)
@@ -243,8 +244,13 @@ log(f"epoch rows {len(k0)} (pos {int(y0.sum())}), steps/epoch {steps_per_epoch},
 ckdir = ROOT / "cache/phosformer/finetune" / f"{name}_s{args.seed}"
 ckdir.mkdir(parents=True, exist_ok=True)
 best, bad, step, hist = -1.0, 0, 0, []
-v0 = validate(model)
-hist.append({"step": 0, "val_macro_auroc_hard": v0})
+if args.skip_train:
+    prev = json.loads((ckdir / "train_summary.json").read_text())
+    best, hist, train_s = prev["best_val"], prev["history"], prev["train_s"]
+    total_steps = 0
+v0 = validate(model) if not args.skip_train else float("nan")
+if not args.skip_train:
+    hist.append({"step": 0, "val_macro_auroc_hard": v0})
 log(f"init valid macro AUROC(hard) {v0:.4f}")
 model.train()
 t0 = time.time()
@@ -285,7 +291,10 @@ while step < total_steps and not stop:
     ep += 1
     if not stop and step < total_steps:
         ep_rows = epoch_rows(rng)
-train_s = time.time() - t0
+if not args.skip_train:
+    train_s = time.time() - t0
+    (ckdir / "train_summary.json").write_text(json.dumps({"best_val": best, "history": hist, "train_s": train_s,
+                                                          "args": vars(args)}, indent=1))
 model.load_state_dict(torch.load(ckdir / "best.pt", map_location=dev, weights_only=True))
 model.eval()
 

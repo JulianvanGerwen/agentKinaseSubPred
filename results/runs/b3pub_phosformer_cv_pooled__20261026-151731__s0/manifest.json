@@ -1,0 +1,95 @@
+{
+ "run_id": "b3pub_phosformer_cv_pooled__20261026-151731__s0",
+ "name": "b3pub_phosformer_cv_pooled",
+ "git_hash": "0001ce4f3c9d0ba1c789ca01393846565e078868",
+ "config": {
+  "arm": "B3-pub",
+  "weights": "external/phosformer/hf_phosformer",
+  "set": "A=positives+E-hard x all kinases",
+  "eall_frac": 0.0,
+  "n_pairs": 2159715,
+  "score_s": 1131.7963840961456,
+  "pairs_per_s": 1908.218678154509,
+  "contaminated": true
+ },
+ "seed": 0,
+ "split": "cv_pooled",
+ "notes": "released fine-tuned weights, zero-shot; CONTAMINATED (trained on PSP)",
+ "inputs": [
+  {
+   "path": "/workspace/external/phosformer/hf_phosformer/pytorch_model.bin",
+   "type": "file",
+   "bytes": 185133357,
+   "sha256": "ddc452fad0c265948c765453ed4663bc4c94ca5ebb5e73d62abfb2386d336ea3"
+  },
+  {
+   "path": "/workspace/results/splits/cv_folds.tsv",
+   "type": "file",
+   "bytes": 203997,
+   "sha256": "aa01e43d7a064269ddf58cf00a2e3130486aee973cba3e6cf52f994f6a265dc8"
+  },
+  {
+   "path": "/workspace/cache/index/sites.parquet",
+   "type": "file",
+   "bytes": 13829932,
+   "sha256": "a280d3bb1a843c965b148b2067715567c9a515e9f3e18ab486bb97ed0d052975"
+  },
+  {
+   "path": "/workspace/cache/index/kinases.parquet",
+   "type": "file",
+   "bytes": 18889,
+   "sha256": "e278ec9b4147d04dd33911f27b76e54e5528c1b1125c5140c588a1d1c49f4637"
+  }
+ ],
+ "host": "eu-g6-076",
+ "python": "3.12.3",
+ "platform": "Linux-5.15.0-198-generic-x86_64-with-glibc2.39",
+ "argv": [
+  "scripts/baselines/phosformer_pub_cv.py"
+ ],
+ "pid": 176039,
+ "started": "2026-10-26 15:17:37 CET",
+ "n_rows": {
+  "predictions": 2159715
+ },
+ "outputs": {
+  "predictions": {
+   "path": "cache/runs/b3pub_phosformer_cv_pooled__20261026-151731__s0/predictions.parquet",
+   "sha256": "a1adf76495c0e6e87821408dbeaf32805dc40d6ce19f86a054272db5ecd2b37c"
+  },
+  "metrics": {
+   "path": "results/runs/b3pub_phosformer_cv_pooled__20261026-151731__s0/metrics.json",
+   "sha256": "10dcf6be59a8d7be8852e9a8f1816964cece54c4ad7b82fa0c6e6189336d95b7"
+  }
+ },
+ "fallbacks": {
+  "kinase_domain_full_seq": 5
+ },
+ "endpoints": {
+  "K_primary_name": "K_cv",
+  "n_K_primary": 203,
+  "n_K_primary_evaluated": 203,
+  "n_K_any": 339,
+  "n_K_any_evaluated": 339,
+  "M1_auroc_hard": 0.7930072402339341,
+  "M1_n_kinases_defined": 203,
+  "M2_hit5": 0.24765069674840662,
+  "M3_top1_recall": 0.20864334704141918,
+  "M4_auroc_hard_Kany": 0.8006129876482304,
+  "M5_auroc_hard_Kcv": 0.7930072402339341,
+  "sec_hit1": 0.12804221028129495,
+  "sec_hit10": 0.3386922156485341,
+  "sec_mrr": 0.19701420197740074,
+  "sec_fam_hit5": 0.4514704938259577,
+  "sec_pauroc01_all": 0.5710206638069683,
+  "sec_ap_all": 0.1309438825095127,
+  "sec_ap_lift_all": 34.45783158164132,
+  "sec_auroc_all": 0.7930072402339341,
+  "n_missing_pairs": 67525844,
+  "n_required_pairs": 68937467
+ },
+ "status": "ok",
+ "error": null,
+ "runtime_s": 0.18,
+ "finished": "2026-10-26 15:17:37 CET"
+}

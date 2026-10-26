@@ -1,0 +1,93 @@
+{
+ "run_id": "r2_a_l31__20261026-150944__s0",
+ "name": "r2_a_l31",
+ "git_hash": "0001ce4f3c9d0ba1c789ca01393846565e078868",
+ "config": {
+  "groups": [
+   "F1",
+   "F0",
+   "F2a",
+   "F3",
+   "F4",
+   "F6a",
+   "F6b",
+   "F6c",
+   "F5",
+   "F7"
+  ],
+  "ratio": 50,
+  "hard": 0.5,
+  "alpha": 0.5,
+  "objective": "binary",
+  "num_leaves": 31,
+  "learning_rate": 0.05,
+  "min_data_in_leaf": 100,
+  "feature_fraction": 0.8,
+  "bagging_fraction": 0.8,
+  "lambda_l2": 1.0,
+  "max_bin": 255,
+  "max_rounds": 3000,
+  "es_rounds": 100,
+  "refit": true,
+  "clean": false,
+  "comp_know": false,
+  "seed": 0,
+  "variant": "L2",
+  "miss_only": false,
+  "min_rounds": 50
+ },
+ "seed": 0,
+ "split": "cv",
+ "notes": "folds=[0]; ",
+ "inputs": [],
+ "host": "eu-g6-076",
+ "python": "3.12.3",
+ "platform": "Linux-5.15.0-198-generic-x86_64-with-glibc2.39",
+ "argv": [
+  "scripts/models/r2_run.py",
+  "--name",
+  "r2_a_l31",
+  "--folds",
+  "0",
+  "--stage",
+  "a",
+  "--set",
+  "num_leaves=31"
+ ],
+ "pid": 189595,
+ "started": "2026-10-26 15:09:44 CET",
+ "n_rows": {
+  "predictions": 21283695
+ },
+ "outputs": {
+  "predictions": {
+   "path": "cache/runs/r2_a_l31__20261026-150944__s0/predictions.parquet",
+   "sha256": "82e6ae433e295f915be15b94695a985a96d5ca1f20268dc4fae5c7115136d865"
+  },
+  "metrics": {
+   "path": "results/runs/r2_a_l31__20261026-150944__s0/metrics.json",
+   "sha256": "8318eba70861908d5ad1ec350897b942507b3adbe262fbf16ae35ebb05783dfc"
+  }
+ },
+ "fallbacks": {},
+ "fold_logs": {
+  "0": {
+   "n_train_rows": 495771,
+   "n_pos": 9721,
+   "n_val_rows": 99154,
+   "best_iteration": 212,
+   "inner_val_metric": 0.8182938390163661,
+   "t_gather_train_s": 58.1,
+   "t_train_es_s": 19.8,
+   "t_refit_s": 9.1,
+   "n_features": 172,
+   "t_predict_s": 34.9,
+   "n_pred_rows": 21283695,
+   "t_fold_s": 132.8
+  }
+ },
+ "status": "ok",
+ "error": null,
+ "runtime_s": 174.97,
+ "finished": "2026-10-26 15:12:39 CET"
+}

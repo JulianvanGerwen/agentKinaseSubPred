@@ -154,6 +154,8 @@ def main():
                     help="grid search in each fold (default: fold of first run only; winner reused)")
     ap.add_argument("--fixed-params", type=str, default=None, help="json dict: skip grid search")
     ap.add_argument("--n-estimators-cap", type=int, default=None)
+    ap.add_argument("--params-from-arm", type=str, default=None,
+                    help="reuse the per-fold grid winner stored in results/baselines/selphi2/<arm>/fold{f}.json")
     ap.add_argument("--n-jobs", type=int, default=12)
     ap.add_argument("--pilot", action="store_true")
     a = ap.parse_args()
@@ -166,6 +168,9 @@ def main():
                         n_estimators_cap=a.n_estimators_cap)
         data = build_fold(fold, cfg0, clusters, pilot=a.pilot)
         fold_best = best if not a.grid_every_fold else None
+        if a.params_from_arm:
+            fj = ROOT / "results" / "baselines" / "selphi2" / a.params_from_arm / f"fold{fold}.json"
+            fold_best = json.loads(fj.read_text())["best_params"]
         for arm in a.arms:       # the first arm grid-searches; later arms (ablations) reuse its per-fold winner
             cfg = M.Config(**{**cfg0.__dict__, **ARMS[arm]})
             b = run_arm(fold, cfg, data, arm, clusters, F.CACHE / arm, ROOT / "results" / "baselines" / "selphi2" / arm,

@@ -1,0 +1,66 @@
+{
+ "run_id": "simple_b1_primed_hard__20261026-150119__s0",
+ "name": "simple_b1_primed_hard",
+ "git_hash": "0001ce4f3c9d0ba1c789ca01393846565e078868",
+ "config": {
+  "method": "b1_primed_hard",
+  "canary": false,
+  "seed": 0,
+  "store": "motif/cantley_primed_hard_pct_universe"
+ },
+ "seed": 0,
+ "split": "cv",
+ "notes": "",
+ "inputs": [
+  {
+   "path": "/workspace/cache/labels/dev_pairs.parquet",
+   "type": "file",
+   "bytes": 797455,
+   "sha256": "b6c1aaa8f67396b535ac392c08f77068e6eec1615e2debdf63ce20d6986be449"
+  },
+  {
+   "path": "/workspace/results/splits/cv_folds.tsv",
+   "type": "file",
+   "bytes": 203997,
+   "sha256": "aa01e43d7a064269ddf58cf00a2e3130486aee973cba3e6cf52f994f6a265dc8"
+  }
+ ],
+ "host": "eu-g6-076",
+ "python": "3.12.3",
+ "platform": "Linux-5.15.0-198-generic-x86_64-with-glibc2.39",
+ "argv": [
+  "scripts/baselines/simple_run.py",
+  "--method",
+  "b1_primed_hard"
+ ],
+ "pid": 178585,
+ "started": "2026-10-26 15:01:19 CET",
+ "n_rows": {
+  "predictions": 63265305
+ },
+ "outputs": {
+  "predictions": {
+   "path": "cache/runs/simple_b1_primed_hard__20261026-150119__s0/predictions.parquet",
+   "sha256": "571339a235fb193bab51cb1bc546801438710a989dd193d775622870b703c25b"
+  },
+  "bootstrap": {
+   "path": "results/runs/simple_b1_primed_hard__20261026-150119__s0/bootstrap.json",
+   "sha256": "6c58d14bbca2dcc1ffb5aae5cecf91611b3898a54f664b30dfbfb580b1c9421f"
+  },
+  "metrics": {
+   "path": "results/runs/simple_b1_primed_hard__20261026-150119__s0/metrics.json",
+   "sha256": "5b3962afdfc872b2a6e7e8616948503fbd9e1a888807622f6b13f2eefd8ebccd"
+  },
+  "extra": {
+   "path": "results/runs/simple_b1_primed_hard__20261026-150119__s0/extra.json",
+   "sha256": "dad94594d86b1654238311fc2b4f2a03f864cddb9eed052b0936a2f576272ab5"
+  }
+ },
+ "fallbacks": {
+  "candidate_pairs_not_scored": 6432528
+ },
+ "status": "ok",
+ "error": null,
+ "runtime_s": 353.45,
+ "finished": "2026-10-26 15:07:13 CET"
+}

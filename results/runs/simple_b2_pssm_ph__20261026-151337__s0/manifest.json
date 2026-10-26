@@ -1,0 +1,68 @@
+{
+ "run_id": "simple_b2_pssm_ph__20261026-151337__s0",
+ "name": "simple_b2_pssm_ph",
+ "git_hash": "0001ce4f3c9d0ba1c789ca01393846565e078868",
+ "config": {
+  "method": "b2_pssm_ph",
+  "canary": false,
+  "seed": 0,
+  "prior": "family",
+  "phospho": true,
+  "score": "universe percentile"
+ },
+ "seed": 0,
+ "split": "cv",
+ "notes": "",
+ "inputs": [
+  {
+   "path": "/workspace/cache/labels/dev_pairs.parquet",
+   "type": "file",
+   "bytes": 797455,
+   "sha256": "b6c1aaa8f67396b535ac392c08f77068e6eec1615e2debdf63ce20d6986be449"
+  },
+  {
+   "path": "/workspace/results/splits/cv_folds.tsv",
+   "type": "file",
+   "bytes": 203997,
+   "sha256": "aa01e43d7a064269ddf58cf00a2e3130486aee973cba3e6cf52f994f6a265dc8"
+  }
+ ],
+ "host": "eu-g6-076",
+ "python": "3.12.3",
+ "platform": "Linux-5.15.0-198-generic-x86_64-with-glibc2.39",
+ "argv": [
+  "scripts/baselines/simple_run.py",
+  "--method",
+  "b2_pssm_ph"
+ ],
+ "pid": 192487,
+ "started": "2026-10-26 15:13:37 CET",
+ "n_rows": {
+  "predictions": 69697833
+ },
+ "outputs": {
+  "predictions": {
+   "path": "cache/runs/simple_b2_pssm_ph__20261026-151337__s0/predictions.parquet",
+   "sha256": "4ab905e5c11ec9f91f10f6d74f845d61773422db08ee2c4fd49a8aa0c3054c2d"
+  },
+  "bootstrap": {
+   "path": "results/runs/simple_b2_pssm_ph__20261026-151337__s0/bootstrap.json",
+   "sha256": "f96d098e8ec7e3d479986eda685830698aa19a6144c58b02fa77165dd513e389"
+  },
+  "metrics": {
+   "path": "results/runs/simple_b2_pssm_ph__20261026-151337__s0/metrics.json",
+   "sha256": "c0d64e667822ea2a5c81623eb71499dec86480ad4079f41093f79db719bb27c7"
+  },
+  "extra": {
+   "path": "results/runs/simple_b2_pssm_ph__20261026-151337__s0/extra.json",
+   "sha256": "451dabf6caeb9e359c8cd4f7465dce393b29056881a5e41203b58c39554258af"
+  }
+ },
+ "fallbacks": {
+  "candidate_pairs_not_scored": 0
+ },
+ "status": "ok",
+ "error": null,
+ "runtime_s": 364.51,
+ "finished": "2026-10-26 15:19:41 CET"
+}

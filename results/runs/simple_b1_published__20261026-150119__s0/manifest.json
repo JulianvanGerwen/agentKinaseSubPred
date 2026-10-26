@@ -1,0 +1,66 @@
+{
+ "run_id": "simple_b1_published__20261026-150119__s0",
+ "name": "simple_b1_published",
+ "git_hash": "0001ce4f3c9d0ba1c789ca01393846565e078868",
+ "config": {
+  "method": "b1_published",
+  "canary": false,
+  "seed": 0,
+  "store": "motif/cantley_unprimed_pct_published"
+ },
+ "seed": 0,
+ "split": "cv",
+ "notes": "",
+ "inputs": [
+  {
+   "path": "/workspace/cache/labels/dev_pairs.parquet",
+   "type": "file",
+   "bytes": 797455,
+   "sha256": "b6c1aaa8f67396b535ac392c08f77068e6eec1615e2debdf63ce20d6986be449"
+  },
+  {
+   "path": "/workspace/results/splits/cv_folds.tsv",
+   "type": "file",
+   "bytes": 203997,
+   "sha256": "aa01e43d7a064269ddf58cf00a2e3130486aee973cba3e6cf52f994f6a265dc8"
+  }
+ ],
+ "host": "eu-g6-076",
+ "python": "3.12.3",
+ "platform": "Linux-5.15.0-198-generic-x86_64-with-glibc2.39",
+ "argv": [
+  "scripts/baselines/simple_run.py",
+  "--method",
+  "b1_published"
+ ],
+ "pid": 178582,
+ "started": "2026-10-26 15:01:19 CET",
+ "n_rows": {
+  "predictions": 63265305
+ },
+ "outputs": {
+  "predictions": {
+   "path": "cache/runs/simple_b1_published__20261026-150119__s0/predictions.parquet",
+   "sha256": "06c83b27ec2fc2bf1f03d05254daaee06cfd90164f80de75438c48bcaa948b3d"
+  },
+  "bootstrap": {
+   "path": "results/runs/simple_b1_published__20261026-150119__s0/bootstrap.json",
+   "sha256": "b310e25942e78bf06dd50c9cadd5edb52b9fd870a51469a1a552ddf9b3435462"
+  },
+  "metrics": {
+   "path": "results/runs/simple_b1_published__20261026-150119__s0/metrics.json",
+   "sha256": "f7ef0f30882e51fd984ccc33e08b30b63a2f415403834a97f78c830a0cf568f1"
+  },
+  "extra": {
+   "path": "results/runs/simple_b1_published__20261026-150119__s0/extra.json",
+   "sha256": "34d032a89515fa8773ca633e1d43cb9d6a51c43db3848c549b5a201f2b42a3fc"
+  }
+ },
+ "fallbacks": {
+  "candidate_pairs_not_scored": 6432528
+ },
+ "status": "ok",
+ "error": null,
+ "runtime_s": 342.68,
+ "finished": "2026-10-26 15:07:01 CET"
+}

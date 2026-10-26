@@ -1,0 +1,66 @@
+{
+ "run_id": "simple_b1_primed_soft_published__20261026-150838__s0",
+ "name": "simple_b1_primed_soft_published",
+ "git_hash": "0001ce4f3c9d0ba1c789ca01393846565e078868",
+ "config": {
+  "method": "b1_primed_soft_published",
+  "canary": false,
+  "seed": 0,
+  "store": "motif/cantley_primed_soft_pct_published"
+ },
+ "seed": 0,
+ "split": "cv",
+ "notes": "",
+ "inputs": [
+  {
+   "path": "/workspace/cache/labels/dev_pairs.parquet",
+   "type": "file",
+   "bytes": 797455,
+   "sha256": "b6c1aaa8f67396b535ac392c08f77068e6eec1615e2debdf63ce20d6986be449"
+  },
+  {
+   "path": "/workspace/results/splits/cv_folds.tsv",
+   "type": "file",
+   "bytes": 203997,
+   "sha256": "aa01e43d7a064269ddf58cf00a2e3130486aee973cba3e6cf52f994f6a265dc8"
+  }
+ ],
+ "host": "eu-g6-076",
+ "python": "3.12.3",
+ "platform": "Linux-5.15.0-198-generic-x86_64-with-glibc2.39",
+ "argv": [
+  "scripts/baselines/simple_run.py",
+  "--method",
+  "b1_primed_soft_published"
+ ],
+ "pid": 186097,
+ "started": "2026-10-26 15:08:38 CET",
+ "n_rows": {
+  "predictions": 63265305
+ },
+ "outputs": {
+  "predictions": {
+   "path": "cache/runs/simple_b1_primed_soft_published__20261026-150838__s0/predictions.parquet",
+   "sha256": "1f7cea5518989a8a83f82222e26633eda2c93ae5a1f6809d9e8f7f461c5c5b70"
+  },
+  "bootstrap": {
+   "path": "results/runs/simple_b1_primed_soft_published__20261026-150838__s0/bootstrap.json",
+   "sha256": "04590443934f68b449721a49851e384e3942d5d491064d3565cc97251b2d3c95"
+  },
+  "metrics": {
+   "path": "results/runs/simple_b1_primed_soft_published__20261026-150838__s0/metrics.json",
+   "sha256": "e014113831ed5b2ab274c8d42e1e2cf2e1c52b2fb73c1b73f11ca8c58196505e"
+  },
+  "extra": {
+   "path": "results/runs/simple_b1_primed_soft_published__20261026-150838__s0/extra.json",
+   "sha256": "5b2b606ad1cb49f5af775f6b730b36a85f0f38d88c1ba646058aae5f53933285"
+  }
+ },
+ "fallbacks": {
+  "candidate_pairs_not_scored": 6432528
+ },
+ "status": "ok",
+ "error": null,
+ "runtime_s": 358.75,
+ "finished": "2026-10-26 15:14:37 CET"
+}

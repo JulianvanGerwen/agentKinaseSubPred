@@ -74,5 +74,7 @@ Status: literature (4 reviews), data profiling, two acquisition waves (~12.6 GB)
   - [~] 5.1 Simple baselines B0-prior/pop/miss, B1 Cantley arms, B2 PSSM, B7
   - [~] 5.2 R2 LightGBM main model + staged search + ablation curve
   - [~] 5.3 R3 neural (GPUs 2–3)
-  - [~] 5.4 B3 Phosformer reimplementation (GPU 0)
+  - [~] 5.4 B3 Phosformer reimplementation (GPU 0) → docs/baseline_phosformer.md
+    - Released weights reproduce paper (AUROC 0.8855 on their split). On our CV (contaminated: trained on PSP incl. our positives) M1=0.793, M4=0.801, Hit@5=0.248 — reference only.
+    - Faithful MLM pretraining (corpus filtered: 642 TEST substrates + 458 homologs + 152 kinase domains removed) running, ETA 19:15; fine-tune CV ETA 22:30.
   - [~] 5.5 B4 SELPHI2.0 retrain

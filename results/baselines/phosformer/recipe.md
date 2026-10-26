@@ -42,7 +42,7 @@
 - eager mode: 0.53 s/step, 220k tok/s, so 50 epochs ≈ 5.7 h;
 - compiled, after warm-up: about 0.38 s/step, so ≈ 4.2 h.
 
-That is under the 8 h cap, so we keep the **faithful 50 epochs**. Note that DESIGN §8.1 and PRIOR-3 said "do not redo / ~6 GPU-h"; CMP-2 and DESIGN v1 asked us to reproduce it.
+The final run (filtered corpus, compiled, 49k-token micro-batches) measures **0.38 s/step**, so 38,900 steps finish in about 4.3 h (ETA 19:15). That is under the 8 h cap, so we keep the **faithful 50 epochs**. Note that DESIGN §8.1 and PRIOR-3 said "do not redo / ~6 GPU-h"; CMP-2 and DESIGN v1 asked us to reproduce it.
 
 **Fallback if pretraining overruns.**
 - Trigger: the measured ETA at step 2,000 exceeds 6 h, or the GPU-0 contention needed for Phase B makes it exceed G3 − 6 h.

@@ -1,0 +1,65 @@
+{
+ "run_id": "simple_b2_pssm_canary__20261026-150138__s0",
+ "name": "simple_b2_pssm_canary",
+ "git_hash": "0001ce4f3c9d0ba1c789ca01393846565e078868",
+ "config": {
+  "method": "b2_pssm",
+  "canary": true,
+  "seed": 0,
+  "prior": "family",
+  "phospho": false,
+  "score": "universe percentile"
+ },
+ "seed": 0,
+ "split": "cv",
+ "notes": "",
+ "inputs": [
+  {
+   "path": "/workspace/cache/labels/dev_pairs.parquet",
+   "type": "file",
+   "bytes": 797455,
+   "sha256": "b6c1aaa8f67396b535ac392c08f77068e6eec1615e2debdf63ce20d6986be449"
+  },
+  {
+   "path": "/workspace/results/splits/cv_folds.tsv",
+   "type": "file",
+   "bytes": 203997,
+   "sha256": "aa01e43d7a064269ddf58cf00a2e3130486aee973cba3e6cf52f994f6a265dc8"
+  }
+ ],
+ "host": "eu-g6-076",
+ "python": "3.12.3",
+ "platform": "Linux-5.15.0-198-generic-x86_64-with-glibc2.39",
+ "argv": [
+  "scripts/baselines/simple_run.py",
+  "--method",
+  "b2_pssm",
+  "--canary"
+ ],
+ "pid": 179845,
+ "started": "2026-10-26 15:01:38 CET",
+ "n_rows": {
+  "predictions": 2393598
+ },
+ "outputs": {
+  "predictions": {
+   "path": "cache/runs/simple_b2_pssm_canary__20261026-150138__s0/predictions.parquet",
+   "sha256": "0b5a49d73c451e6798fb996c2e45223be667aeb8c505fc2f8b721e9e1e52baa6"
+  },
+  "metrics": {
+   "path": "results/runs/simple_b2_pssm_canary__20261026-150138__s0/metrics.json",
+   "sha256": "6d9124da5519410b2977110e149aaf1b60aa07d970d53bd280b97f20a02a20d1"
+  },
+  "extra": {
+   "path": "results/runs/simple_b2_pssm_canary__20261026-150138__s0/extra.json",
+   "sha256": "8a50b5f3c1bc5d4fd72be47f563531ff428d74bcadb8931b56d097db3c334a7e"
+  }
+ },
+ "fallbacks": {
+  "candidate_pairs_not_scored": 0
+ },
+ "status": "ok",
+ "error": null,
+ "runtime_s": 29.89,
+ "finished": "2026-10-26 15:02:08 CET"
+}

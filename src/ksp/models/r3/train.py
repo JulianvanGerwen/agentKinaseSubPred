@@ -26,7 +26,7 @@ from ksp.models.r3.model import R3Net, bce_masked, infonce_filtered
 
 DEFAULT = dict(flank=7, lambda_nce=0.5, alpha=0.5, p_lab=0.5, batch=1024, lr=1e-3, wd=0.01, max_steps=6000,
                eval_every=200, patience=6, desc_dropout=0.2, d_site=192, h=128, d_kin=256, n_layers=2,
-               dropout=0.1, esm_dropout=0.1, use_esm=True, use_prot=True, valid_frac=0.2, seed=0, variant="L2", warmup=200,
+               dropout=0.1, esm_dropout=0.1, use_esm=True, use_prot=True, use_phos=True, valid_frac=0.2, seed=0, variant="L2", warmup=200,
                n_seeds=1)
 
 _CACHE: dict = {}
@@ -212,7 +212,8 @@ def _train_one(cfg, seed, si, G, wk_t, lab_rows, fit_rows, val_rows, eval_k, dev
     model = R3Net(si.emb.shape[1], G.k_cant.shape[1], len(ki.group_names), len(ki.family_names), flank=cfg["flank"],
                   d_site=cfg["d_site"], h=cfg["h"], d_kin=cfg["d_kin"], n_layers=cfg["n_layers"],
                   desc_dropout=cfg["desc_dropout"], dropout=cfg["dropout"],
-                  esm_dropout=cfg["esm_dropout"], use_esm=cfg["use_esm"], use_prot=cfg["use_prot"]).to(device)
+                  esm_dropout=cfg["esm_dropout"], use_esm=cfg["use_esm"], use_prot=cfg["use_prot"],
+                  use_phos=cfg["use_phos"]).to(device)
     opt = torch.optim.AdamW(model.parameters(), lr=cfg["lr"], weight_decay=cfg["wd"])
     sched = torch.optim.lr_scheduler.LambdaLR(opt, lambda s: min(1.0, (s + 1) / cfg["warmup"]))
     B, nl = cfg["batch"], int(cfg["batch"] * cfg["p_lab"])
