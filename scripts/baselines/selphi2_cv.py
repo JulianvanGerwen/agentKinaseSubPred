@@ -165,10 +165,12 @@ def main():
         cfg0 = M.Config(neg_ratio=a.neg_ratio, n_bags=a.n_bags, grid=grid, n_jobs=a.n_jobs,
                         n_estimators_cap=a.n_estimators_cap)
         data = build_fold(fold, cfg0, clusters, pilot=a.pilot)
-        for arm in a.arms:
+        fold_best = best if not a.grid_every_fold else None
+        for arm in a.arms:       # the first arm grid-searches; later arms (ablations) reuse its per-fold winner
             cfg = M.Config(**{**cfg0.__dict__, **ARMS[arm]})
             b = run_arm(fold, cfg, data, arm, clusters, F.CACHE / arm, ROOT / "results" / "baselines" / "selphi2" / arm,
-                        grid_override=best if not a.grid_every_fold else None, pilot=a.pilot)
+                        grid_override=fold_best, pilot=a.pilot)
+            fold_best = b
             if best is None and not a.grid_every_fold:
                 best = b
 

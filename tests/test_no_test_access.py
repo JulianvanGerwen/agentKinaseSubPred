@@ -6,7 +6,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 PATTERNS = ["sealed/", "ks_pairs", "Kinase_Substrate_Dataset", "kinase_label_counts", "enzsub", "omnipath",
             "iptmnet"]
-ALLOW = {"src/ksp/io_psp.py", "src/ksp/labels.py", "scripts/build_labels.py", "src/ksp/eval_test.py",
+ALLOW = {"scripts/features/phospho_study_lists.py",  # PI 2026-10-26: reads only PMIDs of KS evidence to build the A12 exclusion list; no labels enter features
+         "src/ksp/io_psp.py", "src/ksp/labels.py", "scripts/build_labels.py", "src/ksp/eval_test.py",
          "scripts/build_splits.py"}          # build_splits.py: writes the seal (core-infra; runs once at G1)
 ALLOW_PREFIX = ("scripts/lit/", "scripts/audit_")
 # Pre-existing files reported to the PI (docs/core_infra.md) for their owners to fix; remove entries once fixed.
