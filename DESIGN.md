@@ -498,3 +498,18 @@ GPU allocation:
   - (c) **Canary gate.** It stays pooled, per A27 (pooled 0.539, pass). Per-fold values are reported: 2 of 5 folds exceed 0.57 (0.575 and 0.676; fold 4 is driven by R3).
   - (d) **LKO T2.** Reported stratified by whether the held-out site has other-kinase labels: M1 is 0.703 on sites without them (55%).
   - (e) **Clean variant disclosure.** Site existence (U_ms membership) and primed-Cantley evidence weights still draw on the compendium and CPTAC.
+- **A32. Pre-declared rules for two late CV experiments** (2026-10-26 22:35; prompted by `docs/strata_cv.md`). These rules were declared before either experiment was run.
+  - **(a) Priming features.** The finding: on primed positives the priming-aware Cantley arm scores 0.945, against 0.870 for R2.
+    - The experiment adds label-free, kinase-specific priming features to the R2 final config. They are the priming-aware Cantley percentile, plus an indicator that the kinase's preferred phospho-offset residue (from its Cantley phospho-preference) is an observed phosphosite.
+    - **Adopt only if all of the following hold** (pooled 5-fold CV, seed 0, against r2_final_s0):
+      - overall M1 Δ ≥ −0.002;
+      - M2 Δ ≥ −0.005;
+      - primed-positives-stratum M1 Δ ≥ +0.02, with a cluster-bootstrap CI above 0;
+      - canary pass.
+  - **(b) Prior-debiased site score for M2.** The finding: Hit@5 is 0.099 for kinases with 5–19 labels, against 0.162 for Cantley.
+    - The experiment computes score_site = fused score − β·log(DEV training count of k, per fold), with β ∈ {0, 0.1, 0.25, 0.5, 0.75, 1}. It is applied post hoc to the OOF fusion and needs no retraining.
+    - **Selection:** β is chosen by pooled CV M2 (macro, A24-compatible), with nested leave-one-fold-out selection reported.
+    - **Adopt β > 0 only if:**
+      - M2 does not fall by more than 0.003 against β = 0;
+      - the 5–19-label-bin M2 improves.
+      This deliberately favours harmonious performance across kinases (PROMPT), at a bounded cost to the macro endpoint.
