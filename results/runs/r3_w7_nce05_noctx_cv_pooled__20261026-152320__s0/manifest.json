@@ -1,0 +1,90 @@
+{
+ "run_id": "r3_w7_nce05_noctx_cv_pooled__20261026-152320__s0",
+ "name": "r3_w7_nce05_noctx_cv_pooled",
+ "git_hash": "not_queried(agent no-git rule)",
+ "config": {
+  "config": {
+   "flank": 7,
+   "lambda_nce": 0.5,
+   "use_prot": false,
+   "use_phos": false
+  },
+  "source_runs": [
+   "r3_reg1x5_w7_nce05_noctx_fold0__20261026-151402__s0",
+   "r3_reg1x5_w7_nce05_noctx_fold1__20261026-151644__s0",
+   "r3_reg1x5_w7_nce05_noctx_fold2__20261026-151941__s0",
+   "r3_reg1x5_w7_nce05_noctx_fold3__20261026-151402__s0",
+   "r3_reg1x5_w7_nce05_noctx_fold4__20261026-151653__s0"
+  ]
+ },
+ "seed": 0,
+ "split": "cv",
+ "notes": "",
+ "inputs": [
+  {
+   "path": "/workspace/cache/runs/r3_reg1x5_w7_nce05_noctx_fold0__20261026-151402__s0/predictions.parquet",
+   "type": "file",
+   "bytes": 55894389,
+   "sha256": "9010f0d7f255feb9449893e751eff6c6d3b72e847e6c97674372517dcb14a25a"
+  },
+  {
+   "path": "/workspace/cache/runs/r3_reg1x5_w7_nce05_noctx_fold1__20261026-151644__s0/predictions.parquet",
+   "type": "file",
+   "bytes": 56045005,
+   "sha256": "c9766da6bb7e13834bfd7cd1bc3fb380951b314d92fcbd4730f116e78b4ebcea"
+  },
+  {
+   "path": "/workspace/cache/runs/r3_reg1x5_w7_nce05_noctx_fold2__20261026-151941__s0/predictions.parquet",
+   "type": "file",
+   "bytes": 56403232,
+   "sha256": "cee850bfa40f6cd644b03df1e25fdfcd8afe8ec63f2549aa22b234770aad1314"
+  },
+  {
+   "path": "/workspace/cache/runs/r3_reg1x5_w7_nce05_noctx_fold3__20261026-151402__s0/predictions.parquet",
+   "type": "file",
+   "bytes": 56298209,
+   "sha256": "f8493d391bd6fa4f1144b87895e7961ccebe6cecc9e19aee071eadcc1dbf877b"
+  },
+  {
+   "path": "/workspace/cache/runs/r3_reg1x5_w7_nce05_noctx_fold4__20261026-151653__s0/predictions.parquet",
+   "type": "file",
+   "bytes": 56303979,
+   "sha256": "3e214c2f313ba7db0c885e83383ff7f2919066ecce202906c811232bdff90b55"
+  }
+ ],
+ "host": "eu-g6-076",
+ "python": "3.12.3",
+ "platform": "Linux-5.15.0-198-generic-x86_64-with-glibc2.39",
+ "argv": [
+  "scripts/models/r3_cv.py",
+  "pool",
+  "--config",
+  "w7_nce05_noctx",
+  "--runs",
+  "r3_reg1x5_w7_nce05_noctx_fold0__20261026-151402__s0",
+  "r3_reg1x5_w7_nce05_noctx_fold1__20261026-151644__s0",
+  "r3_reg1x5_w7_nce05_noctx_fold2__20261026-151941__s0",
+  "r3_reg1x5_w7_nce05_noctx_fold3__20261026-151402__s0",
+  "r3_reg1x5_w7_nce05_noctx_fold4__20261026-151653__s0",
+  "--boot",
+  "200"
+ ],
+ "pid": 205033,
+ "started": "2026-10-26 15:23:20 CET",
+ "n_rows": {},
+ "outputs": {
+  "metrics": {
+   "path": "results/runs/r3_w7_nce05_noctx_cv_pooled__20261026-152320__s0/metrics.json",
+   "sha256": "53f36e0a5603f6abceb7f4185f45b132dddffbb94fe598d01e0c393fbb56f577"
+  },
+  "summary": {
+   "path": "results/runs/r3_w7_nce05_noctx_cv_pooled__20261026-152320__s0/summary.json",
+   "sha256": "b35a1990814464c245f948883228dd5806f20245988754585148fd7dba7090cb"
+  }
+ },
+ "fallbacks": {},
+ "status": "ok",
+ "error": null,
+ "runtime_s": 252.54,
+ "finished": "2026-10-26 15:27:32 CET"
+}

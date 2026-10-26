@@ -1,0 +1,68 @@
+{
+ "M1_auroc_hard": 0.7193309716465227,
+ "M2_hit5": 0.18179326346919647,
+ "M3_top1_recall": 0.22311072082700967,
+ "M4_auroc_hard_Kany": 0.7196046848721235,
+ "M5_auroc_hard_Kcv": 0.7193309716465227,
+ "sec_auroc_all": 0.8172326356517847,
+ "sec_mrr": 0.15201242946434534,
+ "sec_hit1": 0.09012809821169379,
+ "sec_hit10": 0.2719519422083886,
+ "n_K_primary_evaluated": 203,
+ "n_K_any_evaluated": 339,
+ "n_missing_pairs": 0,
+ "canary": {
+  "n_neg_canaries": 12,
+  "neg_mean_auroc_hard": 0.6235457035903592,
+  "pos_auroc_hard": 0.8446687303280181,
+  "neg_mean_auroc_all": 0.5210310302911725,
+  "pos_auroc_all": 0.8637487894876187,
+  "neg_pass": false,
+  "pos_pass": false,
+  "thresholds": {
+   "neg_max": 0.57,
+   "pos_min": 0.9
+  }
+ },
+ "n_pred_rows": 106457574,
+ "bootstrap": [
+  {
+   "endpoint": "M1",
+   "point": 0.7193309716465227,
+   "lo95": 0.6983855909417881,
+   "hi95": 0.7343813528751191,
+   "se": 0.008922024828858618,
+   "B": 200,
+   "resample": "clusters"
+  },
+  {
+   "endpoint": "M2",
+   "point": 0.18179326346919647,
+   "lo95": 0.16521643588560242,
+   "hi95": 0.1965532348345161,
+   "se": 0.007645101397743878,
+   "B": 200,
+   "resample": "clusters"
+  },
+  {
+   "endpoint": "M3",
+   "point": 0.22311072082700967,
+   "lo95": 0.18851762852257714,
+   "hi95": 0.2397050076562613,
+   "se": 0.013939315867337787,
+   "B": 200,
+   "resample": "clusters"
+  },
+  {
+   "endpoint": "M4",
+   "point": 0.7196046848721235,
+   "lo95": 0.6968975624775849,
+   "hi95": 0.73464093506016,
+   "se": 0.009475096920234268,
+   "B": 200,
+   "resample": "clusters"
+  }
+ ],
+ "t_eval_s": 253.5,
+ "run_id": "r3_w7_nce05_noctx_cv_pooled__20261026-152320__s0"
+}

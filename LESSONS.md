@@ -12,3 +12,4 @@
 9. One owner per path, PI-only git (NFS), and update tree/delegation status at each notification, not in batches (M1 retro: stale statuses).
 10. ≤4 reviewers per round with distinct remits, length cap, ranked top-5 changes — r1 produced ~26k words.
 11. Take timestamps from `date`, never estimate — PI notes drifted ~40 min ahead of the real clock by T+1h (DESIGN/TREE timestamps corrected 14:35).
+12. Verify file identities before writing them into records — LITERATURE.md had paper1/paper2 swapped until the Phosformer agent read the PDFs (fixed 15:22).

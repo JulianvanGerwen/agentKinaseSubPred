@@ -44,6 +44,17 @@ Results: `results/models/r2/`, runs `results/runs/r2_*`, registry rows `results/
    Evaluation uses `ksp.eval.evaluate`: `prepare('cv', fold)` for fold-0 search and pooled `prepare('cv')` for 5-fold
    CV.
 
+### Scripts
+| script | purpose |
+|---|---|
+| `scripts/models/r2_xfit.py --family f2a f3nb f6a f6a_clean --folds 0 1 2 3 4` (`--toy` = leak test) | dense cross-fitted features |
+| `scripts/models/r2_run.py --name N --folds F --set k=v ...` | one configuration on the given folds (train, OOF predict, eval, REGISTRY) |
+| `scripts/models/r2_cv5.sh N threads stage "k=v ..." [fold0_run]` | 5 per-fold runs, then `r2_pool.py` (pooled OOF evaluation + bootstrap + strata, registered) |
+| `scripts/models/r2_queue.sh queue.q threads logprefix` | sequential queue of `r2_run.py` configurations |
+| `scripts/models/r2_compare.py --a RUN --b RUN [--fold F]` | matched-universe paired cluster bootstrap (`ksp.eval.paired_bootstrap`) |
+| `scripts/models/r2_canary_diag.py --runs ...` | density-stratified negative-canary check |
+| `scripts/models/r2_combine_m2.py`, `r2_calib.py`, `r2_partial_pool.py` | site-grouped M2 combination, A16/A17 calibration and assignment, §8.3 λ sweep |
+
 ## 2. Assumptions / deviations (stated, not silent)
 - **F8 (Sugiyama 2019):** no feature store existed when R2 was built, so the group is empty. This is counted as a
   manifest fallback (`F8_unavailable`).
@@ -87,6 +98,23 @@ So any model with protein-level features can exceed 0.5 on the negative canaries
 
 Suggested fix (core-infra): sample canary sites uniformly over U_ms sites, or match the protein site-count
 distribution of real labels.
+
+**Density-stratified check** (`scripts/models/r2_canary_diag.py`, `results/models/r2/canary_density_diagnostic.tsv`).
+This is the fold-0 negative-canary AUROC on E-all, recomputed *within* deciles of protein site count and averaged
+with weights by positives:
+
+| run | raw E-all | density-stratified | proxy −n_sites (raw) |
+|---|---|---|---|
+| r2_a_l63 | 0.560 | **0.482** | 0.686 |
+| r2_a_l127 | 0.562 | **0.488** | 0.686 |
+| r2_a_l255 (lr 0.03, min_leaf 50) | 0.597 (fails the 0.57 gate) | **0.515** | 0.686 |
+
+Within density strata the negative canaries sit at chance. The excess AUROC is therefore the sampler bias, which
+larger trees learn from the canaries' training labels. It is not label leakage. The positive canary is 0.999
+(stratified 0.998).
+
+Selection policy: the official A5 gate stays binding. A configuration that fails it is reported, but it is not
+selected unless the PI accepts this diagnostic.
 
 ## 6. Results
 (filled as run)
