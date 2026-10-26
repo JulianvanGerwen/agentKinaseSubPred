@@ -1,5 +1,5 @@
 # LESSONS — process rules for running this project efficiently
-(One-line rule + evidence. Pruned at each milestone; last prune M3 2026-10-27 00:20 — see docs/retro/M1_retro.md, M2_retro.md, M3_retro.md.)
+(One-line rule + evidence. Pruned at each milestone; last prune M3 2026-10-27 00:06 — see docs/retro/M1_retro.md, M2_retro.md, M3_retro.md.)
 
 1. Reviewers get read-only data access and must give a measured number per change (r1: 6/7 found quantified leaks).
 2. Key by UniProt accession, never symbol (174/404 Cantley names differ).

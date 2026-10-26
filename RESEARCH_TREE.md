@@ -4,7 +4,7 @@ Legend: [ ] planned · [~] in progress · [x] done · [-] abandoned/negative · 
 
 ## Status summary (latest first)
 
-### 2026-10-27 00:10 — M3: CV closed, FREEZE committed (5fc7870), TEST batch running
+### 2026-10-27 00:05 — M3: CV closed, FREEZE committed (5fc7870), TEST batch running
 Decision note: the final model is the **R2 LightGBM (5 seeds) + R3 neural late fusion**, the best M1-CV (§8.6). It uses L2 labels (human plus mouse/rat) and a global model.
 - Regime and label comparisons (A33): per-kinase −0.012, per-group −0.007, partial pooling ≈ global, L1/L2_vitro/L2_vivo worse on M2, L2+ext not robust across seeds and pre-registered as ablation only.
 - Nothing else beat the noise floor: R5, knn_sim, F9, A32 priming and prior-debiased M2.

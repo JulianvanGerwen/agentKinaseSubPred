@@ -19,6 +19,6 @@ Agents write only in their assigned paths; shared modules are changed only by th
 | feat-knn | src/ksp/features/knn*.py, cache/features/knn | GPU 2 / 6 | done |
 | feat-tyr | src/ksp/features/tyr*.py, cache/features/tyr | 0/6 | done |
 | R5-crossenc | src/ksp/models/r5/, scripts/models/r5_*.py, results/models/r5 | GPU 1–3 | done 19:53 (negative) |
-| core-infra (G4) | src/ksp/eval_test.py, tests/, docs/G4_RUNBOOK.md | 0/8 | done 22:00; deploy loader running (00:12) |
+| core-infra (G4) | src/ksp/eval_test.py, tests/, docs/G4_RUNBOOK.md | 0/8 | done 22:00; deploy loader running (00:05) |
 | strata | src/ksp/strata.py, tests/test_strata.py, results/strata, docs/strata_cv.md | 0/8 | done 23:05 |
 | regimes | scripts/models/regime_*.py, src/ksp/models/regime/, results/models/regime, docs/regimes_labels.md | 0/24 | done 00:03 |
