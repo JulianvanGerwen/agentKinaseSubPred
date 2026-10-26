@@ -1,0 +1,15 @@
+{
+ "name": "B4",
+ "role": "baseline",
+ "baseline_id": "B4_retrained",
+ "run_id": "b4_selphi2_final__20261026-212619__s0",
+ "predictions": "cache/runs/b4_selphi2_final__20261026-212619__s0/test_predictions.parquet",
+ "score_site_predictions": null,
+ "t3_predictions": null,
+ "runtime": {
+  "train_wall_s": 737.0,
+  "inference_wall_s": 2043.4
+ },
+ "missing": "worst",
+ "predictions_sha256": "89365e66920f602558c0370f2ff4bb705d12b8aec14e64220a63b93ea5b4cbfb"
+}

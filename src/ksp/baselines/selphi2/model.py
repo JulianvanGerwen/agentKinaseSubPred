@@ -113,9 +113,13 @@ def sample_negatives(pos: pd.DataFrame, site_mask: np.ndarray, masks: labels.Neg
 class Assembler:
     """Builds the 44-column SELPHI matrix for (kinase_idx, site_idx) rows + label-derived columns."""
 
-    def __init__(self):
+    def __init__(self, impute_non_ochoa: bool = False):
+        """impute_non_ochoa=True: sites without Ochoa features get SELPHI's own NA defaults
+        (cache/selphi2/site_features_all.parquet; medians / 0 / 'unknown' as in sign-test-set.r), which is how SELPHI
+        itself scored PSP sites absent from the Ochoa table. Ochoa rows are identical in both tables."""
         S = load_sites()
-        st = F.load_site_table()
+        st = pd.read_parquet(F.CACHE / "site_features_all.parquet") if impute_non_ochoa else F.load_site_table()
+        self.has_ochoa = S.site_id.isin(set(F.load_site_table().index)).to_numpy()
         self.site_feat = st.reindex(S.site_id).to_numpy(np.float32)       # NaN rows = no Ochoa features
         prot = load_proteins().acc
         self.site_prot = pd.Series(np.arange(len(prot)), index=prot).reindex(S.acc).to_numpy()

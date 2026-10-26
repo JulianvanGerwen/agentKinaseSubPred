@@ -126,3 +126,36 @@ Leakage-suspect columns (PRIOR-4), dropped together in the **noleak** ablation a
 **U_B4** is the universe where SELPHI's features are available: U_ms ∩ Ochoa 2020 = 111,141 sites (32% of U_ms; S 81,819 / T 23,256 / Y 6,066). PRIOR-4 declared this restriction in advance. SELPHI itself also scored non-Ochoa sites with imputed defaults (`cache/selphi2/site_features_all.parquet` supports this), but we did not run that arm within the time box.
 
 Canaries (AIFM-3) were **not** run through B4. B4 is a baseline, not one of our models, and the shared crossfit driver's LeakageError check covers the label-derived columns.
+
+## 3. TEST-batch deliverable (G4; `docs/G4_RUNBOOK.md`): baseline_id `B4_retrained`
+
+- **Script:** `scripts/baselines/selphi2_final.py --mode test`.
+- **Run:** `b4_selphi2_final__20261026-212619__s0`.
+  - Manifest: `results/runs/<run_id>/manifest.json`, status ok.
+  - Predictions: `cache/runs/<run_id>/test_predictions.parquet`, with columns kinase_idx, site_idx and score.
+- **Training:** the CV faithful recipe, unchanged, on **all DEV**.
+  - Data: L2 labels on U_ms; 6,971 positives on U_B4, covering 325 kinases; 10 bags × 69,710 masked random negatives.
+  - Label-derived columns: cross-fitted (inner 5-fold over DEV clusters).
+  - Hyperparameters: full grid on bag 0, winner max_depth 20, min_samples_split 12, n_estimators 1500; 10 RFs, mean probability.
+- **TEST label features:** `SelphiPSSM` and `SelphiKSEACoreg` are fitted on all DEV labels through the `ksp.crossfit` eval path, which checks protein/cluster disjointness. TEST labels and `sealed/` were never read.
+- **Scored kinases: all 503 index kinases.** Every candidate is scored: 25,922,452 pairs = 69,430 TEST U_ms sites × the kinases whose residue class covers each site. The pre-flight `--check-predictions` returns `ok: true` (503 full, 0 partial, 0 unscored).
+  - *Why all of them:* SELPHI's model has no kinase-specific parameters. Kinases without a Cantley matrix or expression profile get SELPHI's NA → 0 rule, as on CV. Coverage is limited by sites, not kinases, and the rule is all-or-nothing per kinase. Scoring only U_B4 sites would make every kinase partial, which is not allowed.
+- **Coverage / fallback:**
+  - Only 21,722 of the 69,430 TEST sites (31.3%) have Ochoa 2020 site features.
+  - The other 47,708 sites (68.7%) get **SELPHI's own NA defaults**: medians for functional_score, disopred_score, netpho, paxdb and PWM; 0 for counts and sift; 'unknown' / '-' factor levels (`cache/selphi2/site_features_all.parquet`). This is how SELPHI itself scored PSP sites missing from the Ochoa table; their 238k predicted sites exceed Ochoa's 116k.
+  - That covers 17,269,864 of 25,922,452 pairs (66.6%), counted as the manifest fallback `test_pairs_site_without_ochoa_features_SELPHI_NA_defaults`.
+  - The CV metrics in §0 are on Ochoa sites only, where training also took place. §3.1 gives fold-0 CV evidence for how the imputed sites behave.
+- **Runtime (16 cores, peak RSS 11.5 GB):** train_wall_s = 737.0; inference_wall_s = 2043.4 (label features plus 15,000 trees over 25.9M pairs, about 12.7k pairs/s).
+- **FREEZE entry:** `results/baselines/selphi2/freeze_entry_B4.json`, predictions_sha256 `89365e66920f602558c0370f2ff4bb705d12b8aec14e64220a63b93ea5b4cbfb`. There is no T3 / LKO variant for B4, and no score_site (M2 uses `score`).
+
+### 3.1 Fold-0 CV check of the imputation used on TEST (`results/baselines/selphi2/faithful_imputed_fold0.json`)
+
+Setup: same recipe, trained on CV folds 1–4, scoring **all** fold-0 U_ms candidates. That is 20.8M pairs, of which 13.8M (66%) have imputed site features. Evaluation uses `ksp.eval` fold 0 (K_cv on fold 0 = 180 kinases).
+
+| fold 0 | M1 | M2 Hit@5 | M3 | AUROC E-all |
+|---|---|---|---|---|
+| exhaustive, non-Ochoa sites imputed (what TEST uses) | 0.683 | 0.208 | 0.276 | 0.844 |
+| same model, Ochoa sites only (missing='drop', 155 kinases defined) | 0.696 | 0.242 | 0.285 | 0.879 |
+| CV OOF on U_B4, unscored pairs ranked last | 0.587 | 0.130 | 0.278 | 0.709 |
+
+Imputed scoring costs about 0.01 M1 relative to the Ochoa-only universe. It is far better than leaving those pairs unscored. So the TEST file is a fair, exhaustive B4, close to what the SELPHI2.0 pipeline itself does on sites outside the Ochoa table.
