@@ -115,6 +115,23 @@ def test_canaries_end_to_end(data):
     assert r.canary["neg_pass"] and r.canary["pos_pass"], r.canary
 
 
+def test_canary_v2_not_separable_by_label_free_or_labelledness_scores(data):
+    """R3 audit of v1: -(#U_ms sites on the protein) separated v1 canaries (AUROC 0.76). Under v2 neither that
+    label-free protein-size score nor a perfect 'is a labelled site' score may pass 0.57 on E-hard."""
+    ks = [k for k in canary.NEG_IDS if k in data.positives]
+    nprot = data.sites[data.sites.in_U_ms].groupby("acc").size()
+    nsz = data.sites.acc.map(nprot).fillna(0).values
+    lab = np.zeros(len(data.sites))
+    lab[data.masks.hard_idx] = 1.0
+    ev = E.labels.load_dev("eval")
+    nlab = data.sites.acc.map(ev.groupby("acc").site_id.nunique()).fillna(0).values
+    for fn in (lambda k, s, r: -nsz[s] + 1e-6 * r.random(len(s)), lambda k, s, r: lab[s] + 1e-6 * r.random(len(s)),
+               lambda k, s, r: nlab[s] + 1e-6 * r.random(len(s))):
+        r = E.evaluate(_preds(data, ks, fn), data, kinases=ks)
+        assert r.canary["neg_mean_auroc_hard"] <= E.NEG_CANARY_MAX, r.canary
+        assert r.canary["neg_pass"]
+
+
 def test_bootstrap_and_paired(data):
     ks = _top_kinases(data, 5)
     pos = {k: set(data.positives[k]) for k in ks}

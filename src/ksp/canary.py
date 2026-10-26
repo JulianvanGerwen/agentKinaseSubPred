@@ -1,18 +1,22 @@
-"""Canary pseudo-kinases (DESIGN §11.3, AIFM-3; PI r2 update). Owner: core-infra.
+"""Canary pseudo-kinases (DESIGN §11.3, AIFM-3; PI r2 + canary v2 decision). Owner: core-infra.
 
-* 12 NEGATIVE canaries CANARY_NEG_00..11: labels are random U_ms sites, CLUSTERED BY PROTEIN like real kinases
-  (random proteins, then 1-4 random U_ms sites of the canary's residue class on each), sizes drawn from the label
-  counts of real kinases with 10-100 L2 labels; residue classes mixed (6 ST, 4 Y, 2 STY); descriptors are random but
-  fixed (canary_descriptors). Any model that scores them above chance on held-out data is leaking.
-* 1 POSITIVE canary CANARY_POS: planted motif R-x-x-[ST]-[FILMV] (R at -3, hydrophobic at +1) on a fixed random set
-  of "PPI partner" proteins (canary_ppi_partners(): the planted PPI flag; feature stores should expose it as an
-  ordinary PPI edge so the full pipeline sees it). Labels = 1-2 motif U_ms sites per partner protein.
+CANARY v2 (current; PI decision after the R3 audit of v1):
+* 12 NEGATIVE canaries CANARY_NEG_00..11: labels are REAL DEV-labelled sites (evaluation-positive sites of real
+  kinases: human-native PSP, non-autophos, in U_ms, pooled across kinases), protein-clustered and site-uniform:
+  proteins are drawn without replacement with weight n_p / E[min(K, n_p)], then min(K, n_p) of their labelled sites,
+  K ~ U{1..4}, until the canary's size is reached (every labelled site has ~equal inclusion probability; ~70% of
+  canary sites have a same-protein sibling). Sizes are the v1 sizes (drawn from real kinases with 10-100 L2 labels);
+  residue classes 6 ST / 4 Y / 2 STY with the natural residue mix of the labelled pool. A model that learned generic 'labelled-site-ness' cannot separate them from E-hard negatives
+  (other labelled sites), so the acceptance gate is mean negative-canary AUROC on E-HARD <= 0.57 (E-all reported,
+  not gated). KP masks of canaries = their own sites only. Because the pool is DEV-only, v2 negative canaries have no
+  TEST labels (TEST share 0; canaries are evaluated on CV only).
+* 1 POSITIVE canary CANARY_POS (unchanged from v1): planted motif R-x-x-[ST]-[FILMV] on a fixed random set of
+  "PPI partner" proteins (canary_ppi_partners(): the planted PPI flag). Gate: AUROC >= 0.90 on E-hard and E-all.
 
-Canary labels are generated over ALL proteins (deterministic, seed CANARY_SEED) BEFORE the split is frozen, so the
-split optimiser balances them like real kinases; scripts/build_splits.py seals their TEST part with the TEST labels.
-`canary_labels()` returns the DEV part only (used by ksp.labels.load_dev(with_canaries=True)).
-Acceptance (checked in ksp.eval.canary_check): mean negative-canary AUROC <= 0.57 and positive >= 0.90, on both
-E-hard-type and E-all-type negatives. Canaries are excluded from every reported metric.
+CANARY v1 (provenance; used for the split freeze at 14:34): negative labels were random U_ms sites on uniformly
+chosen proteins (1-4 per protein) - biased toward proteins with few U_ms sites (a label-free -#U_ms-sites score gave
+AUROC 0.76). Kept in cache/labels/canary_dev_v1.parquet. Canary sites inherit DEV/TEST from their protein; the split
+never changes. `canary_labels()` returns the DEV part (used by ksp.labels.load_dev(with_canaries=True)).
 """
 from __future__ import annotations
 
@@ -29,6 +33,7 @@ NEG_IDS = [f"CANARY_NEG_{i:02d}" for i in range(N_NEG)]
 CANARY_IDS = NEG_IDS + [POS_ID]
 POS_N_PARTNERS = 120          # planted PPI partner proteins
 DESC_DIM = 64
+CANARY_VERSION = 2
 
 
 def is_canary(kinase_acc) -> np.ndarray:
@@ -100,6 +105,37 @@ def _generate(size_source: tuple) -> tuple[pd.DataFrame, tuple]:
     return d, tuple(partners)
 
 
+def _generate_v2_negatives(sizes: dict, dev_pool: pd.DataFrame) -> pd.DataFrame:
+    """v2 negative canaries from real DEV-labelled sites (see module docstring). dev_pool: unique sites with columns
+    site_id, acc, res (evaluation-positive sites of real kinases on DEV proteins, in U_ms, non-autophos).
+    Site-uniform protein clustering: proteins are drawn without replacement with weight n_p / E[min(K, n_p)]
+    (n_p = labelled pool sites on the protein, K ~ U{1..4}), then min(K, n_p) of their sites uniformly; every
+    labelled site thus has (approximately) equal inclusion probability, so protein-level label counts or protein
+    size do not separate canary sites from other labelled sites."""
+    rng = np.random.default_rng(CANARY_SEED + 2)
+    pool_all = dev_pool.drop_duplicates("site_id").sort_values("site_id").reset_index(drop=True)
+    rows = []
+    for cid, cls in zip(NEG_IDS, NEG_CLASSES):
+        n = int(sizes[cid])
+        pool = pool_all[pool_all.res.isin(list("ST") if cls == "ST" else list(cls))].reset_index(drop=True)
+        by_p = pool.groupby("acc").indices
+        prots = np.array(sorted(by_p))
+        npp = np.array([len(by_p[p]) for p in prots], dtype=float)
+        e_take = np.array([np.mean([min(k, m) for k in (1, 2, 3, 4)]) for m in npp])
+        w = npp / e_take
+        avail = np.ones(len(prots), bool)
+        chosen = []
+        while len(chosen) < n and avail.any():
+            ww = np.where(avail, w, 0.0)
+            i = rng.choice(len(prots), p=ww / ww.sum())
+            avail[i] = False
+            idx = by_p[prots[i]]
+            k = min(int(rng.integers(1, 5)), len(idx), n - len(chosen))
+            chosen += rng.choice(idx, size=k, replace=False).tolist()
+        rows += [(cid, cls, pool.site_id.values[x]) for x in chosen]
+    return pd.DataFrame(rows, columns=["kinase", "kinase_residue_class", "site_id"])
+
+
 def _size_source() -> tuple:
     """Label counts of real kinases with 10-100 L2 labels (from the pre-split table during build, else DEV)."""
     from . import labels
@@ -139,13 +175,29 @@ def _as_pairs(d: pd.DataFrame) -> pd.DataFrame:
     return out
 
 
-def generate_all(size_source: tuple | None = None) -> tuple[pd.DataFrame, list]:
-    """All canary label pairs (DEV + TEST proteins) and the planted PPI partner list. Used by build_splits only."""
+def generate_v1(size_source: tuple | None = None) -> tuple[pd.DataFrame, list]:
+    """v1 canaries (provenance; the split freeze used these)."""
     d, partners = _generate(size_source if size_source is not None else _size_source())
     return _as_pairs(d), list(partners)
 
 
+def generate_all(size_source: tuple | None = None, dev_pool: pd.DataFrame | None = None
+                 ) -> tuple[pd.DataFrame, list]:
+    """Current (v2) canary label pairs and the planted PPI partner list: v1 positive canary (identical) + v2 negative
+    canaries drawn from `dev_pool` (required; built by scripts/build_splits.py --relabel from DEV labels)."""
+    if dev_pool is None:
+        raise ValueError("canary v2 needs dev_pool (DEV evaluation-positive sites); see scripts/build_splits.py")
+    d1, partners = _generate(size_source if size_source is not None else _size_source())
+    sizes = d1[d1.kinase.ne(POS_ID)].groupby("kinase").size().to_dict()
+    neg = _generate_v2_negatives(sizes, dev_pool)
+    d = pd.concat([neg, d1[d1.kinase.eq(POS_ID)]], ignore_index=True)
+    out = _as_pairs(d)
+    out["canary_version"] = CANARY_VERSION
+    return out, list(partners)
+
+
 CANARY_FILE_DEV = "canary_dev.parquet"
+CANARY_FILE_DEV_V1 = "canary_dev_v1.parquet"
 
 
 def canary_labels() -> pd.DataFrame:

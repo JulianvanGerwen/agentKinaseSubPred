@@ -1,0 +1,154 @@
+{
+ "rule": "max pooled-CV M1 (K_cv, E-hard, missing=worst) among DESIGN arms (i),(ii),(iii); tie-break M2",
+ "best_method": "b1_published",
+ "store": "motif/cantley_unprimed_pct_published",
+ "run_id": "simple_b1_published__20261026-150119__s0",
+ "candidates": [
+  {
+   "method": "b1_published",
+   "store": "motif/cantley_unprimed_pct_published",
+   "run_id": "simple_b1_published__20261026-150119__s0",
+   "M1": 0.718750788579223,
+   "M2": 0.15702272398702333,
+   "M3": 0.13264502029940548,
+   "M4": 0.6921140403041125
+  },
+  {
+   "method": "b1_universe",
+   "store": "motif/cantley_unprimed_pct_universe",
+   "run_id": "simple_b1_universe__20261026-150125__s0",
+   "M1": 0.718748180594646,
+   "M2": 0.17055648054036832,
+   "M3": 0.13261577048789708,
+   "M4": 0.6921150997049283
+  },
+  {
+   "method": "b1_primed_hard",
+   "store": "motif/cantley_primed_hard_pct_universe",
+   "run_id": "simple_b1_primed_hard__20261026-150119__s0",
+   "M1": 0.7152878640316336,
+   "M2": 0.15701617824315336,
+   "M3": 0.11628571100835566,
+   "M4": 0.6897437954901169
+  },
+  {
+   "method": "b1_primed_soft",
+   "store": "motif/cantley_primed_soft_pct_universe",
+   "run_id": "simple_b1_primed_soft__20261026-150507__s0",
+   "M1": 0.7130348679046975,
+   "M2": 0.16016257542605583,
+   "M3": 0.12396698341820081,
+   "M4": 0.6880737430137287
+  }
+ ],
+ "paired_bootstrap_best_vs_other": [
+  {
+   "comparison": "b1_published - b1_universe",
+   "endpoint": "M1",
+   "diff": 2.6079845770743404e-06,
+   "lo95": -3.6435752771152297e-06,
+   "hi95": 1.2269077589294185e-05,
+   "p_boot": 0.3936063936063936,
+   "B": 1000
+  },
+  {
+   "comparison": "b1_published - b1_universe",
+   "endpoint": "M2",
+   "diff": -0.013533756553344989,
+   "lo95": -0.01996704766380907,
+   "hi95": -0.007093691328102719,
+   "p_boot": 0.001998001998001998,
+   "B": 1000
+  },
+  {
+   "comparison": "b1_published - b1_universe",
+   "endpoint": "M3",
+   "diff": 2.9249811508397228e-05,
+   "lo95": -0.00017825485219100378,
+   "hi95": 0.00023815397575869602,
+   "p_boot": 0.7372627372627373,
+   "B": 1000
+  },
+  {
+   "comparison": "b1_published - b1_universe",
+   "endpoint": "M4",
+   "diff": -1.0594008158504309e-06,
+   "lo95": -9.922349342394999e-06,
+   "hi95": 1.2588327950888146e-05,
+   "p_boot": 0.8631368631368631,
+   "B": 1000
+  },
+  {
+   "comparison": "b1_published - b1_primed_hard",
+   "endpoint": "M1",
+   "diff": 0.003462924547589452,
+   "lo95": -0.0019459547198532102,
+   "hi95": 0.008893999286127583,
+   "p_boot": 0.2177822177822178,
+   "B": 1000
+  },
+  {
+   "comparison": "b1_published - b1_primed_hard",
+   "endpoint": "M2",
+   "diff": 6.545743869962317e-06,
+   "lo95": -0.012735264227765922,
+   "hi95": 0.011426050921738344,
+   "p_boot": 0.8951048951048951,
+   "B": 1000
+  },
+  {
+   "comparison": "b1_published - b1_primed_hard",
+   "endpoint": "M3",
+   "diff": 0.01635930929104981,
+   "lo95": 0.006065276581038828,
+   "hi95": 0.026731624897531198,
+   "p_boot": 0.003996003996003996,
+   "B": 1000
+  },
+  {
+   "comparison": "b1_published - b1_primed_hard",
+   "endpoint": "M4",
+   "diff": 0.0023702448139956145,
+   "lo95": -0.0037577905345544255,
+   "hi95": 0.007707063935499721,
+   "p_boot": 0.5274725274725275,
+   "B": 1000
+  },
+  {
+   "comparison": "b1_published - b1_primed_soft",
+   "endpoint": "M1",
+   "diff": 0.005715920674525532,
+   "lo95": 0.0012850504963188292,
+   "hi95": 0.00930122659540416,
+   "p_boot": 0.007992007992007992,
+   "B": 1000
+  },
+  {
+   "comparison": "b1_published - b1_primed_soft",
+   "endpoint": "M2",
+   "diff": -0.003139851439032504,
+   "lo95": -0.014772909457517244,
+   "hi95": 0.004952389217966742,
+   "p_boot": 0.42357642357642356,
+   "B": 1000
+  },
+  {
+   "comparison": "b1_published - b1_primed_soft",
+   "endpoint": "M3",
+   "diff": 0.008678036881204665,
+   "lo95": 0.000648287013245228,
+   "hi95": 0.017479336662835594,
+   "p_boot": 0.03396603396603397,
+   "B": 1000
+  },
+  {
+   "comparison": "b1_published - b1_primed_soft",
+   "endpoint": "M4",
+   "diff": 0.004040297290383799,
+   "lo95": -0.0006462697269805168,
+   "hi95": 0.007801501964477049,
+   "p_boot": 0.0899100899100899,
+   "B": 1000
+  }
+ ]
+}

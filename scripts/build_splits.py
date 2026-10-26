@@ -82,7 +82,7 @@ def main():
     # ------------------------------------------------------------------ canaries (before split; PI r2)
     n2 = L2.groupby("kinase_acc").site_id.nunique()
     size_src = tuple(sorted(int(x) for x in n2[(n2 >= 10) & (n2 <= 100)]))
-    can, partners = canary.generate_all(size_src)
+    can, partners = canary.generate_v1(size_src)   # split freeze used v1; --relabel installs v2
     R["canary_pairs"] = len(can)
     R["canary_sizes"] = can.groupby("kinase_acc").size().to_dict()
     KC = canary.kinases_with_canaries()
@@ -348,8 +348,13 @@ def write_report():
           "## Leave-kinase-out", "",
           f"- {R['kinase_clusters']} kinase clusters (>=50% KinCore domain identity U Manning family); 5 folds: "
           f"kinases {R['lko_fold_kinases']}, DEV L2 labels {R['lko_fold_dev_L2']}.", "",
-          "## Canaries (injected before freezing)", "",
-          f"- sizes {R['canary_sizes']}; TEST share {R['canary_test_frac']}.", "",
+          "## Canaries", "",
+          f"- v1 (used for the split freeze; provenance only): sizes {R['canary_sizes']}; TEST share "
+          f"{R['canary_test_frac']}.",
+          f"- **v{R.get('canary_version', 1)} (current)**: negatives drawn from real DEV-labelled sites "
+          f"(protein-clustered); sizes {R.get('canary_v2_sizes', '-')}; TEST share {R.get('canary_v2_test_frac', '-')} "
+          "(DEV-only pool, so negative canaries are CV-only; the positive canary keeps its v1 TEST part). "
+          "Gate: mean negative AUROC on E-hard <= 0.57; positive >= 0.90.", "",
           "## Secondary TEST strata", ""]
     rl = R.get("relabel", {})
     L += [f"- New since 2021 (absent from 2021 PSP in all species): {rl.get('test_eval_pos_new_since_2021', R.get('test_eval_pos_new_since_2021'))} TEST positives.",
@@ -390,11 +395,23 @@ def relabel():
     # canaries: deterministic; must equal the frozen DEV canaries
     L2 = labels.select_variant(full, "L2")
     n2 = L2.groupby("kinase_acc").site_id.nunique()
-    can, _ = canary.generate_all(tuple(sorted(int(x) for x in n2[(n2 >= 10) & (n2 <= 100)])))
-    can_dev_old = pd.read_parquet(labels.DEV_PAIRS.parent / canary.CANARY_FILE_DEV)
+    EVp = labels.select_variant(full, "eval")
+    dev_pool = EVp[EVp.in_U_ms & ~EVp.acc.isin(test_prot)][["site_id", "acc", "res"]]
+    size_src = tuple(sorted(int(x) for x in n2[(n2 >= 10) & (n2 <= 100)]))
+    can, _ = canary.generate_all(size_src, dev_pool)
+    v1, _ = canary.generate_v1(size_src)
     can_t = can.acc.isin(test_prot)
-    if set(zip(can[~can_t].kinase_acc, can[~can_t].site_id)) != set(zip(can_dev_old.kinase_acc, can_dev_old.site_id)):
-        sys.exit("canary labels changed (L2 counts changed?) - not allowed in --relabel")
+    cdir = labels.DEV_PAIRS.parent
+    if not (cdir / canary.CANARY_FILE_DEV_V1).exists():          # keep v1 for provenance
+        old = pd.read_parquet(cdir / canary.CANARY_FILE_DEV)
+        if "canary_version" not in old or (old.canary_version != canary.CANARY_VERSION).all():
+            shutil.copy(cdir / canary.CANARY_FILE_DEV, cdir / canary.CANARY_FILE_DEV_V1)
+    pos_new = set(can[can.kinase_acc.eq(canary.POS_ID)].site_id)
+    pos_v1 = set(v1[v1.kinase_acc.eq(canary.POS_ID)].site_id)
+    if pos_new != pos_v1:
+        sys.exit("positive canary changed - not allowed in --relabel")
+    if set(can.kinase_acc) != set(canary.CANARY_IDS):
+        sys.exit("canary set incomplete")
     inp = full.acc.isin(P)
     dev = full[inp & ~full.acc.isin(test_prot)].reset_index(drop=True)
     tst = pd.concat([full[inp & full.acc.isin(test_prot)], can[can_t]], ignore_index=True)
@@ -429,6 +446,11 @@ def relabel():
     seal["test_label_rows"] = len(tst)
     (out / "SEAL.json").write_text(json.dumps(seal, indent=1))
     R = json.loads((out / "split_numbers.json").read_text())
+    cn = can.groupby("kinase_acc").site_id.nunique()
+    ct = can[can_t].groupby("kinase_acc").site_id.nunique().reindex(cn.index).fillna(0)
+    R["canary_version"] = canary.CANARY_VERSION
+    R["canary_v2_sizes"] = cn.astype(int).to_dict()
+    R["canary_v2_test_frac"] = (ct / cn).round(3).to_dict()
     R["relabel"] = {"when": hist[-1]["relabel"], "dev_label_rows": len(dev), "test_label_rows": len(tst),
                     "mask_only_rows_dev": int(dev.mask_only.sum()), "mask_only_rows_test": int(tst.mask_only.fillna(False).astype(bool).sum()),
                     "test_eval_pos_new_since_2021": int((labels.evaluable_positive(tst) & tst.new_since_2021.astype(bool)

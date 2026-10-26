@@ -190,14 +190,45 @@
  "test_label_rows": 6234,
  "runtime_s": 67.5,
  "relabel": {
-  "when": "2026-10-26 14:50:01 CET",
+  "when": "2026-10-26 15:34:35 CET",
   "dev_label_rows": 44660,
-  "test_label_rows": 10800,
+  "test_label_rows": 10735,
   "mask_only_rows_dev": 19214,
   "mask_only_rows_test": 4566,
   "test_eval_pos_new_since_2021": 263,
   "test_ext_pairs_U_ms": 215,
   "test_ext_tierA_U_ms": 158,
-  "runtime_s": 6.2
+  "runtime_s": 6.8
+ },
+ "canary_version": 2,
+ "canary_v2_sizes": {
+  "CANARY_NEG_00": 30,
+  "CANARY_NEG_01": 48,
+  "CANARY_NEG_02": 19,
+  "CANARY_NEG_03": 33,
+  "CANARY_NEG_04": 18,
+  "CANARY_NEG_05": 70,
+  "CANARY_NEG_06": 11,
+  "CANARY_NEG_07": 23,
+  "CANARY_NEG_08": 19,
+  "CANARY_NEG_09": 10,
+  "CANARY_NEG_10": 10,
+  "CANARY_NEG_11": 26,
+  "CANARY_POS": 138
+ },
+ "canary_v2_test_frac": {
+  "CANARY_NEG_00": 0.0,
+  "CANARY_NEG_01": 0.0,
+  "CANARY_NEG_02": 0.0,
+  "CANARY_NEG_03": 0.0,
+  "CANARY_NEG_04": 0.0,
+  "CANARY_NEG_05": 0.0,
+  "CANARY_NEG_06": 0.0,
+  "CANARY_NEG_07": 0.0,
+  "CANARY_NEG_08": 0.0,
+  "CANARY_NEG_09": 0.0,
+  "CANARY_NEG_10": 0.0,
+  "CANARY_NEG_11": 0.0,
+  "CANARY_POS": 0.196
  }
 }

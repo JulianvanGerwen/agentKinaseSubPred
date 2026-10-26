@@ -614,6 +614,10 @@ class NegativeMasks:
         return self._site_block(self.kp.get(k, ()))
 
     def excluded(self, k: str) -> np.ndarray:
+        if k not in self._excl_cache and str(k).startswith("CANARY_"):
+            # canary v2: KP mask = the canary's own sites only (no Hamming / paralog expansion)
+            self._excl_cache[k] = np.unique(self.spos.reindex(sorted(self.kp.get(k, ()))).dropna()
+                                            .values.astype(np.int64))
         if k not in self._excl_cache:
             sites_ = set(self.kp.get(k, ()))
             par_sites = set()

@@ -73,7 +73,10 @@ Status: literature (4 reviews), data profiling, two acquisition waves (~12.6 GB)
 - [~] 5. Models & baselines on CV (G2 20:50)
   - [~] 5.1 Simple baselines B0-prior/pop/miss, B1 Cantley arms, B2 PSSM, B7
   - [~] 5.2 R2 LightGBM main model + staged search + ablation curve
-  - [~] 5.3 R3 neural (GPUs 2–3)
+  - [x] 5.3 R3 neural → docs/model_r3.md (pending independent review)
+    - CV pooled OOF: M1 0.729 [0.710–0.747] vs B1 Cantley 0.719; M2 Hit@5 0.176 vs 0.171; M3 0.247 vs 0.133; M4 0.728. LKO T2 (unseen kinase family): M1 0.664, M3 0.203 → descriptors carry zero-shot signal. 2.4 min/fold.
+    - [!] Canary v1 sampler biased (sites on low-density proteins; label-free score gets 0.76) → canary v2 from real labelled sites, gate on E-hard (PI decision).
+    - Positive canary 0.825 (<0.9): R3 lacks PPI input; planted motif alone would give 0.96.
   - [~] 5.4 B3 Phosformer reimplementation (GPU 0) → docs/baseline_phosformer.md
     - Released weights reproduce paper (AUROC 0.8855 on their split). On our CV (contaminated: trained on PSP incl. our positives) M1=0.793, M4=0.801, Hit@5=0.248 — reference only.
     - Faithful MLM pretraining (corpus filtered: 642 TEST substrates + 458 homologs + 152 kinase domains removed) running, ETA 19:15; fine-tune CV ETA 22:30.

@@ -563,14 +563,16 @@ def strata(res: EvalResult, cols=("manning_group", "residue_class", "train_bin",
 
 # ================================================================================================ canaries
 def canary_check(pk_can: pd.DataFrame) -> dict:
-    """Acceptance (DESIGN §11.3 / A5): mean negative-canary AUROC <= 0.57 and positive >= 0.90, on E-hard AND E-all."""
+    """Acceptance (DESIGN §11.3 / A5, canary v2): mean negative-canary AUROC on E-hard <= 0.57 (E-all reported, not
+    gated); positive canary AUROC >= 0.90 on E-hard and E-all."""
     neg = pk_can[pk_can.kinase_acc.str.startswith("CANARY_NEG")]
     pos = pk_can[pk_can.kinase_acc.eq(_canary.POS_ID)]
     out = {"n_neg_canaries": len(neg)}
     for col in ["auroc_hard", "auroc_all"]:
         out[f"neg_mean_{col}"] = _nanmean(neg[col]) if len(neg) else float("nan")
         out[f"pos_{col}"] = float(pos[col].iloc[0]) if len(pos) else float("nan")
-    neg_ok = all(not (out[f"neg_mean_{c}"] > NEG_CANARY_MAX) for c in ["auroc_hard", "auroc_all"]) and len(neg) > 0
+    # canary v2 (PI): negatives gated on E-HARD only (E-all reported: generic site-likeness legitimately lifts it)
+    neg_ok = (len(neg) > 0) and not (out["neg_mean_auroc_hard"] > NEG_CANARY_MAX)
     pos_ok = all(out[f"pos_{c}"] >= POS_CANARY_MIN for c in ["auroc_hard", "auroc_all"]) if len(pos) else False
     out.update({"neg_pass": bool(neg_ok), "pos_pass": bool(pos_ok), "thresholds": {"neg_max": NEG_CANARY_MAX,
                                                                                  "pos_min": POS_CANARY_MIN}})

@@ -77,7 +77,39 @@ Results: `results/models/r2/`, runs `results/runs/r2_*`, registry rows `results/
 | ksp.eval fold-0 evaluation | ~1–2 min |
 
 ## 4. Staged search (A14) — fold 0, then 5 folds
-(filled as run)
+Selection metric: M1 on CV fold 0 (K_cv kinases with fold-0 positives, ~180), as pre-declared. M2, M3 and the
+canaries are reported alongside. Every configuration is a REGISTRY row.
+
+**Stage (a): tree size and learning rate.** All feature groups, α 0.5, 1:50, 50% hard, binary objective, inner
+early stopping. The canary columns are **canary v1** (sampler with the protein-density bias; see §5.1).
+
+| config | rounds (ES) | M1 | M2 | M3 | neg canary hard/all (v1) |
+|---|---|---|---|---|---|
+| leaves 31, lr .05 | 212 | 0.7503 | 0.154 | 0.261 | 0.545 / 0.561 |
+| leaves 63, lr .05 | 213 | 0.7531 | 0.186 | 0.257 | 0.549 / 0.560 |
+| leaves 127, lr .05 | 208 | 0.7545 | 0.190 | 0.254 | 0.566 / 0.562 |
+| leaves 127, lr .05, ES on hard negatives | 199 | 0.7558 | 0.189 | 0.256 | 0.566 / 0.562 |
+| leaves 255, lr .03, min_leaf 50 | 560 | 0.7547 | 0.228 | 0.278 | 0.611 / 0.597 |
+| **leaves 127, lr .03** (chosen) | 364 | **0.7591** | 0.221 | 0.269 | 0.577 / 0.572 |
+| leaves 255, lr .03, min_leaf 100 | 797 | 0.7578 | 0.219 | 0.279 | 0.578 / 0.565 |
+
+The M1 differences are within fold-0 noise (about ±0.01). The chosen configuration has the best M1, and it is
+about 4× cheaper to predict than 255 leaves (83 s vs 353 s for 21 M rows).
+
+For reference, fold 0 vs B1-universe (Cantley) on the matched universe (180 kinases), leaves 63:
+- ΔM1 = +0.021 [−0.002, 0.046]
+- ΔM2 = +0.031 [0.005, 0.083]
+- ΔM3 = +0.080 [0.040, 0.125]
+- ΔM4 = +0.031 [0.005, 0.056]
+
+**Canary v2 (15:31).** Core-infra replaced the negative canaries. They are now drawn from real DEV-labelled sites,
+and the gate is on E-hard only. Real labels are unchanged (fold 0: 9,433 real training pairs before and after).
+
+Because the canary rows of the cross-fitted features had been fitted on v1 labels, all xfit stores were rebuilt with
+v2. The v1 stores are archived in `cache/r2/xfit/cv_canaryv1/`.
+
+Real-kinase features are unaffected, except for a possible tiny shift in F2a's internally tuned α/β, which are tuned
+over all kinases including canaries. Stage-(a) selection therefore stands. Every run after stage (a) uses v2.
 
 ## 5. Ablation curve and leakage alarms
 (filled as run)

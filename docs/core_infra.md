@@ -138,13 +138,38 @@ K_eval is 119, below the ≈135–160 expected in DESIGN. The cause is the U_ms 
 
 **Speed.** CV fold 0 has 21.3M (k,s) rows, i.e. 516 kinases × 55.6k sites; one evaluate takes 27 s and B=200 bootstrap takes 1.3 s. TEST (≈70k sites) should take about 35 s.
 
-## 6. Canaries (`ksp.canary`)
+## 6. Canaries (`ksp.canary`, **v2**, PI decision after the R3 audit)
 
-- **12 negative canaries** (6 ST, 4 Y, 2 STY). Sizes 10–70 were drawn from real kinases with 10–100 labels. Sites are random U_ms sites, 1–4 per random protein, and descriptors are fixed random vectors.
-- **1 positive canary.** It has 138 R-x-x-[ST]-[FILMV] sites on 120 planted PPI partners (`canary_ppi_partners()`).
-- All canaries were generated before the split, so the optimiser balanced them: their TEST share is 18–30%.
-- **Use:** `load_dev(..., with_canaries=True)` adds them, and `kinases_with_canaries()` gives the extended kinase list.
-- **Acceptance** (`eval.canary_check`, on both E-hard and E-all): mean negative AUROC ≤ 0.57 and positive ≥ 0.90. It passes end to end on fold 0 with random scores for the negatives and motif+PPI scores for the positive. Canaries never enter endpoints.
+**Negative canaries (12; 6 ST, 4 Y, 2 STY).**
+- Labels are **real DEV-labelled sites**: evaluation-positive sites of real kinases (human-native PSP, non-autophos, in U_ms), pooled across kinases.
+- Sampling is protein-clustered and site-uniform. Proteins are drawn without replacement with weight n_p/E[min(K,n_p)], and then min(K,n_p) of their labelled sites are taken, with K ~ U{1..4}.
+- The v1 sizes are kept (10–70).
+- About 70% of canary sites have a same-protein sibling, against ~66% for real labels.
+- KP mask = the canary's own sites only.
+- The pool is DEV-only, so negative canaries have **no TEST labels** (TEST share 0) and are CV-only. The split did not change.
+
+**Positive canary.** Unchanged from v1: 138 R-x-x-[ST]-[FILMV] sites on 120 planted PPI partners (`canary_ppi_partners()`), TEST share 0.196.
+
+**Acceptance** (`eval.canary_check`).
+- The gate is mean negative-canary AUROC on **E-hard** ≤ 0.57. E-all is reported but not gated, because generic site-likeness legitimately lifts it.
+- The positive canary must reach ≥ 0.90 on both E-hard and E-all.
+
+**Bias probes** (pooled DEV, mean negative E-hard AUROC; all are regression-tested on fold 0).
+
+| score | v1 | v2 |
+|---|---|---|
+| random | — | 0.495 |
+| −(#U_ms sites on protein) | 0.76 (R3 audit) | 0.489 |
+| #DEV-labelled sites on protein | — | 0.453 (E-all 0.894, not gated) |
+| "is a labelled site" | — | ties, = random |
+
+An intermediate v2 draft that drew a labelled site uniformly and then took its protein over-weighted label-rich proteins: the #labelled score reached 0.61. It was fixed before release.
+
+**Provenance.**
+- v1 (random U_ms sites, used at the 14:34 freeze) is kept in `cache/labels/canary_dev_v1.parquet`. The `generate_v1` function stays for provenance.
+- `sealed/test_labels.parquet` lost the v1 negative-canary TEST rows, so the seal was rehashed and SEAL.json `history` records the previous hashes.
+
+**Use.** `load_dev(..., with_canaries=True)` adds the canaries, and `kinases_with_canaries()` gives the extended kinase list (canaries are kinase rows 503–515). Canaries never enter endpoints.
 
 ## 7. Manifests and TEST
 

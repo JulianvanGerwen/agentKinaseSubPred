@@ -1,0 +1,96 @@
+{
+ "run_id": "r2_a_l255_lr03_md100__20261026-152025__s0",
+ "name": "r2_a_l255_lr03_md100",
+ "git_hash": "0001ce4f3c9d0ba1c789ca01393846565e078868",
+ "config": {
+  "groups": [
+   "F1",
+   "F0",
+   "F2a",
+   "F3",
+   "F4",
+   "F6a",
+   "F6b",
+   "F6c",
+   "F5",
+   "F7"
+  ],
+  "ratio": 50,
+  "hard": 0.5,
+  "alpha": 0.5,
+  "objective": "binary",
+  "num_leaves": 255,
+  "learning_rate": 0.03,
+  "min_data_in_leaf": 100,
+  "feature_fraction": 0.8,
+  "bagging_fraction": 0.8,
+  "lambda_l2": 1.0,
+  "max_bin": 255,
+  "max_rounds": 3000,
+  "es_rounds": 100,
+  "refit": true,
+  "clean": false,
+  "comp_know": false,
+  "seed": 0,
+  "variant": "L2",
+  "miss_only": false,
+  "min_rounds": 50,
+  "es_metric": "mixed"
+ },
+ "seed": 0,
+ "split": "cv",
+ "notes": "folds=[0]; ",
+ "inputs": [],
+ "host": "eu-g6-076",
+ "python": "3.12.3",
+ "platform": "Linux-5.15.0-198-generic-x86_64-with-glibc2.39",
+ "argv": [
+  "scripts/models/r2_run.py",
+  "--name",
+  "r2_a_l255_lr03_md100",
+  "--folds",
+  "0",
+  "--stage",
+  "a",
+  "--set",
+  "num_leaves=255",
+  "learning_rate=0.03",
+  "min_data_in_leaf=100"
+ ],
+ "pid": 201991,
+ "started": "2026-10-26 15:20:25 CET",
+ "n_rows": {
+  "predictions": 21283695
+ },
+ "outputs": {
+  "predictions": {
+   "path": "cache/runs/r2_a_l255_lr03_md100__20261026-152025__s0/predictions.parquet",
+   "sha256": "dbfff43445c723598921aacd2a4195c631e8dac2e8cd0ee94a92055ba622bfd7"
+  },
+  "metrics": {
+   "path": "results/runs/r2_a_l255_lr03_md100__20261026-152025__s0/metrics.json",
+   "sha256": "a035ee72be5ce7377bf60c819e968ca0b762d3235bfab10983b662e2a87d04e5"
+  }
+ },
+ "fallbacks": {},
+ "fold_logs": {
+  "0": {
+   "n_train_rows": 495771,
+   "n_pos": 9721,
+   "n_val_rows": 99154,
+   "best_iteration": 797,
+   "inner_val_metric": 0.8323898639117766,
+   "t_gather_train_s": 20.7,
+   "t_train_es_s": 112.1,
+   "t_refit_s": 72.1,
+   "n_features": 172,
+   "t_predict_s": 352.7,
+   "n_pred_rows": 21283695,
+   "t_fold_s": 567.6
+  }
+ },
+ "status": "ok",
+ "error": null,
+ "runtime_s": 608.31,
+ "finished": "2026-10-26 15:30:33 CET"
+}
