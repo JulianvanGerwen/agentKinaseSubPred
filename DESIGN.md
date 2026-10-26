@@ -489,3 +489,6 @@ GPU allocation:
   - **Contingency:** if B3 or B4 is not ready at FREEZE, the primary family stays m = 9. Absent tests take p = 1 and are reported "NOT TESTED".
   - **In the single batch** (there is no second sealed access): per-kinase and site-level tables; kinase-resampling sensitivity CIs (§6.8); A17 assignment-reliability on labelled TEST sites; calibration on the external and temporal strata. Secondary analyses use B = 1,000.
   - Fold-0 rehearsal note: final vs B1 arm (i) M1 was Holm p 0.018 at B = 1,000 and 0.050 at B = 10,000. Small-B p-values are not trusted.
+- **A30. B1 on TEST: single-residue-matrix kinases** (2026-10-26 21:50). Ten dual-specificity kinases have an atlas matrix for only one residue type: MAP2K1/2/4/5/6/7, TTK, TESK1, NEK10 and PKMYT1. On TEST they are left **unscored** in both B1 arms, so they drop out of matched head-to-heads instead of receiving a placeholder worst score.
+  - On CV, the uncovered residue type was ranked last.
+  - The change can only help the baseline, so it is conservative for superiority claims.

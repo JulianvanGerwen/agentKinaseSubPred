@@ -1,0 +1,64 @@
+{
+ "freeze_entry": {
+  "name": "B7",
+  "role": "baseline",
+  "baseline_id": "B7",
+  "run_id": "simple_test_b7_lr__20261026-212809__s0",
+  "predictions": "cache/runs/simple_test_b7_lr__20261026-212809__s0/test_predictions.parquet",
+  "score_site_predictions": null,
+  "t3_predictions": "cache/runs/simple_test_b7_lr__20261026-212809__s0/test_t3_predictions.parquet",
+  "runtime": {
+   "train_wall_s": 89.12,
+   "inference_wall_s": 287.03
+  },
+  "missing": "worst",
+  "description": "simple strong LR on Cantley(i)+B2+PPI+loc, all DEV",
+  "t3_runtime": {
+   "train_wall_s": 301.63,
+   "inference_wall_s": 324.37
+  },
+  "predictions_sha256": "f9977e688f1956311e92b1b1209bfd4ec7cc7fff623015c5c74123418c14da6a",
+  "t3_predictions_sha256": "2058cc30380d7f791c07d86c485cc06906763043bf0482a53158793308919eeb"
+ },
+ "preflight": {
+  "rows": 25922452,
+  "rows_outside_candidates": 0,
+  "kinases_full": 503,
+  "kinases_unscored": 0,
+  "kinases_partial": 0,
+  "partial_kinase_idx": [],
+  "ok": true
+ },
+ "log": {
+  "kinases_hard_pool_short": 28,
+  "n_train": 601545,
+  "n_pos": 11795,
+  "intercept": -9.471075940704853,
+  "coef_std": {
+   "cantley_logit": 0.6551,
+   "cantley_missing": -0.1953,
+   "b2_logit": 0.7592,
+   "b2_missing": 0.0,
+   "ppi_edge_any": 0.191,
+   "loc_cos_combined": 0.5381,
+   "loc_missing": 0.0169
+  },
+  "softmax_temperature": {
+   "T": 0.7697080045107562,
+   "nll": 4.053705033315049,
+   "nll_T1": 4.132951128793075,
+   "n_pairs": 8756,
+   "n_sites": 5817,
+   "cv_run_id": "simple_b7_lr__20261026-153330__s0"
+  }
+ },
+ "t3_preflight": {
+  "rows": 25922452,
+  "rows_outside_candidates": 0,
+  "kinases_full": 503,
+  "kinases_unscored": 0,
+  "kinases_partial": 0,
+  "partial_kinase_idx": [],
+  "ok": true
+ }
+}

@@ -1,0 +1,30 @@
+{
+ "freeze_entry": {
+  "name": "B0_prior",
+  "role": "control",
+  "baseline_id": "B0_prior",
+  "run_id": "simple_test_b0_prior__20261026-212754__s0",
+  "predictions": "cache/runs/simple_test_b0_prior__20261026-212754__s0/test_predictions.parquet",
+  "score_site_predictions": null,
+  "t3_predictions": null,
+  "runtime": {
+   "train_wall_s": 0.0,
+   "inference_wall_s": 0.75
+  },
+  "missing": "worst",
+  "description": "kinase DEV-label count; score_site = normalised prior",
+  "predictions_sha256": "0bf51f64c36273dca115522292571dc4eccd647effd9a9f50ec953545f12fdf3"
+ },
+ "preflight": {
+  "rows": 25922452,
+  "rows_outside_candidates": 0,
+  "kinases_full": 503,
+  "kinases_unscored": 0,
+  "kinases_partial": 0,
+  "partial_kinase_idx": [],
+  "ok": true
+ },
+ "log": {
+  "n_dev_L2_total": 11795
+ }
+}

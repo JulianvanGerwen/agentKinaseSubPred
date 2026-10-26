@@ -1,0 +1,28 @@
+{
+ "freeze_entry": {
+  "name": "B0_pop",
+  "role": "control",
+  "baseline_id": "B0_pop",
+  "run_id": "simple_test_b0_pop__20261026-212754__s0",
+  "predictions": "cache/runs/simple_test_b0_pop__20261026-212754__s0/test_predictions.parquet",
+  "score_site_predictions": null,
+  "t3_predictions": null,
+  "runtime": {
+   "train_wall_s": 0.0,
+   "inference_wall_s": 0.41
+  },
+  "missing": "worst",
+  "description": "site popularity (diagnostic floor)",
+  "predictions_sha256": "234ee7e5c075aef7e82b628ecf8d7e469b9c1a8eed981b0fa642933789b82a31"
+ },
+ "preflight": {
+  "rows": 25922452,
+  "rows_outside_candidates": 0,
+  "kinases_full": 503,
+  "kinases_unscored": 0,
+  "kinases_partial": 0,
+  "partial_kinase_idx": [],
+  "ok": true
+ },
+ "log": {}
+}

@@ -116,8 +116,12 @@ def gather_kp(name: str, kidx: np.ndarray, pidx: np.ndarray, fill=np.nan) -> np.
 
 
 # ================================================================================================ fold labels / rows
-def fold_train_labels(fold: int, with_canaries: bool = False) -> pd.DataFrame:
+def fold_train_labels(fold: int | None, with_canaries: bool = False, exclude_kinases=None) -> pd.DataFrame:
+    """L2 training labels of outer CV fold `fold` (None = all DEV, i.e. the final/TEST model). exclude_kinases:
+    kinase accessions whose labels are removed (T3 / leave-kinase-family-out)."""
     tr, _, _ = crossfit.outer_split(fold, "L2", with_canaries=with_canaries)
+    if exclude_kinases is not None:
+        tr = tr[~tr.kinase_acc.isin(set(exclude_kinases))].reset_index(drop=True)
     return tr
 
 
@@ -127,23 +131,25 @@ def fold_train_counts(fold: int, kinases: pd.DataFrame, with_canaries: bool = Fa
     return kinases.uniprot_acc.map(n).fillna(0).values.astype(float)
 
 
-def sample_training_rows(fold: int, data, ratio: int = 50, hard_frac: float = 0.5, seed: int = 0,
-                         with_canaries: bool = False, log: dict | None = None) -> pd.DataFrame:
+def sample_training_rows(fold: int | None, data, ratio: int = 50, hard_frac: float = 0.5, seed: int = 0,
+                         with_canaries: bool = False, log: dict | None = None, exclude_kinases=None) -> pd.DataFrame:
     """Training rows (kinase_idx, site_idx, y, w_ipw) for outer CV fold `fold` (positives = fold-training L2 labels on
     U_ms sites in the kinase's class; negatives sampled as described in the module docstring)."""
     from ..eval import _res_ok
     S, K = data.sites, data.kinases
     spos = pd.Series(np.arange(len(S)), index=S.site_id.values)
     sf = site_fold(S)
-    tr_site = (sf >= 0) & (sf != fold) & S.in_U_ms.values
-    tr_lab = fold_train_labels(fold, with_canaries)
+    tr_site = (sf >= 0) & S.in_U_ms.values
+    if fold is not None:
+        tr_site &= sf != fold
+    tr_lab = fold_train_labels(fold, with_canaries, exclude_kinases)
     all_dev = labels.load_dev("all")
     if with_canaries:
         all_dev = pd.concat([all_dev, _canary.canary_labels()], ignore_index=True)
     tr_prot = set(S.acc.values[tr_site])
     mask_pairs = all_dev[all_dev.acc.isin(tr_prot)]
     masks = labels.NegativeMasks(mask_pairs, paralogs=data.par)
-    rng = np.random.default_rng(seed + 1000 * fold)
+    rng = np.random.default_rng(seed + 1000 * (fold if fold is not None else 9))
     res = S.res.values
     kpos = {a: i for i, a in enumerate(K.uniprot_acc.values)}
     rows = []
@@ -502,3 +508,164 @@ def b7_lr(cand: pd.DataFrame, data, cantley_store: str, with_canaries: bool = Fa
                 "coef_std": dict(zip(Xtr.columns, coef[:nf].round(4).tolist())),
                 "kinase_intercept_sd": float(np.std(coef[nf:][np.unique(tr.kinase_idx.values)]))}
     return {"score": out, "score_site": out_site}
+
+
+# ================================================================================================ TEST (final models)
+# Final models are trained on ALL DEV (fold=None) and score the exhaustive TEST candidate set
+# (ksp.eval_test.test_candidate_pairs: TEST-protein U_ms sites x kinases of matching class; no labels read).
+def test_candidates() -> pd.DataFrame:
+    from .. import eval_test
+    c = eval_test.test_candidate_pairs()
+    c = c.astype({"kinase_idx": np.int64, "site_idx": np.int64}).sort_values(["kinase_idx", "site_idx"])
+    return c.reset_index(drop=True)
+
+
+def cantley_test(cand: pd.DataFrame, arm_store: str, log: dict) -> np.ndarray:
+    """Own-matrix Cantley arm over the TEST candidates, all-or-nothing per kinase. Kinases without any in-class atlas
+    matrix -> NaN (unscored, NOT imputed). STY kinases with a matrix for only one residue type (MAP2Ks, TTK, TESK1,
+    NEK10, PKMYT1): the residue type without a matrix gets percentile -1 (below every real percentile) so the kinase
+    is fully scored - the same ranking ksp.eval's missing='worst' gave these pairs on CV."""
+    v = cantley(cand, arm_store).astype(np.float64)
+    nan = np.isnan(v)
+    g = pd.Series(nan).groupby(cand.kinase_idx.values).mean()
+    part = g.index[(g > 0) & (g < 1)].values
+    fill = np.isin(cand.kinase_idx.values, part) & nan
+    v[fill] = -1.0
+    K = index.load_kinases()
+    log.update(kinases_full=int((g == 0).sum()), kinases_unscored=int((g == 1).sum()),
+               kinases_partial_floor_filled=K.gene.values[part].tolist(), n_floor_filled_pairs=int(fill.sum()))
+    return v
+
+
+def _test_frame(cand, data):
+    S = data.sites
+    return pd.DataFrame({"kinase_acc": data.kinases.uniprot_acc.values[cand.kinase_idx.values],
+                         "site_id": S.site_id.values[cand.site_idx.values],
+                         "kinase_idx": cand.kinase_idx.values, "site_idx": cand.site_idx.values})
+
+
+def b2_test(cand: pd.DataFrame, data, exclude_kinases=None, seed: int = 0, phospho: bool = False):
+    """Fit F2a on all DEV L2 labels (minus exclude_kinases); returns (percentile scores, model, train_s, infer_s)."""
+    from ..features import motif_learned as ml
+    t0 = time.time()
+    K, S = pssm_kinase_table(False), data.sites
+    tr = fold_train_labels(None, False, exclude_kinases)
+    cl = splits.load_clusters()
+    acc = tr.site_id.str.rsplit("_", n=1).str[0]
+    groups = pd.Series(acc.map(cl).fillna(acc).astype(str).values, index=tr.site_id.values)
+    groups = groups[~groups.index.duplicated()]
+    m = ml.fit_pssm(tr[["kinase_acc", "site_id"]], S, K, "family", phospho, groups=groups, seed=seed)
+    t1 = time.time()
+    ki, si = cand.kinase_idx.values, cand.site_idx.values
+    v = ml.score_pairs(m, ki, si, S)
+    pct = ml.universe_percentile(m, ki, v, si, S)
+    return pct, m, t1 - t0, time.time() - t1
+
+
+def fit_softmax_temperature(cv_run_id: str, data, col: str = "score_site") -> dict:
+    """A17 temperature for a site-level softmax over kinases, fitted on labelled DEV sites by OOF log-likelihood
+    (pooled CV predictions of `cv_run_id`; candidates = real kinases of matching class, the M2 rows)."""
+    from scipy.optimize import minimize_scalar
+    from ..eval import _res_ok
+    P = pd.read_parquet(index.ROOT / "cache" / "runs" / cv_run_id / "predictions.parquet")
+    pm = data.pos_meta[~data.pos_meta.kinase_acc.str.startswith("CANARY_")]
+    us = np.unique(pm.site_idx.values)
+    P = P[P.site_idx.isin(us) & (P.kinase_idx < n_real())]
+    col_of = {s: j for j, s in enumerate(us)}
+    M = np.full((n_real(), len(us)), np.nan)
+    M[P.kinase_idx.values, [col_of[s] for s in P.site_idx.values]] = P[col].values
+    res = data.sites.res.values[us]
+    K = data.kinases.iloc[:n_real()]
+    ok = np.stack([_res_ok(res, c) for c in K.residue_class.values])
+    if np.isnan(M[ok]).any():
+        raise ValueError("CV predictions do not cover all class-compatible kinases at labelled sites")
+    kpos = {a: i for i, a in enumerate(K.uniprot_acc.values)}
+    ti = np.array([kpos[k] for k in pm.kinase_acc.values])
+    tj = np.array([col_of[s] for s in pm.site_idx.values])
+
+    def nll(logT):
+        T = np.exp(logT)
+        Z = np.where(ok, M / T, -np.inf)
+        mx = Z.max(0)
+        lse = mx + np.log(np.exp(Z - mx).sum(0))
+        return -(Z[ti, tj] - lse[tj]).mean()
+    r = minimize_scalar(nll, bounds=(-4, 4), method="bounded")
+    return {"T": float(np.exp(r.x)), "nll": float(r.fun), "nll_T1": float(nll(0.0)), "n_pairs": int(len(ti)),
+            "n_sites": int(len(us)), "cv_run_id": cv_run_id}
+
+
+def site_softmax(cand: pd.DataFrame, logits: np.ndarray, T: float) -> np.ndarray:
+    """P(k | s) = softmax over the kinases scored at site s (all class-compatible kinases) of logits / T."""
+    z = logits / T
+    s = cand.site_idx.values
+    mx = pd.Series(z).groupby(s).transform("max").values
+    e = np.exp(z - mx)
+    return e / pd.Series(e).groupby(s).transform("sum").values
+
+
+def b7_test(cand: pd.DataFrame, data, cantley_store: str, exclude_kinases=None, seed: int = 0, C: float = 1.0,
+            log: dict | None = None) -> dict:
+    """B7 final model on all DEV (minus exclude_kinases). Training-row B2 features via crossfit (inner 5-fold over
+    DEV clusters); TEST rows via a second crossfit call with no training rows (A1 eval mode: each TEST cluster is
+    transformed by one inner-fold fit). Returns lin (within-kinase score), logit (with kinase intercept), timings."""
+    import scipy.sparse as sp
+    from sklearn.linear_model import LogisticRegression
+    K, S = pssm_kinase_table(False), data.sites
+    pidx_all = site_protein_idx(S)
+    pacc = index.load_proteins().acc.values
+    cl = splits.load_clusters()
+    t0 = time.time()
+    tr = sample_training_rows(None, data, seed=seed, log=log, exclude_kinases=exclude_kinases)
+    lab = fold_train_labels(None, False, exclude_kinases)
+    cols = ["kinase_acc", "site_id", "kinase_idx", "site_idx"]
+    ftr, _ = crossfit.crossfit(lambda: LearnedPSSMAnyKinases(K, S), lab[["kinase_acc", "site_id"]], tr[cols], None,
+                               seed=seed, outer_fold=None, clusters=cl)
+    Xtr = b7_features(tr.kinase_idx.values, tr.site_idx.values, pidx_all[tr.site_idx.values], cantley_store,
+                      ftr.b2_pct.values, None, pacc)
+    mu, sd = Xtr.mean(), Xtr.std().replace(0, 1.0)
+    w = tr.w_ipw.values.astype(float)
+    w = w / w.mean()
+    nK = n_real()
+    Ztr = sp.hstack([sp.csr_matrix(((Xtr - mu) / sd).values),
+                     sp.csr_matrix((np.ones(len(tr)), (np.arange(len(tr)), tr.kinase_idx.values)),
+                                   shape=(len(tr), nK))]).tocsr()
+    lr = LogisticRegression(C=C, max_iter=5000, tol=1e-6)
+    lr.fit(Ztr, tr.y.values, sample_weight=w)
+    t1 = time.time()
+    ev = _test_frame(cand, data)
+    _, fev = crossfit.crossfit(lambda: LearnedPSSMAnyKinases(K, S), lab[["kinase_acc", "site_id"]], tr[cols].iloc[:0],
+                               ev, seed=seed, outer_fold=None, clusters=cl)
+    ki, si = cand.kinase_idx.values, cand.site_idx.values
+    Xev = b7_features(ki, si, pidx_all[si], cantley_store, fev.b2_pct.values, None, pacc)
+    nf = Xev.shape[1]
+    coef = lr.coef_.ravel()
+    lin = ((Xev - mu) / sd).values @ coef[:nf]
+    logit = lin + coef[nf:][ki] + lr.intercept_[0]
+    t2 = time.time()
+    if log is not None:
+        log.update(n_train=int(len(tr)), n_pos=int(tr.y.sum()), intercept=float(lr.intercept_[0]),
+                   coef_std=dict(zip(Xtr.columns, coef[:nf].round(4).tolist())))
+    return {"lin": lin, "logit": logit, "train_s": t1 - t0, "infer_s": t2 - t1}
+
+
+def b0_miss_test(cand: pd.DataFrame, data, seed: int = 0, log: dict | None = None, chunk: int = 4_000_000):
+    import lightgbm as lgb
+    t0 = time.time()
+    mf = MissFeatures(data.sites)
+    prm = {"objective": "binary", "learning_rate": 0.05, "num_leaves": 31, "min_data_in_leaf": 100,
+           "feature_fraction": 0.9, "bagging_fraction": 0.8, "bagging_freq": 1, "verbose": -1,
+           "num_threads": int(os.environ.get("OMP_NUM_THREADS", 8)), "seed": seed}
+    tr = sample_training_rows(None, data, seed=seed, log=log)
+    Xtr = mf.transform(tr.kinase_idx.values, tr.site_idx.values)
+    va = splits.train_valid_split_inner(tr.site_id.values, 0.2, seed)
+    dtr = lgb.Dataset(Xtr[~va], tr.y.values[~va])
+    dva = lgb.Dataset(Xtr[va], tr.y.values[va], reference=dtr)
+    bst = lgb.train(prm, dtr, 1000, valid_sets=[dva], callbacks=[lgb.early_stopping(50, verbose=False)])
+    t1 = time.time()
+    out = np.empty(len(cand))
+    for a in range(0, len(cand), chunk):
+        X = mf.transform(cand.kinase_idx.values[a:a + chunk], cand.site_idx.values[a:a + chunk])
+        out[a:a + chunk] = bst.predict(X, num_iteration=bst.best_iteration)
+    if log is not None:
+        log.update(n_train=int(len(tr)), n_pos=int(tr.y.sum()), best_iter=int(bst.best_iteration))
+    return out, t1 - t0, time.time() - t1

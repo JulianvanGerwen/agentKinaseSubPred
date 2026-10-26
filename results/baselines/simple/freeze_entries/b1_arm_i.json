@@ -1,0 +1,45 @@
+{
+ "freeze_entry": {
+  "name": "B1_i",
+  "role": "baseline",
+  "baseline_id": "B1_arm_i",
+  "run_id": "simple_test_b1_arm_i__20261026-212701__s0",
+  "predictions": "cache/runs/simple_test_b1_arm_i__20261026-212701__s0/test_predictions.parquet",
+  "score_site_predictions": null,
+  "t3_predictions": null,
+  "runtime": {
+   "train_wall_s": 0.0,
+   "inference_wall_s": 5.33
+  },
+  "missing": "worst",
+  "description": "Cantley arm (i) as-published percentile (own matrices only)",
+  "predictions_sha256": "4e6df8e9c5841b852ec8e6a172dd6b1087f372ecc6a98e026bc06d76bbb3a97d"
+ },
+ "preflight": {
+  "rows": 19910114,
+  "rows_outside_candidates": 0,
+  "kinases_full": 396,
+  "kinases_unscored": 107,
+  "kinases_partial": 0,
+  "partial_kinase_idx": [],
+  "ok": true
+ },
+ "log": {
+  "kinases_full": 386,
+  "kinases_unscored": 107,
+  "kinases_partial_floor_filled": [
+   "MAP2K7",
+   "TTK",
+   "MAP2K2",
+   "MAP2K4",
+   "MAP2K6",
+   "MAP2K1",
+   "MAP2K5",
+   "TESK1",
+   "NEK10",
+   "PKMYT1"
+  ],
+  "n_floor_filled_pairs": 398166,
+  "store": "motif/cantley_unprimed_pct_published"
+ }
+}

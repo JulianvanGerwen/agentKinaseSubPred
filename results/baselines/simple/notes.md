@@ -79,3 +79,27 @@
 - **Tyrosine kinases are weak for every motif baseline.** Over 65 Y-class kinases, E-hard AUROC is about 0.53-0.54
   (Cantley, B2, B7). Their E-hard negatives are mostly other TKs' substrates with near-identical motifs. Priming arms
   help the priming kinases (0.71 -> 0.79) but lose overall.
+
+## TEST-batch deliverables (G4; `scripts/baselines/simple_test.py`; entries in `freeze_entries/ALL.json`)
+- **Common to all files.** All models trained on all DEV (L2; no canaries; sealed/ never read). Every file scores the
+  exhaustive `ksp.eval_test.test_candidate_pairs()` set. Each passed `--check-predictions` with `ok: true`, and each is
+  pinned with `eval_test.pin_files`.
+- **B1 arms (i) and (ii).** Own atlas matrices only: 396 kinases scored, 107 unscored and not imputed (the imputed arm
+  was not the CV-selected arm). 10 STY kinases have a matrix for one residue type only: MAP2K1/2/4/5/6/7, TTK, TESK1,
+  NEK10, PKMYT1. Their other residue type gets percentile -1, so the kinase is fully scored (398,166 pairs). This
+  reproduces CV's `missing='worst'` ranking; the alternative is to leave these 10 kinases unscored.
+- **B2** = `fit_pssm` (family prior) on all DEV L2, scored as the U_ms percentile.
+- **B7** = the same configuration as on CV, all-DEV fit.
+  - The B2 feature for training rows is cross-fitted (inner 5-fold). TEST rows come from a second `crossfit` call
+    with no training rows (A1 inner-fit mode). Its 5 inner refits are counted in `inference_wall_s`.
+  - `score` = within-kinase linear score (no kinase intercept).
+  - `score_site` = A17 softmax over all class-compatible kinases at the site, of (score + kinase intercept)/T.
+    T = 0.770 was fitted on labelled DEV sites by OOF log-likelihood (CV run `simple_b7_lr__20261026-153330__s0`).
+- **B0-prior.** `score` = DEV L2 count. `score_site` = n_k / sum of n_j over class-compatible kinases. B0-pop and
+  B0-miss have no `score_site`.
+- **T3 (B2, B7).** For each LKO fold, the labels of that fold's kinases are removed from training, and those kinases'
+  TEST candidates are scored by that model. For B7, the held-out kinases have no training rows, so they get the global
+  intercept. B2 held-out kinases fall back to group or background priors. Exception: 2 kinases in Manning
+  "*-Unique" pseudo-families that span LKO folds (RNASEL/STK31, MAP3K8/MAP3K14) keep a "family" prior.
+- **CV caveat.** The CV numbers above are pre-A24 (pooled raw scores). A24 within-fold rank-normalised values were not
+  recomputed here.

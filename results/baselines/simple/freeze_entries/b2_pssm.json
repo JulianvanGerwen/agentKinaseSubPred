@@ -1,0 +1,46 @@
+{
+ "freeze_entry": {
+  "name": "B2",
+  "role": "baseline",
+  "baseline_id": "B2",
+  "run_id": "simple_test_b2_pssm__20261026-212755__s0",
+  "predictions": "cache/runs/simple_test_b2_pssm__20261026-212755__s0/test_predictions.parquet",
+  "score_site_predictions": null,
+  "t3_predictions": "cache/runs/simple_test_b2_pssm__20261026-212755__s0/test_t3_predictions.parquet",
+  "runtime": {
+   "train_wall_s": 3.33,
+   "inference_wall_s": 39.74
+  },
+  "missing": "worst",
+  "description": "learned PSSM (F2a, family prior) on all DEV L2",
+  "t3_runtime": {
+   "train_wall_s": 16.17,
+   "inference_wall_s": 20.84
+  },
+  "predictions_sha256": "bc78031604405008ae6de8b7cfd4161460166faeab234e4367980a051ea52879",
+  "t3_predictions_sha256": "25731be1ec6a214e66ce4ef1063e6e3a58ac78a66edc10d804f3ace3743e175a"
+ },
+ "preflight": {
+  "rows": 25922452,
+  "rows_outside_candidates": 0,
+  "kinases_full": 503,
+  "kinases_unscored": 0,
+  "kinases_partial": 0,
+  "partial_kinase_idx": [],
+  "ok": true
+ },
+ "log": {
+  "alpha": 256.0,
+  "beta": 1024.0,
+  "n_pairs": 11795
+ },
+ "t3_preflight": {
+  "rows": 25922452,
+  "rows_outside_candidates": 0,
+  "kinases_full": 503,
+  "kinases_unscored": 0,
+  "kinases_partial": 0,
+  "partial_kinase_idx": [],
+  "ok": true
+ }
+}

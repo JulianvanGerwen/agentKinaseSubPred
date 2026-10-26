@@ -1,0 +1,45 @@
+{
+ "freeze_entry": {
+  "name": "B1_ii",
+  "role": "baseline",
+  "baseline_id": "B1_arm_ii",
+  "run_id": "simple_test_b1_arm_ii__20261026-212755__s0",
+  "predictions": "cache/runs/simple_test_b1_arm_ii__20261026-212755__s0/test_predictions.parquet",
+  "score_site_predictions": null,
+  "t3_predictions": null,
+  "runtime": {
+   "train_wall_s": 0.0,
+   "inference_wall_s": 1.2
+  },
+  "missing": "worst",
+  "description": "Cantley arm (ii) universe-recalibrated percentile",
+  "predictions_sha256": "b63b66d936a1d1d0fc5bf91fd25d618414f119449a39fbebe2043bfaa7c051a1"
+ },
+ "preflight": {
+  "rows": 19910114,
+  "rows_outside_candidates": 0,
+  "kinases_full": 396,
+  "kinases_unscored": 107,
+  "kinases_partial": 0,
+  "partial_kinase_idx": [],
+  "ok": true
+ },
+ "log": {
+  "kinases_full": 386,
+  "kinases_unscored": 107,
+  "kinases_partial_floor_filled": [
+   "MAP2K7",
+   "TTK",
+   "MAP2K2",
+   "MAP2K4",
+   "MAP2K6",
+   "MAP2K1",
+   "MAP2K5",
+   "TESK1",
+   "NEK10",
+   "PKMYT1"
+  ],
+  "n_floor_filled_pairs": 398166,
+  "store": "motif/cantley_unprimed_pct_universe"
+ }
+}
