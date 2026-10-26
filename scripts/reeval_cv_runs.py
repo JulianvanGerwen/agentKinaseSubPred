@@ -27,7 +27,7 @@ import pandas as pd  # noqa: E402
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 from ksp import eval as E  # noqa: E402
-from ksp import labels  # noqa: E402
+from ksp import canary, index, labels, splits  # noqa: E402
 
 RUNS = ROOT / "results" / "runs"
 PRED = ROOT / "cache" / "runs"
@@ -98,6 +98,11 @@ def reeval(run: dict, data_cv, canary_v2_time: float) -> dict:
     res = E.evaluate(p, data_cv, missing="worst", fold_normalise=not run["lko"], keep_items=False)
     j = res.to_json()
     st = E.strata(res, kinase_set="K_any")
+    pk = res.per_kinase
+    keep = [c for c in ["kinase_acc", "gene", "n_pos", "n_pos_required", "n_neg_hard", "n_neg_all", "n_missing",
+                        "auroc_hard", "auroc_all", "top1_recall", "hit5", "in_K_primary", "in_K_any", "train_bin",
+                        "residue_class"] if c in pk]
+    j["per_kinase"] = pk[keep].to_dict(orient="records")
     if "kinase_acc" in p:
         can_scored = bool(p.kinase_acc.astype(str).str.startswith("CANARY_").any())
     else:
@@ -117,6 +122,42 @@ def _started(man: dict) -> float:
         return time.mktime(time.strptime(s[:19], "%Y-%m-%d %H:%M:%S"))
     except ValueError:
         return 0.0
+
+
+_UNI = {}
+
+
+def eall_check(run_id: str) -> dict:
+    """Within-kinase E-all coverage: for each kinase with predictions, scored fraction of DEV U_ms sites of its
+    residue class. E-all metrics (M3) are valid if <= 5% of scored kinases are partially covered (0-95%): unscored
+    whole kinases (e.g. Cantley non-atlas) are fine, label-selected subsets (positives + E-hard only) are not."""
+    if not _UNI:
+        S = index.load_sites()
+        dev = ~S.acc.isin(splits.load_test_proteins()).values & S.in_U_ms.values
+        K = canary.kinases_with_canaries()
+        _UNI["dev"] = dev
+        _UNI["res"] = S.res.values
+        _UNI["n_cls"] = {c: int((dev & E._res_ok(S.res.values, c)).sum()) for c in ["ST", "Y", "STY"]}
+        _UNI["cls"] = K.residue_class.values
+        _UNI["kpos"] = {a: i for i, a in enumerate(K.uniprot_acc)}
+        _UNI["spos"] = pd.Series(np.arange(len(S)), index=S.site_id)
+    pq = PRED / run_id / "predictions.parquet"
+    cols = pd.read_parquet(pq, columns=None).columns if False else None  # noqa: F841
+    try:
+        p = pd.read_parquet(pq, columns=["kinase_idx", "site_idx"])
+        ki, si = p.kinase_idx.values, p.site_idx.values
+    except Exception:
+        p = pd.read_parquet(pq, columns=["kinase_acc", "site_id"])
+        ki = p.kinase_acc.map(_UNI["kpos"]).values
+        si = _UNI["spos"][p.site_id].values
+    m = _UNI["dev"][si]
+    cnt = np.bincount(ki[m].astype(np.int64), minlength=len(_UNI["cls"]))
+    need = np.array([_UNI["n_cls"][c] for c in _UNI["cls"]])
+    sc = cnt > 0
+    frac = cnt[sc] / need[sc]
+    part = int(((frac > 0) & (frac < 0.95)).sum())
+    return {"n_kinases_scored": int(sc.sum()), "n_partial_kinases": part,
+            "eall_valid": bool(part <= 0.05 * max(sc.sum(), 1))}
 
 
 def board(canary_v2_time: float) -> pd.DataFrame:
@@ -149,10 +190,26 @@ def board(canary_v2_time: float) -> pd.DataFrame:
             r["canary_gate"] = "canaries not scored"
         req, mis = e.get("n_required_pairs", 0), e.get("n_missing_pairs", 0)
         r["coverage"] = 1 - mis / req if req else np.nan
-        # partial coverage: unscored E-all pairs are ranked last -> E-all metrics (M3) are not comparable
-        r["eall_valid"] = bool(r["coverage"] >= 0.95)
+        # E-all validity by within-kinase coverage (cached in metrics_a24.json)
+        if "eall_check" not in a and (PRED / rid / "predictions.parquet").exists():
+            a["eall_check"] = eall_check(rid)
+            j["a24"] = a
+            f.write_text(json.dumps(j, indent=1, default=E._json_default))
+        ec = a.get("eall_check", {"eall_valid": bool(r["coverage"] >= 0.95), "n_partial_kinases": -1})
+        r["eall_valid"] = ec["eall_valid"]
+        r["n_partial_kinases"] = ec.get("n_partial_kinases")
         if not r["eall_valid"]:
             r["M3_top1"] = np.nan
+        # M3 over K_cv kinases whose required pairs are all scored (matched-coverage view; needs per_kinase)
+        pkj = pd.DataFrame(j.get("per_kinase", []))
+        if len(pkj) and "n_missing" in pkj:
+            fc = pkj[pkj.in_K_primary.astype(bool) & (pkj.n_missing == 0)]
+            r["M3_fullcov"] = float(fc.top1_recall.mean()) if len(fc) else np.nan
+            r["n_fullcov"] = int(len(fc))
+        else:
+            r["M3_fullcov"], r["n_fullcov"] = np.nan, np.nan
+        cfg = man.get("config", {})
+        r["contaminated"] = bool(isinstance(cfg, dict) and cfg.get("contaminated"))
         r["runtime_s"] = man.get("runtime_s")
         r["started"] = man.get("started")
         r["fold_normalised"] = e.get("fold_normalised")
@@ -167,6 +224,7 @@ def board(canary_v2_time: float) -> pd.DataFrame:
         if len(x):
             i = x.sort_values("started").index[-1]
             B.loc[i, "official"] = (B.loc[i, "official"] + "; " if B.loc[i, "official"] else "") + label
+    B.loc[B.contaminated, "official"] = "CONTAMINATED (trained on PSP; contrast only)"
     mark(r"^simple_b1_published(_reeval)?__", "B1 official M1/M3 (A23 arm i)")
     mark(r"^simple_b1_universe(_reeval)?__", "B1 official M2 (A23 arm ii)")
     mark(r"^simple_b7_lr(_reeval)?__", "B7 official")
@@ -184,16 +242,19 @@ def write_board(B: pd.DataFrame) -> None:
          "(metrics_a24.json per run). Sorted by M1 (macro E-hard AUROC over K_cv, fold rank-normalised; LKO pooled "
          "runs not normalised). M5bin = macro E-hard AUROC over K_any by DEV training-label bin; M1_ST/M1_Y = "
          "K_any macro by residue class. Coverage = fraction of required (kinase, U_ms site) pairs scored "
-         "(missing = ranked last); runs with coverage < 0.95 have M3 blanked (E-all metrics not comparable: compare "
-         "them on a matched universe, ksp.eval.matched_universe). Canary gate (v2): mean negative E-hard <= 0.57 and positive >= 0.90; "
+         "(missing = ranked last). M3 is blanked when >5% of a run's scored kinases have partial E-all coverage "
+         "(e.g. only positives + E-hard scored): E-all metrics are then not comparable (use ksp.eval.matched_universe); "
+         "unscored whole kinases do not invalidate M3. 'M3 full-cov (n)' = M3 over the n K_cv kinases with every "
+         "required pair scored (matched-coverage view; available for runs evaluated after 17:40). Canary gate (v2): mean negative E-hard <= 0.57 and positive >= 0.90; "
          "'(v1-trained)' = run trained before the v2 canary labels (gate not meaningful). Official baselines per "
          "A23 (latest run of each arm).", "",
-         "| # | run | family | official | M1 | M1 fold-mean | M2 Hit@5 | M3 top1% | M4 | M5 0 | 1-4 | 5-19 | 20-99 "
+         "| # | run | family | official | M1 | M1 fold-mean | M2 Hit@5 | M3 top1% | M3 full-cov (n) | M4 | M5 0 | 1-4 | 5-19 | 20-99 "
          "| >=100 | M1 ST | M1 Y | canary neg / pos | gate | coverage | runtime s | started |",
-         "|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|"]
+         "|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|"]
     for i, r in B.iterrows():
         L.append(f"| {i + 1} | {r.run_id} | {r.family} | {r.official} | {f(r.M1)} | {f(r.M1_fold_mean)} | "
-                 f"{f(r.M2_hit5)} | {f(r.M3_top1)} | {f(r.M4_Kany)} | " +
+                 f"{f(r.M2_hit5)} | {f(r.M3_top1)} | "
+                 f"{f(r.M3_fullcov)}{'' if pd.isna(r.n_fullcov) else f' ({int(r.n_fullcov)})'} | {f(r.M4_Kany)} | " +
                  " | ".join(f(r[f'M5bin_{b}']) for b in BINS) +
                  f" | {f(r.M1_ST)} | {f(r.M1_Y)} | {f(r.canary_neg_Ehard)} / {f(r.canary_pos)} | {r.canary_gate} | "
                  f"{f(r.coverage)} | {r.runtime_s if r.runtime_s is not None else ''} | {r.started} |")

@@ -33,7 +33,7 @@ from ksp.index import ROOT
 from ksp.models.r2 import xfit
 
 N_REAL = 503
-GROUP_ORDER = ["F1", "F0", "F2a", "F3", "F4", "F6a", "F6b", "F6c", "F5", "F8", "F7"]
+GROUP_ORDER = ["F1", "F0", "F2a", "F3", "F4", "F6a", "F6b", "F6c", "F5", "F8", "F7", "Fknn"]
 DESC_CACHE = ROOT / "cache" / "r2" / "kinase_desc.parquet"
 
 
@@ -139,6 +139,8 @@ class Assembler:
                 self._add(c, "ks", self._m(f"phospho/{c}"))
         if "F8" in g:
             self.fallbacks["F8_unavailable"] = 1      # Sugiyama 2019 store not built; group contributes nothing
+        if "Fknn" in g:
+            self._xfit("knn")       # knn_sim (feat-knn), cross-fitted through ksp.crossfit by ksp.models.r2.xfit
         if "F7" in g:
             D = kinase_descriptors(version=self.desc_v)
             for c in D.columns:

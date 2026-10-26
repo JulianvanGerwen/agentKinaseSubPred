@@ -933,6 +933,11 @@
     "auroc_all": 0.6871321179357123,
     "pauroc01_all": 0.6346361905592749
    }
-  ]
+  ],
+  "eall_check": {
+   "n_kinases_scored": 503,
+   "n_partial_kinases": 503,
+   "eall_valid": false
+  }
  }
 }

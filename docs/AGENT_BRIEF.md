@@ -22,3 +22,6 @@ Rules (non-negotiable):
 
 ## Data requests to the user
 Never write data requests only in your summary. Append them to /workspace/DATAINEED.md (OPEN section: what, why, what you tried, workaround, priority) — the PI also checks it. The user reads only that file for data requests.
+
+## Memory budget (added 17:55)
+The machine (375 GB RAM) is shared with other users' jobs (e.g. ~70 GB of unrelated pytom processes). Keep each agent ≤ 60 GB resident in total, across all its worker processes; use memory-mapped stores (ksp.store load_matrix mmap=True) and chunking. Check `free -g` before launching parallel workers.

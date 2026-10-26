@@ -594,6 +594,11 @@
     "auroc_all": 0.5,
     "pauroc01_all": 0.5
    }
-  ]
+  ],
+  "eall_check": {
+   "n_kinases_scored": 503,
+   "n_partial_kinases": 164,
+   "eall_valid": false
+  }
  }
 }

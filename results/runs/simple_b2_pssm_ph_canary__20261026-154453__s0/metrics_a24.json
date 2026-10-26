@@ -920,6 +920,11 @@
     "auroc_all": 0.5,
     "pauroc01_all": 0.5
    }
-  ]
+  ],
+  "eall_check": {
+   "n_kinases_scored": 13,
+   "n_partial_kinases": 0,
+   "eall_valid": true
+  }
  }
 }

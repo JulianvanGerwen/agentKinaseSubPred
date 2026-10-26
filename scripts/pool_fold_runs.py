@@ -91,6 +91,11 @@ def main():
         run.save_metrics(res)
         j = res.to_json()
         st = E.strata(res, kinase_set="K_any")
+        pk = res.per_kinase
+        keep = [c for c in ["kinase_acc", "gene", "n_pos", "n_pos_required", "n_neg_hard", "n_neg_all", "n_missing",
+                            "auroc_hard", "auroc_all", "top1_recall", "hit5", "in_K_primary", "in_K_any", "train_bin",
+                            "residue_class"] if c in pk]
+        j["per_kinase"] = pk[keep].to_dict(orient="records")
         ci = E.bootstrap(res, B=a.B, seed=0) if a.B > 0 else pd.DataFrame()
         ci.to_csv(run.dir / "bootstrap.tsv", sep="\t", index=False)
         res.per_kinase.to_csv(run.dir / "per_kinase.tsv", sep="\t", index=False)

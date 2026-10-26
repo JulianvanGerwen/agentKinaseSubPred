@@ -20,3 +20,4 @@ openpyxl
 xlrd
 openpyxl
 pytest
+rdata==1.1.0

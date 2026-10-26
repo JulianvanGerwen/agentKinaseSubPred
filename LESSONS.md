@@ -15,3 +15,4 @@
 12. One owner per path, PI-only git, status updated per event, timestamps from `date` — PI notes drifted ~40 min twice.
 13. Null controls must match the positives' distribution on every label-free axis — canary v1 (uniform proteins) was separable by protein site density alone (AUROC 0.76).
 14. Verify file identities before recording them — paper1/paper2 were swapped in LITERATURE.md until an agent read the PDFs.
+15. The node is shared with other users' jobs — budget memory per agent (≤60 GB) and check `free -g` before parallel launches — a re-eval worker was OOM-killed at ~100 GB total (17:50).
