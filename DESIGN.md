@@ -513,7 +513,7 @@ GPU allocation:
       - M2 does not fall by more than 0.003 against β = 0;
       - the 5–19-label-bin M2 improves.
       This deliberately favours harmonious performance across kinases (PROMPT), at a bounded cost to the macro endpoint.
-- **A33. Label variant and training regime: final decision** (2026-10-27 00:10; `docs/regimes_labels.md`). The default stays: **L2 labels with the global R2 model.**
+- **A33. Label variant and training regime: final decision** (2026-10-27 00:03; `docs/regimes_labels.md`). The default stays: **L2 labels with the global R2 model.**
   - **L2+ext** meets the A32-style rule on seed 0 only: ΔM1 +0.0058. Seeds 1 and 2 give −0.004 and +0.002, a mean of +0.001. Its M2 is positive on all three seeds (+0.026 / +0.018 / +0.002).
   - **Why L2+ext is not adopted:**
     1. DESIGN §16 (round-2 change) pre-registered external curated pairs as **ablation only**, so that the external-curated TEST stratum stays independent. That rule takes precedence.
