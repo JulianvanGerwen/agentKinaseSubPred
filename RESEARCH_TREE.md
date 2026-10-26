@@ -139,3 +139,9 @@ Status: literature (4 reviews), data profiling, two acquisition waves (~12.6 GB)
     - [!] Unseen-drug experiments (114, 88 Hijazi): ours trails PSP by 0.04–0.06 → parity partly relies on same-compound response data. Test: no-phospho variant library (R2, queued).
 
   - [~] REPORT.md draft with TEST placeholders (report agent, 23:25)
+- [x] 6. G4 TEST batch (FREEZE 721dc197; COMPLETED 00:57, 47 min; results/test/LEDGER.md)
+  - [!] All 9 primary tests beat (Holm p ≤0.018, CI>0): final vs B1 ΔM1 +0.075 [0.047, 0.099], ΔM3 +0.205, ΔM2 (vs arm ii) +0.179; vs B3 ΔM1 +0.086 / M2 +0.199 / M3 +0.259; vs B4 ΔM1 +0.089 / M2 +0.130 / M3 +0.059 [0.010, 0.120].
+  - TEST standalone: final M1 0.794, M2 0.363, M3 0.363, M4 0.799, T3 M1 0.752; R2 0.778; R3 0.775; B1 0.714; B7 0.725; B3 0.708; B4 0.705; B2 0.685; B0 0.50–0.58.
+  - Final beats both components on every endpoint (secondary Holm).
+  - [~] Independent TEST review (M2 TEST≫CV for learned models needs explaining) → docs/audit/audit_test.md
+  - [~] G5 deployment (R2+R3 on DEV+TEST → U_obs release + coverage), started 00:58
