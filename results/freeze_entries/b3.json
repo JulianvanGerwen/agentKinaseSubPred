@@ -1,0 +1,16 @@
+{
+ "name": "B3",
+ "role": "baseline",
+ "baseline_id": "B3_retrained",
+ "run_id": "b3_retrained_test__20261026-232229__s0",
+ "predictions": "cache/runs/b3_retrained_test__20261026-232229__s0/test_predictions.parquet",
+ "score_site_predictions": null,
+ "t3_predictions": null,
+ "runtime": {
+  "train_wall_s": 3152.41,
+  "inference_wall_s": 6478.84
+ },
+ "missing": "worst",
+ "predictions_sha256": "a468cdbc8d57cfabcef58b7880dcb985f9ab2fa9ee54d44f61458dee3bc464a3",
+ "description": "Phosformer reimplementation: MLM-pretrained on TEST-filtered corpus (A22), fine-tuned on all DEV (f0_r16)"
+}
