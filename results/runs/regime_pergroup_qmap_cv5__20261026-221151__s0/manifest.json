@@ -1,0 +1,43 @@
+{
+ "run_id": "regime_pergroup_qmap_cv5__20261026-221151__s0",
+ "name": "regime_pergroup_qmap_cv5",
+ "git_hash": "6b65e7e24351fb647c968e6e4614587237dce732",
+ "config": {
+  "regime": "per-Manning-group LightGBM (final R2 params)",
+  "min_pos": 200,
+  "fallback": "global r2_final_s0_cv5__20261026-181435__s0",
+  "m2_score": "qmap",
+  "seed": 0
+ },
+ "seed": 0,
+ "split": "cv",
+ "notes": "pooled 5-fold OOF of []; per-group models, M2 score qmap",
+ "inputs": [],
+ "host": "eu-g6-076",
+ "python": "3.12.3",
+ "platform": "Linux-5.15.0-198-generic-x86_64-with-glibc2.39",
+ "argv": [
+  "scripts/models/regime_pergroup_eval.py"
+ ],
+ "pid": 413892,
+ "started": "2026-10-26 22:11:51 CET",
+ "n_rows": {
+  "predictions": 106457574
+ },
+ "outputs": {
+  "predictions": {
+   "path": "cache/runs/regime_pergroup_qmap_cv5__20261026-221151__s0/predictions.parquet",
+   "sha256": "a16ab6b9d8c8c8f5ddf2c3d1f23fdc834d4ae251a5c34b4886a5b34f0e5c1c02"
+  },
+  "metrics": {
+   "path": "results/runs/regime_pergroup_qmap_cv5__20261026-221151__s0/metrics.json",
+   "sha256": "ada2e9ef3b18a3cba31450574e904837bd951dfd0bb48d5b187f9e3d11f1fb94"
+  }
+ },
+ "fallbacks": {},
+ "fold_runs": [],
+ "status": "ok",
+ "error": null,
+ "runtime_s": 345.64,
+ "finished": "2026-10-26 22:17:36 CET"
+}

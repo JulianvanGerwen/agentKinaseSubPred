@@ -1,0 +1,150 @@
+{
+ "run_id": "r3_final_distill_test__20261026-220424__s0",
+ "name": "r3_final_distill_test",
+ "git_hash": "13c47c2195e3ff0d1600557f5d7835a19da93301",
+ "config": {
+  "variant": "reg1x5:w7_nce05_cpt_aux",
+  "components": {
+   "final": "r3_final_distill_test_final__20261026-212607__s0",
+   "lko0": "r3_final_distill_test_t3lko0__20261026-213814__s0",
+   "lko1": "r3_final_distill_test_t3lko1__20261026-212607__s0",
+   "lko2": "r3_final_distill_test_t3lko2__20261026-215020__s0",
+   "lko3": "r3_final_distill_test_t3lko3__20261026-213926__s0",
+   "lko4": "r3_final_distill_test_t3lko4__20261026-215144__s0"
+  },
+  "config": {
+   "flank": 7,
+   "lambda_nce": 0.5,
+   "alpha": 0.5,
+   "p_lab": 0.25,
+   "batch": 1024,
+   "lr": 0.0003,
+   "wd": 0.05,
+   "max_steps": 6000,
+   "eval_every": 100,
+   "patience": 10,
+   "desc_dropout": 0.2,
+   "d_site": 192,
+   "h": 128,
+   "d_kin": 256,
+   "n_layers": 2,
+   "dropout": 0.2,
+   "esm_dropout": 0.3,
+   "use_esm": true,
+   "use_prot": true,
+   "use_phos": true,
+   "valid_frac": 0.2,
+   "seed": 0,
+   "variant": "L2",
+   "warmup": 200,
+   "n_seeds": 5,
+   "esm": "650m",
+   "pretrain_steps": 3000,
+   "distill_aux": 0.2,
+   "pretrain_lr": 0.001
+  }
+ },
+ "seed": 0,
+ "split": "final_dev_to_test",
+ "notes": "R3 final TEST deliverables (G4 runbook items 1-3)",
+ "inputs": [
+  {
+   "path": "/workspace/cache/runs/r3_final_distill_test_final__20261026-212607__s0/component_predictions.parquet",
+   "type": "file",
+   "bytes": 71362227,
+   "sha256": "6223c72c3a93d8082c957753c541dc0737a8e9b5921e90ce19e29af71828d384"
+  },
+  {
+   "path": "/workspace/cache/runs/r3_final_distill_test_t3lko0__20261026-213814__s0/component_predictions.parquet",
+   "type": "file",
+   "bytes": 10951716,
+   "sha256": "138762413e4d07ee3da6a06cd74258546829fad89dc3e319f9c9b8b9949a77ae"
+  },
+  {
+   "path": "/workspace/cache/runs/r3_final_distill_test_t3lko1__20261026-212607__s0/component_predictions.parquet",
+   "type": "file",
+   "bytes": 11473271,
+   "sha256": "d2a14d36f2c515fe0dd2745042b5c849ec90aafa3f1f9dbaaafbe4323330614e"
+  },
+  {
+   "path": "/workspace/cache/runs/r3_final_distill_test_t3lko2__20261026-215020__s0/component_predictions.parquet",
+   "type": "file",
+   "bytes": 10555035,
+   "sha256": "c26d598fe16c88682346eb29a39814b8fcdbb11cc022c50c752c944d8e8fb923"
+  },
+  {
+   "path": "/workspace/cache/runs/r3_final_distill_test_t3lko3__20261026-213926__s0/component_predictions.parquet",
+   "type": "file",
+   "bytes": 11105336,
+   "sha256": "1f229b6681db32a177b82b787d4a534dfcf297a71334797c304832db882ffe10"
+  },
+  {
+   "path": "/workspace/cache/runs/r3_final_distill_test_t3lko4__20261026-215144__s0/component_predictions.parquet",
+   "type": "file",
+   "bytes": 11950132,
+   "sha256": "58a0aa05a98329dae4b569fdd61c6f08f7927f0e84759c9459ef69d4cf7be9b9"
+  }
+ ],
+ "host": "eu-g6-076",
+ "python": "3.12.3",
+ "platform": "Linux-5.15.0-198-generic-x86_64-with-glibc2.39",
+ "argv": [
+  "scripts/models/r3_cv.py",
+  "assemble-test",
+  "--config",
+  "w7_nce05_cpt_aux",
+  "--final",
+  "r3_final_distill_test_final__20261026-212607__s0",
+  "--lko-runs",
+  "r3_final_distill_test_t3lko0__20261026-213814__s0",
+  "r3_final_distill_test_t3lko1__20261026-212607__s0",
+  "r3_final_distill_test_t3lko2__20261026-215020__s0",
+  "r3_final_distill_test_t3lko3__20261026-213926__s0",
+  "r3_final_distill_test_t3lko4__20261026-215144__s0"
+ ],
+ "pid": 414079,
+ "started": "2026-10-26 22:04:25 CET",
+ "n_rows": {
+  "test_predictions": 25922452,
+  "test_t3_predictions": 25922452
+ },
+ "outputs": {
+  "test_predictions": {
+   "path": "cache/runs/r3_final_distill_test__20261026-220424__s0/test_predictions.parquet",
+   "sha256": "6223c72c3a93d8082c957753c541dc0737a8e9b5921e90ce19e29af71828d384"
+  },
+  "test_t3_predictions": {
+   "path": "cache/runs/r3_final_distill_test__20261026-220424__s0/test_t3_predictions.parquet",
+   "sha256": "9c6c403ea27690d8f5c337b47525a4cb84452ad0cc9be1cf31de78a4b78b8874"
+  }
+ },
+ "fallbacks": {},
+ "train_wall_s": 718.7,
+ "inference_wall_s": 3.1,
+ "t3_train_wall_s_sum": 3446.2,
+ "t3_inference_wall_s_sum": 9.4,
+ "check_predictions": {
+  "test_predictions": {
+   "rows": 25922452,
+   "rows_outside_candidates": 0,
+   "kinases_full": 503,
+   "kinases_unscored": 0,
+   "kinases_partial": 0,
+   "partial_kinase_idx": [],
+   "ok": true
+  },
+  "test_t3_predictions": {
+   "rows": 25922452,
+   "rows_outside_candidates": 0,
+   "kinases_full": 503,
+   "kinases_unscored": 0,
+   "kinases_partial": 0,
+   "partial_kinase_idx": [],
+   "ok": true
+  }
+ },
+ "status": "ok",
+ "error": null,
+ "runtime_s": 50.17,
+ "finished": "2026-10-26 22:05:16 CET"
+}

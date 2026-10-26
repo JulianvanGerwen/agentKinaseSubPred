@@ -1,0 +1,117 @@
+{
+ "run_id": "regime_L2_vitro_L2fixed_s0_cv5__20261026-220919__s0",
+ "name": "regime_L2_vitro_L2fixed_s0_cv5",
+ "git_hash": "13c47c2195e3ff0d1600557f5d7835a19da93301",
+ "config": {
+  "groups": [
+   "F1",
+   "F0",
+   "F2a",
+   "F3",
+   "F4",
+   "F6a",
+   "F6b",
+   "F6c",
+   "F5",
+   "F7"
+  ],
+  "ratio": 50,
+  "hard": 0.5,
+  "alpha": 0.5,
+  "objective": "binary",
+  "num_leaves": 127,
+  "learning_rate": 0.03,
+  "min_data_in_leaf": 100,
+  "feature_fraction": 0.8,
+  "bagging_fraction": 0.8,
+  "lambda_l2": 1.0,
+  "max_bin": 255,
+  "max_rounds": 3000,
+  "es_rounds": 100,
+  "refit": true,
+  "clean": false,
+  "comp_know": false,
+  "seed": 0,
+  "variant": "L2_vitro",
+  "miss_only": false,
+  "min_rounds": 50,
+  "es_metric": "mixed",
+  "es_real_only": true,
+  "f2a_family": "f2a_sep",
+  "desc_v": 2,
+  "feat": "L2fixed"
+ },
+ "seed": 0,
+ "split": "cv",
+ "notes": "pooled 5-fold OOF of ['regime_L2_vitro_L2fixed_s0_f0__20261026-214850__s0', 'regime_L2_vitro_L2fixed_s0_f1__20261026-215701__s0', 'regime_L2_vitro_L2fixed_s0_f2__20261026-220031__s0', 'regime_L2_vitro_L2fixed_s0_f3__20261026-220203__s0', 'regime_L2_vitro_L2fixed_s0_f4__20261026-220517__s0']; label variant L2_vitro, features L2fixed; train wall 1226s",
+ "inputs": [
+  {
+   "path": "/workspace/cache/runs/regime_L2_vitro_L2fixed_s0_f0__20261026-214850__s0/predictions.parquet",
+   "type": "file",
+   "bytes": 144073311,
+   "sha256": "3b6c6dc9180a0f61d105b9ae5496936db3f690cebc10fd524df0475c9b6bff27"
+  },
+  {
+   "path": "/workspace/cache/runs/regime_L2_vitro_L2fixed_s0_f1__20261026-215701__s0/predictions.parquet",
+   "type": "file",
+   "bytes": 143711888,
+   "sha256": "8b3728040f4f297e677c1951e2ab2bfd46fd5f28440f7ad674149168133de7c0"
+  },
+  {
+   "path": "/workspace/cache/runs/regime_L2_vitro_L2fixed_s0_f2__20261026-220031__s0/predictions.parquet",
+   "type": "file",
+   "bytes": 144530066,
+   "sha256": "4091be4ab1b40fecea18050fcc93331da60627f4866277a320719fda1267a0a6"
+  },
+  {
+   "path": "/workspace/cache/runs/regime_L2_vitro_L2fixed_s0_f3__20261026-220203__s0/predictions.parquet",
+   "type": "file",
+   "bytes": 144315993,
+   "sha256": "9a6582d9cbe419cadd53717d7f652c5775acfd067d13c29fda9e0927f1507a26"
+  },
+  {
+   "path": "/workspace/cache/runs/regime_L2_vitro_L2fixed_s0_f4__20261026-220517__s0/predictions.parquet",
+   "type": "file",
+   "bytes": 144207727,
+   "sha256": "b1bac950971b775382b53619e897d8a640e00b67f8c2d20cc75af1db8312b20a"
+  }
+ ],
+ "host": "eu-g6-076",
+ "python": "3.12.3",
+ "platform": "Linux-5.15.0-198-generic-x86_64-with-glibc2.39",
+ "argv": [
+  "scripts/models/regime_run.py",
+  "--variant",
+  "L2_vitro",
+  "--feat",
+  "L2fixed",
+  "--fold0-eval"
+ ],
+ "pid": 400940,
+ "started": "2026-10-26 22:09:19 CET",
+ "n_rows": {
+  "predictions": 106457574
+ },
+ "outputs": {
+  "predictions": {
+   "path": "cache/runs/regime_L2_vitro_L2fixed_s0_cv5__20261026-220919__s0/predictions.parquet",
+   "sha256": "39f5c4ab8989656302480b14ef361429e93372a8122c5a9bd3471d7fcdc6e0e1"
+  },
+  "metrics": {
+   "path": "results/runs/regime_L2_vitro_L2fixed_s0_cv5__20261026-220919__s0/metrics.json",
+   "sha256": "63377828f0783e50a8f6423a679388081fe0a840cfd56c480dda5f8143c36433"
+  }
+ },
+ "fallbacks": {},
+ "fold_runs": [
+  "regime_L2_vitro_L2fixed_s0_f0__20261026-214850__s0",
+  "regime_L2_vitro_L2fixed_s0_f1__20261026-215701__s0",
+  "regime_L2_vitro_L2fixed_s0_f2__20261026-220031__s0",
+  "regime_L2_vitro_L2fixed_s0_f3__20261026-220203__s0",
+  "regime_L2_vitro_L2fixed_s0_f4__20261026-220517__s0"
+ ],
+ "status": "ok",
+ "error": null,
+ "runtime_s": 374.12,
+ "finished": "2026-10-26 22:15:33 CET"
+}

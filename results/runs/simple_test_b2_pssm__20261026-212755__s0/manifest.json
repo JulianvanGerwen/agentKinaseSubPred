@@ -1,0 +1,178 @@
+{
+ "run_id": "simple_test_b2_pssm__20261026-212755__s0",
+ "name": "simple_test_b2_pssm",
+ "git_hash": "6dbf725fb6ff0fa74f03cf50225f64d3e0c0e7bd",
+ "config": {
+  "method": "b2_pssm",
+  "description": "learned PSSM (F2a, family prior) on all DEV L2",
+  "trained_on": "all DEV (L2)",
+  "seed": 0
+ },
+ "seed": 0,
+ "split": "test",
+ "notes": "",
+ "inputs": [
+  {
+   "path": "/workspace/cache/labels/dev_pairs.parquet",
+   "type": "file",
+   "bytes": 797455,
+   "sha256": "b6c1aaa8f67396b535ac392c08f77068e6eec1615e2debdf63ce20d6986be449"
+  },
+  {
+   "path": "/workspace/results/splits/test_proteins.tsv",
+   "type": "file",
+   "bytes": 46679,
+   "sha256": "762d21c2d4bc7889f6d312e729bdd143df018be2aa1456f548ee31eb0e8dffba"
+  },
+  {
+   "path": "/workspace/results/splits/kinase_folds.tsv",
+   "type": "file",
+   "bytes": 15014,
+   "sha256": "d4acaafd16342d59c7a24286f1c69e3d4b439a1efe1b911a49f48e761f3831ae"
+  }
+ ],
+ "host": "eu-g6-076",
+ "python": "3.12.3",
+ "platform": "Linux-5.15.0-198-generic-x86_64-with-glibc2.39",
+ "argv": [
+  "scripts/baselines/simple_test.py",
+  "--method",
+  "b2_pssm",
+  "--t3"
+ ],
+ "pid": 387817,
+ "started": "2026-10-26 21:27:55 CET",
+ "n_rows": {
+  "test_predictions": 25922452,
+  "test_t3_predictions": 25922452
+ },
+ "outputs": {
+  "test_predictions": {
+   "path": "cache/runs/simple_test_b2_pssm__20261026-212755__s0/test_predictions.parquet",
+   "sha256": "bc78031604405008ae6de8b7cfd4161460166faeab234e4367980a051ea52879"
+  },
+  "test_t3_predictions": {
+   "path": "cache/runs/simple_test_b2_pssm__20261026-212755__s0/test_t3_predictions.parquet",
+   "sha256": "25731be1ec6a214e66ce4ef1063e6e3a58ac78a66edc10d804f3ace3743e175a"
+  }
+ },
+ "fallbacks": {
+  "test_candidate_pairs_unscored": 0
+ },
+ "train_wall_s": 3.33,
+ "inference_wall_s": 39.74,
+ "log": {
+  "alpha": 256.0,
+  "beta": 1024.0,
+  "n_pairs": 11795
+ },
+ "preflight": {
+  "rows": 25922452,
+  "rows_outside_candidates": 0,
+  "kinases_full": 503,
+  "kinases_unscored": 0,
+  "kinases_partial": 0,
+  "partial_kinase_idx": [],
+  "ok": true
+ },
+ "t3": {
+  "log": {
+   "lko_fold0": {
+    "alpha": 128.0,
+    "beta": 1024.0,
+    "levels_held": {
+     "group": 4969378,
+     "family": 60223
+    },
+    "n_kinases_held": 102,
+    "n_rows": 5029601,
+    "train_s": 3.1,
+    "infer_s": 3.5
+   },
+   "lko_fold1": {
+    "alpha": 256.0,
+    "beta": 256.0,
+    "levels_held": {
+     "group": 5308076
+    },
+    "n_kinases_held": 100,
+    "n_rows": 5308076,
+    "train_s": 3.1,
+    "infer_s": 4.4
+   },
+   "lko_fold2": {
+    "alpha": 256.0,
+    "beta": 256.0,
+    "levels_held": {
+     "group": 4923343,
+     "family": 60223
+    },
+    "n_kinases_held": 97,
+    "n_rows": 4983566,
+    "train_s": 3.2,
+    "infer_s": 4.2
+   },
+   "lko_fold3": {
+    "alpha": 256.0,
+    "beta": 256.0,
+    "levels_held": {
+     "group": 4978585,
+     "background": 82863
+    },
+    "n_kinases_held": 103,
+    "n_rows": 5061448,
+    "train_s": 3.4,
+    "infer_s": 3.9
+   },
+   "lko_fold4": {
+    "alpha": 256.0,
+    "beta": 1024.0,
+    "levels_held": {
+     "group": 5359092,
+     "background": 180669
+    },
+    "n_kinases_held": 101,
+    "n_rows": 5539761,
+    "train_s": 3.4,
+    "infer_s": 4.9
+   }
+  },
+  "train_wall_s": 16.17,
+  "inference_wall_s": 20.84,
+  "unscored_pairs": 0,
+  "preflight": {
+   "rows": 25922452,
+   "rows_outside_candidates": 0,
+   "kinases_full": 503,
+   "kinases_unscored": 0,
+   "kinases_partial": 0,
+   "partial_kinase_idx": [],
+   "ok": true
+  }
+ },
+ "freeze_entry": {
+  "name": "B2",
+  "role": "baseline",
+  "baseline_id": "B2",
+  "run_id": "simple_test_b2_pssm__20261026-212755__s0",
+  "predictions": "cache/runs/simple_test_b2_pssm__20261026-212755__s0/test_predictions.parquet",
+  "score_site_predictions": null,
+  "t3_predictions": "cache/runs/simple_test_b2_pssm__20261026-212755__s0/test_t3_predictions.parquet",
+  "runtime": {
+   "train_wall_s": 3.33,
+   "inference_wall_s": 39.74
+  },
+  "missing": "worst",
+  "description": "learned PSSM (F2a, family prior) on all DEV L2",
+  "t3_runtime": {
+   "train_wall_s": 16.17,
+   "inference_wall_s": 20.84
+  },
+  "predictions_sha256": "bc78031604405008ae6de8b7cfd4161460166faeab234e4367980a051ea52879",
+  "t3_predictions_sha256": "25731be1ec6a214e66ce4ef1063e6e3a58ac78a66edc10d804f3ace3743e175a"
+ },
+ "status": "ok",
+ "error": null,
+ "runtime_s": 161.71,
+ "finished": "2026-10-26 21:30:36 CET"
+}

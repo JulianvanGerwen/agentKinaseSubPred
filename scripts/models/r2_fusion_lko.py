@@ -16,8 +16,12 @@ def load(r):
         {"kinase_idx": np.int64, "site_idx": np.int64})
 A = load(a.r2); B = pd.concat([load(r) for r in R3F["lko_T2_runs"]], ignore_index=True)
 M = A.merge(B, on=["kinase_idx", "site_idx"], suffixes=("_r2", "_r3"))
-rep = {"n_r2": len(A), "n_r3": len(B), "n_common": len(M)}
+rep = {"n_r2": len(A), "n_r3": len(B), "n_common": len(M),
+       "r2_duplicates": int(A.duplicated(["kinase_idx", "site_idx"]).sum()),
+       "r3_duplicates": int(B.duplicated(["kinase_idx", "site_idx"]).sum())}
 print(rep, flush=True)
+if not (len(M) == len(A) == len(B)) or rep["r2_duplicates"] or rep["r3_duplicates"]:      # audit r2 (a)
+    raise ValueError(f"R2/R3 LKO rows are not aligned 1:1: {rep}")
 data = kev.prepare("cv", fold=None)
 fold = data.sites.acc.map(splits.load_cv_folds()).values[M.site_idx.values]
 for c in ["score_r2", "score_r3"]:
@@ -31,6 +35,7 @@ with manifest.RunManifest("r2r3_fusion_lko", config=vars(a) | {"r3_lko_runs": R3
     P = pd.DataFrame({"kinase_idx": M.kinase_idx.values, "site_idx": M.site_idx.values,
                       "score": (a.w * M.score_r2_z + (1 - a.w) * M.score_r3_z).astype(np.float32).values,
                       "score_site": (a.w_site * M.score_r2_z + (1 - a.w_site) * M.score_r3_z).astype(np.float32).values})
+    run.set("row_alignment", rep | {"aligned_1to1": True})
     run.save_predictions(P)
     held = sorted(set(K.uniprot_acc.values[np.unique(P.kinase_idx.values)]) & set(data.positives))
     res = kev.evaluate(P, data, kinases=held, missing="drop")

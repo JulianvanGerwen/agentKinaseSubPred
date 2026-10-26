@@ -1,0 +1,98 @@
+{
+ "run_id": "regime_L2ext_refit_s0_f2__20261026-213035__s0",
+ "name": "regime_L2ext_refit_s0_f2",
+ "git_hash": "6dbf725fb6ff0fa74f03cf50225f64d3e0c0e7bd",
+ "config": {
+  "groups": [
+   "F1",
+   "F0",
+   "F2a",
+   "F3",
+   "F4",
+   "F6a",
+   "F6b",
+   "F6c",
+   "F5",
+   "F7"
+  ],
+  "ratio": 50,
+  "hard": 0.5,
+  "alpha": 0.5,
+  "objective": "binary",
+  "num_leaves": 127,
+  "learning_rate": 0.03,
+  "min_data_in_leaf": 100,
+  "feature_fraction": 0.8,
+  "bagging_fraction": 0.8,
+  "lambda_l2": 1.0,
+  "max_bin": 255,
+  "max_rounds": 3000,
+  "es_rounds": 100,
+  "refit": true,
+  "clean": false,
+  "comp_know": false,
+  "seed": 0,
+  "variant": "L2ext",
+  "miss_only": false,
+  "min_rounds": 50,
+  "es_metric": "mixed",
+  "es_real_only": true,
+  "f2a_family": "f2a_sep",
+  "desc_v": 2,
+  "feat": "refit",
+  "xfit_tag": "/workspace/cache/regime/xfit/L2ext"
+ },
+ "seed": 0,
+ "split": "cv",
+ "notes": "folds=[2]; regime variant=L2ext feat=refit",
+ "inputs": [],
+ "host": "eu-g6-076",
+ "python": "3.12.3",
+ "platform": "Linux-5.15.0-198-generic-x86_64-with-glibc2.39",
+ "argv": [
+  "scripts/models/regime_run.py",
+  "--variant",
+  "L2ext",
+  "--feat",
+  "refit",
+  "--fold0-eval"
+ ],
+ "pid": 370793,
+ "started": "2026-10-26 21:30:35 CET",
+ "n_rows": {
+  "predictions": 21369067
+ },
+ "outputs": {
+  "predictions": {
+   "path": "cache/runs/regime_L2ext_refit_s0_f2__20261026-213035__s0/predictions.parquet",
+   "sha256": "801dac20c87975b6d705e336590433405b370278856b8cb1cecff7c0ef998a09"
+  }
+ },
+ "fallbacks": {},
+ "xfit_n_train_labels": {
+  "f2a_sep": 10791,
+  "f3nb": 10791,
+  "f6a": 10791
+ },
+ "fold_logs": {
+  "2": {
+   "n_label_pos": 10791,
+   "n_label_pos_real": 10454,
+   "n_train_rows": 550341,
+   "n_pos": 10791,
+   "n_val_rows": 110068,
+   "best_iteration": 444,
+   "inner_val_metric": 0.8379773336288355,
+   "t_gather_train_s": 48.5,
+   "t_train_es_s": 57.0,
+   "t_refit_s": 47.0,
+   "n_features": 172,
+   "t_predict_s": 152.3,
+   "t_fold_s": 315.8
+  }
+ },
+ "status": "ok",
+ "error": null,
+ "runtime_s": 317.15,
+ "finished": "2026-10-26 21:35:52 CET"
+}

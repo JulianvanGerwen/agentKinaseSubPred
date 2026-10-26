@@ -1,0 +1,232 @@
+{
+ "run_id": "simple_test_b7_lr__20261026-212809__s0",
+ "name": "simple_test_b7_lr",
+ "git_hash": "6dbf725fb6ff0fa74f03cf50225f64d3e0c0e7bd",
+ "config": {
+  "method": "b7_lr",
+  "description": "simple strong LR on Cantley(i)+B2+PPI+loc, all DEV",
+  "trained_on": "all DEV (L2)",
+  "seed": 0
+ },
+ "seed": 0,
+ "split": "test",
+ "notes": "",
+ "inputs": [
+  {
+   "path": "/workspace/cache/labels/dev_pairs.parquet",
+   "type": "file",
+   "bytes": 797455,
+   "sha256": "b6c1aaa8f67396b535ac392c08f77068e6eec1615e2debdf63ce20d6986be449"
+  },
+  {
+   "path": "/workspace/results/splits/test_proteins.tsv",
+   "type": "file",
+   "bytes": 46679,
+   "sha256": "762d21c2d4bc7889f6d312e729bdd143df018be2aa1456f548ee31eb0e8dffba"
+  },
+  {
+   "path": "/workspace/results/splits/kinase_folds.tsv",
+   "type": "file",
+   "bytes": 15014,
+   "sha256": "d4acaafd16342d59c7a24286f1c69e3d4b439a1efe1b911a49f48e761f3831ae"
+  }
+ ],
+ "host": "eu-g6-076",
+ "python": "3.12.3",
+ "platform": "Linux-5.15.0-198-generic-x86_64-with-glibc2.39",
+ "argv": [
+  "scripts/baselines/simple_test.py",
+  "--method",
+  "b7_lr",
+  "--t3"
+ ],
+ "pid": 388061,
+ "started": "2026-10-26 21:28:09 CET",
+ "n_rows": {
+  "test_predictions": 25922452,
+  "test_t3_predictions": 25922452
+ },
+ "outputs": {
+  "test_predictions": {
+   "path": "cache/runs/simple_test_b7_lr__20261026-212809__s0/test_predictions.parquet",
+   "sha256": "f9977e688f1956311e92b1b1209bfd4ec7cc7fff623015c5c74123418c14da6a"
+  },
+  "test_t3_predictions": {
+   "path": "cache/runs/simple_test_b7_lr__20261026-212809__s0/test_t3_predictions.parquet",
+   "sha256": "2058cc30380d7f791c07d86c485cc06906763043bf0482a53158793308919eeb"
+  }
+ },
+ "fallbacks": {
+  "test_candidate_pairs_unscored": 0
+ },
+ "train_wall_s": 89.12,
+ "inference_wall_s": 287.03,
+ "log": {
+  "kinases_hard_pool_short": 28,
+  "n_train": 601545,
+  "n_pos": 11795,
+  "intercept": -9.471075940704853,
+  "coef_std": {
+   "cantley_logit": 0.6551,
+   "cantley_missing": -0.1953,
+   "b2_logit": 0.7592,
+   "b2_missing": 0.0,
+   "ppi_edge_any": 0.191,
+   "loc_cos_combined": 0.5381,
+   "loc_missing": 0.0169
+  },
+  "softmax_temperature": {
+   "T": 0.7697080045107562,
+   "nll": 4.053705033315049,
+   "nll_T1": 4.132951128793075,
+   "n_pairs": 8756,
+   "n_sites": 5817,
+   "cv_run_id": "simple_b7_lr__20261026-153330__s0"
+  }
+ },
+ "preflight": {
+  "rows": 25922452,
+  "rows_outside_candidates": 0,
+  "kinases_full": 503,
+  "kinases_unscored": 0,
+  "kinases_partial": 0,
+  "partial_kinase_idx": [],
+  "ok": true
+ },
+ "t3": {
+  "log": {
+   "lko_fold0": {
+    "kinases_hard_pool_short": 24,
+    "n_train": 484041,
+    "n_pos": 9491,
+    "intercept": -9.49409313023776,
+    "coef_std": {
+     "cantley_logit": 0.6436,
+     "cantley_missing": -0.2003,
+     "b2_logit": 0.7842,
+     "b2_missing": 0.0,
+     "ppi_edge_any": 0.1939,
+     "loc_cos_combined": 0.558,
+     "loc_missing": -0.014
+    },
+    "n_kinases_held": 102,
+    "n_rows": 5029601,
+    "train_s": 53.3,
+    "infer_s": 52.1
+   },
+   "lko_fold1": {
+    "kinases_hard_pool_short": 24,
+    "n_train": 479400,
+    "n_pos": 9400,
+    "intercept": -9.464098358918552,
+    "coef_std": {
+     "cantley_logit": 0.6354,
+     "cantley_missing": -0.1896,
+     "b2_logit": 0.7877,
+     "b2_missing": 0.0,
+     "ppi_edge_any": 0.1665,
+     "loc_cos_combined": 0.5268,
+     "loc_missing": 0.0181
+    },
+    "n_kinases_held": 100,
+    "n_rows": 5308076,
+    "train_s": 58.0,
+    "infer_s": 56.4
+   },
+   "lko_fold2": {
+    "kinases_hard_pool_short": 22,
+    "n_train": 470526,
+    "n_pos": 9226,
+    "intercept": -9.484616671230604,
+    "coef_std": {
+     "cantley_logit": 0.6564,
+     "cantley_missing": -0.181,
+     "b2_logit": 0.7661,
+     "b2_missing": 0.0,
+     "ppi_edge_any": 0.2014,
+     "loc_cos_combined": 0.5292,
+     "loc_missing": 0.036
+    },
+    "n_kinases_held": 97,
+    "n_rows": 4983566,
+    "train_s": 46.2,
+    "infer_s": 49.4
+   },
+   "lko_fold3": {
+    "kinases_hard_pool_short": 18,
+    "n_train": 487611,
+    "n_pos": 9561,
+    "intercept": -9.510899639267189,
+    "coef_std": {
+     "cantley_logit": 0.6869,
+     "cantley_missing": -0.1801,
+     "b2_logit": 0.7794,
+     "b2_missing": 0.0,
+     "ppi_edge_any": 0.1624,
+     "loc_cos_combined": 0.5649,
+     "loc_missing": 0.0301
+    },
+    "n_kinases_held": 103,
+    "n_rows": 5061448,
+    "train_s": 73.1,
+    "infer_s": 80.5
+   },
+   "lko_fold4": {
+    "kinases_hard_pool_short": 24,
+    "n_train": 484602,
+    "n_pos": 9502,
+    "intercept": -9.378129000920282,
+    "coef_std": {
+     "cantley_logit": 0.6608,
+     "cantley_missing": -0.1843,
+     "b2_logit": 0.7261,
+     "b2_missing": 0.0,
+     "ppi_edge_any": 0.182,
+     "loc_cos_combined": 0.5107,
+     "loc_missing": -0.0237
+    },
+    "n_kinases_held": 101,
+    "n_rows": 5539761,
+    "train_s": 71.1,
+    "infer_s": 85.9
+   }
+  },
+  "train_wall_s": 301.63,
+  "inference_wall_s": 324.37,
+  "unscored_pairs": 0,
+  "preflight": {
+   "rows": 25922452,
+   "rows_outside_candidates": 0,
+   "kinases_full": 503,
+   "kinases_unscored": 0,
+   "kinases_partial": 0,
+   "partial_kinase_idx": [],
+   "ok": true
+  }
+ },
+ "freeze_entry": {
+  "name": "B7",
+  "role": "baseline",
+  "baseline_id": "B7",
+  "run_id": "simple_test_b7_lr__20261026-212809__s0",
+  "predictions": "cache/runs/simple_test_b7_lr__20261026-212809__s0/test_predictions.parquet",
+  "score_site_predictions": null,
+  "t3_predictions": "cache/runs/simple_test_b7_lr__20261026-212809__s0/test_t3_predictions.parquet",
+  "runtime": {
+   "train_wall_s": 89.12,
+   "inference_wall_s": 287.03
+  },
+  "missing": "worst",
+  "description": "simple strong LR on Cantley(i)+B2+PPI+loc, all DEV",
+  "t3_runtime": {
+   "train_wall_s": 301.63,
+   "inference_wall_s": 324.37
+  },
+  "predictions_sha256": "f9977e688f1956311e92b1b1209bfd4ec7cc7fff623015c5c74123418c14da6a",
+  "t3_predictions_sha256": "2058cc30380d7f791c07d86c485cc06906763043bf0482a53158793308919eeb"
+ },
+ "status": "ok",
+ "error": null,
+ "runtime_s": 1108.58,
+ "finished": "2026-10-26 21:46:38 CET"
+}

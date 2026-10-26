@@ -1,0 +1,65 @@
+{
+ "run_id": "r2r3_final_t3__20261026-230121__s0",
+ "name": "r2r3_final_t3",
+ "git_hash": "8abfba1c0a12766a45772cb6a589e44966b0d0e4",
+ "config": {
+  "name": "r2r3_final_t3",
+  "r2": "cache/runs/r2_final_t3__20261026-221039__s0/test_t3_predictions.parquet",
+  "r3": "cache/runs/r3_final_distill_test__20261026-220424__s0/test_t3_predictions.parquet",
+  "w": 0.6,
+  "w_site": 0.5,
+  "kind": "t3"
+ },
+ "seed": 0,
+ "split": "final_dev",
+ "notes": "late fusion of final R2 and R3 TEST predictions with CV-chosen weights",
+ "inputs": [
+  {
+   "path": "cache/runs/r2_final_t3__20261026-221039__s0/test_t3_predictions.parquet",
+   "type": "file",
+   "bytes": 178150050,
+   "sha256": "344433cbb4928ce7f91ffd19c705c186fa996fec7a3c1bdff813cefbb37f053f"
+  },
+  {
+   "path": "cache/runs/r3_final_distill_test__20261026-220424__s0/test_t3_predictions.parquet",
+   "type": "file",
+   "bytes": 55978207,
+   "sha256": "9c6c403ea27690d8f5c337b47525a4cb84452ad0cc9be1cf31de78a4b78b8874"
+  }
+ ],
+ "host": "eu-g6-076",
+ "python": "3.12.3",
+ "platform": "Linux-5.15.0-198-generic-x86_64-with-glibc2.39",
+ "argv": [
+  "scripts/models/r2_fuse_test.py",
+  "--name",
+  "r2r3_final_t3",
+  "--kind",
+  "t3",
+  "--r2",
+  "cache/runs/r2_final_t3__20261026-221039__s0/test_t3_predictions.parquet",
+  "--r3",
+  "cache/runs/r3_final_distill_test__20261026-220424__s0/test_t3_predictions.parquet"
+ ],
+ "pid": 446540,
+ "started": "2026-10-26 23:01:22 CET",
+ "n_rows": {
+  "test_t3_predictions": 25922452
+ },
+ "outputs": {
+  "test_t3_predictions": {
+   "path": "cache/runs/r2r3_final_t3__20261026-230121__s0/test_t3_predictions.parquet",
+   "sha256": "d62195b8f3a66df64cb0f91f5261469d1c80ed1204922bd016470aaafc8ad1b1"
+  }
+ },
+ "fallbacks": {},
+ "rows": {
+  "n_r2": 25922452,
+  "n_r3": 25922452,
+  "n_common": 25922452
+ },
+ "status": "ok",
+ "error": null,
+ "runtime_s": 10.62,
+ "finished": "2026-10-26 23:01:32 CET"
+}

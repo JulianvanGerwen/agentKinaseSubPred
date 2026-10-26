@@ -1,0 +1,45 @@
+{
+ "run_id": "regime_resboost_lam300_cv5__20261026-224816__s0",
+ "name": "regime_resboost_lam300_cv5",
+ "git_hash": "8abfba1c0a12766a45772cb6a589e44966b0d0e4",
+ "config": {
+  "regime": "partial pooling resboost",
+  "lambda": 300.0,
+  "mu": 10,
+  "base": "r2_final_s0_cv5__20261026-181435__s0",
+  "seed": 0
+ },
+ "seed": 0,
+ "split": "cv",
+ "notes": "pooled 5-fold OOF of []; lambda selected on fold-0 M1",
+ "inputs": [],
+ "host": "eu-g6-076",
+ "python": "3.12.3",
+ "platform": "Linux-5.15.0-198-generic-x86_64-with-glibc2.39",
+ "argv": [
+  "scripts/models/regime_resboost_eval.py",
+  "--stage",
+  "cv5"
+ ],
+ "pid": 422351,
+ "started": "2026-10-26 22:48:16 CET",
+ "n_rows": {
+  "predictions": 106457574
+ },
+ "outputs": {
+  "predictions": {
+   "path": "cache/runs/regime_resboost_lam300_cv5__20261026-224816__s0/predictions.parquet",
+   "sha256": "1355a7f46e74134be4915f2f0878f613c24e9687a0d88263928bf88c2bf416d7"
+  },
+  "metrics": {
+   "path": "results/runs/regime_resboost_lam300_cv5__20261026-224816__s0/metrics.json",
+   "sha256": "cd49b33f6a242c23d50781719b2c4dac92d2275671fe573c791b70312747e945"
+  }
+ },
+ "fallbacks": {},
+ "fold_runs": [],
+ "status": "ok",
+ "error": null,
+ "runtime_s": 324.76,
+ "finished": "2026-10-26 22:53:41 CET"
+}

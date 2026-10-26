@@ -1,0 +1,9 @@
+{
+ "addendum_for": "r2_final_cleanbench_uobs__20261026-204513__s0",
+ "written": "2026-10-26 22:2x (audit r2 item b)",
+ "fallbacks_not_recorded_in_manifest": {
+  "F6c_dropped_clean_bench(CPTAC)": 1
+ },
+ "clean_bench_definition": "F6b *_clean_bench stores (22 benchmarKIN PMIDs removed); F6a xfit family f6a_bench (compendium blocks minus those PMIDs, CPTAC columns NaN); F6c (CPTAC) group dropped; config clean='bench'",
+ "reason": "r2_final.py did not forward Assembler.fallbacks to the manifest when this run was made; fixed for later runs"
+}

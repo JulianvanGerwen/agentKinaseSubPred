@@ -69,6 +69,9 @@ with manifest.RunManifest(a.name, config=cfg | {"target": a.target, "seeds": a.s
         fd = sample.FoldData(None, cfg["variant"])
         A = assemble.Assembler(cfg["groups"], None, xfit_tag="final", clean=cfg["clean"], comp_know=cfg["comp_know"],
                                f2a_family=cfg.get("f2a_family", "f2a"), desc_v=cfg.get("desc_v", 1))
+        for k_, v_ in A.fallbacks.items():           # e.g. F6c_dropped_clean_bench(CPTAC) (audit r2)
+            run.count_fallback(k_, v_)
+        run.set("feature_columns", list(A.cols))
         acc = None
         for sd in a.seeds:
             P, t_tr, t_inf, lg = fit_predict(fd, A, sd, sites, list(range(REAL)))

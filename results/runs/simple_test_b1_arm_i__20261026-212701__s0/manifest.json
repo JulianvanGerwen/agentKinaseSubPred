@@ -1,0 +1,105 @@
+{
+ "run_id": "simple_test_b1_arm_i__20261026-212701__s0",
+ "name": "simple_test_b1_arm_i",
+ "git_hash": "6dbf725fb6ff0fa74f03cf50225f64d3e0c0e7bd",
+ "config": {
+  "method": "b1_arm_i",
+  "description": "Cantley arm (i) as-published percentile (own matrices only)",
+  "trained_on": "all DEV (L2)",
+  "seed": 0
+ },
+ "seed": 0,
+ "split": "test",
+ "notes": "",
+ "inputs": [
+  {
+   "path": "/workspace/cache/labels/dev_pairs.parquet",
+   "type": "file",
+   "bytes": 797455,
+   "sha256": "b6c1aaa8f67396b535ac392c08f77068e6eec1615e2debdf63ce20d6986be449"
+  },
+  {
+   "path": "/workspace/results/splits/test_proteins.tsv",
+   "type": "file",
+   "bytes": 46679,
+   "sha256": "762d21c2d4bc7889f6d312e729bdd143df018be2aa1456f548ee31eb0e8dffba"
+  },
+  {
+   "path": "/workspace/results/splits/kinase_folds.tsv",
+   "type": "file",
+   "bytes": 15014,
+   "sha256": "d4acaafd16342d59c7a24286f1c69e3d4b439a1efe1b911a49f48e761f3831ae"
+  }
+ ],
+ "host": "eu-g6-076",
+ "python": "3.12.3",
+ "platform": "Linux-5.15.0-198-generic-x86_64-with-glibc2.39",
+ "argv": [
+  "scripts/baselines/simple_test.py",
+  "--method",
+  "b1_arm_i"
+ ],
+ "pid": 387216,
+ "started": "2026-10-26 21:27:01 CET",
+ "n_rows": {
+  "test_predictions": 19910114
+ },
+ "outputs": {
+  "test_predictions": {
+   "path": "cache/runs/simple_test_b1_arm_i__20261026-212701__s0/test_predictions.parquet",
+   "sha256": "4e6df8e9c5841b852ec8e6a172dd6b1087f372ecc6a98e026bc06d76bbb3a97d"
+  }
+ },
+ "fallbacks": {
+  "test_candidate_pairs_unscored": 6012338
+ },
+ "train_wall_s": 0.0,
+ "inference_wall_s": 5.33,
+ "log": {
+  "kinases_full": 386,
+  "kinases_unscored": 107,
+  "kinases_partial_floor_filled": [
+   "MAP2K7",
+   "TTK",
+   "MAP2K2",
+   "MAP2K4",
+   "MAP2K6",
+   "MAP2K1",
+   "MAP2K5",
+   "TESK1",
+   "NEK10",
+   "PKMYT1"
+  ],
+  "n_floor_filled_pairs": 398166,
+  "store": "motif/cantley_unprimed_pct_published"
+ },
+ "preflight": {
+  "rows": 19910114,
+  "rows_outside_candidates": 0,
+  "kinases_full": 396,
+  "kinases_unscored": 107,
+  "kinases_partial": 0,
+  "partial_kinase_idx": [],
+  "ok": true
+ },
+ "freeze_entry": {
+  "name": "B1_i",
+  "role": "baseline",
+  "baseline_id": "B1_arm_i",
+  "run_id": "simple_test_b1_arm_i__20261026-212701__s0",
+  "predictions": "cache/runs/simple_test_b1_arm_i__20261026-212701__s0/test_predictions.parquet",
+  "score_site_predictions": null,
+  "t3_predictions": null,
+  "runtime": {
+   "train_wall_s": 0.0,
+   "inference_wall_s": 5.33
+  },
+  "missing": "worst",
+  "description": "Cantley arm (i) as-published percentile (own matrices only)",
+  "predictions_sha256": "4e6df8e9c5841b852ec8e6a172dd6b1087f372ecc6a98e026bc06d76bbb3a97d"
+ },
+ "status": "ok",
+ "error": null,
+ "runtime_s": 32.84,
+ "finished": "2026-10-26 21:27:34 CET"
+}

@@ -53,7 +53,14 @@ for c in order + [c for c in T2.index if c not in order]:
     if c not in T2.index:
         continue
     r = T2.loc[c]
-    dm1, dm2 = r.M1 - base.M1, r.M2 - base.M2
+    sd = c.rsplit("_s", 1)[-1] if c.rsplit("_s", 1)[-1] in ("1", "2", "3", "4") else "0"
+    if sd == "0":
+        bm1, bm2 = base.M1, base.M2
+    else:            # matched-seed R2 baseline (frozen final config, same seed; R2's own run - not retrained)
+        rid = [p.name for p in RUNS.glob(f"r2_final_s{sd}_cv5__*")][0]
+        e = json.loads((RUNS / rid / "metrics.json").read_text())["endpoints"]
+        bm1, bm2 = e["M1_auroc_hard"], e["M2_hit5"]
+    dm1, dm2 = r.M1 - bm1, r.M2 - bm2
     adopt = "baseline" if c == "regime_L2_L2fixed_s0" else (
         "YES" if (dm1 >= 0.005 and dm2 >= -0.01 and bool(r.canary_gate)) else "no")
     lines.append(f"| {c} | {f(r.M1)} | {dm1:+.4f} | {f(r.M1_fold_mean)} | {f(r.M2)} | {dm2:+.4f} | {f(r.M3)} | {f(r.M4)} | "

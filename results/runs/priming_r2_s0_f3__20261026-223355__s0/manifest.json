@@ -1,0 +1,90 @@
+{
+ "run_id": "priming_r2_s0_f3__20261026-223355__s0",
+ "name": "priming_r2_s0_f3",
+ "git_hash": "8abfba1c0a12766a45772cb6a589e44966b0d0e4",
+ "config": {
+  "groups": [
+   "F1",
+   "F0",
+   "F2a",
+   "F3",
+   "F4",
+   "F6a",
+   "F6b",
+   "F6c",
+   "F5",
+   "F7"
+  ],
+  "ratio": 50,
+  "hard": 0.5,
+  "alpha": 0.5,
+  "objective": "binary",
+  "num_leaves": 127,
+  "learning_rate": 0.03,
+  "min_data_in_leaf": 100,
+  "feature_fraction": 0.8,
+  "bagging_fraction": 0.8,
+  "lambda_l2": 1.0,
+  "max_bin": 255,
+  "max_rounds": 3000,
+  "es_rounds": 100,
+  "refit": true,
+  "clean": false,
+  "comp_know": false,
+  "seed": 0,
+  "variant": "L2",
+  "miss_only": false,
+  "min_rounds": 50,
+  "es_metric": "mixed",
+  "es_real_only": true,
+  "f2a_family": "f2a_sep",
+  "desc_v": 2,
+  "priming_features": "v1"
+ },
+ "seed": 0,
+ "split": "cv",
+ "notes": "folds=[3]; A32a priming features (fp_offset_obs, fp_offset_score, fp_strength)",
+ "inputs": [],
+ "host": "eu-g6-076",
+ "python": "3.12.3",
+ "platform": "Linux-5.15.0-198-generic-x86_64-with-glibc2.39",
+ "argv": [
+  "scripts/models/priming_r2.py"
+ ],
+ "pid": 424548,
+ "started": "2026-10-26 22:33:55 CET",
+ "n_rows": {
+  "predictions": 21304940
+ },
+ "outputs": {
+  "predictions": {
+   "path": "cache/runs/priming_r2_s0_f3__20261026-223355__s0/predictions.parquet",
+   "sha256": "2d03a6e6694a4bebe68d298d5475d353cfc70e8ef8b41f9348941dae149b67e5"
+  },
+  "metrics": {
+   "path": "results/runs/priming_r2_s0_f3__20261026-223355__s0/metrics.json",
+   "sha256": "53ce7f7cd81085c09b80bc08b6da370f6c2961c8aef3b49d7e239f2975d8a8b0"
+  }
+ },
+ "fallbacks": {},
+ "fold_logs": {
+  "3": {
+   "n_train_rows": 499086,
+   "n_pos": 9786,
+   "n_val_rows": 99817,
+   "best_iteration": 758,
+   "inner_val_metric": 0.8523691778031173,
+   "t_gather_train_s": 33.6,
+   "t_train_es_s": 81.4,
+   "t_refit_s": 51.9,
+   "n_features": 175,
+   "t_predict_s": 206.2,
+   "n_pred_rows": 21304940,
+   "t_fold_s": 382.8
+  }
+ },
+ "status": "ok",
+ "error": null,
+ "runtime_s": 423.14,
+ "finished": "2026-10-26 22:40:58 CET"
+}

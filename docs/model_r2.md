@@ -395,6 +395,27 @@ An uncalibrated softmax (raw fused logits, T ≈ 0.47) is much worse: [0.8, 1] o
 10,722 against 9,757 for random scores. The reason is that pseudokinases and 0-label kinases (PRAG1, TTK, ALPK2,
 BUB1B) get extreme raw logits.
 
+**Correction (audit round 2, R2-M1; PI 22:12).** The tiers above are **not trusted**:
+- Y sites at p ≥ 0.8 are 0/41 correct, and the ST top tier is 0.85 claimed vs 0.72 observed.
+- The adopted fix is the auditor's isotonic recalibration of p_top, fitted separately for ST and Y on labelled DEV
+  OOF sites and cross-fitted by fold on CV (`docs/audit/audit_cv_r2_scripts/calib_check3.py`).
+
+Result:
+- ST: [0.5, 0.8) 0.62 claimed / 0.61 observed (n = 1,272), and only 2 sites at ≥ 0.8.
+- Y: no site reaches 0.5.
+- **Coverage@0.5 = 21,115 DEV U_ms sites (19,841 unlabelled), all ST; coverage@0.8 = 9.**
+
+So the model has no reliable ≥ 0.8 tier and no reliable Y-site assignment at ≥ 0.5. The coverage numbers in the
+table above are superseded.
+
+For TEST, `assignment_prob` uses the same chain with maps fitted on all DEV OOF (`scripts/models/r2_assign_test.py`):
+1. the tiered calibrators;
+2. a softmax with T = 0.926 (mean of the fold temperatures);
+3. the ST/Y isotonic map applied to the top kinase;
+4. the other kinases rescaled to fill the remaining probability mass.
+
+`score_site` (M2) stays the raw fused score.
+
 **M2 component (A20).** The calibrated logit gives M2 0.205. The raw fused score_site (w = 0.5) gives **0.263**.
 Each component is selected on its own endpoint, so M2 uses the raw fused score_site and coverage uses the calibrated
 assignment probability.
@@ -474,7 +495,26 @@ features (xfit tags `lko<j>`). The held-out kinases are then scored on all DEV U
 On unseen kinase families with seen proteins, R2 loses only 0.02 M1 relative to CV (0.771 → 0.751). The label-free
 Cantley atlas (F1, with nearest-atlas imputation) and the kinase descriptors carry the specificity.
 
-### 6.4 Final DEV retrain and TEST-candidate predictions (prepared, NOT run; G4 runbook format)
+### 6.4 Final DEV retrain and TEST-candidate predictions (DELIVERED 23:02 on PI go 22:12; G4 runbook format)
+**Final deliverable: `r2r3_final__20261026-230138__s0`.** Both files pass the `eval_test --check-predictions`
+pre-flight (`"ok": true`: 503 kinases full, 0 partial, 0 rows outside the candidate set).
+
+- `test_predictions.parquet`: sha256 `1d95b271672b1db20ae63c2918a32a911e6800dc969b53b6514a3dceff7ce9c4`; 25,922,452 rows.
+  Columns: kinase_idx, site_idx, score (fused, w 0.6), score_site (fused, w 0.5) and assignment_prob (A17 with the
+  audit's ST/Y isotonic fix; sums to 1 per site).
+- `test_t3_predictions.parquet`: sha256 `d62195b8f3a66df64cb0f91f5261469d1c80ed1204922bd016470aaafc8ad1b1`. This is R2
+  T3 with **5 seeds** per LKO fold, fused with R3's T3 file.
+- Runtime: train_wall_s 1136.6 = R2 418 + R3 719; inference_wall_s 316.9 = R2 299 + R3 3 + fusion/assignment 15.
+- Components:
+  - `r2_final_test__20261026-221039__s0`: R2 alone, 5 seeds, sha `2aa381c9…`;
+  - `r2_final_t3__20261026-221039__s0`: 5 seeds; R2 train 2,520 s, inference 406 s;
+  - `r3_final_distill_test__20261026-220424__s0`: pinned by the PI;
+  - `r2r3_final_test__20261026-222344__s0` (fusion), `r2r3_final_test_assign__20261026-222401__s0` (assignment_prob),
+    `r2r3_final_t3__20261026-230121__s0` (T3 fusion).
+- TEST assignment summary: T = 0.926; coverage@0.5 = 5,773 TEST sites, all ST; coverage@0.8 = 0. The isotonic maxima
+  are ST 0.756 and Y 0.445.
+
+The original preparation notes follow.
 The stores are built:
 - `cache/r2/xfit/final/all/{f2a_sep,f3nb,f6a,f6a_bench}`: rows = DEV U_obs, eval rows = TEST-protein U_obs sites,
   A1 inner-fold fits;

@@ -1,0 +1,213 @@
+{
+ "run_id": "b3a_phosformer_f1_r16__20261026-220503__s0",
+ "name": "b3a_phosformer_f1_r16",
+ "git_hash": "13c47c2195e3ff0d1600557f5d7835a19da93301",
+ "config": {
+  "fold": 1,
+  "neg_ratio": 16,
+  "hard_frac": 0.5,
+  "init": "cache/phosformer/pretrain/mlm_final.pt",
+  "seed": 0,
+  "lr": 2e-05,
+  "gamma": 2.0,
+  "batch": 64,
+  "max_epochs": 3.0,
+  "evals_per_epoch": 4,
+  "patience": 5,
+  "shift": 5,
+  "mask_frac": 0.05,
+  "no_aug": false,
+  "eall": true,
+  "skip_train": false,
+  "max_train_rows": 0,
+  "name": null,
+  "threads": 2,
+  "init_tag": "mlm_final.pt",
+  "n_fit_pos": 7152,
+  "fold_max_count": 369,
+  "epoch_rows": 434690,
+  "steps_per_epoch": 6793,
+  "best_val": 0.7008363712823928,
+  "history": [
+   {
+    "step": 0,
+    "val_macro_auroc_hard": 0.5098835913347433
+   },
+   {
+    "step": 1698,
+    "epoch": 0.2499631974090976,
+    "val_macro_auroc_hard": 0.6730643130460757,
+    "train_loss": 0.04732947051525116
+   },
+   {
+    "step": 3396,
+    "epoch": 0.4999263948181952,
+    "val_macro_auroc_hard": 0.6878457762060769,
+    "train_loss": 0.050720348954200745
+   },
+   {
+    "step": 5094,
+    "epoch": 0.7498895922272928,
+    "val_macro_auroc_hard": 0.6950454212920869,
+    "train_loss": 0.0932806134223938
+   },
+   {
+    "step": 6792,
+    "epoch": 0.9998527896363903,
+    "val_macro_auroc_hard": 0.6856326504136595,
+    "train_loss": 0.03763549029827118
+   },
+   {
+    "step": 8490,
+    "epoch": 1.249815987045488,
+    "val_macro_auroc_hard": 0.6874527639132992,
+    "train_loss": 0.04449622705578804
+   },
+   {
+    "step": 10188,
+    "epoch": 1.4997791844545856,
+    "val_macro_auroc_hard": 0.698213559680646,
+    "train_loss": 0.04234129935503006
+   },
+   {
+    "step": 11886,
+    "epoch": 1.7497423818636832,
+    "val_macro_auroc_hard": 0.6985743563148213,
+    "train_loss": 0.04847193509340286
+   },
+   {
+    "step": 13584,
+    "epoch": 1.9997055792727807,
+    "val_macro_auroc_hard": 0.7008363712823928,
+    "train_loss": 0.0427805595099926
+   },
+   {
+    "step": 15282,
+    "epoch": 2.2496687766818786,
+    "val_macro_auroc_hard": 0.6823092091959658,
+    "train_loss": 0.05512767285108566
+   },
+   {
+    "step": 16980,
+    "epoch": 2.499631974090976,
+    "val_macro_auroc_hard": 0.68684570049598,
+    "train_loss": 0.01723499596118927
+   },
+   {
+    "step": 18678,
+    "epoch": 2.7495951715000735,
+    "val_macro_auroc_hard": 0.6863324480836592,
+    "train_loss": 0.027134688571095467
+   },
+   {
+    "step": 20376,
+    "epoch": 2.999558368909171,
+    "val_macro_auroc_hard": 0.6865542082385697,
+    "train_loss": 0.036207422614097595
+   },
+   {
+    "step": 20379,
+    "epoch": 3.0,
+    "val_macro_auroc_hard": 0.6864441495777002,
+    "train_loss": 0.027609195560216904
+   }
+  ],
+  "train_s": 5255.02974319458,
+  "score_s": 2467.988240480423,
+  "eall_complete": true,
+  "pairs_per_s": 3853.8773580819447
+ },
+ "seed": 0,
+ "split": "cv_fold1",
+ "notes": "B3a Phosformer reimplementation; OOF predictions for CV fold; metrics with missing='drop' (E-all metrics valid only if eall_complete)",
+ "inputs": [
+  {
+   "path": "/workspace/results/splits/cv_folds.tsv",
+   "type": "file",
+   "bytes": 203997,
+   "sha256": "aa01e43d7a064269ddf58cf00a2e3130486aee973cba3e6cf52f994f6a265dc8"
+  },
+  {
+   "path": "/workspace/cache/index/kinases.parquet",
+   "type": "file",
+   "bytes": 18889,
+   "sha256": "e278ec9b4147d04dd33911f27b76e54e5528c1b1125c5140c588a1d1c49f4637"
+  },
+  {
+   "path": "/workspace/cache/index/sites.parquet",
+   "type": "file",
+   "bytes": 13829932,
+   "sha256": "a280d3bb1a843c965b148b2067715567c9a515e9f3e18ab486bb97ed0d052975"
+  },
+  {
+   "path": "cache/phosformer/pretrain/mlm_final.pt",
+   "type": "file",
+   "bytes": 185112890,
+   "sha256": "b1bd71a1db865a477e32b27f75d98ccd57e98a0755c80626fee7e5f554a9aa4a"
+  }
+ ],
+ "host": "eu-g6-076",
+ "python": "3.12.3",
+ "platform": "Linux-5.15.0-198-generic-x86_64-with-glibc2.39",
+ "argv": [
+  "scripts/baselines/phosformer_finetune.py",
+  "--fold",
+  "1",
+  "--neg-ratio",
+  "16",
+  "--init",
+  "cache/phosformer/pretrain/mlm_final.pt",
+  "--seed",
+  "0",
+  "--eall",
+  "--threads",
+  "2"
+ ],
+ "pid": 344974,
+ "started": "2026-10-26 22:05:04 CET",
+ "n_rows": {
+  "predictions": 9511324
+ },
+ "outputs": {
+  "predictions": {
+   "path": "cache/runs/b3a_phosformer_f1_r16__20261026-220503__s0/predictions.parquet",
+   "sha256": "ead9240017fffee475b2838e8bf828f4c80b29a8b2b420d0e33abb85913852ec"
+  },
+  "metrics": {
+   "path": "results/runs/b3a_phosformer_f1_r16__20261026-220503__s0/metrics.json",
+   "sha256": "d124acd616ff1c043a15d68c095305b0f8b8c17f42684b86dc7d45aa60a7df10"
+  }
+ },
+ "fallbacks": {
+  "kinase_domain_full_seq": 5,
+  "hard_pool_empty_used_easy": 0
+ },
+ "endpoints": {
+  "K_primary_name": "K_cv",
+  "n_K_primary": 203,
+  "n_K_primary_evaluated": 180,
+  "n_K_any": 230,
+  "n_K_any_evaluated": 230,
+  "M1_auroc_hard": 0.6979558749801011,
+  "M1_n_kinases_defined": 180,
+  "M2_hit5": 0.15221991152337871,
+  "M3_top1_recall": 0.09665335753419366,
+  "M4_auroc_hard_Kany": 0.6835661844724185,
+  "M5_auroc_hard_Kcv": 0.6979558749801011,
+  "sec_hit1": 0.05966739910424293,
+  "sec_hit10": 0.22903351876040925,
+  "sec_mrr": 0.12138045024849752,
+  "sec_fam_hit5": 0.32110471659537787,
+  "sec_pauroc01_all": 0.5255314903087362,
+  "sec_ap_all": 0.00442277169213609,
+  "sec_ap_lift_all": 19.576918578763646,
+  "sec_auroc_all": 0.7454637478929208,
+  "fold_normalised": false,
+  "n_missing_pairs": 0,
+  "n_required_pairs": 9256019
+ },
+ "status": "ok",
+ "error": null,
+ "runtime_s": 0.69,
+ "finished": "2026-10-26 22:05:05 CET"
+}

@@ -1,0 +1,88 @@
+{
+ "run_id": "simple_test_b0_pop__20261026-212754__s0",
+ "name": "simple_test_b0_pop",
+ "git_hash": "6dbf725fb6ff0fa74f03cf50225f64d3e0c0e7bd",
+ "config": {
+  "method": "b0_pop",
+  "description": "site popularity (diagnostic floor)",
+  "trained_on": "all DEV (L2)",
+  "seed": 0
+ },
+ "seed": 0,
+ "split": "test",
+ "notes": "",
+ "inputs": [
+  {
+   "path": "/workspace/cache/labels/dev_pairs.parquet",
+   "type": "file",
+   "bytes": 797455,
+   "sha256": "b6c1aaa8f67396b535ac392c08f77068e6eec1615e2debdf63ce20d6986be449"
+  },
+  {
+   "path": "/workspace/results/splits/test_proteins.tsv",
+   "type": "file",
+   "bytes": 46679,
+   "sha256": "762d21c2d4bc7889f6d312e729bdd143df018be2aa1456f548ee31eb0e8dffba"
+  },
+  {
+   "path": "/workspace/results/splits/kinase_folds.tsv",
+   "type": "file",
+   "bytes": 15014,
+   "sha256": "d4acaafd16342d59c7a24286f1c69e3d4b439a1efe1b911a49f48e761f3831ae"
+  }
+ ],
+ "host": "eu-g6-076",
+ "python": "3.12.3",
+ "platform": "Linux-5.15.0-198-generic-x86_64-with-glibc2.39",
+ "argv": [
+  "scripts/baselines/simple_test.py",
+  "--method",
+  "b0_pop"
+ ],
+ "pid": 387816,
+ "started": "2026-10-26 21:27:54 CET",
+ "n_rows": {
+  "test_predictions": 25922452
+ },
+ "outputs": {
+  "test_predictions": {
+   "path": "cache/runs/simple_test_b0_pop__20261026-212754__s0/test_predictions.parquet",
+   "sha256": "234ee7e5c075aef7e82b628ecf8d7e469b9c1a8eed981b0fa642933789b82a31"
+  }
+ },
+ "fallbacks": {
+  "test_candidate_pairs_unscored": 0
+ },
+ "train_wall_s": 0.0,
+ "inference_wall_s": 0.41,
+ "log": {},
+ "preflight": {
+  "rows": 25922452,
+  "rows_outside_candidates": 0,
+  "kinases_full": 503,
+  "kinases_unscored": 0,
+  "kinases_partial": 0,
+  "partial_kinase_idx": [],
+  "ok": true
+ },
+ "freeze_entry": {
+  "name": "B0_pop",
+  "role": "control",
+  "baseline_id": "B0_pop",
+  "run_id": "simple_test_b0_pop__20261026-212754__s0",
+  "predictions": "cache/runs/simple_test_b0_pop__20261026-212754__s0/test_predictions.parquet",
+  "score_site_predictions": null,
+  "t3_predictions": null,
+  "runtime": {
+   "train_wall_s": 0.0,
+   "inference_wall_s": 0.41
+  },
+  "missing": "worst",
+  "description": "site popularity (diagnostic floor)",
+  "predictions_sha256": "234ee7e5c075aef7e82b628ecf8d7e469b9c1a8eed981b0fa642933789b82a31"
+ },
+ "status": "ok",
+ "error": null,
+ "runtime_s": 42.22,
+ "finished": "2026-10-26 21:28:36 CET"
+}

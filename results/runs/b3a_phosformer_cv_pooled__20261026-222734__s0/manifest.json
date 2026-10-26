@@ -1,0 +1,175 @@
+{
+ "run_id": "b3a_phosformer_cv_pooled__20261026-222734__s0",
+ "name": "b3a_phosformer_cv_pooled",
+ "git_hash": "470d80548f1a0e470d90b3df204d2f7920469436",
+ "config": {
+  "arm": "B3a",
+  "neg_ratio": 16,
+  "hard_frac": 0.5,
+  "fold_runs": {
+   "0": "b3a_phosformer_f0_r16__20261026-211441__s0",
+   "1": "b3a_phosformer_f1_r16__20261026-220503__s0",
+   "2": "b3a_phosformer_f2_r16__20261026-210741__s0",
+   "3": "b3a_phosformer_f3_r16__20261026-211947__s0",
+   "4": "b3a_phosformer_f4_r16__20261026-212256__s0"
+  },
+  "fill": "missing pooled E-all pairs scored by each fold's own model",
+  "per_fold_endpoints": {
+   "0": {
+    "M1_auroc_hard": 0.6929442824149104,
+    "M2_hit5": 0.12071228511587337,
+    "M3_top1_recall": 0.10970887540373228
+   },
+   "1": {
+    "M1_auroc_hard": 0.6979558749801011,
+    "M2_hit5": 0.15221991152337871,
+    "M3_top1_recall": 0.09665335753419366
+   },
+   "2": {
+    "M1_auroc_hard": 0.6879192344843376,
+    "M2_hit5": 0.1322151190246992,
+    "M3_top1_recall": 0.11573523374799963
+   },
+   "3": {
+    "M1_auroc_hard": 0.702506057369083,
+    "M2_hit5": 0.1728016643463004,
+    "M3_top1_recall": 0.1016860450576231
+   },
+   "4": {
+    "M1_auroc_hard": 0.6710599821293131,
+    "M2_hit5": 0.13622706443441288,
+    "M3_top1_recall": 0.0903640618086814
+   }
+  },
+  "ratio_note": "1:16 fixed by PI (r2, 19:54) = paper value; 1:50 fold-0 run is an informational ablation"
+ },
+ "seed": 0,
+ "split": "cv_pooled",
+ "notes": "B3a Phosformer reimplementation (own MLM on TEST-filtered corpus), pooled 5-fold OOF, E-all complete for every kinase with a pooled positive",
+ "inputs": [
+  {
+   "path": "/workspace/cache/runs/b3a_phosformer_f0_r16__20261026-211441__s0/predictions.parquet",
+   "type": "file",
+   "bytes": 34922266,
+   "sha256": "f7e4e9b6e7b89628bbf2f6639cfade189baeaee49962d24b08d176d75b79bcef"
+  },
+  {
+   "path": "/workspace/cache/phosformer/fill/fill_f0_r16_s0.parquet",
+   "type": "file",
+   "bytes": 20562233,
+   "sha256": "efe21410e29645ba2d58994ed850ba49b78f5d526dc8a473528b0456bea82c22"
+  },
+  {
+   "path": "/workspace/cache/runs/b3a_phosformer_f1_r16__20261026-220503__s0/predictions.parquet",
+   "type": "file",
+   "bytes": 37893238,
+   "sha256": "ead9240017fffee475b2838e8bf828f4c80b29a8b2b420d0e33abb85913852ec"
+  },
+  {
+   "path": "/workspace/cache/phosformer/fill/fill_f1_r16_s0.parquet",
+   "type": "file",
+   "bytes": 17332943,
+   "sha256": "0705eaea5dc2175622c2c3726c23fb7447226735a4954a70e952dbc123d049b8"
+  },
+  {
+   "path": "/workspace/cache/runs/b3a_phosformer_f2_r16__20261026-210741__s0/predictions.parquet",
+   "type": "file",
+   "bytes": 35927343,
+   "sha256": "7bfab477dd623d5d96551d6c02667b1570986d086364a5b9d229f4c1cc85d379"
+  },
+  {
+   "path": "/workspace/cache/phosformer/fill/fill_f2_r16_s0.parquet",
+   "type": "file",
+   "bytes": 19078891,
+   "sha256": "d1f55fb54daf177fa2b51bc9238bbcdc28c7ac238a8a7ba355ef51569e11b22f"
+  },
+  {
+   "path": "/workspace/cache/runs/b3a_phosformer_f3_r16__20261026-211947__s0/predictions.parquet",
+   "type": "file",
+   "bytes": 36204545,
+   "sha256": "7b4dcf574b1768d59adbad75b49afaad1722350023bf7aaae5d9fc1f05f2d7f1"
+  },
+  {
+   "path": "/workspace/cache/phosformer/fill/fill_f3_r16_s0.parquet",
+   "type": "file",
+   "bytes": 18962581,
+   "sha256": "f8280dd90fb6f26dcfe8ddcf83b6c5775e3c3a0169022bf504cea69feee9adfc"
+  },
+  {
+   "path": "/workspace/cache/runs/b3a_phosformer_f4_r16__20261026-212256__s0/predictions.parquet",
+   "type": "file",
+   "bytes": 38401371,
+   "sha256": "a5684fc9781ccfe7fe36f3fd5487a92047fb667f386a90fb7f68ecd922434ac7"
+  },
+  {
+   "path": "/workspace/cache/phosformer/fill/fill_f4_r16_s0.parquet",
+   "type": "file",
+   "bytes": 16441828,
+   "sha256": "ececf405573e64c4e08a7aaa66fa2fc37640b77899dfb56c395c98e76c6ff952"
+  }
+ ],
+ "host": "eu-g6-076",
+ "python": "3.12.3",
+ "platform": "Linux-5.15.0-198-generic-x86_64-with-glibc2.39",
+ "argv": [
+  "scripts/baselines/phosformer_cv_pool.py",
+  "pool"
+ ],
+ "pid": 425868,
+ "started": "2026-10-26 22:27:36 CET",
+ "n_rows": {
+  "predictions": 69697833
+ },
+ "outputs": {
+  "predictions": {
+   "path": "cache/runs/b3a_phosformer_cv_pooled__20261026-222734__s0/predictions.parquet",
+   "sha256": "dbb0c66a34fab3b7295339f83418ecb93f10470e4723a5825faadefada04e71d"
+  },
+  "metrics": {
+   "path": "results/runs/b3a_phosformer_cv_pooled__20261026-222734__s0/metrics.json",
+   "sha256": "f7e01b4d25991e186f510d5acb9b8a0c5edd30d3667c19f191b7bc587fea1b5c"
+  }
+ },
+ "fallbacks": {},
+ "endpoints": {
+  "K_primary_name": "K_cv",
+  "n_K_primary": 203,
+  "n_K_primary_evaluated": 203,
+  "n_K_any": 339,
+  "n_K_any_evaluated": 339,
+  "M1_auroc_hard": 0.6792617307094657,
+  "M1_n_kinases_defined": 203,
+  "M2_hit5": 0.13173879928445587,
+  "M3_top1_recall": 0.10437208732269153,
+  "M4_auroc_hard_Kany": 0.6570086596059141,
+  "M5_auroc_hard_Kcv": 0.6792617307094657,
+  "sec_hit1": 0.05899766296209225,
+  "sec_hit10": 0.20396016293401065,
+  "sec_mrr": 0.11146313117787032,
+  "sec_fam_hit5": 0.30764651818881766,
+  "sec_pauroc01_all": 0.5277661629639917,
+  "sec_ap_all": 0.0024014040483905114,
+  "sec_ap_lift_all": 21.29721479471039,
+  "sec_auroc_all": 0.7238699818350333,
+  "fold_normalised": true,
+  "M1_per_fold": [
+   0.6929442824149104,
+   0.6979558749801011,
+   0.6879192344843376,
+   0.702506057369083,
+   0.6710599821293131
+  ],
+  "M1_fold_mean": 0.690477086275549,
+  "n_missing_pairs": 0,
+  "n_required_pairs": 68937467
+ },
+ "missing": {
+  "pairs_required": 68937467,
+  "pairs_missing": 0,
+  "site_centric_missing_scores": 0
+ },
+ "status": "ok",
+ "error": null,
+ "runtime_s": 5.0,
+ "finished": "2026-10-26 22:27:41 CET"
+}
