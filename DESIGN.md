@@ -463,3 +463,14 @@ GPU allocation:
   - augmentations follow the paper;
   - negatives come from the shared `ksp.labels` generator;
   - if pretraining overruns, steps are reduced, with the change documented.
+
+## 17. Post-freeze clarifications (decisions logged; they apply equally to all methods)
+- **A23. Cantley comparator per endpoint** (2026-10-26 17:05; simple-baselines report). For superiority tests, B1 is the Cantley arm that is best on CV *for that endpoint*: arm (i) for M1 and M3, arm (ii) universe-recalibrated for M2.
+  - This deviates from A19's single "best arm", in the direction that makes the baseline stronger.
+  - Arms (i) and (ii) tie on M1 (difference 9e-7, from rounding), and arm (ii) is significantly better on M2.
+- **A24. Pooled-OOF scale invariance.** Scores whose offsets vary by fold (per-kinase intercepts, count features) distort pooled-OOF per-kinase AUROC.
+  - Example: B0-prior scored with fold-training counts gave M1 = 0.40 instead of 0.5.
+  - **Rule:** CV metrics M1, M3, M4 and M5 are computed on scores rank-normalised **within fold and within kinase** (each kinase's percentile among that fold's candidates). M2 uses the cross-kinase score unchanged.
+  - Per-fold mean M1 is reported alongside.
+  - TEST has a single model, so the issue doesn't arise there.
+- **A25. Canary descriptors.** Each canary gets its own Manning group, so group- or family-level priors cannot pool canary labels.
