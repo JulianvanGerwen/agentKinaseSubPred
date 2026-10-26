@@ -1,0 +1,128 @@
+{
+ "arm": "noleak",
+ "config": {
+  "neg_ratio": 10,
+  "n_bags": 5,
+  "grid": {
+   "max_depth": [
+    10,
+    20,
+    50,
+    70,
+    80,
+    100
+   ],
+   "min_samples_split": [
+    8,
+    10,
+    12
+   ],
+   "n_estimators": [
+    150,
+    500,
+    1000,
+    1500
+   ]
+  },
+  "grid_bags": [
+   0
+  ],
+  "n_estimators_cap": 500,
+  "n_jobs": 10,
+  "seed": 0,
+  "drop_cols": [
+   "functional_score",
+   "PWM_max_mss",
+   "netpho_max_KIN",
+   "isKinaseCoreg"
+  ],
+  "label_variant": "L2"
+ },
+ "best_params": {
+  "max_depth": 20,
+  "min_samples_split": 12,
+  "n_estimators": 1500
+ },
+ "info": {
+  "fold": 4,
+  "n_train_labels": 9438,
+  "n_pos": 5544,
+  "n_pos_kinases": 305,
+  "n_train_sites_U_B4": 70652,
+  "n_eval_sites_U_B4": 18767,
+  "n_train_rows_unique": 280990,
+  "n_eval_rows": 7472107,
+  "neg_per_bag": [
+   55440,
+   55440,
+   55440,
+   55440,
+   55440
+  ],
+  "label_feature_nonzero_frac_train": {
+   "score": 0.9998540873340688,
+   "coreg293": 0.17607744047830884,
+   "coreg.ntera": 0.06635467454357806,
+   "coreg.hl": 0.06227623758852628,
+   "coreg.mcf7": 0.06406633688031603
+  },
+  "label_feature_nonzero_frac_eval": {
+   "score": 0.9995018807948013,
+   "coreg293": 0.10162622135898214,
+   "coreg.ntera": 0.03969415855527765,
+   "coreg.hl": 0.03662594767446451,
+   "coreg.mcf7": 0.03736442746336475
+  }
+ },
+ "timing_s": {
+  "load_and_masks_s": 73.2,
+  "neg_sampling_s": 11.5,
+  "crossfit_s": 123.4,
+  "assemble_train_s": 1.0,
+  "fit_bags_s": 38.3,
+  "predict_s": 124.4,
+  "predict_rows_per_s": 60065
+ },
+ "feature_importance": {
+  "score": 0.17938,
+  "pssm_ser_thr": 0.13256,
+  "rna.tiss": 0.05619,
+  "rna.cell": 0.05119,
+  "pssm_tyr": 0.04568,
+  "sel.1": 0.04523,
+  "gtex": 0.03887,
+  "paxdb_abundance_log10": 0.03485,
+  "adj_ptms_w21": 0.03284,
+  "netpho_max_all": 0.02624,
+  "w0_mya": 0.02459,
+  "sel.2": 0.02435,
+  "quant_top5": 0.02344,
+  "coreg293": 0.02202,
+  "sift_mean_score": 0.02031,
+  "isELMLinearMotif": 0.01977,
+  "sift_acid_score": 0.01952,
+  "sift_min_score": 0.01914,
+  "coreg.mcf7": 0.01886,
+  "sift_ala_score": 0.01877,
+  "disopred_score": 0.01814,
+  "coreg.ntera": 0.01812,
+  "quant_top1": 0.01638,
+  "coreg.hl": 0.01523,
+  "log10_hotspot_pval_min": 0.01221,
+  "w3_mya": 0.01118,
+  "residue": 0.00676,
+  "isEV_ala_prediction_epistatic5": 0.00647,
+  "isInterface": 0.00627,
+  "exp3d_ala_ddG_effect": 0.00479,
+  "exp3d_acid_ddG_effect": 0.00451,
+  "SSpro8": 0.00445,
+  "isUniprotRegion": 0.00411,
+  "ACCpro": 0.00358,
+  "isProteinKinaseDomain": 0.00334,
+  "isCytoplasmic": 0.00262,
+  "is_disopred": 0.00223,
+  "SSpro": 0.00214,
+  "isHotspot": 0.00194,
+  "isProteinDomain": 0.00173
+ }
+}

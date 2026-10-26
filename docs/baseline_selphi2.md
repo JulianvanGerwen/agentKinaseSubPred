@@ -7,7 +7,69 @@ Code: `src/ksp/baselines/selphi2/{features,model}.py`, `scripts/baselines/selphi
 Cache: `cache/selphi2/` (OOF predictions in `cache/selphi2/<arm>/oof_fold{f}.parquet`; the ksp.manifest copy is in `cache/runs/<run_id>/predictions.parquet`).
 Results: `results/baselines/selphi2/` (`<arm>/fold{f}.json` holds timings, grid table, importances and counts; `<arm>/summary.json`, `metrics_{matched,full}.json` and `per_kinase_matched.tsv` hold the metrics; `pairsplit_reference.json` holds the non-official reference).
 
-__RESULTS__
+## 0. Results: CV, DEV out-of-fold, 5 substrate-cluster folds, pooled; `ksp.eval`, 1,000-resample cluster bootstrap
+
+| arm / universe | M1 AUROC E-hard (K_cv) | M2 Hit@5 | M3 top-1% recall | M4/M5 | AUROC E-all |
+|---|---|---|---|---|---|
+| **faithful, matched U_B4** (missing='drop'; the claim-bearing view) | **0.708** [0.685, 0.728] | 0.176 [0.158, 0.196] | 0.316 [0.272, 0.356] | 0.714 | 0.887 |
+| faithful, full universe (unscored = worst) | 0.587 [0.568, 0.613] | 0.112 [0.100, 0.124] | 0.297 [0.263, 0.336] | 0.581 | 0.701 |
+| noleak (drops functional_score, PWM_max_mss, netpho_max_KIN, isKinaseCoreg), matched | 0.724 [0.700, 0.742] | 0.190 [0.171, 0.211] | 0.265 [0.224, 0.302] | 0.725 | 0.875 |
+| noleak, full universe | 0.589 | 0.119 | 0.272 | 0.583 | 0.698 |
+| *reference:* B1 Cantley universe percentile (unprimed), same U_B4 pairs | 0.728 [0.711, 0.749] | 0.182 | 0.123 | 0.733 | 0.763 |
+
+- **K_cv** = 203 kinases, all evaluated. M1 is defined for 202 of them on U_B4; 16 have fewer than 3 positives inside U_B4.
+- **Re-filtered matched set (PRIOR-1).** Requiring ≥ 3 positives on ≥ 2 clusters inside U_B4 leaves 184 kinases: faithful M1 0.709, M2 0.185, M3 0.317; noleak 0.722 / 0.197 / 0.262.
+- **Paired comparison against Cantley** on the 26.7M pairs both methods score: SELPHI − Cantley M1 = −0.020 [−0.048, −0.001], M2 +0.001 [−0.026, 0.024], M3 +0.187 [0.137, 0.224]. These are unadjusted bootstrap CIs, for orientation only; they are not part of the pre-registered superiority tests.
+- **Reading.** Retrained honestly, SELPHI2.0 does **not** beat the label-free Cantley percentile on kinase-specific ranking (M1, M2). It does win on M3 / E-all, because its site-level Ochoa features (functional score, abundance, conservation, NetPhos) separate "well-studied phosphosite" from "any site". This is a popularity effect, which is why dropping the four leakage-suspect columns raises M1 by 0.016 and lowers M3 by 0.051.
+- **Strata (faithful, matched).** M1 by group: AGC 0.78, CAMK 0.77, STE 0.75, CMGC 0.72, TKL 0.72, Other 0.69, CK1 0.65, **TK 0.60** (Tyr is SELPHI's weakest class; Y-class M1 0.61). By training bin: 1–4: 0.70, 5–19: 0.73, 20–99: 0.69, ≥100: 0.73. The full strata tables are in `faithful/summary.json`.
+- **Grid winners per fold:** max_depth 20 in every fold; min_samples_split 8/10/12/8/12; n_estimators 1500/1000/1500/1500/1500. Inner AUROCs over the grid are within ±0.005, except depth 10, which is about 0.005 lower.
+- **Feature importance (faithful, fold 0):** functional_score 0.15, score (learned PSSM) 0.15, pssm_ser_thr 0.12, rna.tiss / rna.cell / sel.1 about 0.04 each. Each coreg column is about 0.015.
+
+### Coverage (`ksp.eval.coverage`, pooled DEV)
+- **Sites:** B4 scores 89,419 of 277,924 DEV U_ms sites (32.2%).
+- **Kinases:** all 503 index kinases.
+- **Required pairs:** 23.5M of 69.0M scored (positives plus E-all candidates of every kinase with a positive) = **34.1%**.
+- **Positive pairs:** 5,135 of 8,756 scored = **58.6%** (labelled sites are enriched in the Ochoa table).
+- **Gap reason:** every gap is "site absent from the Ochoa 2020 feature table". There are no kinase gaps.
+
+### Non-official reference: SELPHI's own pair-split protocol, one fold (`pairsplit_reference.json`)
+**Clearly NON-OFFICIAL; not an endpoint.**
+- **Setup.** All DEV L2 positives on U_B4 (6,971) plus 10× random masked pairs. StratifiedKFold(5) over **pairs**, fold 0. Their metric: pooled AUROC of positives against random negatives.
+- **Result.** Pair split: AUROC **0.947**, AP 0.764. On the pair split, 73% of the held-out positive sites also occur in training rows. Our cluster split, fold 0, same metric: AUROC **0.947**, AP 0.760. **The inflation from pair splitting is ≈ 0.000 here.**
+- **Caveat.** In this reference the label-derived columns were still cross-fitted, as the project rule requires. The extra optimism SELPHI's protocol gets from computing `score` / `coreg` from all labels (the target pair sits in its own PSSM and regulon) is therefore *not* included. So 0.947 is a lower bound on what their protocol would report; they report 0.97.
+- **Where the gap comes from.** The gap from their headline (AUC 0.97) to our M1 (0.71) comes from the **evaluation design**, not the split. Random-pair negatives are mostly unstudied sites, which the site-level features recognise. Per-kinase E-hard negatives (sites labelled to other kinases) remove that shortcut. On our data the same model gives 0.95 on "positives vs random pairs" and 0.71 on M1.
+
+### Runtime (12 cores, no GPU)
+- **Faithful arm:** 109 min wall for 5 folds, about 22 min per fold:
+  - masks and loading, about 1.1 min;
+  - negative sampling, 0.4 min;
+  - cross-fitted label features, about 1.8 min;
+  - grid search (72 configurations × 3 inner folds, realised as 9 × 3 fits of 1,500 trees), about 5.6 min;
+  - 10 bag fits, about 3.5 min;
+  - prediction of about 7M pairs per fold with 10 × 1,000–1,500 trees, about 10 min (about 11k pairs/s).
+- **noleak arm:** about 6 min per fold (5 bags × 500 trees, grid winner reused).
+- **Feature build:** about 1 min (`selphi2_build_features.py`).
+- **Evaluation:** about 11 min per arm (single thread; includes the bootstrap and the Cantley reference).
+- **Pilot:** fold 0, 1 bag, 300k eval rows, 3 min.
+- **Whole B4 effort:** about 2 h 50 min of wall time (14:36–17:25).
+
+### Run manifests (`ksp.manifest`)
+- `results/runs/b4_selphi2_faithful__20261026-164243__s0/` (predictions: `cache/runs/<same>/predictions.parquet`, 35.6M rows)
+- `results/runs/b4_selphi2_noleak__20261026-171245__s0/`
+
+The PI can recompute every number from these predictions with `ksp.eval`.
+
+### Deviations from the published method (all deliberate; details in §2)
+1. Our substrate-cluster 5-fold CV replaces their pair-level StratifiedKFold(10). The inner grid-search CV is GroupKFold(3) over clusters.
+2. 10 bags instead of 100; the grid search runs once per outer fold, not once per bag.
+3. Negative ratio 10× (the paper says 10/20/50× are equivalent; their code uses 1× when there are > 10k positives), with our masks applied.
+4. The label-derived `score` and `coreg*` columns are cross-fitted. `score` is our F2a learned PSSM (substituted for their `pssm.py`). The KSEA permutation test is replaced by the KSEA z-score. Spearman is approximated by ranking each profile over its own observed conditions.
+5. `coreg293` uses CPTAC BRCA (BCM v1.2, protein-residualised) in place of Mertins 2016. GTEx v8 was downloaded. HPA is v25 (theirs was v23).
+6. Universe U_B4 = U_ms ∩ Ochoa. SELPHI's own scoring of non-Ochoa sites with imputed defaults was not run.
+7. Labels are L2 (human + mouse/rat) on U_ms, not PSP human-only.
+8. Canaries were not run through B4. The PI's note on canary v2 arrived mid-run. Including canaries would need the B4 feature builders to support the 13 extra kinase rows, which the time box did not allow.
+9. The noleak arm uses 5 bags × 500 trees, not 10 × 1,000–1,500. Its bags 0–4 use the same negative draws as the faithful arm.
+
 
 ## 1. Feature table: 44 model columns (residue + 43)
 
@@ -18,7 +80,7 @@ SELPHI's released feature table (`data/psp/pos_set_features_20240910.tsv`) has *
 
 Every definition below was traced in `src/feature_table_generation/*.r` / `pssm.py`. Imputation follows their code: `sign-test-set.r` applies the replace_na defaults, then `merge_kin_sites.r` sets every remaining NA to 0. Factor columns get R's `as.integer(as.factor())` codes; `residue` uses learn.py's coding {T: 0, Y: 1, S: 2}.
 
-**Status of the 44 columns: 37 regenerated with SELPHI's definition from the same source; 7 regenerated with a substituted source or method (5 label-derived and cross-fitted, 1 replacement data source, 1 method change in `rna.tiss` is minor); 0 dropped.**
+**Status of the 44 columns: 39 regenerated (same definition and source data, with the minor version notes in the table); 3 regenerated with a method substitution (`coreg.ntera/hl/mcf7`: same Hijazi data, KSEA z-score, cross-fitted); 2 substituted (`score` becomes our learned PSSM, `coreg293` uses CPTAC BRCA instead of Mertins 2016); 0 dropped.** Label-derived columns (5): `score`, `coreg293`, `coreg.ntera`, `coreg.hl`, `coreg.mcf7`. All of them go through `ksp.crossfit`.
 
 | # | column | SELPHI definition (source) | status here |
 |---|---|---|---|

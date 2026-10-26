@@ -8,6 +8,9 @@ Representation spaces (all label-free; built by scripts/features/knn_build_reps.
           U_ms sites), L2-normalised -> cosine similarity.
   esmw    ESM-2 650M embedding mean-pooled over the +-7 window (in-protein positions), centred + L2-normalised ->
           cosine.
+  esmcat  concatenated +-7 window: per-position ESM-2 embedding projected on a global residue PCA-128, L2-normalised,
+          scaled by sqrt(w_p / sum w) (w_p as for blosum; padding -> 0) -> dot product = centre-weighted mean of
+          per-position cosines. (Optional space; the default set is SPACES, chosen on fold-0 inner data.)
   blosum  BLOSUM62 15-mer similarity: sum_p w_p B62(q_p, t_p) / sum_p w_p, centre-weighted w_p = 1 / (1 + |p|/4)
           (p = -7..+7, centre included; padding '_' / non-standard residues contribute 0). Computed as a matmul of
           one-hot windows through a block-diagonal metric.
@@ -47,6 +50,7 @@ from ksp.index import ROOT, load_sites
 
 KNN_DIR = ROOT / "cache" / "features" / "knn"
 TAU_FILE = ROOT / "results" / "features" / "knn" / "tau.json"
+ALL_SPACES = ("esmc", "esmw", "esmcat", "blosum")
 SPACES = ("esmc", "esmw", "blosum")
 STATS = ("max", "top3", "kde", "kde_bg", "lr")
 AA20 = "ACDEFGHIKLMNPQRSTVWY"
@@ -140,6 +144,8 @@ class SiteReps:
                 mats[sp] = _centre_normalise(np.load(KNN_DIR / "reps_esm_centre.npy", mmap_mode="r"), rt)
             elif sp == "esmw":
                 mats[sp] = _centre_normalise(np.load(KNN_DIR / "reps_esm_win7.npy", mmap_mode="r"), rt)
+            elif sp == "esmcat":
+                mats[sp] = np.load(KNN_DIR / "reps_esm_cat7.npy")
             elif sp == "blosum":
                 w15 = S.window15.to_numpy()[spos]
                 mats[sp] = onehot_windows(w15)

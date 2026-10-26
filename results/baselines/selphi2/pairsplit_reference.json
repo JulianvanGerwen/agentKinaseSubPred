@@ -1,0 +1,25 @@
+{
+ "label": "NON-OFFICIAL reference (SELPHI pair-split protocol on our DEV data; one fold)",
+ "best_params": {
+  "max_depth": 20,
+  "min_samples_split": 8,
+  "n_estimators": 1500
+ },
+ "n_pos": 6971,
+ "n_neg": 69710,
+ "pairsplit": {
+  "auroc": 0.9467358112898857,
+  "ap": 0.7636348327486979,
+  "n_test_pos": 1395,
+  "n_test_neg": 13942,
+  "frac_test_pos_sites_seen_in_training": 0.7340501792114695
+ },
+ "our_cluster_split_fold0": {
+  "auroc": 0.9474391389185627,
+  "ap": 0.7595936340777235,
+  "n_test_pos": 1419,
+  "n_test_neg": 14190
+ },
+ "inflation_auroc": -0.0007033276286769752,
+ "seconds": 137.6
+}

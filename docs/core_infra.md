@@ -221,3 +221,19 @@ I expect no breaking changes. Every public signature above is frozen, including 
 - `EvalResult.endpoints` may gain extra keys, e.g. bootstrap summaries. Existing keys keep their names.
 - If the PI adopts it, a shared `ksp.labels.sample_negatives(...)` generator would be added (A15/A22). Nothing existing would be renamed.
 - Label tables change only through `build_splits.py --relabel`. That mode keeps the split, evaluation positives and canaries fixed and fails otherwise, so DEV evaluation sets cannot shift silently.
+
+## 12. CV leaderboard (`scripts/reeval_cv_runs.py`)
+
+The script re-evaluates every pooled-CV run that has `cache/runs/<id>/predictions.parquet`, using the current `ksp.eval`:
+- A24 fold rank-normalisation is on, except for LKO pooled runs (`fold_normalise=False`).
+- Missing pairs use `missing='worst'`.
+- It writes only `results/runs/<id>/metrics_a24.json`; existing metrics files are kept.
+- It then builds `results/cv/LEADERBOARD.{md,tsv}`.
+
+The script is re-runnable: already re-evaluated runs are skipped unless `--force`. Other options are `--only REGEX`, `--list` and `--board-only`.
+
+How the board treats special cases:
+- **Partial coverage** (scored fraction of the required pairs < 0.95, e.g. B3-pub scored only positives + E-hard, B4 only the U_B4 sites): M3 is blanked, because unscored E-all pairs ranked last inflate E-all metrics. Compare such runs with `ksp.eval.matched_universe`.
+- **Canary gate:** shown only for runs that scored canaries. A run trained before the v2 canary labels is marked "(v1-trained)".
+- **Official baselines (A23, latest run of each arm):** B1 arm (i) for M1/M3, B1 arm (ii) for M2, B7, and the B0-prior/pop/miss floors.
+- **R3 pooled runs** have no saved pooled predictions, so they cannot be re-evaluated until the R3 agent saves `predictions.parquet` for the pooled runs.

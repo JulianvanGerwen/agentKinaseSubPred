@@ -1,0 +1,35 @@
+{
+ "tau": {
+  "esmc": 0.1,
+  "esmw": 0.1,
+  "blosum": 2.0
+ },
+ "criterion": "max macro per-kinase AUROC of knn_<sp>_lr on CV fold 0, inner fold 0 held out",
+ "grid": {
+  "cos": [
+   0.01,
+   0.02,
+   0.05,
+   0.1,
+   0.2,
+   0.5
+  ],
+  "blosum": [
+   0.05,
+   0.1,
+   0.2,
+   0.5,
+   1.0,
+   2.0
+  ]
+ },
+ "n_fit_labels": 7088,
+ "n_kinases": 110,
+ "n_rows": 35063,
+ "neg_per_kinase": 300,
+ "min_pos": 5,
+ "seed": 0,
+ "c": 1.0,
+ "n_bg": 2000,
+ "runtime_s": 25.5
+}

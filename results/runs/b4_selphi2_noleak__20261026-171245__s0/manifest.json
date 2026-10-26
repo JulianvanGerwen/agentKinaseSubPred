@@ -1,0 +1,156 @@
+{
+ "run_id": "b4_selphi2_noleak__20261026-171245__s0",
+ "name": "b4_selphi2_noleak",
+ "git_hash": "efcf167f71112b63801d05b68ca507469b09bdd9",
+ "config": {
+  "arm": "noleak",
+  "neg_ratio": 10,
+  "n_bags": 5,
+  "grid": {
+   "max_depth": [
+    10,
+    20,
+    50,
+    70,
+    80,
+    100
+   ],
+   "min_samples_split": [
+    8,
+    10,
+    12
+   ],
+   "n_estimators": [
+    150,
+    500,
+    1000,
+    1500
+   ]
+  },
+  "grid_bags": [
+   0
+  ],
+  "n_estimators_cap": 500,
+  "n_jobs": 10,
+  "seed": 0,
+  "drop_cols": [
+   "functional_score",
+   "PWM_max_mss",
+   "netpho_max_KIN",
+   "isKinaseCoreg"
+  ],
+  "label_variant": "L2",
+  "best_params_per_fold": [
+   {
+    "max_depth": 20,
+    "min_samples_split": 8,
+    "n_estimators": 1500
+   },
+   {
+    "max_depth": 20,
+    "min_samples_split": 10,
+    "n_estimators": 1000
+   },
+   {
+    "max_depth": 20,
+    "min_samples_split": 12,
+    "n_estimators": 1500
+   },
+   {
+    "max_depth": 20,
+    "min_samples_split": 8,
+    "n_estimators": 1500
+   },
+   {
+    "max_depth": 20,
+    "min_samples_split": 12,
+    "n_estimators": 1500
+   }
+  ]
+ },
+ "seed": 0,
+ "split": "cv",
+ "notes": "B4 SELPHI2.0 retrained, OOF over DEV 5-fold CV; universe U_B4 = U_ms with Ochoa features",
+ "inputs": [
+  {
+   "path": "/workspace/cache/selphi2/noleak/oof_fold0.parquet",
+   "type": "file",
+   "bytes": 71769802,
+   "sha256": "f43f1208f0f00b2970e4b1806456a25738475d3c8aa6cc4348f7d01ebbffb641"
+  },
+  {
+   "path": "/workspace/cache/selphi2/noleak/oof_fold1.parquet",
+   "type": "file",
+   "bytes": 75033578,
+   "sha256": "0cb10918a0989c3e1580b5db66743861e06b1400a24674b67b0c75ad5fbf67d9"
+  },
+  {
+   "path": "/workspace/cache/selphi2/noleak/oof_fold2.parquet",
+   "type": "file",
+   "bytes": 74689242,
+   "sha256": "286f3e7bad76fc27284536c1b387c887ac802509e26b6f4a349096239e9cbf5f"
+  },
+  {
+   "path": "/workspace/cache/selphi2/noleak/oof_fold3.parquet",
+   "type": "file",
+   "bytes": 65855103,
+   "sha256": "e42c265d521e35139028ef159e3acc414f4b44266a4203e90ec002522de91c27"
+  },
+  {
+   "path": "/workspace/cache/selphi2/noleak/oof_fold4.parquet",
+   "type": "file",
+   "bytes": 76900147,
+   "sha256": "165e1a0872099b05c14e94bb0d587e7dfd0cb8fee9528cc3355538fc30297d42"
+  }
+ ],
+ "host": "eu-g6-076",
+ "python": "3.12.3",
+ "platform": "Linux-5.15.0-198-generic-x86_64-with-glibc2.39",
+ "argv": [
+  "scripts/baselines/selphi2_eval.py",
+  "--arm",
+  "noleak",
+  "--B",
+  "1000",
+  "--no-cantley"
+ ],
+ "pid": 293610,
+ "started": "2026-10-26 17:12:45 CET",
+ "n_rows": {
+  "predictions": 35566203
+ },
+ "outputs": {
+  "predictions": {
+   "path": "cache/runs/b4_selphi2_noleak__20261026-171245__s0/predictions.parquet",
+   "sha256": "9a00ca0a1af4bab5f02b4fe98d27ab765c074852c19839b6e641f1893e298e9e"
+  },
+  "metrics_matched": {
+   "path": "results/runs/b4_selphi2_noleak__20261026-171245__s0/metrics_matched.json",
+   "sha256": "257355351f58a759f20f79f20686c19e50537494b6ae4fb87823387335eb138c"
+  },
+  "metrics_full": {
+   "path": "results/runs/b4_selphi2_noleak__20261026-171245__s0/metrics_full.json",
+   "sha256": "b120fe5296265aba5b1324084a6ae277245c10dab60a276b23baf61e7f61e07c"
+  },
+  "summary": {
+   "path": "results/runs/b4_selphi2_noleak__20261026-171245__s0/summary.json",
+   "sha256": "a0ea6e0302d63f0b9b58a47b88e2828e83b2d1d6ab184857fa7a9c502e43835b"
+  }
+ },
+ "fallbacks": {},
+ "coverage": {
+  "kinases_scored": 503,
+  "sites_scored": 89419,
+  "universe_sites_scored": 89419,
+  "universe_sites": 277924,
+  "required_pairs": 68969976,
+  "required_pairs_scored": 23518206,
+  "frac_required_scored": 0.34099194118901827,
+  "positive_pairs": 8756,
+  "positive_pairs_scored": 5135
+ },
+ "status": "ok",
+ "error": null,
+ "runtime_s": 394.78,
+ "finished": "2026-10-26 17:19:20 CET"
+}
