@@ -86,3 +86,6 @@ Status: literature (4 reviews), data profiling, two acquisition waves (~12.6 GB)
     - Released weights reproduce paper (AUROC 0.8855 on their split). On our CV (contaminated: trained on PSP incl. our positives) M1=0.793, M4=0.801, Hit@5=0.248 — reference only.
     - Faithful MLM pretraining (corpus filtered: 642 TEST substrates + 458 homologs + 152 kinase domains removed) running, ETA 19:15; fine-tune CV ETA 22:30.
   - [~] 5.5 B4 SELPHI2.0 retrain
+  - [~] 5.6 kNN embedding-similarity crossfit feature (GPU 2)
+  - [~] 5.7 Tyrosine-kinase specificity diagnosis + SH2-docking features
+  - [~] 5.8 Independent audit of CV results (R3, baselines, R2)

@@ -24,6 +24,8 @@ Definitions (frozen at G1)
         ties at the cut-off get fractional credit. Secondary: pAUROC(FPR<=0.01, McClish-standardised, as
         sklearn max_fpr), AUPRC (average precision) and its lift (AP / prevalence), AUROC on E-all.
   CV  : the same endpoints with K_cv in place of K_eval (M1-CV == M5) and K_any_cv (>=1 DEV positive) for M4.
+        Pooled OOF (fold=None): scores are rank-normalised within (fold, kinase) by default (A24; M2 unchanged), and
+        per-fold M1 (M1_per_fold, M1_fold_mean) is reported.
   Missing predictions: policy 'worst' (default; missing scores = -inf, counted), 'drop' (only scored pairs; use for
   matched-universe comparisons), or 'error'. Unknown kinase/site IDs and duplicate pairs always raise.
   Canaries (kinase_acc CANARY_*) are evaluated in res.canary only, never in endpoints/strata.
@@ -174,6 +176,7 @@ class EvalData:
     k_any: list                               # K_any (test) / kinases with >=1 positive in universe (cv)
     train_counts: pd.Series                   # kinase_acc -> DEV L2 count
     info: dict = field(default_factory=dict)
+    site_fold: np.ndarray | None = None       # CV fold per index site (-1 = not DEV); None for TEST
 
 
 def _res_ok(res: np.ndarray, cls: str) -> np.ndarray:
@@ -240,8 +243,11 @@ def prepare(split: str = "cv", fold: int | None = None, labels_df: pd.DataFrame 
     info = {"n_universe_sites": int(universe.sum()), "n_positive_pairs": int(len(ev)),
             "n_positive_pairs_real": int((~ev.kinase_acc.str.startswith("CANARY_")).sum()),
             "n_ext_pairs": int(len(ext))}
+    site_fold = None
+    if split == "cv":
+        site_fold = S.acc.map(splits.load_cv_folds()).fillna(-1).astype(np.int64).values
     return EvalData(split, fold, S, universe, s_cl, K, positives, pos_meta, ext_pos, masks, par, sk, ks,
-                    k_primary, k_any, tc, info)
+                    k_primary, k_any, tc, info, site_fold)
 
 
 # ================================================================================================ predictions
@@ -326,13 +332,38 @@ def _nanmean(x) -> float:
     return float(x.mean()) if len(x) else float("nan")
 
 
+def fold_rank_normalise(P: pd.DataFrame, data: EvalData) -> pd.DataFrame:
+    """DESIGN §17 A24: replace `score` by its percentile (average rank / n, ties averaged) among the same kinase's
+    scored candidates in the same CV fold (universe sites only), removing fold-varying score offsets before pooled
+    per-kinase metrics. The raw score is kept as `score_site` for M2 unless a separate score_site was supplied."""
+    if data.site_fold is None:
+        raise ValueError("fold rank-normalisation needs CV fold information (split='cv')")
+    P = P.copy()
+    if "score_site" not in P:
+        P["score_site"] = P.score.values
+    fk = data.site_fold[P.s.values]
+    m = (fk >= 0) & data.universe[P.s.values]
+    key = P.k.values[m] * 8 + fk[m]
+    P.loc[m, "score"] = pd.Series(P.score.values[m]).groupby(key).rank(method="average", pct=True).values
+    return P
+
+
 def evaluate(preds: pd.DataFrame, data: EvalData, missing: str = "worst", frac_top: float = 0.01,
-             kinases: list | None = None, keep_items: bool = True) -> EvalResult:
+             kinases: list | None = None, keep_items: bool = True,
+             fold_normalise: bool | None = None) -> EvalResult:
     """All endpoints for one prediction set. `kinases` restricts the per-kinase loop (default: every kinase with
-    >= 1 positive in the universe, incl. canaries)."""
+    >= 1 positive in the universe, incl. canaries).
+    fold_normalise (A24): rank-normalise scores within (CV fold, kinase) before M1/M3/M4/M5 (M2 uses the supplied
+    cross-kinase score unchanged). Default None = ON for pooled CV (split='cv', fold=None), OFF otherwise (a single
+    fold or TEST: within-fold ranks are monotone, so metrics would not change). For leave-kinase-out pooled
+    predictions (one model per kinase) pass fold_normalise=False."""
     if missing not in ("worst", "drop", "error"):
         raise ValueError("missing must be 'worst', 'drop' or 'error'")
     P = map_predictions(preds, data)
+    if fold_normalise is None:
+        fold_normalise = data.split == "cv" and data.fold is None
+    if fold_normalise:
+        P = fold_rank_normalise(P, data)
     nS = len(data.sites)
     res_arr = data.sites.res.values
     kacc = data.kinases.uniprot_acc.values
@@ -385,6 +416,10 @@ def evaluate(preds: pd.DataFrame, data: EvalData, missing: str = "worst", frac_t
              "auroc_hard": auroc(sp, sh), "auroc_all": auroc(sp, sa), "pauroc01_all": pauroc(sp, sa, 0.01),
              "ap_all": average_precision(sp, sa), "top1_recall": float(hits.mean()) if len(hits) else np.nan,
              "n_pos_clusters": len(np.unique(data.site_cluster[ip]))}
+        if data.site_fold is not None and data.fold is None:
+            fp, fh = data.site_fold[ip], data.site_fold[ih]
+            for f in range(splits.N_FOLDS):
+                r[f"auroc_hard_f{f}"] = auroc(sp[fp == f], sh[fh == f])
         prev = len(sp) / max(len(sp) + len(sa), 1)
         r["ap_lift_all"] = r["ap_all"] / prev if prev > 0 else np.nan
         rows.append(r)
@@ -426,6 +461,11 @@ def evaluate(preds: pd.DataFrame, data: EvalData, missing: str = "worst", frac_t
     is_can = pk.kinase_acc.str.startswith("CANARY_")
     real = pk[~is_can].set_index("kinase_acc")
     E = _endpoints(real, data)
+    E["fold_normalised"] = bool(fold_normalise)
+    if data.site_fold is not None and data.fold is None and "auroc_hard_f0" in real:
+        kp_ = [k for k in data.k_primary if k in real.index]
+        E["M1_per_fold"] = [_nanmean(real.loc[kp_, f"auroc_hard_f{f}"]) for f in range(splits.N_FOLDS)]
+        E["M1_fold_mean"] = _nanmean(E["M1_per_fold"])
     E["n_missing_pairs"] = miss["pairs_missing"]
     E["n_required_pairs"] = miss["pairs_required"]
     can = canary_check(pk[is_can]) if is_can.any() else {}

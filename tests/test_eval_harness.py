@@ -170,3 +170,22 @@ def test_manifest(tmp_path, monkeypatch):
     assert m["inputs"][0]["sha256"]
     with pytest.raises(FileExistsError):
         manifest.RunManifest("toy", {}, 0, run_id=run.run_id)
+
+
+def test_fold_offset_invariance_pooled_cv():
+    """A24: adding a constant offset to one fold's scores leaves pooled M1/M3 unchanged under fold rank-normalisation
+    (and changes them without it)."""
+    d = E.prepare("cv", fold=None, with_canaries=False)
+    ks = _top_kinases(d, 6)
+    pos = {k: set(d.positives[k]) for k in ks}
+    a = _preds(d, ks, lambda k, s, r: r.random(len(s)) + 0.7 * np.isin(s, list(pos[k])))
+    b = a.copy()
+    off = d.site_fold[pd.Series(np.arange(len(d.sites)), index=d.sites.site_id)[b.site_id].values] == 1
+    b.loc[off, "score"] += 5.0
+    ra, rb = E.evaluate(a, d, kinases=ks), E.evaluate(b, d, kinases=ks)
+    assert ra.endpoints["fold_normalised"] and rb.endpoints["fold_normalised"]
+    pa, pb = ra.per_kinase.set_index("kinase_acc"), rb.per_kinase.set_index("kinase_acc")
+    assert np.allclose(pa.auroc_hard, pb.auroc_hard) and np.allclose(pa.top1_recall, pb.top1_recall)
+    assert len(ra.endpoints["M1_per_fold"]) == 5
+    rc = E.evaluate(b, d, kinases=ks, fold_normalise=False)
+    assert not np.allclose(rc.per_kinase.set_index("kinase_acc").auroc_hard, pa.auroc_hard)

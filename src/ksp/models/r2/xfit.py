@@ -62,6 +62,41 @@ def _f2a_class():
     return LearnedPSSMCanary
 
 
+def _f2a_sep_class():
+    """F2a with real kinases and canaries fitted SEPARATELY (PI 16:58): alpha/beta are tuned on real kinases only, and
+    canary PSSMs never pool with, nor tune on, real kinases (each canary has its own group, A25)."""
+    from ksp.features import motif_learned as ml
+    base = _f2a_class()
+
+    class LearnedPSSMSep(base):
+        name = "r2_f2a_pssm_sep"
+
+        def fit(self, train_pairs, ctx=None):
+            groups = None
+            if ctx is not None and getattr(ctx, "clusters", None) is not None and len(ctx.clusters):
+                acc = train_pairs.site_id.str.rsplit("_", n=1).str[0]
+                groups = pd.Series(acc.map(ctx.clusters).fillna(acc).astype(str).to_numpy(), index=train_pairs.site_id)
+                groups = groups[~groups.index.duplicated()]
+            seed = getattr(ctx, "seed", 0) if ctx is not None else 0
+            self.sites = index.load_sites()
+            self.kinases = kinases_all()
+            isc = canary.is_canary(train_pairs.kinase_acc)
+            real, can = train_pairs[~isc].reset_index(drop=True), train_pairs[isc].reset_index(drop=True)
+            nreal = int((~canary.is_canary(self.kinases.uniprot_acc)).sum())
+            for attr, ph in (("m0", False), ("m1", True)):
+                mr = ml.fit_pssm(real, self.sites, self.kinases, self.prior, ph, groups=groups, seed=seed)
+                if len(can):
+                    mc = ml.fit_pssm(can, self.sites, self.kinases, self.prior, ph, groups=groups, seed=seed)
+                    for rt in mr.logodds:
+                        mr.logodds[rt][nreal:] = mc.logodds[rt][nreal:]
+                        mr.n_train[rt][nreal:] = mc.n_train[rt][nreal:]
+                        mr.level[rt][nreal:] = mc.level[rt][nreal:]
+                    mr.info["canary_alpha_beta"] = (mc.alpha, mc.beta)
+                setattr(self, attr, mr)
+            return self
+    return LearnedPSSMSep
+
+
 def _f6a_class(exclude_pmids=(), name="r2_f6a_coreg_canary"):
     from ksp.features import phospho as ph
 
@@ -116,6 +151,8 @@ FAMILIES = {
     # name: (factory-of-class, level, columns); CHUNK[name] = max expanded pairs per inner transform call
     "f2a": (lambda: _f2a_class(), "site",
             ["f2a_pssm", "f2a_pssm_pct", "f2a_pssm_ph", "f2a_pssm_ph_pct", "f2a_pssm_level", "f2a_pssm_log_ntrain"]),
+    "f2a_sep": (lambda: _f2a_sep_class(), "site",
+                ["f2a_pssm", "f2a_pssm_pct", "f2a_pssm_ph", "f2a_pssm_ph_pct", "f2a_pssm_level", "f2a_pssm_log_ntrain"]),
     "f3nb": (lambda: _f3_class(), "protein",
              ["f3nb_nb_max", "f3nb_nb_mean", "f3nb_nb_top3", "f3nb_nb_n_adj", "f3nb_nb_frac_adj", "f3nb_nb_n_used"]),
     "f6a": (lambda: _f6a_class(), "site", ["f6a_comp_top", "f6a_comp_med", "f6a_cptac_top", "f6a_cptac_med"]),
@@ -124,7 +161,7 @@ FAMILIES = {
 }
 
 
-CHUNK = {"f2a": 6_000_000, "f3nb": 6_000_000, "f6a": 40_000_000, "f6a_clean": 40_000_000}
+CHUNK = {"f2a": 6_000_000, "f2a_sep": 6_000_000, "f3nb": 6_000_000, "f6a": 40_000_000, "f6a_clean": 40_000_000}
 
 
 class DenseExpand(crossfit.LabelDerivedFeature):

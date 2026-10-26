@@ -1,0 +1,93 @@
+{
+ "run_id": "r2_abl_toF6a_f1__20261026-165414__s0",
+ "name": "r2_abl_toF6a_f1",
+ "git_hash": "581e25c4b597e00d27eff31a5ae6a0bc6e2149f1",
+ "config": {
+  "groups": [
+   "F1",
+   "F0",
+   "F2a",
+   "F3",
+   "F4",
+   "F6a"
+  ],
+  "ratio": 50,
+  "hard": 0.5,
+  "alpha": 0.5,
+  "objective": "binary",
+  "num_leaves": 127,
+  "learning_rate": 0.03,
+  "min_data_in_leaf": 100,
+  "feature_fraction": 0.8,
+  "bagging_fraction": 0.8,
+  "lambda_l2": 1.0,
+  "max_bin": 255,
+  "max_rounds": 3000,
+  "es_rounds": 100,
+  "refit": true,
+  "clean": false,
+  "comp_know": false,
+  "seed": 0,
+  "variant": "L2",
+  "miss_only": false,
+  "min_rounds": 50,
+  "es_metric": "mixed"
+ },
+ "seed": 0,
+ "split": "cv",
+ "notes": "folds=[1]; ",
+ "inputs": [],
+ "host": "eu-g6-076",
+ "python": "3.12.3",
+ "platform": "Linux-5.15.0-198-generic-x86_64-with-glibc2.39",
+ "argv": [
+  "scripts/models/r2_run.py",
+  "--name",
+  "r2_abl_toF6a_f1",
+  "--folds",
+  "1",
+  "--stage",
+  "ablation",
+  "--no-register",
+  "--set",
+  "num_leaves=127",
+  "learning_rate=0.03",
+  "groups=[\"F1\",\"F0\",\"F2a\",\"F3\",\"F4\",\"F6a\"]"
+ ],
+ "pid": 275709,
+ "started": "2026-10-26 16:54:14 CET",
+ "n_rows": {
+  "predictions": 21213598
+ },
+ "outputs": {
+  "predictions": {
+   "path": "cache/runs/r2_abl_toF6a_f1__20261026-165414__s0/predictions.parquet",
+   "sha256": "dd38cfdce1359f02d12770c03e9b39063ce8164048f3ce66c10ed76e8a8f4ceb"
+  },
+  "metrics": {
+   "path": "results/runs/r2_abl_toF6a_f1__20261026-165414__s0/metrics.json",
+   "sha256": "e97b17c8652e0dd276fac25a73875bffd456bd70c9447a1fc16f85a838298e3b"
+  }
+ },
+ "fallbacks": {},
+ "fold_logs": {
+  "1": {
+   "n_train_rows": 498168,
+   "n_pos": 9768,
+   "n_val_rows": 99633,
+   "best_iteration": 120,
+   "inner_val_metric": 0.8080529439382023,
+   "t_gather_train_s": 37.4,
+   "t_train_es_s": 16.0,
+   "t_refit_s": 6.2,
+   "n_features": 128,
+   "t_predict_s": 24.9,
+   "n_pred_rows": 21213598,
+   "t_fold_s": 94.0
+  }
+ },
+ "status": "ok",
+ "error": null,
+ "runtime_s": 131.49,
+ "finished": "2026-10-26 16:56:26 CET"
+}

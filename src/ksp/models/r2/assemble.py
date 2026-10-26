@@ -43,7 +43,8 @@ def _ks(name):
 
 class Assembler:
     def __init__(self, groups, fold: int | None, xfit_tag: str | None = None, clean: bool = False,
-                 comp_know: bool = False, esm: str = "esm2_650m", skip_xfit: bool = False):
+                 comp_know: bool = False, esm: str = "esm2_650m", skip_xfit: bool = False,
+                 f2a_family: str = "f2a", desc_v: int = 1):
         self.groups = list(groups)
         unknown = set(self.groups) - set(GROUP_ORDER)
         if unknown:
@@ -51,6 +52,7 @@ class Assembler:
         self.fold, self.clean, self.comp_know = fold, clean, comp_know
         self.xfit_tag = xfit_tag
         self.skip_xfit = skip_xfit
+        self.f2a_family, self.desc_v = f2a_family, desc_v
         self.S = index.load_sites()
         self.K = canary.kinases_with_canaries()
         self.nK = len(self.K)
@@ -104,7 +106,7 @@ class Assembler:
             for j in range(esm.shape[1]):
                 self._add(f"f0_esm{j:02d}", "site", esm[:, j])
         if "F2a" in g:
-            self._xfit("f2a")
+            self._xfit(self.f2a_family)
         if "F3" in g:
             for s in ["bioplex_293t", "bioplex_hct116", "huri", "opencell", "buljan", "hcm"]:
                 self._add(f"f3_edge_{s}", "kp", self._m(f"context/ppi/ppi_edge_{s}"))
@@ -138,7 +140,7 @@ class Assembler:
         if "F8" in g:
             self.fallbacks["F8_unavailable"] = 1      # Sugiyama 2019 store not built; group contributes nothing
         if "F7" in g:
-            D = kinase_descriptors()
+            D = kinase_descriptors(version=self.desc_v)
             for c in D.columns:
                 self._add(f"f7_{c}", "k", D[c].to_numpy(np.float32), cat=c in ("rclass", "group", "family"))
 
@@ -228,10 +230,15 @@ class Assembler:
 
 
 # --------------------------------------------------------------------------------------------- F7 descriptors
-def kinase_descriptors(n_esm: int = 16, n_cant: int = 8, rebuild: bool = False) -> pd.DataFrame:
-    """Label-free kinase descriptors for all kinases incl. canaries (index = kinases_with_canaries order)."""
-    if DESC_CACHE.exists() and not rebuild:
-        return pd.read_parquet(DESC_CACHE)
+def kinase_descriptors(n_esm: int = 16, n_cant: int = 8, rebuild: bool = False, version: int = 1) -> pd.DataFrame:
+    """Label-free kinase descriptors for all kinases incl. canaries (index = kinases_with_canaries order).
+    version 1: cache built with canary v1 metadata (all canaries in group CANARY); version 2: current ksp.canary
+    (A25: one Manning group per canary)."""
+    cache = DESC_CACHE if version == 1 else DESC_CACHE.with_name(f"kinase_desc_v{version}.parquet")
+    if cache.exists() and not rebuild:
+        return pd.read_parquet(cache)
+    if version == 1:
+        raise FileNotFoundError("descriptor v1 cache missing; it cannot be rebuilt after A25")
     from sklearn.decomposition import PCA
     K = canary.kinases_with_canaries()
     S = index.load_sites()
@@ -275,6 +282,6 @@ def kinase_descriptors(n_esm: int = 16, n_cant: int = 8, rebuild: bool = False) 
         off += n_cant
         for j in range(n_cant):
             out[f"cant_{rt}_pc{j}"] = Zc[:, j]
-    DESC_CACHE.parent.mkdir(parents=True, exist_ok=True)
-    out.to_parquet(DESC_CACHE)
+    cache.parent.mkdir(parents=True, exist_ok=True)
+    out.to_parquet(cache)
     return out

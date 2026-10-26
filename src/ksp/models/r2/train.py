@@ -43,7 +43,8 @@ def default_config() -> dict:
     return dict(groups=list(FULL_GROUPS), ratio=50, hard=0.5, alpha=0.5, objective="binary", num_leaves=63,
                 learning_rate=0.05, min_data_in_leaf=100, feature_fraction=0.8, bagging_fraction=0.8,
                 lambda_l2=1.0, max_bin=255, max_rounds=3000, es_rounds=100, refit=True, clean=False,
-                comp_know=False, seed=0, variant="L2", miss_only=False, min_rounds=50, es_metric="mixed")
+                comp_know=False, seed=0, variant="L2", miss_only=False, min_rounds=50, es_metric="mixed", es_real_only=False,
+                f2a_family="f2a", desc_v=1)
 
 
 # ---------------------------------------------------------------------------------------------------- metrics
@@ -185,6 +186,8 @@ def train_fold(fd, A, cfg, log):
         keep_va = (dva_rows.neg_type.values != "all") & (dva_rows.kinase_idx.values < assemble.N_REAL)
     else:
         keep_va = np.ones(len(dva_rows), bool)
+    if cfg.get("es_real_only"):        # PI 16:58: tune on real kinases only
+        keep_va &= dva_rows.kinase_idx.values < assemble.N_REAL
 
     def feval(preds, ds):
         if obj == "site_grouped":
@@ -284,7 +287,8 @@ def run(cfg: dict, folds=(0,), name: str = "r2", config_name: str = "", notes: s
         for f in folds:
             t = time.time()
             fd = sample.FoldData(f, cfg["variant"])
-            A = assemble.Assembler(cfg["groups"], f, clean=cfg["clean"], comp_know=cfg["comp_know"])
+            A = assemble.Assembler(cfg["groups"], f, clean=cfg["clean"], comp_know=cfg["comp_know"],
+                                   f2a_family=cfg.get("f2a_family", "f2a"), desc_v=cfg.get("desc_v", 1))
             for k_, v_ in A.fallbacks.items():
                 run_.count_fallback(k_, v_)
             lg = {}

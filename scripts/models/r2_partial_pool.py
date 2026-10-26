@@ -28,7 +28,8 @@ with manifest.RunManifest("r2_partial_pool", config={"base_run": a.run, "lams": 
         fm = json.load(open(ROOT / "results" / "runs" / fold_runs[f] / "manifest.json"))
         n_rounds = list(fm["fold_logs"].values())[0]["best_iteration"]
         fd = sample.FoldData(f, cfg["variant"])
-        A = assemble.Assembler(cfg["groups"], f, clean=cfg["clean"], comp_know=cfg["comp_know"])
+        A = assemble.Assembler(cfg["groups"], f, clean=cfg["clean"], comp_know=cfg["comp_know"],
+                               f2a_family=cfg.get("f2a_family", "f2a"), desc_v=cfg.get("desc_v", 1))
         d, X, cols, stats = train.build_train(fd, A, cfg)
         cat = [c for c in A.cat_cols if c in cols]
         inner = splits.inner_folds(fd.S.site_id.values[d.site_idx.values], 3, cfg["seed"] + 11)
