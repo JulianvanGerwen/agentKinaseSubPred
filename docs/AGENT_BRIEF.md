@@ -13,3 +13,9 @@ Rules (non-negotiable):
 - Don't spend long trying to access gated data; note it under "Requests to user" and move on.
 - Python env: /workspace/.venv/bin/python (torch+cu124, transformers, lightgbm, xgboost, pandas, sklearn...). Fallback: /home/plm_env/bin/python. mmseqs2: /home/tools/mmseqs/bin/mmseqs. Hardware: 64 cores, 375 GB RAM, 4x RTX 4090 — be considerate, other agents share it; use at most the GPU(s)/cores you are told to.
 - Return to the PI a concise summary (≤ 600 words unless asked otherwise); put details in files.
+
+## Canonical identifiers (all agents MUST use these)
+- Protein: UniProt Swiss-Prot canonical accession (no isoform suffix), sequences from external/uniprot (release 2026_03) via src/ksp/uniprot.py.
+- Site: `site_id = f"{acc}_{res}{pos}"`, e.g. `P05198_S52`; res ∈ {S,T,Y}; pos 1-based on the canonical sequence. Mapping from other sources is by 15-mer window match to canonical (never trust residue numbers across isoforms/versions).
+- Kinase: HGNC gene symbol of the human kinase (e.g. `CSNK2A1`), plus UniProt accession, from results/labels/kinase_list.tsv (once built).
+- Cache large intermediate files in /workspace/cache/<module>/ (gitignored); small result tables in /workspace/results/<module>/ (committed).

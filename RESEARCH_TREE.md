@@ -40,4 +40,10 @@ User notes: PSP full downloads will be provided by user; CPTAC/others: try to fe
     - Localisation: HPA IF, OpenCell, COMPARTMENTS knowledge+experiments (not textmining). Structure: AFDB pLDDT/RSA via structuremap. PLMs: ESM-2 650M/3B (MIT) downloadable; ESM-C via plm_env transformers 5.17.
     - Structure-based KS (AF-multimer) infeasible at scale; optional pilot only.
 - [~] 2. Data profiling of provided data (agent -> docs/data_profile.md, src/ksp/io_psp.py)
-- [ ] 3. DESIGN.md + review rounds (≤3)
+- [~] 3. DESIGN.md + review rounds (≤3)
+  - [x] 3.0 LITERATURE.md synthesis; DESIGN.md v0
+  - [~] 3.1 Review round 1: external PI, statistics, data/leakage, algorithms/compute, AI failure modes, kinase biology, prior work → docs/reviews/r1_*.md
+- [~] 4. Foundations (design-independent, parallel with review)
+  - [~] 4.1 ids.py, kinase list, site universe, labels L1–L3 + external curated (agent)
+  - [~] 4.2 AlphaFold structure features + ESM-2 650M per-residue embeddings for all S/T/Y (agent; GPUs 2–3)
+  - [~] 4.3 Data acquisition wave 2 (Buljan2020, Kinobeads/Davis/DTC, Sugiyama, Phosformer weights, SELPHI2 code, KinCore, HGNC, SIGNOR retry)
