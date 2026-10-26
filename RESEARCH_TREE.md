@@ -16,6 +16,10 @@ Hardware: 64 CPU cores, 375 GB RAM, 4× RTX 4090 (24 GB). Internet available. Ne
 - T+22–24h: REPORT.md, final commit
 User notes: PSP full downloads will be provided by user; CPTAC/others: try to fetch ourselves, ask user only if slow.
 
+### 2026-10-26 14:50 — M1: design v1 + implementation start
+Decision note: accepted ~80 of 84 round-1 changes (map in DESIGN §15). Biggest design changes: (1) hard gates G1–G6 with scope cuts; (2) leave-substrate-cluster-out cross-fitting for every label-derived feature (DL-1: 68% of KS pairs have a same-protein co-labelled site → leave-site-out leaks); (3) paralog-masked hard negatives (SRC family: >50% of hard negatives were paralog substrates); (4) endpoints M1 (macro E-hard AUROC), M2 (filtered site-centric Hit@5), M3 (top-1% recall on U_ms), M4/M5 for understudied kinases; (5) sealed TEST + FREEZE.json + canary kinases; (6) only systematic-screen PPI (STRING leaks).
+Status: literature (4 reviews), data profiling, two acquisition waves (~12.6 GB), labels (L2 = 18,638 pairs, 401 kinases) and site universe (350,736 sites) are done. Round-2 review (4 reviewers) running in parallel with 6 implementation agents: core infra (splits/seal/eval/canaries), motif features, context features, phospho features, Phosformer reimplementation (GPU 0), structure+ESM (GPUs 2–3). DATAINEED.md created for the user (7 open requests; none blocking).
+
 ## Tree
 - [~] 0. Setup
   - [x] 0.1 git, PROMPT.md, .gitignore (data/ never committed)
@@ -42,8 +46,15 @@ User notes: PSP full downloads will be provided by user; CPTAC/others: try to fe
 - [~] 2. Data profiling of provided data (agent -> docs/data_profile.md, src/ksp/io_psp.py)
 - [~] 3. DESIGN.md + review rounds (≤3)
   - [x] 3.0 LITERATURE.md synthesis; DESIGN.md v0
-  - [~] 3.1 Review round 1: external PI, statistics, data/leakage, algorithms/compute, AI failure modes, kinase biology, prior work → docs/reviews/r1_*.md
+  - [x] 3.1 Review round 1 (7 reviewers) → docs/reviews/r1_*.md; DESIGN v1 (§15 change map)
+  - [~] 3.2 Review round 2 (external PI, statistics, AI failure modes, data leakage) → docs/reviews/r2_*.md
 - [~] 4. Foundations (design-independent, parallel with review)
-  - [~] 4.1 ids.py, kinase list, site universe, labels L1–L3 + external curated (agent)
+  - [x] 4.1 ids.py, kinase list (503 incl.), site universe (350,736), labels (L2 18,638 pairs/401 kinases), external curated (3,788 non-PSP pairs) → docs/labels_universe.md
+  - [x] 4.1b canonical feature index cache/index (src/ksp/index.py)
+  - [~] 4.4 core infra: splits, seal, eval harness, canaries, manifests, tests
+  - [~] 4.5 F1/F2a motif features (Cantley reproduction, priming-aware, learned PSSM)
+  - [~] 4.6 F3/F4/F5 context features (screen-only PPI, RWR, localisation)
+  - [~] 4.7 F6 phospho features (inhibitor deconvolution, CPTAC kinase-state, co-regulation fn)
+  - [~] 4.8 B3 Phosformer reimplementation + MLM pretraining (GPU 0)
   - [~] 4.2 AlphaFold structure features + ESM-2 650M per-residue embeddings for all S/T/Y (agent; GPUs 2–3)
-  - [~] 4.3 Data acquisition wave 2 (Buljan2020, Kinobeads/Davis/DTC, Sugiyama, Phosformer weights, SELPHI2 code, KinCore, HGNC, SIGNOR retry)
+  - [x] 4.3 Data acquisition wave 2 (Buljan2020, Kinobeads/Davis/DTC, Sugiyama, Phosformer weights, SELPHI2 code, KinCore, HGNC, SIGNOR retry)

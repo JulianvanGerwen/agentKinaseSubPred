@@ -1,0 +1,14 @@
+{
+ "kinases": {
+  "n": 503,
+  "sha256": "c9e3e1731d2dc94b1eeea6b7cb15ace1ff11d779e92d343a11beb27026699aed"
+ },
+ "sites": {
+  "n": 350736,
+  "sha256": "a280d3bb1a843c965b148b2067715567c9a515e9f3e18ab486bb97ed0d052975"
+ },
+ "proteins": {
+  "n": 18702,
+  "sha256": "996d3bee3a3440ff0fefa99af67422a6e08c18007b8b2fa03311c304cba790e5"
+ }
+}

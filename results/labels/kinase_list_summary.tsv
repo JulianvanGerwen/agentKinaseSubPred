@@ -13,9 +13,9 @@ excluded:not_in_protein_kinase_sources	3
 excluded:fusion	2
 excluded:glycan_kinase	2
 excluded:pseudogene	1
-include_residue_class:ST	391
-include_residue_class:Y	92
-include_residue_class:STY	20
+include_residue_class:ST	402
+include_residue_class:Y	88
+include_residue_class:STY	13
 include_group:TK	90
 include_group:Other	82
 include_group:CAMK	74

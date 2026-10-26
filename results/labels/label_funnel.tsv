@@ -27,18 +27,18 @@ OmniPath	pairs_mapped	8960.0
 UniProt	pairs_mapped	2975.0
 PSP	pairs_all_mapped	19670.0
 PSP	pairs_kinase_excluded	275.0
-PSP	pairs_residue_out_of_class(kinase included)	214.0
-PSP	pairs_residue_out_of_class:class=ST	120.0
-PSP	pairs_residue_out_of_class:class=Y	94.0
-PSP	pairs_out_of_class_in_vivo_only_frac	0.2056
+PSP	pairs_residue_out_of_class(kinase included)	217.0
+PSP	pairs_residue_out_of_class:class=ST	129.0
+PSP	pairs_residue_out_of_class:class=Y	88.0
+PSP	pairs_out_of_class_in_vivo_only_frac	0.2074
 PSP	L1_sites_not_in_U_obs	2.0
-PSP	L2_sites_not_in_U_obs	487.0
-PSP	L3_sites_not_in_U_obs	516.0
+PSP	L2_sites_not_in_U_obs	486.0
+PSP	L3_sites_not_in_U_obs	515.0
 OmniPath	pairs_kinase_excluded	206.0
-OmniPath	pairs_residue_out_of_class	100.0
-OmniPath	EXT_pairs	8654.0
-OmniPath	EXT_pairs_also_in_PSP	5687.0
+OmniPath	pairs_residue_out_of_class	98.0
+OmniPath	EXT_pairs	8656.0
+OmniPath	EXT_pairs_also_in_PSP	5689.0
 UniProt	pairs_kinase_excluded	33.0
-UniProt	pairs_residue_out_of_class	16.0
-UniProt	EXT_pairs	2926.0
-UniProt	EXT_pairs_also_in_PSP	1999.0
+UniProt	pairs_residue_out_of_class	24.0
+UniProt	EXT_pairs	2918.0
+UniProt	EXT_pairs_also_in_PSP	1994.0
