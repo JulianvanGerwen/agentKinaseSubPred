@@ -85,7 +85,9 @@ Status: literature (4 reviews), data profiling, two acquisition waves (~12.6 GB)
   - [~] 5.4 B3 Phosformer reimplementation (GPU 0) → docs/baseline_phosformer.md
     - Released weights reproduce paper (AUROC 0.8855 on their split). On our CV (contaminated: trained on PSP incl. our positives) M1=0.793, M4=0.801, Hit@5=0.248 — reference only.
     - Faithful MLM pretraining (corpus filtered: 642 TEST substrates + 458 homologs + 152 kinase domains removed) running, ETA 19:15; fine-tune CV ETA 22:30.
-  - [~] 5.5 B4 SELPHI2.0 retrain
+  - [x] 5.5 B4 SELPHI2.0 retrain → docs/baseline_selphi2.md (audit pending)
+    - [!] Faithful retrain (39/44 features regenerated, 2 substituted, label-derived via crossfit): matched-universe M1 0.708 vs Cantley 0.728 on same pairs (−0.020); M3 0.316 (+0.187, driven by site-popularity features: dropping 4 leak-suspect features → M1 0.724, M3 0.265). Coverage 34% of pairs (Ochoa-table sites only). 109 min on 12 cores.
+    - [!] Their 0.97 AUROC comes from random-pair negatives, not split leakage: same metric ≈0.947 on our cluster split.
   - [~] 5.6 kNN embedding-similarity crossfit feature (GPU 2)
   - [~] 5.7 Tyrosine-kinase specificity diagnosis + SH2-docking features
   - [~] 5.8 Independent audit of CV results (R3, baselines, R2)
