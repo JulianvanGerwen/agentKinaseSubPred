@@ -108,6 +108,18 @@ and the gate is on E-hard only. Real labels are unchanged (fold 0: 9,433 real tr
 Because the canary rows of the cross-fitted features had been fitted on v1 labels, all xfit stores were rebuilt with
 v2. The v1 stores are archived in `cache/r2/xfit/cv_canaryv1/`.
 
+**Correction (audit, 17:30).** The rebuild started at 15:33. Core-infra rewrote `canary_dev.parquet` once more at
+15:34, so six stores were fitted on an intermediate canary table: fold 0 F2a/F3-label/F6a/F6a-clean (331 canary
+training pairs, against 348 in final v2) and fold 3 F2a/F3-label (329, against 350). Each store's json records
+`n_canary_labels`, which is how this was found.
+
+Those stores were rebuilt at 17:30 with `--overwrite`. Real-kinase rows of F3-label/F6a are per-kinase computations,
+so they are unaffected. Every final-configuration run (`r2_final_s*`) was started after the rebuild.
+
+Runs completed before 17:30 carry fold-0/fold-3 canary rows from the intermediate table: G2, full, ablations and
+alarms. Their **canary** numbers are therefore approximate (the real-kinase numbers are not affected beyond tree
+randomness). The canary gate is reported from the final runs.
+
 Real-kinase features are unaffected, except for a possible tiny shift in F2a's internally tuned α/β, which are tuned
 over all kinases including canaries. Stage-(a) selection therefore stands. Every run after stage (a) uses v2.
 

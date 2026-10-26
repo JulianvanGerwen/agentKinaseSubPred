@@ -138,7 +138,8 @@ All columns are in `sanity_fold0_summary.tsv`; per-kinase values are in `sanity_
 - **Dense pass:** one fit plus `dense()` over **503 kinases × 347,354 U_ms sites** with 4 spaces takes **28.8 s**, including the NaN-filled output. The target was ≤ 2 min.
 - **Fit** is a pure grouping and takes 0.02 s.
 - **One-time setup:** loading and centring the representations takes about 55 s per process (NFS read). It is cached at module level, so later fits don't repeat it.
-- **Dense xfit for one outer fold** (5 inner blocks of about 55k training sites plus eval sites, × 516 kinases) takes 90 s. That is about 5 s of transform per block, plus the 5.8 GB float16 write.
+- **Dense xfit for one outer fold** (5 inner blocks of about 55k training sites plus eval sites, × 516 kinases) takes 32–39 s; fold 0 took 90 s because it includes the one-time load. That is about 5 s of transform per block, plus the 5.8 GB float16 write.
+- **Built:** CV folds 0–4 (28 GB in total) on 2026-10-26.
 - **Spot check of the fold-0 store:** 0% of outer-training positives have `knn_esmc_max` ≥ 0.999, i.e. there are no self-matches.
 - **Engine:** an fp16 query × unique-training-site matmul per space, with own-cluster masking. Kinases are bucketed by training-set size (padding ≤ 1.25×), then gathered and reduced (max / topk / logsumexp in fp32).
 - **CPU:** fp32 also works, which is what the unit tests use. It is much slower at full scale.

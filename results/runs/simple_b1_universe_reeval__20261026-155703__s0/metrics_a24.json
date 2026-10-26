@@ -418,8 +418,8 @@
   "canary_scored": false,
   "fold_normalise": true,
   "missing_policy": "worst",
-  "evaluated": "2026-10-26 17:26:21 CET",
-  "eval_seconds": 154.1,
+  "evaluated": "2026-10-26 17:30:33 CET",
+  "eval_seconds": 150.3,
   "n_pred_rows": 63265305,
   "canary_labels_version": 2,
   "strata_K_any": [
