@@ -1,0 +1,120 @@
+{
+ "run_id": "b3_retrained_test__20261026-232229__s0",
+ "name": "b3_retrained_test",
+ "git_hash": "2609ef5d477404e56850b28ff0c1e28d3c09faf0",
+ "config": {
+  "baseline_id": "B3_retrained",
+  "arm": "B3a (Phosformer reimplementation, retrained)",
+  "train": {
+   "fold": -1,
+   "neg_ratio": 16,
+   "hard_frac": 0.5,
+   "init": "cache/phosformer/pretrain/mlm_final.pt",
+   "seed": 0,
+   "lr": 2e-05,
+   "gamma": 2.0,
+   "batch": 64,
+   "max_epochs": 3.0,
+   "evals_per_epoch": 4,
+   "patience": 5,
+   "shift": 5,
+   "mask_frac": 0.05,
+   "no_aug": false,
+   "eall": false,
+   "skip_train": false,
+   "max_train_rows": 0,
+   "name": "b3_retrained_devfull",
+   "threads": 2
+  },
+  "best_inner_val_macro_auroc_hard": 0.7101948449486639,
+  "init": "cache/phosformer/pretrain/mlm_final.pt (MLM 50 ep on TEST-filtered corpus, A22)",
+  "frozen_from": "CV config f0_r16 (neg 1:16, 50% hard); PI fixed ratio 19:54",
+  "shards": [
+   {
+    "shard": 0,
+    "n_kinases": 252,
+    "n_pairs": 12944925,
+    "inference_wall_s": 3246.304366350174,
+    "gpu": "0",
+    "kinase_domain_fallbacks": 5
+   },
+   {
+    "shard": 1,
+    "n_kinases": 251,
+    "n_pairs": 12977527,
+    "inference_wall_s": 3232.5372745990753,
+    "gpu": "1",
+    "kinase_domain_fallbacks": 5
+   }
+  ],
+  "inference_wall_s_note": "sum of per-shard GPU wall times (single-GPU equivalent)"
+ },
+ "seed": 0,
+ "split": "test",
+ "notes": "B3_retrained TEST predictions; exhaustive over ksp.eval_test.test_candidate_pairs()",
+ "inputs": [
+  {
+   "path": "/workspace/cache/phosformer/finetune/b3_retrained_devfull_s0/best.pt",
+   "type": "file",
+   "bytes": 185102681,
+   "sha256": "c83dd6d990e61c63b6347a4897c86a3fc01b6c51ee255d875714207d48b65255"
+  },
+  {
+   "path": "/workspace/cache/phosformer/pretrain/mlm_final.pt",
+   "type": "file",
+   "bytes": 185112890,
+   "sha256": "b1bd71a1db865a477e32b27f75d98ccd57e98a0755c80626fee7e5f554a9aa4a"
+  },
+  {
+   "path": "/workspace/results/splits/test_proteins.tsv",
+   "type": "file",
+   "bytes": 46679,
+   "sha256": "762d21c2d4bc7889f6d312e729bdd143df018be2aa1456f548ee31eb0e8dffba"
+  },
+  {
+   "path": "/workspace/cache/index/kinases.parquet",
+   "type": "file",
+   "bytes": 18889,
+   "sha256": "e278ec9b4147d04dd33911f27b76e54e5528c1b1125c5140c588a1d1c49f4637"
+  },
+  {
+   "path": "/workspace/cache/index/sites.parquet",
+   "type": "file",
+   "bytes": 13829932,
+   "sha256": "a280d3bb1a843c965b148b2067715567c9a515e9f3e18ab486bb97ed0d052975"
+  }
+ ],
+ "host": "eu-g6-076",
+ "python": "3.12.3",
+ "platform": "Linux-5.15.0-198-generic-x86_64-with-glibc2.39",
+ "argv": [
+  "scripts/baselines/phosformer_test.py",
+  "assemble",
+  "--n-shards",
+  "2"
+ ],
+ "pid": 457701,
+ "started": "2026-10-26 23:22:31 CET",
+ "n_rows": {
+  "test_predictions": 25922452
+ },
+ "outputs": {
+  "test_predictions": {
+   "path": "cache/runs/b3_retrained_test__20261026-232229__s0/test_predictions.parquet",
+   "sha256": "a468cdbc8d57cfabcef58b7880dcb985f9ab2fa9ee54d44f61458dee3bc464a3"
+  }
+ },
+ "fallbacks": {
+  "kinase_domain_full_seq": 5
+ },
+ "train_wall_s": 3152.4097900390625,
+ "inference_wall_s": 6478.841640949249,
+ "runtime": {
+  "train_wall_s": 3152.4097900390625,
+  "inference_wall_s": 6478.841640949249
+ },
+ "status": "ok",
+ "error": null,
+ "runtime_s": 1.05,
+ "finished": "2026-10-26 23:22:32 CET"
+}
