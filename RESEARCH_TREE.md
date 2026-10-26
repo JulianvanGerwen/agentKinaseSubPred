@@ -16,7 +16,7 @@ Hardware: 64 CPU cores, 375 GB RAM, 4× RTX 4090 (24 GB). Internet available. Ne
 - T+22–24h: REPORT.md, final commit
 User notes: PSP full downloads will be provided by user; CPTAC/others: try to fetch ourselves, ask user only if slow.
 
-### 2026-10-26 18:00 — M2: G1+G2 passed; first trusted CV results
+### 2026-10-26 17:28 — M2: G1+G2 passed; first trusted CV results
 Decision note: design frozen at v2 after 2 review rounds (round 3 skipped). Post-freeze fixes (DESIGN §17 A23–A27) are correctness or conservatism changes applied to all methods: within-fold rank normalisation for pooled CV (A24), the stronger Cantley comparator per endpoint (A23), canary v2 drawn from real labelled sites (the v1 sampler was biased), matched-kinase M2, and a hub-site stratum (reporting only). A label change for Tyr activation-loop pairs was rejected. Independent audit: all numbers reproduce, no leakage.
 Status: on 5-fold DEV CV (A24 metrics; K_cv=203 kinases), R2 LightGBM using all feature families reaches M1 0.773 and M3 0.312. Comparators: R3 neural (Cantley-distilled) M1 0.754; Cantley as-published 0.717; simple-strong B7 0.726; SELPHI2.0 faithful retrain 0.708 on its 34%-coverage matched universe (below Cantley 0.728 on the same pairs); released Phosformer weights 0.796 (contaminated: trained on PSP). M2 (site-centric Hit@5) is weak for all methods (~0.15–0.22) and is the main open problem, together with Tyr kinases (motif ~0.53–0.60; the gap is partly from hub sites and weak atlas matrices). Running: R2 seeds/ablations/late fusion with R3/calibration, kNN-similarity feature, Phosformer faithful retrain (pretraining ETA 19:15), leaderboard re-evaluation. Next gate: G3 at 02:20.
 

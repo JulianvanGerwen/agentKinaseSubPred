@@ -465,7 +465,7 @@ GPU allocation:
   - if pretraining overruns, steps are reduced, with the change documented.
 
 ## 17. Post-freeze clarifications (decisions logged; they apply equally to all methods)
-- **A23. Cantley comparator per endpoint** (2026-10-26 17:05; simple-baselines report). For superiority tests, B1 is the Cantley arm that is best on CV *for that endpoint*: arm (i) for M1 and M3, arm (ii) universe-recalibrated for M2.
+- **A23. Cantley comparator per endpoint** (2026-10-26 16:55; simple-baselines report). For superiority tests, B1 is the Cantley arm that is best on CV *for that endpoint*: arm (i) for M1 and M3, arm (ii) universe-recalibrated for M2.
   - This deviates from A19's single "best arm", in the direction that makes the baseline stronger.
   - Arms (i) and (ii) tie on M1 (difference 9e-7, from rounding), and arm (ii) is significantly better on M2.
 - **A24. Pooled-OOF scale invariance.** Scores whose offsets vary by fold (per-kinase intercepts, count features) distort pooled-OOF per-kinase AUROC.
@@ -474,10 +474,10 @@ GPU allocation:
   - Per-fold mean M1 is reported alongside.
   - TEST has a single model, so the issue doesn't arise there.
 - **A25. Canary descriptors.** Each canary gets its own Manning group, so group- or family-level priors cannot pool canary labels.
-- **A26. Tyrosine-kinase analyses** (2026-10-26 17:40; `docs/features_tyr.md` §1.6).
+- **A26. Tyrosine-kinase analyses** (2026-10-26 17:15; `docs/features_tyr.md` §1.6).
   - (a) A **hub-site stratum** is ADDED as a secondary, reporting-only analysis: sites labelled to ≥5 non-paralog kinases (e.g. GLO1 Y136 with 15 TKs). It does not change any endpoint.
   - (b) Treating cross-kinase activation-loop labels as mask-only is **REJECTED** for all endpoints: it would change labels after seeing results. It may be reported as a clearly-labelled sensitivity analysis only.
-- **A27. Audit follow-ups** (`docs/audit/audit_cv_r1.md`, 2026-10-26 17:55).
+- **A27. Audit follow-ups** (`docs/audit/audit_cv_r1.md`, 2026-10-26 17:25).
   - A24 is confirmed by the PI as a correctness fix applied to all methods equally. Documents show pre-A24 and A24 values where both exist. TEST is unaffected.
   - **Matched-kinase M2:** for head-to-head M2 comparisons (e.g. vs Cantley), the competitor kinase set is restricted to kinases scored by *both* methods. Unscored kinases are otherwise "worst", which inflates the M2 of low-coverage methods by about 0.02.
   - The canary gate remains on pooled CV; per-fold values are reported.
