@@ -6,10 +6,10 @@ Agents write only in their assigned paths; shared modules are changed only by th
 | PI | DESIGN.md, RESEARCH_TREE.md, LESSONS.md, DATAINEED.md, DATA.md (shared append), src/ksp/index.py, docs/DELEGATION.md | — | — |
 | labels/universe | src/ksp/{ids,kinases,sites,labels}.py, scripts/build_{kinase_list,site_universe,labels}.py | 0 / 16 | done (handed to core-infra) |
 | struct+ESM | src/ksp/features/structure*.py, src/ksp/features/esm*.py, cache/structure, cache/esm2_650m | GPU 2,3 / 16 | done 14:40 |
-| core-infra | src/ksp/{splits,eval,canary,manifest,eval_test}.py, src/ksp/labels.py (load_dev, KP, masks, residue-class overrides), config/kinase_curation.tsv, config/bio_controls.tsv, sealed/, results/splits, tests/ | 0 / 12 | running (14:40) |
-| feat-motif | src/ksp/features/motif*.py, cache/features/motif, results/features/motif | 0 / 12 | running (14:40) |
+| core-infra | src/ksp/{splits,eval,canary,manifest,eval_test}.py, src/ksp/labels.py (load_dev, KP, masks, residue-class overrides), config/kinase_curation.tsv, config/bio_controls.tsv, sealed/, results/splits, tests/ | 0 / 12 | done 15:05 |
+| feat-motif | src/ksp/features/motif*.py, cache/features/motif, results/features/motif | 0 / 12 | done |
 | feat-context | src/ksp/features/{ppi,loc,coexpr}*.py, cache/features/context, results/features/context | 0 / 10 | running (14:40) |
-| feat-phospho | src/ksp/features/phospho*.py, cache/features/phospho, results/features/phospho | GPU 1 / 10 | running (14:40) |
+| feat-phospho | src/ksp/features/phospho*.py, cache/features/phospho, results/features/phospho | GPU 1 / 10 | done |
 | R3-neural | src/ksp/models/r3/, cache/r3, results/models/r3, scripts/models/r3_*.py | GPU 2,3 / 8 | running (14:40) |
 | B4-selphi2 | src/ksp/baselines/selphi2/, cache/selphi2, results/baselines/selphi2, scripts/baselines/selphi2_*.py | 0 / 12 | running (14:40) |
 | B3-phosformer | src/ksp/baselines/phosformer/, cache/phosformer, results/baselines/phosformer | GPU 0 / 6 | running (14:40) |

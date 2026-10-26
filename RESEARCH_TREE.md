@@ -56,7 +56,7 @@ Status: literature (4 reviews), data profiling, two acquisition waves (~12.6 GB)
 - [x] 4. Foundations (design-independent, parallel with review)
   - [x] 4.1 ids.py, kinase list (503 incl.), site universe (350,736), labels (L2 18,638 pairs/401 kinases), external curated (3,788 non-PSP pairs) → docs/labels_universe.md
   - [x] 4.1b canonical feature index cache/index (src/ksp/index.py)
-  - [~] 4.4 core infra: splits, seal, eval harness, canaries, manifests, tests
+  - [x] 4.4 core infra → docs/core_infra.md, results/splits/split_report.md: eval (21M pairs/fold in 27 s), crossfit (toy leak 1.0 → 0.5), 13 canaries, FREEZE-gated eval_test, 63 tests pass. TEST external 215 pairs (158 tier A); temporal 263 positives.
   - [x] 4.5 F1/F2a motif features → docs/features_motif.md
     - [!] Cantley engine reproduces kinase-library 1.8.0 (100% within 1e-3); 396/503 kinases have own matrix. Sanity (fold 0, random negs, 94 kinases): Cantley 0.785, learned PSSM 0.766 (+phospho channel 0.782) — complementary.
     - [!] Priming-aware scoring helps GSK3B 0.67→0.79, GSK3A 0.77→0.87, CK1 family; hurts AKT1/PKC/CHEK1 slightly → keep as separate feature.
