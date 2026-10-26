@@ -492,3 +492,9 @@ GPU allocation:
 - **A30. B1 on TEST: single-residue-matrix kinases** (2026-10-26 21:50). Ten dual-specificity kinases have an atlas matrix for only one residue type: MAP2K1/2/4/5/6/7, TTK, TESK1, NEK10 and PKMYT1. On TEST they are left **unscored** in both B1 arms, so they drop out of matched head-to-heads instead of receiving a placeholder worst score.
   - On CV, the uncovered residue type was ranked last.
   - The change can only help the baseline, so it is conservative for superiority claims.
+- **A31. Decisions from audit round 2** (2026-10-26 22:12; `docs/audit/audit_cv_r2.md`).
+  - (a) **M2 score (clarifies A20).** M2 uses the raw fused score: CV 0.263 against 0.205 for the calibrated assignment probability, chosen on cross-fitted CV only (nested leave-one-fold-out: 0.259). The A17 assignment probability is used only for reliability analysis and coverage.
+  - (b) **Assignment probability.** The calibrated softmax is overconfident in the ≥0.8 tier (0.87 claimed, 0.54 observed). Y sites at ≥0.8 are 0/41 correct. Fix (CV-only): isotonic recalibration of the top-kinase probability, separately for ST and Y sites, fitted on DEV OOF. Expected consequence: Coverage@0.8 is close to zero, and Y sites rarely reach 0.5. This is reported as is.
+  - (c) **Canary gate.** It stays pooled, per A27 (pooled 0.539, pass). Per-fold values are reported: 2 of 5 folds exceed 0.57 (0.575 and 0.676; fold 4 is driven by R3).
+  - (d) **LKO T2.** Reported stratified by whether the held-out site has other-kinase labels: M1 is 0.703 on sites without them (55%).
+  - (e) **Clean variant disclosure.** Site existence (U_ms membership) and primed-Cantley evidence weights still draw on the compendium and CPTAC.

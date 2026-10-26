@@ -1,0 +1,231 @@
+experiment	dataset	description	drug_ids	drug_classes	seen_in_clean_compendium	stratum
+hernandez:102_117	hernandez	RG7356				no_drug
+hernandez:105_117	hernandez	RG7356				no_drug
+hernandez:111_45	hernandez	BI 4834 (on Mitosis Nocodazole)				no_drug
+hernandez:114_48	hernandez	Starved				no_drug
+hernandez:117_48	hernandez	Torin1		class:torin1	class:torin1	drug_seen
+hernandez:120_48	hernandez	Rapamycin		class:rapamycin	class:rapamycin	drug_seen
+hernandez:1292_272	hernandez	EGFRi (PD-168393)		class:egfri;class:pd168393	class:egfri	drug_seen
+hernandez:1293_272	hernandez	EGFRi (PD-153035)	pd153035	class:egfri		drug_unseen
+hernandez:1294_272	hernandez	ERKi (ERK inhibitor)		class:erki		drug_unseen
+hernandez:1295_272	hernandez	ERKi (ERK inhibitor II)		class:erki		drug_unseen
+hernandez:1296_272	hernandez	MEKi (GSK-1120212)	gsk1120212	class:meki		drug_unseen
+hernandez:1297_272	hernandez	MEKi (U0126)		class:meki;class:u0126	class:meki;class:u0126	drug_seen
+hernandez:1299_272	hernandez	mTORi (Torin-1)		class:mtori;class:torin1	class:mtori;class:torin1	drug_seen
+hernandez:1300_272	hernandez	P70S6K1i (PF-4708671)	pf4708671	class:p70s6k1i		drug_unseen
+hernandez:1301_272	hernandez	P70S6K1i (DG2)		class:dg2;class:p70s6k1i		drug_unseen
+hernandez:1302_272	hernandez	PI3Ki (GDC-0941)	gdc0941		gdc0941	drug_seen
+hernandez:1303_272	hernandez	PI3Ki (PI-103)	pi103		pi103	drug_seen
+hernandez:1304_272	hernandez	PKCi (Gö-6976)	g6976			drug_unseen
+hernandez:1305_272	hernandez	PKCi (BIM-1)	bim1			drug_unseen
+hernandez:1309_272	hernandez	ROCKi (Y-27632)		class:rocki;class:y27632		drug_unseen
+hernandez:1320_277	hernandez	Selumetinib (AZD6244)	arry142886		arry142886	drug_seen
+hernandez:1321_277	hernandez	Selumetinib (AZD6244)	arry142886		arry142886	drug_seen
+hernandez:1322_277	hernandez	Selumetinib (AZD6244)	arry142886		arry142886	drug_seen
+hernandez:1323_277	hernandez	Vemurafenib (PLX4032)	plx4032		plx4032	drug_seen
+hernandez:1324_277	hernandez	Vemurafenib (PLX4032)	plx4032		plx4032	drug_seen
+hernandez:1325_277	hernandez	Vemurafenib (PLX4032)	plx4032		plx4032	drug_seen
+hernandez:1326_277	hernandez	Vemurafenib (PLX4032)	plx4032		plx4032	drug_seen
+hernandez:1327_277	hernandez	Vemurafenib (PLX4032)	plx4032		plx4032	drug_seen
+hernandez:1328_277	hernandez	Vemurafenib (PLX4032)	plx4032		plx4032	drug_seen
+hernandez:1329_278	hernandez	anti-CD3 + anti-CD28				no_drug
+hernandez:1329_279	hernandez	anti-CD3 + anti-CD28				no_drug
+hernandez:1330_278	hernandez	anti-CD3 + anti-CD28				no_drug
+hernandez:1330_279	hernandez	anti-CD3 + anti-CD28				no_drug
+hernandez:1331_278	hernandez	anti-CD3 + anti-CD28				no_drug
+hernandez:1331_279	hernandez	anti-CD3 + anti-CD28				no_drug
+hernandez:1332_278	hernandez	anti-CD3 + anti-CD28				no_drug
+hernandez:1332_279	hernandez	anti-CD3 + anti-CD28				no_drug
+hernandez:15_3	hernandez	Differentiation (PMA)				no_drug
+hernandez:18_3	hernandez	Differentiation (PMA)				no_drug
+hernandez:186_57	hernandez	Crizotinib	crizotinib		crizotinib	drug_seen
+hernandez:186_60	hernandez	Crizotinib	crizotinib		crizotinib	drug_seen
+hernandez:21_3	hernandez	Differentiation (PMA)				no_drug
+hernandez:240_63	hernandez	EGF				no_drug
+hernandez:240_66	hernandez	EGF				no_drug
+hernandez:24_3	hernandez	Differentiation (PMA)				no_drug
+hernandez:243_63	hernandez	EGF + SB202190		class:sb202190		drug_unseen
+hernandez:246_63	hernandez	EGF + SB202190		class:sb202190		drug_unseen
+hernandez:252_66	hernandez	EGF + U0126		class:u0126	class:u0126	drug_seen
+hernandez:255_66	hernandez	EGF + U0126		class:u0126	class:u0126	drug_seen
+hernandez:273_75	hernandez	Mitosis (MLN8054 0_25 microM)	mln8054			drug_unseen
+hernandez:276_75	hernandez	Mitosis (MLN8054 1 microM)	mln8054			drug_unseen
+hernandez:279_75	hernandez	Mitosis (MLN8054 5 microM)	mln8054			drug_unseen
+hernandez:282_75	hernandez	Mitosis (AZD1152)	azd1152		azd1152	drug_seen
+hernandez:285_75	hernandez	Mitosis (BI2536)	bi2536			drug_unseen
+hernandez:288_75	hernandez	Mitosis (short Taxol + BI2536)	bi2536			drug_unseen
+hernandez:318_87	hernandez	anti-CD3				no_drug
+hernandez:318_93	hernandez	anti-CD3				no_drug
+hernandez:321_87	hernandez	anti-CD3				no_drug
+hernandez:321_93	hernandez	anti-CD3				no_drug
+hernandez:324_87	hernandez	anti-CD3				no_drug
+hernandez:327_87	hernandez	anti-CD3				no_drug
+hernandez:363_105	hernandez	LRRK2-IN-1 (Endogenous LRRK2)		class:lrrk2in1		drug_unseen
+hernandez:366_108	hernandez	LRRK2-IN-1 (LRRK2 overexpression)		class:lrrk2in1		drug_unseen
+hernandez:369_111	hernandez	PLK1 Inhibitor (G2r - BI2536 - 30m)	bi2536			drug_unseen
+hernandez:372_111	hernandez	PLK1 Inhibitor (G2r - BI2536 - 120m)	bi2536			drug_unseen
+hernandez:375_111	hernandez	PLK1 Inhibitor (G2r - BI2536 - 240m)	bi2536			drug_unseen
+hernandez:378_111	hernandez	PLK1 Inhibitor (G2nr - BI2536 - 360m)	bi2536			drug_unseen
+hernandez:390_120	hernandez	DNA damage (Etoposide)				no_drug
+hernandez:399_129	hernandez	DNA damage (Ionizing radiation)				no_drug
+hernandez:405_132	hernandez	Dasatinib (50 nM)	bms354825		bms354825	drug_seen
+hernandez:408_132	hernandez	Dasatinib (50 nM)	bms354825		bms354825	drug_seen
+hernandez:411_141	hernandez	VEGF				no_drug
+hernandez:414_141	hernandez	VEGF				no_drug
+hernandez:417_141	hernandez	VEGF				no_drug
+hernandez:420_141	hernandez	VEGF				no_drug
+hernandez:423_141	hernandez	Sorafinib				no_drug
+hernandez:426_144	hernandez	EGF				no_drug
+hernandez:426_153	hernandez	EGF				no_drug
+hernandez:429_144	hernandez	EGF				no_drug
+hernandez:429_153	hernandez	EGF				no_drug
+hernandez:474_177	hernandez	Iloprost (5 nM)				no_drug
+hernandez:477_177	hernandez	Iloprost (5 nM)				no_drug
+hernandez:480_177	hernandez	Iloprost (5 nM)				no_drug
+hernandez:483_180	hernandez	Quizartinib	ac010220			drug_unseen
+hernandez:483_183	hernandez	Quizartinib	ac010220			drug_unseen
+hernandez:696_222	hernandez	ATR inhibitor (VE-821)	ve821		ve821	drug_seen
+hernandez:702_225	hernandez	PIK3CA activation (H1047R) + inhibitor				no_drug
+hernandez:714_78	hernandez	EGF				no_drug
+hernandez:72_138	hernandez	G1_S (Thymidine)				no_drug
+hernandez:72_72	hernandez	G1_S (Thymidine)				no_drug
+hernandez:81_138	hernandez	Early S (Thymidine)				no_drug
+hernandez:84_138	hernandez	Late S (Thymidine)				no_drug
+hernandez:96_36	hernandez	Erlotinib	cp358774		cp358774	drug_seen
+hernandez:99_36	hernandez	Gefitinib	gefitinib		gefitinib	drug_seen
+hijazi:HL60.AZD6482	hijazi	AZD6482	azd6482			drug_unseen
+hijazi:HL60.CAL101	hijazi	CAL101	cal101			drug_unseen
+hijazi:HL60.GDC0941	hijazi	GDC0941	gdc0941		gdc0941	drug_seen
+hijazi:HL60.HS173	hijazi	HS173	hs173			drug_unseen
+hijazi:HL60.PIK294	hijazi	PIK294	pik294			drug_unseen
+hijazi:HL60.TGX221	hijazi	TGX221	tgx221			drug_unseen
+hijazi:HL60.CX4945	hijazi	CX4945	cx4945		cx4945	drug_seen
+hijazi:HL60.Go6983	hijazi	Go6983	go6983		go6983	drug_seen
+hijazi:HL60.KN93	hijazi	KN93	kn93			drug_unseen
+hijazi:HL60.MK2206	hijazi	MK2206	mk2206		mk2206	drug_seen
+hijazi:HL60.AZD5438	hijazi	AZD5438	azd5438			drug_unseen
+hijazi:HL60.FRAX486	hijazi	FRAX486	frax486			drug_unseen
+hijazi:HL60.Ku0063794	hijazi	Ku0063794	ku0063794		ku0063794	drug_seen
+hijazi:HL60.PD153035	hijazi	PD153035	pd153035			drug_unseen
+hijazi:HL60.PF3758309	hijazi	PF3758309	pf03758309			drug_unseen
+hijazi:HL60.Torin1	hijazi	Torin1		class:torin1	class:torin1	drug_seen
+hijazi:HL60.Trametinib	hijazi	Trametinib	gsk1120212			drug_unseen
+hijazi:HL60.AZD1480	hijazi	AZD1480	azd1480			drug_unseen
+hijazi:HL60.AZD5363	hijazi	AZD5363	azd5363			drug_unseen
+hijazi:HL60.BX912	hijazi	BX912	bx912			drug_unseen
+hijazi:HL60.CHIR99021	hijazi	CHIR99021	chir99021		chir99021	drug_seen
+hijazi:HL60.GDC0068	hijazi	GDC0068	gdc0068			drug_unseen
+hijazi:HL60.GSK2334470	hijazi	GSK2334470	gsk2334470			drug_unseen
+hijazi:HL60.LY2090314	hijazi	LY2090314	ly2090314			drug_unseen
+hijazi:HL60.Tofacitinib	hijazi	Tofacitinib	cp690		cp690	drug_seen
+hijazi:HL60.AZD6244	hijazi	AZD6244	arry142886		arry142886	drug_seen
+hijazi:HL60.AZD8055	hijazi	AZD8055		class:azd8055	class:azd8055	drug_seen
+hijazi:HL60.GDC0994	hijazi	GDC0994	gdc0994			drug_unseen
+hijazi:HL60.JNKIN8	hijazi	JNKIN8	jnkin8		jnkin8	drug_seen
+hijazi:HL60.LY2584702	hijazi	LY2584702	ly2584702			drug_unseen
+hijazi:HL60.PH797804	hijazi	PH797804	ph797804			drug_unseen
+hijazi:HL60.Ulixertinib	hijazi	Ulixertinib	bvd523			drug_unseen
+hijazi:HL60.AZD3759	hijazi	AZD3759	azd3759			drug_unseen
+hijazi:HL60.GSK690693	hijazi	GSK690693	gsk690693			drug_unseen
+hijazi:HL60.JNJ38877605	hijazi	JNJ38877605	jnj38877605			drug_unseen
+hijazi:HL60.KN62	hijazi	KN62	kn62			drug_unseen
+hijazi:HL60.LEE011	hijazi	LEE011	lee011			drug_unseen
+hijazi:HL60.LY2835219	hijazi	LY2835219	abemaciclib			drug_unseen
+hijazi:HL60.MP470	hijazi	MP470	amuvatinib			drug_unseen
+hijazi:HL60.OSI906	hijazi	OSI906	asp7487			drug_unseen
+hijazi:HL60.AC220	hijazi	AC220	ac010220			drug_unseen
+hijazi:HL60.GF109203X	hijazi	GF109203X	bim1			drug_unseen
+hijazi:HL60.Go6976	hijazi	Go6976	g6976			drug_unseen
+hijazi:HL60.PF4708671	hijazi	PF4708671	pf4708671			drug_unseen
+hijazi:HL60.SP600125	hijazi	SP600125	sp600125		sp600125	drug_seen
+hijazi:HL60.TAK715	hijazi	TAK715	tak715			drug_unseen
+hijazi:HL60.TBCA	hijazi	TBCA	tbca			drug_unseen
+hijazi:HL60.AT13148	hijazi	AT13148	at13148			drug_unseen
+hijazi:HL60.AZ20	hijazi	AZ20	az20			drug_unseen
+hijazi:HL60.AZD6738	hijazi	AZD6738	azd6738			drug_unseen
+hijazi:HL60.Bosutinib	hijazi	Bosutinib	bosulif			drug_unseen
+hijazi:HL60.Dabrafenib	hijazi	Dabrafenib	dabrafenib			drug_unseen
+hijazi:HL60.Dasatinib	hijazi	Dasatinib	bms354825		bms354825	drug_seen
+hijazi:HL60.DNA_PK_IV	hijazi	DNA_PK_IV				no_drug
+hijazi:HL60.H89_2HCl	hijazi	H89_2HCl	h892hcl			drug_unseen
+hijazi:HL60.KD025	hijazi	KD025	kd025			drug_unseen
+hijazi:HL60.NU7441	hijazi	NU7441	nu7441			drug_unseen
+hijazi:HL60.Ripasudil	hijazi	Ripasudil	k115			drug_unseen
+hijazi:HL60.Vemurafenib	hijazi	Vemurafenib	plx4032		plx4032	drug_seen
+hijazi:MCF7.AZD6482	hijazi	AZD6482	azd6482			drug_unseen
+hijazi:MCF7.CAL101	hijazi	CAL101	cal101			drug_unseen
+hijazi:MCF7.GDC0941	hijazi	GDC0941	gdc0941		gdc0941	drug_seen
+hijazi:MCF7.HS173	hijazi	HS173	hs173			drug_unseen
+hijazi:MCF7.PIK294	hijazi	PIK294	pik294			drug_unseen
+hijazi:MCF7.TGX221	hijazi	TGX221	tgx221			drug_unseen
+hijazi:MCF7.CX4945	hijazi	CX4945	cx4945		cx4945	drug_seen
+hijazi:MCF7.Go6983	hijazi	Go6983	go6983		go6983	drug_seen
+hijazi:MCF7.KN93	hijazi	KN93	kn93			drug_unseen
+hijazi:MCF7.MK2206	hijazi	MK2206	mk2206		mk2206	drug_seen
+hijazi:MCF7.AZD5438	hijazi	AZD5438	azd5438			drug_unseen
+hijazi:MCF7.FRAX486	hijazi	FRAX486	frax486			drug_unseen
+hijazi:MCF7.Ku0063794	hijazi	Ku0063794	ku0063794		ku0063794	drug_seen
+hijazi:MCF7.PD153035	hijazi	PD153035	pd153035			drug_unseen
+hijazi:MCF7.PF3758309	hijazi	PF3758309	pf03758309			drug_unseen
+hijazi:MCF7.Torin1	hijazi	Torin1		class:torin1	class:torin1	drug_seen
+hijazi:MCF7.Trametinib	hijazi	Trametinib	gsk1120212			drug_unseen
+hijazi:MCF7.AZD1480	hijazi	AZD1480	azd1480			drug_unseen
+hijazi:MCF7.AZD5363	hijazi	AZD5363	azd5363			drug_unseen
+hijazi:MCF7.BX912	hijazi	BX912	bx912			drug_unseen
+hijazi:MCF7.CHIR99021	hijazi	CHIR99021	chir99021		chir99021	drug_seen
+hijazi:MCF7.GDC0068	hijazi	GDC0068	gdc0068			drug_unseen
+hijazi:MCF7.GSK2334470	hijazi	GSK2334470	gsk2334470			drug_unseen
+hijazi:MCF7.LY2090314	hijazi	LY2090314	ly2090314			drug_unseen
+hijazi:MCF7.Tofacitinib	hijazi	Tofacitinib	cp690		cp690	drug_seen
+hijazi:MCF7.AZD6244	hijazi	AZD6244	arry142886		arry142886	drug_seen
+hijazi:MCF7.AZD8055	hijazi	AZD8055		class:azd8055	class:azd8055	drug_seen
+hijazi:MCF7.GDC0994	hijazi	GDC0994	gdc0994			drug_unseen
+hijazi:MCF7.JNKIN8	hijazi	JNKIN8	jnkin8		jnkin8	drug_seen
+hijazi:MCF7.LY2584702	hijazi	LY2584702	ly2584702			drug_unseen
+hijazi:MCF7.PH797804	hijazi	PH797804	ph797804			drug_unseen
+hijazi:MCF7.Ulixertinib	hijazi	Ulixertinib	bvd523			drug_unseen
+hijazi:MCF7.AZD3759	hijazi	AZD3759	azd3759			drug_unseen
+hijazi:MCF7.GSK690693	hijazi	GSK690693	gsk690693			drug_unseen
+hijazi:MCF7.JNJ38877605	hijazi	JNJ38877605	jnj38877605			drug_unseen
+hijazi:MCF7.KN62	hijazi	KN62	kn62			drug_unseen
+hijazi:MCF7.LEE011	hijazi	LEE011	lee011			drug_unseen
+hijazi:MCF7.LY2835219	hijazi	LY2835219	abemaciclib			drug_unseen
+hijazi:MCF7.MP470	hijazi	MP470	amuvatinib			drug_unseen
+hijazi:MCF7.OSI906	hijazi	OSI906	asp7487			drug_unseen
+hijazi:MCF7.AC220	hijazi	AC220	ac010220			drug_unseen
+hijazi:MCF7.GF109203X	hijazi	GF109203X	bim1			drug_unseen
+hijazi:MCF7.Go6976	hijazi	Go6976	g6976			drug_unseen
+hijazi:MCF7.PF4708671	hijazi	PF4708671	pf4708671			drug_unseen
+hijazi:MCF7.SP600125	hijazi	SP600125	sp600125		sp600125	drug_seen
+hijazi:MCF7.TAK715	hijazi	TAK715	tak715			drug_unseen
+hijazi:MCF7.TBCA	hijazi	TBCA	tbca			drug_unseen
+hijazi:MCF7.AT13148	hijazi	AT13148	at13148			drug_unseen
+hijazi:MCF7.AZ20	hijazi	AZ20	az20			drug_unseen
+hijazi:MCF7.AZD6738	hijazi	AZD6738	azd6738			drug_unseen
+hijazi:MCF7.Bosutinib	hijazi	Bosutinib	bosulif			drug_unseen
+hijazi:MCF7.Dabrafenib	hijazi	Dabrafenib	dabrafenib			drug_unseen
+hijazi:MCF7.Dasatinib	hijazi	Dasatinib	bms354825		bms354825	drug_seen
+hijazi:MCF7.DNA_PK_IV	hijazi	DNA_PK_IV				no_drug
+hijazi:MCF7.H89_2HCl	hijazi	H89_2HCl	h892hcl			drug_unseen
+hijazi:MCF7.KD025	hijazi	KD025	kd025			drug_unseen
+hijazi:MCF7.NU7441	hijazi	NU7441	nu7441			drug_unseen
+hijazi:MCF7.Ripasudil	hijazi	Ripasudil	k115			drug_unseen
+hijazi:MCF7.Vemurafenib	hijazi	Vemurafenib	plx4032		plx4032	drug_seen
+tyrosine:PMID_24362263	tyrosine	Dasatinib	bms354825		bms354825	drug_seen
+tyrosine:QSAV1	tyrosine	EGF				no_drug
+tyrosine:QSAV4	tyrosine	EGF				no_drug
+tyrosine:QSAV8	tyrosine	EGF				no_drug
+tyrosine:QSAV16	tyrosine	EGF				no_drug
+tyrosine:24H_EGF	tyrosine	EGF				no_drug
+tyrosine:24H_HRG	tyrosine	HRG				no_drug
+tyrosine:5sec	tyrosine	TCRstimulation				no_drug
+tyrosine:15sec	tyrosine	TCRstimulation				no_drug
+tyrosine:30sec	tyrosine	TCRstimulation				no_drug
+tyrosine:60sec	tyrosine	TCRstimulation				no_drug
+tyrosine:Log2_Imatinib	tyrosine	Imatinib	gleevec		gleevec	drug_seen
+tyrosine:Log2_Dasatinib	tyrosine	Dasatinib	bms354825		bms354825	drug_seen
+tyrosine:Log2_Bosutinib	tyrosine	Bosutinib	bosulif			drug_unseen
+tyrosine:Log2_Nilotinib	tyrosine	Nilotinib	amn107			drug_unseen
+tyrosine:EGF_2min	tyrosine	EGF				no_drug
+tyrosine:EGF_4min	tyrosine	EGF				no_drug
+tyrosine:EGF_8min	tyrosine	EGF				no_drug

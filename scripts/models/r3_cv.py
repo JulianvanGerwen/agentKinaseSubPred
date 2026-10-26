@@ -157,6 +157,65 @@ def cmd_inner(a, cfg):
     print(json.dumps({k: v for k, v in out.items() if k != "history"}, indent=1))
 
 
+def cmd_test(a):
+    """Final-model TEST scoring component (DESIGN §8.6; G4 runbook): train on ALL DEV with the frozen config and score
+    the TEST candidates (TEST-protein U_ms sites x real kinases of matching class). --lko J: T3 component (LKO fold J
+    kinases removed from training; only they are scored). Reads no TEST labels."""
+    import torch
+    from ksp.models.r3 import train as r3train
+    cfg = {**r3train.DEFAULT, **BASE, **CONFIGS[a.config], "seed": a.seed}
+    tag = "final" if a.lko is None else f"t3lko{a.lko}"
+    with manifest.RunManifest(f"r3_final_distill_test_{tag}", config=cfg, seed=a.seed, inputs=inputs_list(),
+                              split="final_dev_to_test",
+                              notes=f"R3 final ({BASE_NAME}:{a.config}) trained on all DEV; TEST component {tag}") as run:
+        preds, info, _ = r3train.run(cfg, lko_fold=a.lko, test=True, log=lambda s: print(s, flush=True))
+        info["gpu"] = torch.cuda.get_device_name(0)
+        run.set("train_info", {k: v for k, v in info.items() if k != "history"})
+        run.set("history", info["history"])
+        run.set("train_wall_s", info["t_train_wall_s"])
+        run.set("inference_wall_s", info["t_score_s"])
+        run.save_predictions(preds[["kinase_idx", "site_idx", "score"]], name="component_predictions")
+        print(json.dumps({"run_id": run.run_id, "n_rows": len(preds), "train_wall_s": info["t_train_wall_s"],
+                          "inference_wall_s": info["t_score_s"], "n_kinases": int(preds.kinase_idx.nunique())}),
+              flush=True)
+
+
+def cmd_assemble_test(a):
+    """Assemble the G4 deliverables into ONE run: test_predictions.parquet (final component) and
+    test_t3_predictions.parquet (the 5 LKO components concatenated), with runtimes and the --check-predictions
+    pre-flight result recorded in the manifest."""
+    from ksp import eval_test
+    comps = {"final": a.final, **{f"lko{j}": r for j, r in enumerate(a.lko_runs)}}
+    files = {k: manifest.CACHE / r / "component_predictions.parquet" for k, r in comps.items()}
+    mans = {k: json.loads((manifest.RESULTS / r / "manifest.json").read_text()) for k, r in comps.items()}
+    for k, m in mans.items():
+        if m.get("status") != "ok":
+            raise RuntimeError(f"component {k} ({comps[k]}) status {m.get('status')}")
+        want = None if k == "final" else int(k[3:])
+        if m["train_info"]["lko_fold"] != want or not m["train_info"]["test"]:
+            raise RuntimeError(f"component {k}: wrong lko_fold/test flag")
+    with manifest.RunManifest("r3_final_distill_test", config={"variant": f"{BASE_NAME}:{a.config}",
+                              "components": comps, "config": mans["final"]["config"]}, seed=a.seed,
+                              inputs=list(files.values()), split="final_dev_to_test",
+                              notes="R3 final TEST deliverables (G4 runbook items 1-3)") as run:
+        P = pd.read_parquet(files["final"])
+        run.save_predictions(P, name="test_predictions")
+        T3 = pd.concat([pd.read_parquet(files[f"lko{j}"]) for j in range(5)], ignore_index=True)
+        if T3.duplicated(["kinase_idx", "site_idx"]).any():
+            raise RuntimeError("duplicate (kinase, site) rows across LKO components")
+        run.save_predictions(T3, name="test_t3_predictions")
+        tf = mans["final"]
+        run.set("train_wall_s", tf["train_wall_s"])
+        run.set("inference_wall_s", tf["inference_wall_s"])
+        run.set("t3_train_wall_s_sum", round(sum(mans[f"lko{j}"]["train_wall_s"] for j in range(5)), 1))
+        run.set("t3_inference_wall_s_sum", round(sum(mans[f"lko{j}"]["inference_wall_s"] for j in range(5)), 1))
+        chk = {n: eval_test.check_predictions(manifest.CACHE / run.run_id / f"{n}.parquet")
+               for n in ["test_predictions", "test_t3_predictions"]}
+        run.set("check_predictions", chk)
+        print(json.dumps({"run_id": run.run_id, "check": chk, "train_wall_s": tf["train_wall_s"],
+                          "inference_wall_s": tf["inference_wall_s"]}, indent=1, default=str), flush=True)
+
+
 def _seen(cfg_name) -> bool:
     if not REGISTRY.exists():
         return False
@@ -211,7 +270,9 @@ def cmd_pool(a, lko=False):
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
-    ap.add_argument("cmd", choices=["train", "pool", "pool-lko"])
+    ap.add_argument("cmd", choices=["train", "pool", "pool-lko", "test", "assemble-test"])
+    ap.add_argument("--final", help="assemble-test: final component run id")
+    ap.add_argument("--lko-runs", nargs=5, default=[], help="assemble-test: T3 component run ids for LKO folds 0..4")
     ap.add_argument("--fold", type=int)
     ap.add_argument("--lko", type=int)
     ap.add_argument("--config", default="w7_nce05", choices=sorted(CONFIGS))
@@ -227,5 +288,9 @@ if __name__ == "__main__":
     a = ap.parse_args()
     if a.cmd == "train":
         cmd_train(a)
+    elif a.cmd == "test":
+        cmd_test(a)
+    elif a.cmd == "assemble-test":
+        cmd_assemble_test(a)
     else:
         cmd_pool(a, lko=a.cmd == "pool-lko")

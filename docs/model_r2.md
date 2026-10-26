@@ -430,6 +430,37 @@ benchmarKIN results (z-score, native, U_obs; mean AUROC, with the number of eval
 - It beats PSP on the tumour benchmark with the topPSP arm (0.692 vs 0.664).
 - With all PSP pairs removed (the −PSP arm) it still clearly beats Cantley and the shuffled libraries.
 
+### 6.2b "nophospho" variant (PI 21:45; a proxy for leave-drug-out)
+This is the clean configuration with **all** F6 removed (no compendium, no CPTAC):
+F1+F0+F2a+F3+F4+F5+F7, v3 settings, seed 0.
+- CV (`r2_final_nophospho_s0_cv5`): **M1 0.771** (per-fold mean 0.767), M2 0.187, M3 0.296, canary 0.549/0.999.
+  The equivalents are v3 0.768 and clean 0.771, so F6 adds nothing measurable to CV M1.
+- DEV-trained U_obs library: `r2_final_nophospho_uobs__20261026-213950__s0` (train 152 s, inference 251 s). Its top-k
+  file `uobs_predictions_topk.parquet` passes `pred_topk.py` (no ties at the cut, all arms identical to the superset),
+  and `run_final.py --tag r2_nophospho` has been run.
+
+Matched-kinase deltas vs PSP_all (z-score, U_obs, paired bootstrap; ours − PSP_all):
+
+| subset | arm | clean Δ [95% CI] | nophospho Δ [95% CI] |
+|---|---|---|---|
+| perturbation, all | topPSP | −0.017 [−0.054, 0.018] | −0.007 [−0.047, 0.032] |
+| perturbation, all | top50 | −0.013 [−0.043, 0.012] | −0.043 [−0.087, 0.004] |
+| perturbation, all | top100 | −0.019 [−0.053, 0.012] | −0.050 [−0.088, −0.013] |
+| drug unseen | topPSP | −0.058 [−0.123, 0.003] | −0.047 [−0.116, 0.026] |
+| drug unseen | top50 | −0.050 [−0.096, −0.001] | −0.077 [−0.149, −0.011] |
+| drug unseen | top100 | −0.041 [−0.099, 0.017] | −0.081 [−0.140, −0.017] |
+| tumour (CPTAC7) | topPSP | +0.016 [−0.018, 0.051] | +0.036 [−0.006, 0.077] |
+| tumour (CPTAC7) | top50 | +0.011 | +0.042 |
+
+Reading:
+- Removing all phospho features does **not** close the gap to PSP on unseen-drug experiments. topPSP is about the
+  same; top50/top100 are worse (−0.08).
+- So the clean library's parity with PSP on the perturbation benchmark does not come from response data for the same
+  compound. If anything, the phospho features (from other drugs) help on unseen drugs.
+- The remaining unseen-drug gap of about 0.04–0.06 is shared by both variants.
+- On the tumour benchmark the nophospho variant is slightly better vs PSP. CPTAC features were excluded in both
+  variants anyway.
+
 ### 6.3 Leave-kinase-out T2 (kinase folds `results/splits/kinase_folds.tsv`, pooled; evaluated like R3's LKO pool)
 For each kinase fold, the held-out kinases' labels are removed from positives, negative masks and all label-derived
 features (xfit tags `lko<j>`). The held-out kinases are then scored on all DEV U_ms sites.
@@ -464,6 +495,13 @@ Commands, with V3 = `num_leaves=127 learning_rate=0.03 f2a_family=f2a_sep desc_v
 Expected runtime:
 - (1) about 5 × (≈ 5 min train + ≈ 2 min inference of 25.9 M rows) ≈ 35 min at 16 threads;
 - (2) about 5 folds × 5 seeds × ≈ 4 min ≈ 100 min, or ≈ 20 min with `--seeds 0`.
+
+**Plan at the PI's go (~01:00):** run (1) and (2) concurrently at 12 threads each, with 5 seeds for both. Expected
+finish is ~02:00 for (1) and ~03:00 for (2). If (2) is not past fold 2 by 02:15, it is restarted with `--seeds 0`
+(T3 = 1 seed, stated in the manifest notes). Then (3) fusion with R3's files, and (4) pre-flight.
+
+The pre-built stores (`final/`, `t3lko*/`) use label variant L2. If the regimes agent changes the label variant,
+they must be rebuilt first: about 25 min for final and about 60 min for T3.
 
 The manifests record `train_wall_s` and `inference_wall_s`.
 

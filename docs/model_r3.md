@@ -193,3 +193,40 @@ Code: `src/ksp/models/r3/{data,model,train}.py`, `scripts/models/r3_*.py`, `r3_q
   - an nnPU arm.
 
   Any of these must be logged as new configurations.
+
+## 9. G4 TEST-batch deliverables (2026-10-26, 21:25–22:05; docs/G4_RUNBOOK.md)
+
+**Model.** The frozen final configuration `reg1x5:w7_nce05_cpt_aux` (PI name "r3_final_distill"):
+- trained on **all of DEV**, with Cantley pretraining on DEV U_ms sites only;
+- seeds 0–4, logits averaged;
+- early stopping on the inner validation split of DEV (seed 0).
+
+Only TEST-protein **sites** are used for scoring (`cv_fold == -1`); no TEST label was read. Mode: `train.run(test=True)`.
+
+**Assembled run: `r3_final_distill_test__20261026-220424__s0`.** The manifest records git hash `13c47c2…`, `train_wall_s`, `inference_wall_s`, the component run ids and the pre-flight results.
+
+| File | Content | Rows | `--check-predictions` | SHA-256 |
+|---|---|---|---|---|
+| `cache/runs/r3_final_distill_test__20261026-220424__s0/test_predictions.parquet` | final model, all 503 kinases × TEST candidates | 25,922,452 | ok: true (503 kinases full, 0 partial) | `6223c72c3a93d8082c957753c541dc0737a8e9b5921e90ce19e29af71828d384` |
+| `cache/runs/r3_final_distill_test__20261026-220424__s0/test_t3_predictions.parquet` | T3: each kinase scored by the model trained without its LKO family fold | 25,922,452 | ok: true (503 kinases full) | `9c6c403ea27690d8f5c337b47525a4cb84452ad0cc9be1cf31de78a4b78b8874` |
+
+**Columns** are kinase_idx, site_idx and score (the raw 5-seed mean logit; higher means more likely). There is **no `score_site`**: R3's logit is used for the cross-kinase ranking, and the fused `score_site` is produced by `scripts/models/r2_fuse_test.py`.
+
+My candidate set matches `ksp.eval_test.test_candidate_pairs()` exactly (25,922,452 pairs, 0 left-only, 0 right-only).
+
+**Component runs** (each in `cache/runs/<id>/component_predictions.parquet`):
+
+| Component | Run id | Kinases | train_wall_s | inference_wall_s |
+|---|---|---|---|---|
+| final | `r3_final_distill_test_final__20261026-212607__s0` | 503 | 718.7 | 3.1 |
+| LKO fold 0 | `r3_final_distill_test_t3lko0__20261026-213814__s0` | 102 | 719.7 | 2.4 |
+| LKO fold 1 | `r3_final_distill_test_t3lko1__20261026-212607__s0` | 100 | 793.1 | 2.3 |
+| LKO fold 2 | `r3_final_distill_test_t3lko2__20261026-215020__s0` | 97 | 808.5 | 2.3 |
+| LKO fold 3 | `r3_final_distill_test_t3lko3__20261026-213926__s0` | 103 | 731.7 | 1.1 |
+| LKO fold 4 | `r3_final_distill_test_t3lko4__20261026-215144__s0` | 101 | 393.2 | 1.3 |
+
+The five T3 trainings sum to 3,446 s of training and 9.4 s of inference.
+
+**Runtimes** are wall-clock times on GPUs 2 and 3, which were shared with other agents' jobs: up to 20.7 GB of 24.5 GB in use, at 100% utilisation. They are inflated about 2× against an idle GPU (≈ 6 min per training). `train_wall_s` includes data loading, target building, the GPU upload, pretraining and fine-tuning for all 5 seeds.
+
+**FREEZE entry draft:** `results/models/r3/FREEZE_entry_r3_final_distill.json`. Its role is "secondary"; the PI sets the role. Code: `scripts/models/r3_cv.py test|assemble-test`, `scripts/models/r3_test_queue.sh`.

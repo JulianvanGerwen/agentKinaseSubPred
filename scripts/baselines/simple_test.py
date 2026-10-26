@@ -1,4 +1,4 @@
-"""TEST-batch deliverables for the simple baselines (docs/G4_RUNBOOK.md). Never reads sealed/ or TEST labels.
+"""TEST-batch deliverables for the simple baselines (docs/G4_RUNBOOK.md). Never reads the sealed TEST labels.
 
     OMP_NUM_THREADS=8 .venv/bin/python -I scripts/baselines/simple_test.py --method b1_arm_i [--t3]
 

@@ -1,0 +1,40 @@
+{
+ "full_rows": 131144410,
+ "kinases_in_full": 503,
+ "trunc_rows": 129302,
+ "superset_rows": 129302,
+ "kinases_with_ties_at_cut": 0,
+ "kinases_trunc_short_of_K": 0,
+ "arms": {
+  "topPSP": {
+   "identical_trunc_vs_superset": true,
+   "pairs": 14351
+  },
+  "topPSP-PSP": {
+   "identical_trunc_vs_superset": true,
+   "pairs": 14351
+  },
+  "top50": {
+   "identical_trunc_vs_superset": true,
+   "pairs": 25150
+  },
+  "top50-PSP": {
+   "identical_trunc_vs_superset": true,
+   "pairs": 25150
+  },
+  "top100": {
+   "identical_trunc_vs_superset": true,
+   "pairs": 50300
+  },
+  "top100-PSP": {
+   "identical_trunc_vs_superset": true,
+   "pairs": 50300
+  }
+ },
+ "minus_psp_rank_needed_vs_K": {
+  "topPSP-PSP_max_rank_minus_K": -200,
+  "top50-PSP_max_rank_minus_K": -150,
+  "top100-PSP_max_rank_minus_K": -100
+ },
+ "measured_topk_rows": 129302
+}

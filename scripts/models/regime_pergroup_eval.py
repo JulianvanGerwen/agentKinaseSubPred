@@ -15,8 +15,9 @@ M = G.merge(Pg, on=["kinase_idx", "site_idx"], how="left")
 has = M.score_grp.notna().values
 sc = np.where(has, M.score_grp.values, M.score.values)
 ss = sc.copy()
+hidx = np.flatnonzero(has)
 for (k, f), ix in M[has].groupby(["kinase_idx", "fold"]).indices.items():
-    rows = np.flatnonzero(has)[ix]
+    rows = hidx[ix]
     ss[rows] = PK.qmap(sc[rows], M.score.values[rows])
 for m2, s_site in (("raw", sc), ("qmap", ss)):
     P = M[["kinase_idx", "site_idx"]].assign(score=sc.astype(np.float64), score_site=s_site)

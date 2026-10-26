@@ -28,8 +28,9 @@ out = {}
 for mdl in ("lgb", "lr"):
     sc = np.where(has, M[f"score_{mdl}"].values, M.score.values)
     ss = sc.copy()
+    hidx = np.flatnonzero(has)
     for (k, f), ix in M[has].groupby(["kinase_idx", "fold"]).indices.items():
-        rows = np.flatnonzero(has)[ix]
+        rows = hidx[ix]
         ss[rows] = PK.qmap(sc[rows], M.score.values[rows])
     for m2 in ("qmap", "raw"):
         P = M[["kinase_idx", "site_idx"]].assign(score=sc.astype(np.float64), score_site=(ss if m2 == "qmap" else sc))

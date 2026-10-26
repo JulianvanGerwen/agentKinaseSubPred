@@ -183,13 +183,21 @@ An intermediate v2 draft that drew a labelled site uniformly and then took its p
 
 - **`ksp.manifest.RunManifest(name, config, seed, inputs)`** is a context manager. It records the git hash (read-only), input SHA-256, runtime, n_rows, fallback counters and status. Predictions go to `cache/runs/<id>/predictions.parquet`, metrics to `results/runs/<id>/metrics.json`, and existing runs are never overwritten.
 - **`ksp.eval_test` (G4; see `docs/G4_RUNBOOK.md`):**
-  - **Guards:** FREEZE.json must be git-tracked and unmodified and must pass the schema; there must be exactly 9 primary tests; every config must carry runtime fields; seal hashes must match; and the single-batch rule holds via the LEDGER.
-  - **Batch:** `run_batch` evaluates every config, computes cluster-bootstrap CIs (B from FREEZE, default 10,000), writes all strata and T3 results, runs the 9 primary paired tests on matched universes (Holm over the 9; secondary tests Holm separately), and writes `summary.md` plus a LEDGER block.
-  - **Strata (§6.4 + A26):** these subset the frozen `evaluate` outputs and need no harness edits (A28).
-    - Kinase-level: kinase group, residue class, training-label bins (M4 over K_any), priming, PIKK, FAM20C.
-    - Pair-level: evidence class, new since 2021, hub sites (≥5 paralog-collapsed labelled kinases), external curated.
-    - Stratum definitions are imported from `src/ksp/strata.py` (canonical; built-ins are a fallback). This adds primed / primed_cantley, pikk_sq and secretory.
-  - **Pre-flight:** `--check-predictions` checks a predictions file for exhaustiveness (all-or-nothing per kinase) without reading labels.
+  - **CLI:** `--real`, `--dry-run` or `--check-predictions`; with none of them it prints usage and exits.
+  - **Guards:**
+    - FREEZE.json must be git-tracked and unmodified.
+    - Schema: exactly one `final`; the 9 pre-declared (baseline_id, endpoint) primaries, or the `unavailable_primary` contingency (p = 1, m stays 9); `missing` must be `worst`; runtime fields are required.
+    - Every input file's SHA-256 is pinned in FREEZE.json.
+    - Real mode needs B = 10000 and harness_commit = 974d520, with the frozen files unchanged (`git diff --quiet`).
+    - Every prediction file passes pre-flight: exhaustive per kinase, finite scores, no canaries, score_site any finite value, assignment_prob in [0, 1], and T3 covers all of K_any.
+    - The seal check passes.
+  - **Ledger:** machine-readable STARTED (written before sealed/ is read; FREEZE sha, input hashes, git HEAD, SHA-256 of every `src/ksp/*.py`) and COMPLETED blocks.
+    - Any COMPLETED TEST block refuses every further batch, unless `--override-completed "<reason>"` (logged).
+    - An unfinished STARTED block can only be rerun identically, logged as attempt n.
+    - Outputs go to `<sha12>.partial/` and are renamed atomically.
+  - **Batch:**
+    - Per config: cluster and kinase-resampling CIs (B_secondary, default 1000), per-kinase and site-level tables, strata (from ksp.strata), external-curated ext_tier A/B, A17 reliability with ECE plus Coverage@τ (labelled, external and temporal sites; configs with assignment_prob), and T3 with missing-kinase counts.
+    - The 9 primary tests at B = 10000 on matched universes, reporting matched-kinase counts, the fraction of pairs kept and the M2 score column. Holm over the primary 9, and separately over secondary tests.
   - **Rehearsal:** `--dry-run` uses DEV fold 0 as a fake TEST, with every path under `cache/eval_test_dryrun/`.
 
 ## 8. Tests (`tests/`, pytest added to requirements.txt)
