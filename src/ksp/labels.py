@@ -217,7 +217,7 @@ def parse_uniprot_mod_res(path) -> pd.DataFrame:
                 continue
             by = note.split("; by ", 1)[1].split(";")[0].strip()
             pmids = ";".join(sorted(set(re.findall(r"ECO:0000269\|PubMed:(\d+)", ev or ""))))
-            for name in [x.strip() for x in re.split(r",\s*|\s+and\s+|\s+or\s+", by) if x.strip()]:
+            for name in [x.strip() for x in re.split(r",\s*|\s+and\s+|\s+or\s+", by, flags=re.I) if x.strip()]:
                 recs.append((acc, gene, int(pos), _RES[rname], note, ev, name, "ECO:0000269" in (ev or ""), pmids))
     return pd.DataFrame(recs, columns=["acc", "gene", "pos", "res", "note", "evidence", "kinase_name", "eco269",
                                        "pmids"])

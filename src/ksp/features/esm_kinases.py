@@ -1,7 +1,7 @@
 """ESM-2 kinase descriptors (DESIGN §7 F7): kinase-domain and full-protein mean-pooled embeddings.
 
-Kinase set: results/labels/kinase_list.tsv (column with UniProt accession: 'uniprot'/'acc'/'uniprot_acc'/
-'UniProt') if it exists; otherwise all reviewed human UniProt entries with keyword KW-0418 that carry a
+Kinase set: results/labels/kinase_list.tsv (all candidate rows with a UniProt accession, `include` flag carried;
+domains from its `kinase_domains` column, `is_primary` = its kinase_domain_start/end) if it exists; otherwise all reviewed human UniProt entries with keyword KW-0418 that carry a
 kinase-catalytic domain feature (fallback; stated in the output column `kinase_source`).
 Kinase-catalytic domain = UniProt DOMAIN feature whose note matches KINASE_DOMAIN_RE ('Protein kinase',
 'Protein kinase 1/2', 'PI3K/PI4K catalytic', 'Alpha-type protein kinase', 'Histidine kinase' (PDHK/BCKDK)).
@@ -37,24 +37,42 @@ def kinase_domains(ft: str) -> list[tuple[str, int, int]]:
     return [(n, int(a), int(b)) for a, b, n in DOM_RE.findall(ft or "") if KINASE_DOMAIN_RE.match(n)]
 
 
+def parse_kl_domains(s) -> list[tuple[str, int, int]]:
+    """kinase_list.tsv `kinase_domains`: '545-809:Protein kinase 1;849-1124:Protein kinase 2'."""
+    out = []
+    if isinstance(s, str) and s:
+        for part in s.split(";"):
+            m = re.match(r"\s*(\d+)-(\d+):(.*)$", part)
+            if m:
+                out.append((m.group(3).strip(), int(m.group(1)), int(m.group(2))))
+            elif out:  # a ';' inside a domain name, e.g. 'Protein kinase; truncated'
+                n, a, b = out[-1]
+                out[-1] = (n + ";" + part, a, b)
+    return out
+
+
 def kinase_set() -> tuple[pd.DataFrame, str]:
+    """Return DataFrame acc, gene, include, domains [(name, start, end)], primary (start, end) or None."""
     kl = ROOT / "results/labels/kinase_list.tsv"
-    ann = read_annotations()
-    ann = ann[ann.Reviewed == "reviewed"]
     if kl.exists():
-        k = pd.read_csv(kl, sep="\t", dtype=str)
-        col = next(c for c in ["uniprot", "acc", "uniprot_acc", "UniProt", "kinase_acc", "uniprot_id"] if c in k.columns)
-        gcol = next((c for c in ["gene", "hgnc_symbol", "symbol", "kinase"] if c in k.columns), None)
-        k = pd.DataFrame({"acc": k[col].str.split("-").str[0], "gene": k[gcol] if gcol else ""}).drop_duplicates("acc")
+        k = pd.read_csv(kl, sep="\t", dtype=str, keep_default_na=False)
+        k = k[k.uniprot_acc != ""]
+        k = pd.DataFrame({"acc": k.uniprot_acc.str.split("-").str[0], "gene": k.gene, "include": k.include == "True",
+                          "domains": k.kinase_domains.map(parse_kl_domains),
+                          "primary": [(int(a), int(b)) if a and b else None
+                                      for a, b in zip(k.kinase_domain_start, k.kinase_domain_end)]})
         src = str(kl.relative_to(ROOT))
     else:
+        ann = read_annotations()
+        ann = ann[ann.Reviewed == "reviewed"].set_index("Entry")["Domain [FT]"]
         kw = pd.read_csv(ROOT / "external/uniprot/kinase_kw0418/human_kw0418_reviewed.tsv.gz", sep="\t", dtype=str,
                          keep_default_na=False)
         kw = kw[kw["Domain [FT]"].map(lambda s: len(kinase_domains(s)) > 0)]
-        k = pd.DataFrame({"acc": kw.Entry, "gene": kw["Gene Names (primary)"]})
+        doms = [kinase_domains(ann.get(a, "")) for a in kw.Entry]
+        k = pd.DataFrame({"acc": kw.Entry.values, "gene": kw["Gene Names (primary)"].values, "include": True,
+                          "domains": doms, "primary": [(d[0][1], d[0][2]) if d else None for d in doms]})
         src = "UniProt KW-0418 with kinase-catalytic DOMAIN (fallback)"
-    k = k.merge(ann[["Entry", "Domain [FT]"]].rename(columns={"Entry": "acc", "Domain [FT]": "ft"}), on="acc", how="left")
-    return k, src
+    return k.drop_duplicates("acc").reset_index(drop=True), src
 
 
 def main():
@@ -72,15 +90,19 @@ def main():
     t0 = time.time()
     full = embed_sequences([seqs[x] for x in k.acc], tok, model)
     rows, iso_seqs = [], []
-    for (acc, gene, ft), E in zip(k[["acc", "gene", "ft"]].itertuples(index=False), full):
-        doms = kinase_domains(ft if isinstance(ft, str) else "")
-        base = dict(acc=acc, gene=gene, length=len(seqs[acc]), n_kinase_domains=len(doms), kinase_source=src,
+    for (acc, gene, inc, doms, prim), E in zip(k[["acc", "gene", "include", "domains", "primary"]].itertuples(
+            index=False), full):
+        L = len(seqs[acc])
+        doms = [(n, s, e) for n, s, e in doms if 1 <= s <= e <= L]
+        base = dict(acc=acc, gene=gene, include=inc, length=L, n_kinase_domains=len(doms), kinase_source=src,
                     emb_full=E.mean(0))
         if not doms:
-            rows.append({**base, "domain": None, "dom_start": np.nan, "dom_end": np.nan, "emb_domain_ctx": None})
+            rows.append({**base, "domain": None, "dom_start": np.nan, "dom_end": np.nan, "is_primary": False,
+                         "emb_domain_ctx": None})
             iso_seqs.append(None)
         for i, (n, s, e) in enumerate(doms):
             rows.append({**base, "domain_idx": i, "domain": n, "dom_start": s, "dom_end": e,
+                         "is_primary": prim is not None and (s, e) == tuple(prim),
                          "emb_domain_ctx": E[s - 1:e].mean(0)})
             iso_seqs.append(seqs[acc][s - 1:e])
     todo = [i for i, s in enumerate(iso_seqs) if s]

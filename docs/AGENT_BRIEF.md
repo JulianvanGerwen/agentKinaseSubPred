@@ -19,3 +19,6 @@ Rules (non-negotiable):
 - Site: `site_id = f"{acc}_{res}{pos}"`, e.g. `P05198_S52`; res ∈ {S,T,Y}; pos 1-based on the canonical sequence. Mapping from other sources is by 15-mer window match to canonical (never trust residue numbers across isoforms/versions).
 - Kinase: HGNC gene symbol of the human kinase (e.g. `CSNK2A1`), plus UniProt accession, from results/labels/kinase_list.tsv (once built).
 - Cache large intermediate files in /workspace/cache/<module>/ (gitignored); small result tables in /workspace/results/<module>/ (committed).
+
+## Data requests to the user
+Never write data requests only in your summary. Append them to /workspace/DATAINEED.md (OPEN section: what, why, what you tried, workaround, priority) — the PI also checks it. The user reads only that file for data requests.

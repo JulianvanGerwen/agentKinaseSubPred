@@ -10,14 +10,16 @@ ma_target_ref_db_details); no downloaded code is executed.
 Features per residue (re-implementation of structuremap 0.0.10 / Bludau et al. 2022, PLoS Biol 20:e3001636):
   plddt                  AF pLDDT (B-factor of CA)
   plddt_s5, plddt_s10    mean pLDDT over [i-5, i+5] / [i-10, i+10] (structuremap smooth_score, truncated at ends)
-  pse_{12,24}_{70,180}_pae   pPSE: number of residues j != i with PAE(i,j) <= r and d(CAi,CAj) + PAE(i,j) <= r and
-                         angle(CAi->CBi, CAi->CAj) <= theta (Gly: pseudo-CB as in structuremap get_gly_vector).
-                         theta=180 is the full sphere. NA when no PAE file (fragmented proteins >2700 aa).
-  pse_*_nopae            the same with PAE = 0 (available for all modelled residues, incl. fragments)
-  pse_24_180_pae_s10     smoothed (±10), and IDR flag `idr_sm` = pse_24_180_pae_s10 <= 34.27 (structuremap tutorial
-                         threshold); `high_acc_5` = pse_12_70_pae <= 5 (structuremap 'high accessibility').
-  idr_nopae              pse_24_180_nopae_s10 <= T_nopae (T_nopae calibrated to maximise agreement with idr_sm on
-                         proteins having PAE; used as fallback in `idr` where idr_sm is NA; source in idr_source)
+  pse_{12,24}_{70,180}   PSE: number of residues j != i with d(CAi,CAj) <= r and angle(CAi->CBi, CAi->CAj) <= theta
+                         (Gly: pseudo-CB as in structuremap get_gly_vector); theta=180 is the full sphere.
+                         This is structuremap's pPSE with PAE = 0, because AFDB PAE files are per-protein HTTP
+                         downloads that are rate-limited (HTTP 429); available for all modelled residues.
+  ppse_{12,24}_{70,180}  structuremap pPSE with PAE (PAE(i,j) <= r and d + PAE(i,j) <= r); ONLY for the random
+                         400-protein calibration subset (cache/structure/pae_calibration_accs.txt), NA elsewhere.
+  pse_24_180_s10         smoothed (±10); idr = pse_24_180_s10 <= T_idr, high_acc = pse_12_70 <= T_acc, where T_* are
+                         calibrated on the PAE subset to best reproduce structuremap's PAE-based flags
+                         idr_sm = ppse_24_180_s10 <= 34.27 and high_acc_5 = ppse_12_70 <= 5 (both kept, NA outside
+                         the subset). Calibration accuracy/kappa in site_structure.meta.json.
   disorder_plddt         plddt_s10 < 50
   sasa, rsa              Shrake-Rupley SASA (own vectorised implementation: 100 golden-spiral points per atom,
                          probe 1.4 A, Bondi radii C1.70 N1.55 O1.52 S1.80, occlusion test against the 6 nearest
@@ -397,9 +399,10 @@ def main():
     res["high_acc_5"] = np.where(has, (res.ppse_12_70 <= 5).astype(float), np.nan)
     res["idr_nopae"] = (res.pse_24_180_s10 <= t_idr).astype("int8")
     res["high_acc_nopae"] = (res.pse_12_70 <= t_hacc).astype("int8")
-    res["idr"] = res.idr_sm.fillna(res.idr_nopae).astype("int8")
-    res["high_acc"] = res.high_acc_5.fillna(res.high_acc_nopae).astype("int8")
-    res["idr_source"] = np.where(has, "pae", "nopae_calibrated")
+    # main flags are PAE-free everywhere (homogeneous across proteins); PAE-based ones only on the calibration set
+    res["idr"] = res.idr_nopae
+    res["high_acc"] = res.high_acc_nopae
+    res = res.drop(columns=["idr_nopae", "high_acc_nopae"])
     res["disorder_plddt"] = (res.plddt_s10 < 50).astype("int8")
     for c in [c for c in res.columns if c.startswith("pse_") and not c.endswith("_s10")]:
         res[c] = res[c].astype("int16")

@@ -26,6 +26,8 @@ Restricted/large data live in `data/` (provided) and `external/` (downloaded); n
 | external/uniprot/human_tsv/UP000005640_annotations.tsv.gz | UP000005640 per-entry table (gene names, keywords, domains, families, EC, seq version) | https://rest.uniprot.org/uniprotkb/stream?query=proteome%3AUP000005640&format=tsv&fields=accession%2Cid%2Creviewed%2Cgene_primary%2Cgene_names%2Cprotein_name%2Corganism_id%2Clength%2Csequence_version%2Cdate_sequence_modified%2Ckeywordid%2Ckeyword%2Cft_domain%2Cprotein_families%2Cec&compressed=true | 2026_03 (02-September-2026) | 2026-10-26T12:38:26 | bb1ab565fc7b3cbee92cdf271f36980d5483a14fe172d8ccd5faa4f7d8c0c6dd | CC BY 4.0 (UniProt) |
 | external/uniprot/kinase_kw0418/human_kw0418_reviewed.tsv.gz | Reviewed human entries with keyword KW-0418 Kinase (625; 459 with a 'Protein kinase' domain) | https://rest.uniprot.org/uniprotkb/stream?query=organism_id%3A9606+AND+reviewed%3Atrue+AND+keyword%3AKW-0418&format=tsv&fields=accession%2Cid%2Creviewed%2Cgene_primary%2Cgene_names%2Cprotein_name%2Corganism_id%2Clength%2Csequence_version%2Cdate_sequence_modified%2Ckeywordid%2Ckeyword%2Cft_domain%2Cprotein_families%2Cec&compressed=true | 2026_03 (02-September-2026) | 2026-10-26T12:38:29 | 509512f55f8d7ced99fc1d0bc7fbca30bdf2c76fbace1544f16408c99c24d465 | CC BY 4.0 (UniProt) |
 | external/uniprot/pkinfam/pkinfam.txt | UniProt 'Human and mouse protein kinases: classification and index' (pkinfam; 512 human entries; release 2026_03 of 02-Sep-2026) | https://ftp.uniprot.org/pub/databases/uniprot/knowledgebase/complete/docs/pkinfam.txt | 2026_03 (02-Sep-2026) | 2026-10-26T12:38:58 | 3c6051ea748c91b1e02a60df2374eb14c56a01ccf97bbffe667a0f83b82d4e2d | CC BY 4.0 (UniProt) |
+| external/uniprot/ptm_tsv/UP000005640_reviewed_ptm.tsv.gz | UP000005640 Swiss-Prot entries (20,416): gene synonyms, HGNC xref, sequence version, length, MOD_RES features (incl. 'Phosphoserine; by <kinase>' notes + ECO evidence) — used for UniProt ECO:0000269 KS pairs and gene-synonym fallback | https://rest.uniprot.org/uniprotkb/stream?query=proteome%3AUP000005640+AND+reviewed%3Atrue&format=tsv&fields=accession%2Cid%2Cgene_primary%2Cgene_synonym%2Cxref_hgnc%2Csequence_version%2Clength%2Cft_mod_res&compressed=true | 2026_03 (02-September-2026) | 2026-10-26T12:53:05 | 213464a2b58f4b2a6510d8aeaa3fde61c54c74ef94c86caa0af964e1c7c0f04c | CC BY 4.0 (UniProt) |
+| external/uniprot/kinase_detail/human_kw0418_detail.tsv.gz | Reviewed human KW-0418 entries (625): domains, active site, binding sites, function and caution comments, EC, families — used for kinase domains / pseudokinase flags | https://rest.uniprot.org/uniprotkb/stream?query=organism_id%3A9606+AND+reviewed%3Atrue+AND+keyword%3AKW-0418&format=tsv&fields=accession%2Cid%2Cgene_primary%2Cgene_synonym%2Cprotein_name%2Clength%2Cft_domain%2Cft_act_site%2Cft_binding%2Ccc_function%2Ccc_caution%2Cec%2Cprotein_families%2Ckeyword&compressed=true | 2026_03 (02-September-2026) | 2026-10-26T12:53:08 | 47e895706c9ab304cfc350cd60e9a345de310b068c5c3643467487b0992013b5 | CC BY 4.0 (UniProt) |
 
 ## Downloaded (external/) -- wave 1, access date 2026-10-26
 All under /workspace/external/<dir>/. Per-file SHA-256 below each source; full list in logs/dl/sha256_wave1.txt (kinase_library extracted tree: logs/dl/sha256_kinase_library_extracted.txt).
@@ -617,3 +619,22 @@ All under /workspace/external/<dir>/. Full hash list: logs/dl/sha256_wave2.txt. 
 | rec_5105698.json | 6973 | 2154d10a060375bff4a817a65b75ba1a3b4c73bf4a1065a206e0756b72368a34 |
 | rec_8399823.json | 7624 | 67289a1bb688e7f4bd7ca8b21cb1e51f1d5fdbfd5aa80c7b895e6a9b8c8ba942 |
 
+### AlphaFold DB human proteome (external/alphafold/; F0 structure features, src/ksp/features/structure.py)
+- URL: https://ftp.ebi.ac.uk/pub/databases/alphafold/latest/UP000005640_9606_HUMAN_v6.tar (+ README.txt, CHANGELOG.txt, download_metadata.json from https://ftp.ebi.ac.uk/pub/databases/alphafold/)
+- Version/release: AFDB v6 (CHANGELOG 2025-09-15, "Updated to UniProt 2025_03"; archive dated 2025-08-24; 23,586 models, cif.gz + pdb.gz per model; proteins > 2700 aa split into fragments F1..Fn)
+- Accessed: 2026-10-26; License: CC BY 4.0 (AlphaFold DB, EMBL-EBI / Google DeepMind; cite Jumper et al. 2021, Varadi et al. 2024)
+
+| file | bytes | SHA-256 |
+|---|---|---|
+| UP000005640_9606_HUMAN_v6.tar | 5177506304 | 1de6f3d7df0373be7d49e61cb4a9eb501b0a2216aeec262471812fac9faeeaa6 |
+| README.txt | 4041 | b3fa3bb2c36db9f3381e97daca0be7c72f70a4e27b0badd924e37f39229939b7 |
+| CHANGELOG.txt | 4528 | b6cc3567ff0cd9232c94bfdc080c2871cc27142a39ec983d97ecc26b21b59b86 |
+| download_metadata.json | 12640 | 2b36caa30c9f8f8d3574a9196062ce2860aaaf665ae4983ceab39a57979c247d |
+
+- PAE calibration subset: external/alphafold/pae/AF-{acc}-F1-predicted_aligned_error_v6.json.gz for 399 of 400 random (seed 0) Swiss-Prot canonical proteins ≤2700 aa (list cache/structure/pae_calibration_accs.txt; A0A0J9YXA8 404). URL https://alphafold.ebi.ac.uk/files/AF-{acc}-F1-predicted_aligned_error_v6.json (scripts/download_afdb_pae.py; needs a browser User-Agent; the server rate-limits with HTTP 429, so a full-proteome PAE download was abandoned). Per-file SHA-256 (of the uncompressed JSON) in external/alphafold/pae/MANIFEST.tsv. License CC BY 4.0.
+
+### ESM-2 protein language models (HuggingFace cache /home/.cache/huggingface/hub; F0/F7 embeddings)
+| model | URL | revision (snapshot) | weight file SHA-256 | License |
+|---|---|---|---|---|
+| facebook/esm2_t33_650M_UR50D | https://huggingface.co/facebook/esm2_t33_650M_UR50D | 08e4846e537177426273712802403f7ba8261b6c | model.safetensors a08adabb949fa67ad3c14b509d04fd60368b35007b0095e3358f81200c4f4db0 | MIT (Lin et al. 2023 Science) |
+| facebook/esm2_t36_3B_UR50D | https://huggingface.co/facebook/esm2_t36_3B_UR50D | 476b639933c8baad5ad09a60ac1a87f987b656fc | pytorch_model-00001-of-00002.bin 0f971f11c449d21422aa982b791619c10351972992c735f4c3cd43fe09790412; -00002 7560b46fc383c691fb74b915b7d4bcef40d3df181447f16ba4b298845e308d0c | MIT |
