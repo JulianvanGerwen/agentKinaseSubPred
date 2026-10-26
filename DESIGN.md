@@ -474,3 +474,6 @@ GPU allocation:
   - Per-fold mean M1 is reported alongside.
   - TEST has a single model, so the issue doesn't arise there.
 - **A25. Canary descriptors.** Each canary gets its own Manning group, so group- or family-level priors cannot pool canary labels.
+- **A26. Tyrosine-kinase analyses** (2026-10-26 17:40; `docs/features_tyr.md` §1.6).
+  - (a) A **hub-site stratum** is ADDED as a secondary, reporting-only analysis: sites labelled to ≥5 non-paralog kinases (e.g. GLO1 Y136 with 15 TKs). It does not change any endpoint.
+  - (b) Treating cross-kinase activation-loop labels as mask-only is **REJECTED** for all endpoints: it would change labels after seeing results. It may be reported as a clearly-labelled sensitivity analysis only.

@@ -73,8 +73,8 @@ These sites are each kinase's **positives and simultaneously every other kinase'
 tyrosine kinases genuinely do phosphorylate them; no motif model can or should separate them. This, not
 motif weakness, is the dominant structural cause.
 
-Inspecting the sub-chance families makes the mechanism concrete
-(`scripts/features/tyr_diag.py` prints these; see also the scratch listing in §1.1):
+Inspecting the sub-chance families of §1.1 makes the mechanism concrete (`diag_summary.json` keys
+`Y_top_shared_sites` and `Y_aloop_IEDNEYTAR_*`):
 - All of EPHA2/A5/A6/A7/A8, FLT1 and FLT4 carry **GLO1 Y136** as a positive — one site assigned to seven
   RTKs, almost certainly one promiscuous screen.
 - AXL is labelled on six Src-family **activation-loop** sites (`RLIEDNEYTARQGAK` and variants: SRC Y419,

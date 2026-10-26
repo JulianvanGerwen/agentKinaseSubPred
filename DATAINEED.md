@@ -42,6 +42,17 @@ Last updated: 2026-10-26 15:00
 - **Tried:** both metadata files inspected; no plex/batch/ischemia columns.
 - **Workaround:** residualise on host protein + stromal + immune + purity only. Ideal file: per-cohort sample → TMT plex table (PDC study biospecimen manifests) and ischemia time.
 
+### 10. PTB/PID-domain peptide specificity matrices (SHC1/2, IRS1/2, DOK1-7, APBB1, ARH/LDLRAP1) — priority LOW (feat-tyr, 2026-10-26)
+- **Need:** position-weight matrices for PTB/PID recognition of NPxpY-type motifs, analogous to the 76 SH2 matrices in Yaron-Barir 2024 Suppl. Table 5. INSR/IGF1R, NTRK1/2, ERBB and MET recruit substrates through adaptor **PTB** domains, not their own SH2 (no human protein kinase carries a UniProt PID/PTB domain), so the receptor half of the F9 docking family currently has no sequence model at all.
+- **Tried:** Yaron-Barir 2024 MOESM1-9 (SH2 only, sheet `sh2_*`); UniProt domain annotation (0 PTB domains among the 503 kinases). No PTB matrix set found in any dataset already in external/.
+- **Workaround:** none for sequence specificity. The NPxY motif is hard-codable as a regex if the PI wants a crude version; the current F9 build does not include one.
+- **Priority rationale:** LOW. docs/features_tyr.md §1 shows the Y E-hard deficit is mostly an endpoint/label-composition problem, not a missing-feature problem, so this is unlikely to be worth much.
+
+### 11. Resolution of indirect ("pathway") tyrosine KS labels — PI DECISION, not a download — priority MEDIUM (feat-tyr, 2026-10-26)
+- **Need:** a rule for labels such as AXL/MERTK/TYRO3 → Src-family **activation-loop** tyrosines (SRC Y419, LCK Y394, FYN Y420, LYN Y397, HCK Y411, YES1 Y426; 12 pairs over 6 sites, all in-vivo-only) and GLO1 Y136 assigned to 15 different tyrosine kinases. These are almost certainly indirect/pathway events or one promiscuous screen, and they currently act as both positives and as other kinases' E-hard negatives.
+- **Tried:** evidence-class split (in vitro vs in vivo-only) does **not** separate them (Δ AUROC +0.007, docs/features_tyr.md §1.3), so no automatic filter is available on the existing flags.
+- **Workaround:** none applied. Nothing was changed: the endpoint is frozen and this is explicitly a PI call (see docs/features_tyr.md §1.6 for the two options and why I did not take either).
+
 ## Licence decisions (for your information; no action unless you disagree)
 - Phospho.ELM requires an academic click-through licence: **not accepted, skipped** (adds almost nothing beyond PSP).
 - PSP, Kinase Library (Cantley) data and iPTMnet are CC BY-NC-SA / non-commercial: used for research; outputs derived from them inherit non-commercial terms.

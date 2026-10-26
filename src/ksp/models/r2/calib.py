@@ -124,8 +124,10 @@ def fit_calibrator(T: pd.DataFrame, kinases: pd.DataFrame, min_pos: int = 30) ->
                 a = _intercept_given_slope(d.score.values, d.y.values, b) if d.w.nunique() == 1 else \
                     _intercept_given_slope_w(d.score.values, d.y.values, d.w.values, b)
             else:
-                a = np.nan
-                tier += "+no_pos"
+                # no positives: intercept such that the expected number of positives is 0.5 (pseudo-count), instead
+                # of borrowing a family intercept (which over-predicts kinases without curated substrates)
+                a = _intercept_expected(d.score.values, d.w.values, b, 0.5)
+                tier += "+no_pos(0.5 pseudo)"
         out[k] = (a, b, tier, n)
     C = pd.DataFrame.from_dict(out, orient="index", columns=["a", "b", "tier", "n_pos"])
     # intercepts for kinases without positives: family mean intercept, else global
@@ -147,6 +149,15 @@ def _intercept_given_slope_w(x, y, w, b):
         if abs(g / h) < 1e-7:
             break
     return float(a)
+
+
+def _intercept_expected(x, w, b, target):
+    lo, hi = -60.0, 20.0
+    for _ in range(80):
+        a = (lo + hi) / 2
+        e = (w / (1 + np.exp(-(a + b * x)))).sum()
+        lo, hi = (a, hi) if e < target else (lo, a)
+    return float((lo + hi) / 2)
 
 
 def apply(C: pd.DataFrame, kinase_idx: np.ndarray, score: np.ndarray) -> np.ndarray:

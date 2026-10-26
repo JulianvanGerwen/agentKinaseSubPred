@@ -164,6 +164,26 @@ FAMILIES = {
 CHUNK = {"f2a": 6_000_000, "f2a_sep": 6_000_000, "f3nb": 6_000_000, "f6a": 40_000_000, "f6a_clean": 40_000_000}
 
 
+def _knn_class():
+    from ksp.features import knn
+
+    class KnnSimCPU(knn.KnnSim):
+        name = "r2_knn_sim_cpu"
+
+        def __init__(self):
+            super().__init__(device="cpu")
+    return KnnSimCPU
+
+
+def _knn_cols():
+    from ksp.features import knn
+    return knn.columns()
+
+
+FAMILIES["knn"] = (lambda: _knn_class(), "site", None)       # columns resolved lazily (ksp.features.knn.columns)
+CHUNK["knn"] = 40_000_000
+
+
 class DenseExpand(crossfit.LabelDerivedFeature):
     """Wraps one family: fit() delegates; transform() expands the query SITES to all kinases, writes the family's
     features into `buf` (n_cols, K, S) and returns a single bookkeeping column (the inner-block id)."""
@@ -240,6 +260,8 @@ def build(family: str, fold: int | None, seed: int = 0, variant: str = "L2", tag
     out.parent.mkdir(parents=True, exist_ok=True)
     t0 = time.time()
     cls_factory, level, cols = FAMILIES[family]
+    if cols is None and family == "knn":
+        cols = _knn_cols()
     inner_cls = cls_factory()
     train_labels, _, _ = crossfit.outer_split(fold, variant=variant, with_canaries=True)
     train_labels = train_labels[["kinase_acc", "site_id"]].drop_duplicates().reset_index(drop=True)

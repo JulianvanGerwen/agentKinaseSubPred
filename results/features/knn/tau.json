@@ -2,7 +2,8 @@
  "tau": {
   "esmc": 0.1,
   "esmw": 0.1,
-  "blosum": 2.0
+  "esmcat": 0.1,
+  "blosum": 4.0
  },
  "criterion": "max macro per-kinase AUROC of knn_<sp>_lr on CV fold 0, inner fold 0 held out",
  "grid": {
@@ -15,12 +16,12 @@
    0.5
   ],
   "blosum": [
-   0.05,
-   0.1,
    0.2,
    0.5,
    1.0,
-   2.0
+   2.0,
+   4.0,
+   8.0
   ]
  },
  "n_fit_labels": 7088,
@@ -31,5 +32,12 @@
  "seed": 0,
  "c": 1.0,
  "n_bg": 2000,
- "runtime_s": 25.5
+ "runtime_s": 44.6,
+ "default_spaces": [
+  "esmc",
+  "esmcat",
+  "blosum"
+ ],
+ "window_space_choice": "esmcat (concatenated, PCA-128/position) chosen over esmw (mean-pooled): best lr macro AUROC 0.748 vs 0.726 on the same fold-0 inner data; esmw kept as optional space",
+ "note_blosum": "lr AUROC plateaus for tau 2-8 (0.7741-0.7742); 4.0 taken"
 }
