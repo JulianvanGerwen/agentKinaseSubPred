@@ -1,0 +1,303 @@
+{
+ "version": 1,
+ "harness_commit": "974d520",
+ "B": 10000,
+ "B_secondary": 1000,
+ "notes": "Single TEST batch (G4). Final = R2+R3 late fusion (DESIGN A13, docs/model_r2.md \u00a76). Primary family per \u00a76.8/A19/A23; contingency per A29; B1 per A30; assignment_prob per A31(b).",
+ "configs": [
+  {
+   "name": "final",
+   "role": "final",
+   "run_id": "r2r3_final__20261026-230138__s0",
+   "predictions": "cache/runs/r2r3_final__20261026-230138__s0/test_predictions.parquet",
+   "predictions_sha256": "1d95b271672b1db20ae63c2918a32a911e6800dc969b53b6514a3dceff7ce9c4",
+   "score_site_predictions": null,
+   "assignment_prob_predictions": null,
+   "t3_predictions": "cache/runs/r2r3_final__20261026-230138__s0/test_t3_predictions.parquet",
+   "t3_predictions_sha256": "d62195b8f3a66df64cb0f91f5261469d1c80ed1204922bd016470aaafc8ad1b1",
+   "runtime": {
+    "train_wall_s": 1136.6,
+    "inference_wall_s": 316.9
+   },
+   "missing": "worst",
+   "description": "R2 LightGBM (5 seeds) + R3 neural (5 seeds) late fusion; score w=0.6, score_site w=0.5 (raw, M2); assignment_prob A31(b)"
+  },
+  {
+   "name": "R2",
+   "role": "ablation",
+   "run_id": "r2_final_test__20261026-221039__s0",
+   "predictions": "cache/runs/r2_final_test__20261026-221039__s0/test_predictions.parquet",
+   "predictions_sha256": "2aa381c9fbccaba1b2da022af453276b0ca960e878a72e3be2017ff67ee9f17b",
+   "t3_predictions": "cache/runs/r2_final_t3__20261026-221039__s0/test_t3_predictions.parquet",
+   "t3_predictions_sha256": "344433cbb4928ce7f91ffd19c705c186fa996fec7a3c1bdff813cefbb37f053f",
+   "runtime": {
+    "train_wall_s": 417.9,
+    "inference_wall_s": 298.9
+   },
+   "missing": "worst",
+   "description": "R2 LightGBM final config alone, 5 seeds"
+  },
+  {
+   "name": "R3",
+   "role": "ablation",
+   "run_id": "r3_final_distill_test__20261026-220424__s0",
+   "predictions": "cache/runs/r3_final_distill_test__20261026-220424__s0/test_predictions.parquet",
+   "score_site_predictions": null,
+   "t3_predictions": "cache/runs/r3_final_distill_test__20261026-220424__s0/test_t3_predictions.parquet",
+   "predictions_sha256": "6223c72c3a93d8082c957753c541dc0737a8e9b5921e90ce19e29af71828d384",
+   "t3_predictions_sha256": "9c6c403ea27690d8f5c337b47525a4cb84452ad0cc9be1cf31de78a4b78b8874",
+   "runtime": {
+    "train_wall_s": 718.7,
+    "inference_wall_s": 3.1,
+    "t3_train_wall_s_sum": 3446.2,
+    "t3_inference_wall_s_sum": 9.4
+   },
+   "missing": "worst",
+   "description": "R3 neural (frozen ESM + Cantley distillation), 5 seeds"
+  },
+  {
+   "name": "B1_i",
+   "role": "baseline",
+   "baseline_id": "B1_arm_i",
+   "run_id": "simple_test_b1_arm_i__20261026-214815__s0",
+   "predictions": "cache/runs/simple_test_b1_arm_i__20261026-214815__s0/test_predictions.parquet",
+   "score_site_predictions": null,
+   "t3_predictions": null,
+   "runtime": {
+    "train_wall_s": 0.0,
+    "inference_wall_s": 4.36
+   },
+   "missing": "worst",
+   "description": "Cantley arm (i) as-published percentile (own matrices only)",
+   "predictions_sha256": "609988b9e84a48dc9857403071f6f56a1641172d249ea7608e68eda80d493655"
+  },
+  {
+   "name": "B1_ii",
+   "role": "baseline",
+   "baseline_id": "B1_arm_ii",
+   "run_id": "simple_test_b1_arm_ii__20261026-214850__s0",
+   "predictions": "cache/runs/simple_test_b1_arm_ii__20261026-214850__s0/test_predictions.parquet",
+   "score_site_predictions": null,
+   "t3_predictions": null,
+   "runtime": {
+    "train_wall_s": 0.0,
+    "inference_wall_s": 0.97
+   },
+   "missing": "worst",
+   "description": "Cantley arm (ii) universe-recalibrated percentile",
+   "predictions_sha256": "f3213ed39439e5b995f13c34817e9447870912b2c087c9271f816750cae776f4"
+  },
+  {
+   "name": "B2",
+   "role": "baseline",
+   "baseline_id": "B2",
+   "run_id": "simple_test_b2_pssm__20261026-212755__s0",
+   "predictions": "cache/runs/simple_test_b2_pssm__20261026-212755__s0/test_predictions.parquet",
+   "score_site_predictions": null,
+   "t3_predictions": "cache/runs/simple_test_b2_pssm__20261026-212755__s0/test_t3_predictions.parquet",
+   "runtime": {
+    "train_wall_s": 3.33,
+    "inference_wall_s": 39.74
+   },
+   "missing": "worst",
+   "description": "learned PSSM (F2a, family prior) on all DEV L2",
+   "t3_runtime": {
+    "train_wall_s": 16.17,
+    "inference_wall_s": 20.84
+   },
+   "predictions_sha256": "bc78031604405008ae6de8b7cfd4161460166faeab234e4367980a051ea52879",
+   "t3_predictions_sha256": "25731be1ec6a214e66ce4ef1063e6e3a58ac78a66edc10d804f3ace3743e175a"
+  },
+  {
+   "name": "B7",
+   "role": "baseline",
+   "baseline_id": "B7",
+   "run_id": "simple_test_b7_lr__20261026-212809__s0",
+   "predictions": "cache/runs/simple_test_b7_lr__20261026-212809__s0/test_predictions.parquet",
+   "score_site_predictions": null,
+   "t3_predictions": "cache/runs/simple_test_b7_lr__20261026-212809__s0/test_t3_predictions.parquet",
+   "runtime": {
+    "train_wall_s": 89.12,
+    "inference_wall_s": 287.03
+   },
+   "missing": "worst",
+   "description": "simple strong LR on Cantley(i)+B2+PPI+loc, all DEV",
+   "t3_runtime": {
+    "train_wall_s": 301.63,
+    "inference_wall_s": 324.37
+   },
+   "predictions_sha256": "f9977e688f1956311e92b1b1209bfd4ec7cc7fff623015c5c74123418c14da6a",
+   "t3_predictions_sha256": "2058cc30380d7f791c07d86c485cc06906763043bf0482a53158793308919eeb"
+  },
+  {
+   "name": "B0_prior",
+   "role": "control",
+   "baseline_id": "B0_prior",
+   "run_id": "simple_test_b0_prior__20261026-212754__s0",
+   "predictions": "cache/runs/simple_test_b0_prior__20261026-212754__s0/test_predictions.parquet",
+   "score_site_predictions": null,
+   "t3_predictions": null,
+   "runtime": {
+    "train_wall_s": 0.0,
+    "inference_wall_s": 0.75
+   },
+   "missing": "worst",
+   "description": "kinase DEV-label count; score_site = normalised prior",
+   "predictions_sha256": "0bf51f64c36273dca115522292571dc4eccd647effd9a9f50ec953545f12fdf3"
+  },
+  {
+   "name": "B0_pop",
+   "role": "control",
+   "baseline_id": "B0_pop",
+   "run_id": "simple_test_b0_pop__20261026-212754__s0",
+   "predictions": "cache/runs/simple_test_b0_pop__20261026-212754__s0/test_predictions.parquet",
+   "score_site_predictions": null,
+   "t3_predictions": null,
+   "runtime": {
+    "train_wall_s": 0.0,
+    "inference_wall_s": 0.41
+   },
+   "missing": "worst",
+   "description": "site popularity (diagnostic floor)",
+   "predictions_sha256": "234ee7e5c075aef7e82b628ecf8d7e469b9c1a8eed981b0fa642933789b82a31"
+  },
+  {
+   "name": "B0_miss",
+   "role": "control",
+   "baseline_id": "B0_miss",
+   "run_id": "simple_test_b0_miss__20261026-212754__s0",
+   "predictions": "cache/runs/simple_test_b0_miss__20261026-212754__s0/test_predictions.parquet",
+   "score_site_predictions": null,
+   "t3_predictions": null,
+   "runtime": {
+    "train_wall_s": 19.02,
+    "inference_wall_s": 30.42
+   },
+   "missing": "worst",
+   "description": "LightGBM on missingness indicators only, all DEV",
+   "predictions_sha256": "07c434d093827d27d413e4563bd15c77dba097128db85ee03f7f9f6b53f21798"
+  },
+  {
+   "name": "B3",
+   "role": "baseline",
+   "baseline_id": "B3_retrained",
+   "run_id": "b3_retrained_test__20261026-232229__s0",
+   "predictions": "cache/runs/b3_retrained_test__20261026-232229__s0/test_predictions.parquet",
+   "score_site_predictions": null,
+   "t3_predictions": null,
+   "runtime": {
+    "train_wall_s": 3152.41,
+    "inference_wall_s": 6478.84
+   },
+   "missing": "worst",
+   "predictions_sha256": "a468cdbc8d57cfabcef58b7880dcb985f9ab2fa9ee54d44f61458dee3bc464a3",
+   "description": "Phosformer reimplementation: MLM-pretrained on TEST-filtered corpus (A22), fine-tuned on all DEV (f0_r16)"
+  },
+  {
+   "name": "B4",
+   "role": "baseline",
+   "baseline_id": "B4_retrained",
+   "run_id": "b4_selphi2_final__20261026-212619__s0",
+   "predictions": "cache/runs/b4_selphi2_final__20261026-212619__s0/test_predictions.parquet",
+   "score_site_predictions": null,
+   "t3_predictions": null,
+   "runtime": {
+    "train_wall_s": 737.0,
+    "inference_wall_s": 2043.4
+   },
+   "missing": "worst",
+   "predictions_sha256": "89365e66920f602558c0370f2ff4bb705d12b8aec14e64220a63b93ea5b4cbfb"
+  }
+ ],
+ "comparisons": [
+  {
+   "a": "final",
+   "b": "B1_i",
+   "endpoints": [
+    "M1",
+    "M3"
+   ],
+   "primary": true
+  },
+  {
+   "a": "final",
+   "b": "B1_ii",
+   "endpoints": [
+    "M2"
+   ],
+   "primary": true
+  },
+  {
+   "a": "final",
+   "b": "B3",
+   "endpoints": [
+    "M1",
+    "M2",
+    "M3"
+   ],
+   "primary": true
+  },
+  {
+   "a": "final",
+   "b": "B4",
+   "endpoints": [
+    "M1",
+    "M2",
+    "M3"
+   ],
+   "primary": true
+  },
+  {
+   "a": "final",
+   "b": "R2",
+   "endpoints": [
+    "M1",
+    "M2",
+    "M3",
+    "M4"
+   ],
+   "primary": false
+  },
+  {
+   "a": "final",
+   "b": "R3",
+   "endpoints": [
+    "M1",
+    "M2",
+    "M3",
+    "M4"
+   ],
+   "primary": false
+  },
+  {
+   "a": "final",
+   "b": "B7",
+   "endpoints": [
+    "M1",
+    "M2",
+    "M3",
+    "M4"
+   ],
+   "primary": false
+  },
+  {
+   "a": "final",
+   "b": "B2",
+   "endpoints": [
+    "M1",
+    "M2",
+    "M3",
+    "M4"
+   ],
+   "primary": false
+  },
+  {
+   "a": "final",
+   "b": "B1_i",
+   "endpoints": [
+    "M4"
+   ],
+   "primary": false
+  }
+ ]
+}
