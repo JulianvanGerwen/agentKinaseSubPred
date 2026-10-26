@@ -1,7 +1,13 @@
 # LESSONS — process rules for running this project efficiently
-(One-line rule + evidence. Pruned at each milestone.)
+(One-line rule + evidence. Pruned at each milestone; last prune M1 2026-10-26 14:55, see docs/retro/M1_retro.md.)
 
-- Let reviewers run quick read-only data checks: in r1, 6/7 reviewers backed changes with measured numbers (paralog-contaminated hard negatives 51–54% for SRC family; 68% same-protein co-labelled pairs → leave-site-out leaks) that pure reading would have missed.
-- Run literature, data profiling and data acquisition in parallel from the start: all three finished within ~20 min wall-clock of each other (evidence: M0→M1 in <1 h).
-- Benchmark compute before planning around it: the design guessed co-regulation was the bottleneck; measurement showed 3.6 s on GPU, while LightGBM on 400k×160 took 15 min (r1 algorithms review).
-- Key everything by UniProt accession, not symbol: Cantley "PDK1"=PDPK1 vs gene PDK1=PDHK1; 174/404 Cantley names ≠ gene symbols (r1 reviews).
+1. Give reviewers read-only data access and require a measured number per change — r1: 6/7 reviewers found quantified leaks (68% same-protein co-labelled KS pairs; >50% SRC-family hard negatives are paralog substrates) that reading alone missed.
+2. Key everything by UniProt accession, never symbol — 174/404 Cantley names ≠ gene symbols; Cantley "PDK1" = PDPK1, gene PDK1 = PDHK1.
+3. Benchmark compute before planning around it — design guessed co-regulation was the bottleneck (actual 3.6 s GPU); LightGBM 400k×160 took 15 min.
+4. Treat every label-derived feature as leaky until cross-fitted by substrate cluster — 68% co-labelled same-protein sites make leave-site-out leak.
+5. Audit "unbiased" resources for KS-label leakage before use — STRING experiments channel covers 34% of PSP KS pairs vs ~4% controls (imports kinase assays).
+6. Parallelise literature/profiling/acquisition from the start; fan out implementers only against frozen interfaces (index, splits, eval API) — avoids rework when design changes.
+7. Get a first measured baseline before more review rounds — at T+1.5 h no baseline existed while 84 review changes were processed (M1 retro).
+8. PI recomputes headline metrics from saved predictions with ksp.eval; agent-reported numbers are untrusted.
+9. One owner per path, PI-only git (NFS), and update tree/delegation status at each notification, not in batches (M1 retro: stale statuses).
+10. ≤4 reviewers per round with distinct remits, length cap, ranked top-5 changes — r1 produced ~26k words.

@@ -19,3 +19,4 @@ statsmodels
 openpyxl
 xlrd
 openpyxl
+pytest
