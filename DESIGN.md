@@ -498,7 +498,7 @@ GPU allocation:
   - (c) **Canary gate.** It stays pooled, per A27 (pooled 0.539, pass). Per-fold values are reported: 2 of 5 folds exceed 0.57 (0.575 and 0.676; fold 4 is driven by R3).
   - (d) **LKO T2.** Reported stratified by whether the held-out site has other-kinase labels: M1 is 0.703 on sites without them (55%).
   - (e) **Clean variant disclosure.** Site existence (U_ms membership) and primed-Cantley evidence weights still draw on the compendium and CPTAC.
-- **A32. Pre-declared rules for two late CV experiments** (2026-10-26 22:35; prompted by `docs/strata_cv.md`). These rules were declared before either experiment was run.
+- **A32. Pre-declared rules for two late CV experiments** (2026-10-26 22:16; prompted by `docs/strata_cv.md`). These rules were declared before either experiment was run.
   - **(a) Priming features.** The finding: on primed positives the priming-aware Cantley arm scores 0.945, against 0.870 for R2.
     - The experiment adds label-free, kinase-specific priming features to the R2 final config. They are the priming-aware Cantley percentile, plus an indicator that the kinase's preferred phospho-offset residue (from its Cantley phospho-preference) is an observed phosphosite.
     - **Adopt only if all of the following hold** (pooled 5-fold CV, seed 0, against r2_final_s0):
