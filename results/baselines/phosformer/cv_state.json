@@ -1,0 +1,32 @@
+{
+ "runs": {
+  "f0_r16": {
+   "run_id": "b3a_phosformer_f0_r16__20261026-194130__s0",
+   "best_val": 0.7203846909682667,
+   "endpoints": {
+    "K_primary_name": "K_cv",
+    "n_K_primary": 203,
+    "n_K_primary_evaluated": 180,
+    "n_K_any": 208,
+    "n_K_any_evaluated": 208,
+    "M1_auroc_hard": 0.6929790925257692,
+    "M1_n_kinases_defined": 180,
+    "M2_hit5": 0.12093450733809558,
+    "M3_top1_recall": 0.0446649776812118,
+    "M4_auroc_hard_Kany": 0.6920495003280096,
+    "M5_auroc_hard_Kcv": 0.6929790925257692,
+    "sec_hit1": 0.06762185692711298,
+    "sec_hit10": 0.20705061816939646,
+    "sec_mrr": 0.11490326523110812,
+    "sec_fam_hit5": 0.31731248277727025,
+    "sec_pauroc01_all": 0.5155596899952342,
+    "sec_ap_all": 0.0701479148100521,
+    "sec_ap_lift_all": 17.780176477402946,
+    "sec_auroc_all": 0.6929790925257692,
+    "fold_normalised": false,
+    "n_missing_pairs": 8341275,
+    "n_required_pairs": 8521517
+   }
+  }
+ }
+}

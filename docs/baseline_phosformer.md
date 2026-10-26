@@ -110,3 +110,36 @@ The released repository, weights and dataset are CC BY-NC-ND 4.0.
 - **Pooled run:** `scripts/baselines/phosformer_cv_pool.py`.
   - `fill` scores the pooled-E-all pairs that are missing for kinases with no positive in a given fold, using that fold's own model.
   - `pool` then writes the run `b3a_phosformer_cv_pooled`.
+
+## Results: B3a pooled 5-fold OOF (22:27)
+**Run:** `results/runs/b3a_phosformer_cv_pooled__20261026-222734__s0`
+- Seed 0; neg 1:16 with 50% hard; f0_r16 configuration.
+- E-all is complete: n_missing_pairs = 0 of 68.9M required pairs, 339 kinases.
+
+| Endpoint | B3a (this run) | B3-pub (contaminated, set A only) |
+|---|---|---|
+| M1-CV = M5 (fold-normalised) | **0.679**; fold mean 0.690 | 0.793 |
+| M2 Hit@5 (Hit@1 / MRR) | 0.132 (0.059 / 0.111) | 0.248 |
+| M3 top-1% recall | 0.104 | n/a (E-all incomplete) |
+| M4 (K_any, 339 kinases) | 0.657 | 0.801 |
+| AUROC on E-all | 0.724 | n/a |
+
+Per-fold M1: 0.693 / 0.698 / 0.688 / 0.703 / 0.671.
+
+**How the predictions were built.**
+- Fold runs: `results/runs/b3a_phosformer_f{0..4}_r16__*`.
+  - Fold 0 is the `--skip-train --eall` re-score of the 19:41 f0_r16 model.
+  - Fold 1 reached the 3-epoch cap without early stopping. Folds 0 and 2–4 early-stopped.
+- Fills: `cache/phosformer/fill/`. For kinases without a positive in a fold, the missing E-all pairs were scored by that fold's own model, so the predictions stay out-of-fold.
+- The pooling step peaked at 14.4 GB RSS.
+
+**Interpretation (caveat, not a fix).**
+- B3a sits well below B3-pub. B3-pub was trained on PSP, including our DEV/TEST positives, from 13 organisms with 24.5k pairs.
+- B3a is trained on about 9.6k DEV positives per fold-model, with no orthologs, and our negatives are harder: KP, Hamming and paralog masks, plus residue-class matching.
+- We do not tune further after seeing fold metrics (PI rule).
+
+## TEST deliverable: B3_retrained (in progress)
+- Model: all-DEV fine-tune with the frozen config (`--fold -1`), from `mlm_final.pt` (TEST-filtered, A22).
+  - Best inner-val 0.710, train_wall_s = 3152.
+  - Checkpoint: `cache/phosformer/finetune/b3_retrained_devfull_s0/best.pt`.
+- Scoring: `scripts/baselines/phosformer_test.py`, sharded by kinase (all-or-nothing per kinase), over all 25,922,452 `ksp.eval_test.test_candidate_pairs()`.
