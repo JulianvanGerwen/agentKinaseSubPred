@@ -1,0 +1,13 @@
+stratum	level	rule	source
+manning_group	kinase	Manning group (cache/index/kinases.parquet)	KinHub/Manning 2002
+residue_class	kinase	ST / Y / STY; config/kinase_curation.tsv overrides	docs/core_infra.md §1
+train_bin	kinase	DEV L2 label count: 0 / 1-4 / 5-19 / 20-99 / >=100	DESIGN §6.3
+priming	kinase	PRIMARY. GSK3A/B; Manning family CK1 (CSNK1*); CSNK2A1/A2/A3; PLK1 (= ksp.eval 'priming')	DESIGN §9; Fiol 1987, Flotow 1990, Meggio & Pinna 2003, Elia 2003
+priming_cantley	kinase	SECONDARY. S/T Cantley log2 matrix: pS/pT is the top residue at some position and log2 >= 2.0	kinase-library 1.8.0 ser_thr_all_log2_matrices.tsv
+pikk	kinase	Manning family PIKK (= ksp.eval 'pikk')	DESIGN §9
+pikk_sq	kinase	ATM, ATR, PRKDC, SMG1 (S/T-Q PIKKs; MTOR and pseudokinase TRRAP excluded)	DESIGN §9
+secretory	kinase	FAM20C, FAM20A, PKDCC present in index	DESIGN §9 / KB-11
+fam20c	kinase	FAM20C	DESIGN §9
+primed	pair	positive of a priming kinase whose priming-offset residue (GSK3 +4, CK1 -3, CK2 +1/+3; PLK1 none) is an S/T U_ms site; Cantley variant uses the matrix offsets	DESIGN §9
+hub	site	site with evaluable-positive labels to >= 5 non-paralogous kinases (Par-graph components)	DESIGN §17 A26
+evidence	pair	evidence_native: in_vitro_only / in_vivo_only / both	DESIGN §6.4

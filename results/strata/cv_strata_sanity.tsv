@@ -1,0 +1,388 @@
+tag	check	max_abs_diff
+R2	full-run M1/M2/M3 = leaderboard metrics_a24.json	0
+R2	stratum 'all' M1 CI = ksp.eval.bootstrap M1 CI	4.44089e-16
+R2	kinase partition manning_group: n-weighted M1 recombines	0
+R2	kinase partition manning_group: n-weighted M5 recombines	0
+R2	kinase partition residue_class: n-weighted M1 recombines	1.11022e-16
+R2	kinase partition residue_class: n-weighted M5 recombines	0
+R2	kinase partition train_bin: n-weighted M1 recombines	1.11022e-16
+R2	kinase partition train_bin: n-weighted M5 recombines	0
+R2	kinase partition priming: n-weighted M1 recombines	1.11022e-16
+R2	kinase partition priming: n-weighted M5 recombines	0
+R2	kinase partition priming_cantley: n-weighted M1 recombines	0
+R2	kinase partition priming_cantley: n-weighted M5 recombines	2.22045e-16
+R2	kinase partition pikk: n-weighted M1 recombines	1.11022e-16
+R2	kinase partition pikk: n-weighted M5 recombines	0
+R2	kinase partition secretory: n-weighted M1 recombines	1.11022e-16
+R2	kinase partition secretory: n-weighted M5 recombines	2.22045e-16
+R2	site partition evidence: per-kinase n-weighted auroc_hard recombines (339 kinases)	1.11022e-16
+R2	site partition evidence: per-kinase n-weighted hit5 recombines (339 kinases)	0
+R2	site partition evidence: per-kinase n-weighted top1_recall recombines (339 kinases)	0
+R2	site partition hub: per-kinase n-weighted auroc_hard recombines (339 kinases)	1.11022e-16
+R2	site partition hub: per-kinase n-weighted hit5 recombines (339 kinases)	1.11022e-16
+R2	site partition hub: per-kinase n-weighted top1_recall recombines (339 kinases)	5.55112e-17
+R2	site partition primed: per-kinase n-weighted auroc_hard recombines (12 kinases)	1.11022e-16
+R2	site partition primed: per-kinase n-weighted hit5 recombines (12 kinases)	0
+R2	site partition primed: per-kinase n-weighted top1_recall recombines (12 kinases)	0
+R2	site partition primed_cantley: per-kinase n-weighted auroc_hard recombines (19 kinases)	2.22045e-16
+R2	site partition primed_cantley: per-kinase n-weighted hit5 recombines (19 kinases)	0
+R2	site partition primed_cantley: per-kinase n-weighted top1_recall recombines (19 kinases)	0
+R2	post-hoc vs subset-label evaluate(), primed=primed: max_abs_diff_auroc_hard (11 kinases)	0
+R2	post-hoc vs subset-label evaluate(), primed=primed: max_abs_diff_hit5 (11 kinases)	0
+R2	post-hoc vs subset-label evaluate(), primed=primed: max_abs_diff_top1 (11 kinases)	0.0163934
+R2	post-hoc vs subset-label evaluate(), primed=primed: macro_diff_top1 (11 kinases)	0.00149031
+R2	post-hoc vs subset-label evaluate(), hub=hub: max_abs_diff_auroc_hard (190 kinases)	0
+R2	post-hoc vs subset-label evaluate(), hub=hub: max_abs_diff_hit5 (190 kinases)	0
+R2	post-hoc vs subset-label evaluate(), hub=hub: max_abs_diff_top1 (190 kinases)	0.333333
+R2	post-hoc vs subset-label evaluate(), hub=hub: macro_diff_top1 (190 kinases)	0.00175439
+R2	runtime_s total	1156.4
+R3	full-run M1/M2/M3 = leaderboard metrics_a24.json	0
+R3	stratum 'all' M1 CI = ksp.eval.bootstrap M1 CI	0
+R3	kinase partition manning_group: n-weighted M1 recombines	2.22045e-16
+R3	kinase partition manning_group: n-weighted M5 recombines	0
+R3	kinase partition residue_class: n-weighted M1 recombines	0
+R3	kinase partition residue_class: n-weighted M5 recombines	1.11022e-16
+R3	kinase partition train_bin: n-weighted M1 recombines	2.22045e-16
+R3	kinase partition train_bin: n-weighted M5 recombines	1.11022e-16
+R3	kinase partition priming: n-weighted M1 recombines	0
+R3	kinase partition priming: n-weighted M5 recombines	0
+R3	kinase partition priming_cantley: n-weighted M1 recombines	0
+R3	kinase partition priming_cantley: n-weighted M5 recombines	0
+R3	kinase partition pikk: n-weighted M1 recombines	0
+R3	kinase partition pikk: n-weighted M5 recombines	0
+R3	kinase partition secretory: n-weighted M1 recombines	0
+R3	kinase partition secretory: n-weighted M5 recombines	0
+R3	site partition evidence: per-kinase n-weighted auroc_hard recombines (339 kinases)	1.11022e-16
+R3	site partition evidence: per-kinase n-weighted hit5 recombines (339 kinases)	0
+R3	site partition evidence: per-kinase n-weighted top1_recall recombines (339 kinases)	0
+R3	site partition hub: per-kinase n-weighted auroc_hard recombines (339 kinases)	2.22045e-16
+R3	site partition hub: per-kinase n-weighted hit5 recombines (339 kinases)	1.11022e-16
+R3	site partition hub: per-kinase n-weighted top1_recall recombines (339 kinases)	5.55112e-17
+R3	site partition primed: per-kinase n-weighted auroc_hard recombines (12 kinases)	0
+R3	site partition primed: per-kinase n-weighted hit5 recombines (12 kinases)	0
+R3	site partition primed: per-kinase n-weighted top1_recall recombines (12 kinases)	0
+R3	site partition primed_cantley: per-kinase n-weighted auroc_hard recombines (19 kinases)	1.11022e-16
+R3	site partition primed_cantley: per-kinase n-weighted hit5 recombines (19 kinases)	5.55112e-17
+R3	site partition primed_cantley: per-kinase n-weighted top1_recall recombines (19 kinases)	0
+R3	runtime_s total	863.6
+B1i	full-run M1/M2/M3 = leaderboard metrics_a24.json	0
+B1i	stratum 'all' M1 CI = ksp.eval.bootstrap M1 CI	1.11022e-16
+B1i	kinase partition manning_group: n-weighted M1 recombines	1.11022e-16
+B1i	kinase partition manning_group: n-weighted M5 recombines	0
+B1i	kinase partition residue_class: n-weighted M1 recombines	1.11022e-16
+B1i	kinase partition residue_class: n-weighted M5 recombines	0
+B1i	kinase partition train_bin: n-weighted M1 recombines	1.11022e-16
+B1i	kinase partition train_bin: n-weighted M5 recombines	1.11022e-16
+B1i	kinase partition priming: n-weighted M1 recombines	0
+B1i	kinase partition priming: n-weighted M5 recombines	1.11022e-16
+B1i	kinase partition priming_cantley: n-weighted M1 recombines	1.11022e-16
+B1i	kinase partition priming_cantley: n-weighted M5 recombines	0
+B1i	kinase partition pikk: n-weighted M1 recombines	0
+B1i	kinase partition pikk: n-weighted M5 recombines	0
+B1i	kinase partition secretory: n-weighted M1 recombines	1.11022e-16
+B1i	kinase partition secretory: n-weighted M5 recombines	1.11022e-16
+B1i	site partition evidence: per-kinase n-weighted auroc_hard recombines (339 kinases)	2.22045e-16
+B1i	site partition evidence: per-kinase n-weighted hit5 recombines (339 kinases)	0
+B1i	site partition evidence: per-kinase n-weighted top1_recall recombines (339 kinases)	0
+B1i	site partition hub: per-kinase n-weighted auroc_hard recombines (339 kinases)	2.22045e-16
+B1i	site partition hub: per-kinase n-weighted hit5 recombines (339 kinases)	1.11022e-16
+B1i	site partition hub: per-kinase n-weighted top1_recall recombines (339 kinases)	5.55112e-17
+B1i	site partition primed: per-kinase n-weighted auroc_hard recombines (12 kinases)	1.11022e-16
+B1i	site partition primed: per-kinase n-weighted hit5 recombines (12 kinases)	0
+B1i	site partition primed: per-kinase n-weighted top1_recall recombines (12 kinases)	0
+B1i	site partition primed_cantley: per-kinase n-weighted auroc_hard recombines (19 kinases)	1.11022e-16
+B1i	site partition primed_cantley: per-kinase n-weighted hit5 recombines (19 kinases)	0
+B1i	site partition primed_cantley: per-kinase n-weighted top1_recall recombines (19 kinases)	2.77556e-17
+B1i	runtime_s total	649.6
+B1ii	full-run M1/M2/M3 = leaderboard metrics_a24.json	0
+B1ii	stratum 'all' M1 CI = ksp.eval.bootstrap M1 CI	1.11022e-16
+B1ii	kinase partition manning_group: n-weighted M1 recombines	2.22045e-16
+B1ii	kinase partition manning_group: n-weighted M5 recombines	1.11022e-16
+B1ii	kinase partition residue_class: n-weighted M1 recombines	2.22045e-16
+B1ii	kinase partition residue_class: n-weighted M5 recombines	0
+B1ii	kinase partition train_bin: n-weighted M1 recombines	2.22045e-16
+B1ii	kinase partition train_bin: n-weighted M5 recombines	2.22045e-16
+B1ii	kinase partition priming: n-weighted M1 recombines	0
+B1ii	kinase partition priming: n-weighted M5 recombines	0
+B1ii	kinase partition priming_cantley: n-weighted M1 recombines	2.22045e-16
+B1ii	kinase partition priming_cantley: n-weighted M5 recombines	1.11022e-16
+B1ii	kinase partition pikk: n-weighted M1 recombines	2.22045e-16
+B1ii	kinase partition pikk: n-weighted M5 recombines	1.11022e-16
+B1ii	kinase partition secretory: n-weighted M1 recombines	0
+B1ii	kinase partition secretory: n-weighted M5 recombines	0
+B1ii	site partition evidence: per-kinase n-weighted auroc_hard recombines (339 kinases)	1.11022e-16
+B1ii	site partition evidence: per-kinase n-weighted hit5 recombines (339 kinases)	0
+B1ii	site partition evidence: per-kinase n-weighted top1_recall recombines (339 kinases)	0
+B1ii	site partition hub: per-kinase n-weighted auroc_hard recombines (339 kinases)	2.22045e-16
+B1ii	site partition hub: per-kinase n-weighted hit5 recombines (339 kinases)	1.38778e-17
+B1ii	site partition hub: per-kinase n-weighted top1_recall recombines (339 kinases)	5.55112e-17
+B1ii	site partition primed: per-kinase n-weighted auroc_hard recombines (12 kinases)	1.11022e-16
+B1ii	site partition primed: per-kinase n-weighted hit5 recombines (12 kinases)	0
+B1ii	site partition primed: per-kinase n-weighted top1_recall recombines (12 kinases)	0
+B1ii	site partition primed_cantley: per-kinase n-weighted auroc_hard recombines (19 kinases)	1.11022e-16
+B1ii	site partition primed_cantley: per-kinase n-weighted hit5 recombines (19 kinases)	2.77556e-17
+B1ii	site partition primed_cantley: per-kinase n-weighted top1_recall recombines (19 kinases)	2.77556e-17
+B1ii	runtime_s total	600.9
+B1prim	full-run M1/M2/M3 = leaderboard metrics_a24.json	0
+B1prim	stratum 'all' M1 CI = ksp.eval.bootstrap M1 CI	3.33067e-16
+B1prim	kinase partition manning_group: n-weighted M1 recombines	0
+B1prim	kinase partition manning_group: n-weighted M5 recombines	0
+B1prim	kinase partition residue_class: n-weighted M1 recombines	3.33067e-16
+B1prim	kinase partition residue_class: n-weighted M5 recombines	1.11022e-16
+B1prim	kinase partition train_bin: n-weighted M1 recombines	0
+B1prim	kinase partition train_bin: n-weighted M5 recombines	0
+B1prim	kinase partition priming: n-weighted M1 recombines	1.11022e-16
+B1prim	kinase partition priming: n-weighted M5 recombines	0
+B1prim	kinase partition priming_cantley: n-weighted M1 recombines	1.11022e-16
+B1prim	kinase partition priming_cantley: n-weighted M5 recombines	0
+B1prim	kinase partition pikk: n-weighted M1 recombines	1.11022e-16
+B1prim	kinase partition pikk: n-weighted M5 recombines	0
+B1prim	kinase partition secretory: n-weighted M1 recombines	0
+B1prim	kinase partition secretory: n-weighted M5 recombines	0
+B1prim	site partition evidence: per-kinase n-weighted auroc_hard recombines (339 kinases)	2.22045e-16
+B1prim	site partition evidence: per-kinase n-weighted hit5 recombines (339 kinases)	0
+B1prim	site partition evidence: per-kinase n-weighted top1_recall recombines (339 kinases)	0
+B1prim	site partition hub: per-kinase n-weighted auroc_hard recombines (339 kinases)	2.22045e-16
+B1prim	site partition hub: per-kinase n-weighted hit5 recombines (339 kinases)	1.11022e-16
+B1prim	site partition hub: per-kinase n-weighted top1_recall recombines (339 kinases)	2.77556e-17
+B1prim	site partition primed: per-kinase n-weighted auroc_hard recombines (12 kinases)	1.11022e-16
+B1prim	site partition primed: per-kinase n-weighted hit5 recombines (12 kinases)	0
+B1prim	site partition primed: per-kinase n-weighted top1_recall recombines (12 kinases)	0
+B1prim	site partition primed_cantley: per-kinase n-weighted auroc_hard recombines (19 kinases)	1.11022e-16
+B1prim	site partition primed_cantley: per-kinase n-weighted hit5 recombines (19 kinases)	0
+B1prim	site partition primed_cantley: per-kinase n-weighted top1_recall recombines (19 kinases)	0
+B1prim	runtime_s total	767.7
+B2	full-run M1/M2/M3 = leaderboard metrics_a24.json	0
+B2	stratum 'all' M1 CI = ksp.eval.bootstrap M1 CI	2.22045e-16
+B2	kinase partition manning_group: n-weighted M1 recombines	1.11022e-16
+B2	kinase partition manning_group: n-weighted M5 recombines	1.11022e-16
+B2	kinase partition residue_class: n-weighted M1 recombines	0
+B2	kinase partition residue_class: n-weighted M5 recombines	1.11022e-16
+B2	kinase partition train_bin: n-weighted M1 recombines	0
+B2	kinase partition train_bin: n-weighted M5 recombines	0
+B2	kinase partition priming: n-weighted M1 recombines	0
+B2	kinase partition priming: n-weighted M5 recombines	0
+B2	kinase partition priming_cantley: n-weighted M1 recombines	0
+B2	kinase partition priming_cantley: n-weighted M5 recombines	1.11022e-16
+B2	kinase partition pikk: n-weighted M1 recombines	0
+B2	kinase partition pikk: n-weighted M5 recombines	0
+B2	kinase partition secretory: n-weighted M1 recombines	0
+B2	kinase partition secretory: n-weighted M5 recombines	0
+B2	site partition evidence: per-kinase n-weighted auroc_hard recombines (339 kinases)	2.22045e-16
+B2	site partition evidence: per-kinase n-weighted hit5 recombines (339 kinases)	0
+B2	site partition evidence: per-kinase n-weighted top1_recall recombines (339 kinases)	0
+B2	site partition hub: per-kinase n-weighted auroc_hard recombines (339 kinases)	2.22045e-16
+B2	site partition hub: per-kinase n-weighted hit5 recombines (339 kinases)	0
+B2	site partition hub: per-kinase n-weighted top1_recall recombines (339 kinases)	6.93889e-18
+B2	site partition primed: per-kinase n-weighted auroc_hard recombines (12 kinases)	1.11022e-16
+B2	site partition primed: per-kinase n-weighted hit5 recombines (12 kinases)	0
+B2	site partition primed: per-kinase n-weighted top1_recall recombines (12 kinases)	0
+B2	site partition primed_cantley: per-kinase n-weighted auroc_hard recombines (19 kinases)	1.11022e-16
+B2	site partition primed_cantley: per-kinase n-weighted hit5 recombines (19 kinases)	0
+B2	site partition primed_cantley: per-kinase n-weighted top1_recall recombines (19 kinases)	0
+B2	runtime_s total	849.3
+B4	full-run M1/M2/M3 = leaderboard metrics_a24.json	0
+B4	stratum 'all' M1 CI = ksp.eval.bootstrap M1 CI	1.11022e-16
+B4	kinase partition manning_group: n-weighted M1 recombines	0
+B4	kinase partition manning_group: n-weighted M5 recombines	1.11022e-16
+B4	kinase partition residue_class: n-weighted M1 recombines	1.11022e-16
+B4	kinase partition residue_class: n-weighted M5 recombines	0
+B4	kinase partition train_bin: n-weighted M1 recombines	1.11022e-16
+B4	kinase partition train_bin: n-weighted M5 recombines	1.11022e-16
+B4	kinase partition priming: n-weighted M1 recombines	1.11022e-16
+B4	kinase partition priming: n-weighted M5 recombines	0
+B4	kinase partition priming_cantley: n-weighted M1 recombines	1.11022e-16
+B4	kinase partition priming_cantley: n-weighted M5 recombines	0
+B4	kinase partition pikk: n-weighted M1 recombines	0
+B4	kinase partition pikk: n-weighted M5 recombines	0
+B4	kinase partition secretory: n-weighted M1 recombines	1.11022e-16
+B4	kinase partition secretory: n-weighted M5 recombines	1.11022e-16
+B4	site partition evidence: per-kinase n-weighted auroc_hard recombines (339 kinases)	1.11022e-16
+B4	site partition evidence: per-kinase n-weighted hit5 recombines (339 kinases)	1.11022e-16
+B4	site partition evidence: per-kinase n-weighted top1_recall recombines (339 kinases)	0
+B4	site partition hub: per-kinase n-weighted auroc_hard recombines (339 kinases)	1.11022e-16
+B4	site partition hub: per-kinase n-weighted hit5 recombines (339 kinases)	1.11022e-16
+B4	site partition hub: per-kinase n-weighted top1_recall recombines (339 kinases)	5.55112e-17
+B4	site partition primed: per-kinase n-weighted auroc_hard recombines (12 kinases)	5.55112e-17
+B4	site partition primed: per-kinase n-weighted hit5 recombines (12 kinases)	1.38778e-17
+B4	site partition primed: per-kinase n-weighted top1_recall recombines (12 kinases)	5.55112e-17
+B4	site partition primed_cantley: per-kinase n-weighted auroc_hard recombines (19 kinases)	1.11022e-16
+B4	site partition primed_cantley: per-kinase n-weighted hit5 recombines (19 kinases)	6.93889e-18
+B4	site partition primed_cantley: per-kinase n-weighted top1_recall recombines (19 kinases)	0
+B4	runtime_s total	491.5
+B7	full-run M1/M2/M3 = leaderboard metrics_a24.json	0
+B7	stratum 'all' M1 CI = ksp.eval.bootstrap M1 CI	1.11022e-16
+B7	kinase partition manning_group: n-weighted M1 recombines	0
+B7	kinase partition manning_group: n-weighted M5 recombines	0
+B7	kinase partition residue_class: n-weighted M1 recombines	0
+B7	kinase partition residue_class: n-weighted M5 recombines	0
+B7	kinase partition train_bin: n-weighted M1 recombines	0
+B7	kinase partition train_bin: n-weighted M5 recombines	0
+B7	kinase partition priming: n-weighted M1 recombines	0
+B7	kinase partition priming: n-weighted M5 recombines	1.11022e-16
+B7	kinase partition priming_cantley: n-weighted M1 recombines	1.11022e-16
+B7	kinase partition priming_cantley: n-weighted M5 recombines	0
+B7	kinase partition pikk: n-weighted M1 recombines	0
+B7	kinase partition pikk: n-weighted M5 recombines	0
+B7	kinase partition secretory: n-weighted M1 recombines	1.11022e-16
+B7	kinase partition secretory: n-weighted M5 recombines	1.11022e-16
+B7	site partition evidence: per-kinase n-weighted auroc_hard recombines (339 kinases)	2.22045e-16
+B7	site partition evidence: per-kinase n-weighted hit5 recombines (339 kinases)	0
+B7	site partition evidence: per-kinase n-weighted top1_recall recombines (339 kinases)	0
+B7	site partition hub: per-kinase n-weighted auroc_hard recombines (339 kinases)	2.22045e-16
+B7	site partition hub: per-kinase n-weighted hit5 recombines (339 kinases)	1.11022e-16
+B7	site partition hub: per-kinase n-weighted top1_recall recombines (339 kinases)	1.11022e-16
+B7	site partition primed: per-kinase n-weighted auroc_hard recombines (12 kinases)	1.11022e-16
+B7	site partition primed: per-kinase n-weighted hit5 recombines (12 kinases)	0
+B7	site partition primed: per-kinase n-weighted top1_recall recombines (12 kinases)	0
+B7	site partition primed_cantley: per-kinase n-weighted auroc_hard recombines (19 kinases)	1.11022e-16
+B7	site partition primed_cantley: per-kinase n-weighted hit5 recombines (19 kinases)	0
+B7	site partition primed_cantley: per-kinase n-weighted top1_recall recombines (19 kinases)	0
+B7	runtime_s total	729
+B0prior	full-run M1/M2/M3 = leaderboard metrics_a24.json	0
+B0prior	stratum 'all' M1 CI = ksp.eval.bootstrap M1 CI	0
+B0prior	kinase partition manning_group: n-weighted M1 recombines	0
+B0prior	kinase partition manning_group: n-weighted M5 recombines	0
+B0prior	kinase partition residue_class: n-weighted M1 recombines	0
+B0prior	kinase partition residue_class: n-weighted M5 recombines	0
+B0prior	kinase partition train_bin: n-weighted M1 recombines	0
+B0prior	kinase partition train_bin: n-weighted M5 recombines	0
+B0prior	kinase partition priming: n-weighted M1 recombines	0
+B0prior	kinase partition priming: n-weighted M5 recombines	0
+B0prior	kinase partition priming_cantley: n-weighted M1 recombines	0
+B0prior	kinase partition priming_cantley: n-weighted M5 recombines	0
+B0prior	kinase partition pikk: n-weighted M1 recombines	0
+B0prior	kinase partition pikk: n-weighted M5 recombines	0
+B0prior	kinase partition secretory: n-weighted M1 recombines	0
+B0prior	kinase partition secretory: n-weighted M5 recombines	0
+B0prior	site partition evidence: per-kinase n-weighted auroc_hard recombines (339 kinases)	0
+B0prior	site partition evidence: per-kinase n-weighted hit5 recombines (339 kinases)	0
+B0prior	site partition evidence: per-kinase n-weighted top1_recall recombines (339 kinases)	6.93889e-18
+B0prior	site partition hub: per-kinase n-weighted auroc_hard recombines (339 kinases)	0
+B0prior	site partition hub: per-kinase n-weighted hit5 recombines (339 kinases)	0
+B0prior	site partition hub: per-kinase n-weighted top1_recall recombines (339 kinases)	5.20417e-18
+B0prior	site partition primed: per-kinase n-weighted auroc_hard recombines (12 kinases)	0
+B0prior	site partition primed: per-kinase n-weighted hit5 recombines (12 kinases)	0
+B0prior	site partition primed: per-kinase n-weighted top1_recall recombines (12 kinases)	3.46945e-18
+B0prior	site partition primed_cantley: per-kinase n-weighted auroc_hard recombines (19 kinases)	0
+B0prior	site partition primed_cantley: per-kinase n-weighted hit5 recombines (19 kinases)	0
+B0prior	site partition primed_cantley: per-kinase n-weighted top1_recall recombines (19 kinases)	3.46945e-18
+B0prior	B0 floor: max |M1-0.5| over non-small kinase strata (23)	0
+B0prior	B0 floor: |M1(all)-0.5|	0
+B0prior	runtime_s total	387
+B0pop	full-run M1/M2/M3 = leaderboard metrics_a24.json	0
+B0pop	stratum 'all' M1 CI = ksp.eval.bootstrap M1 CI	1.11022e-16
+B0pop	kinase partition manning_group: n-weighted M1 recombines	1.11022e-16
+B0pop	kinase partition manning_group: n-weighted M5 recombines	0
+B0pop	kinase partition residue_class: n-weighted M1 recombines	0
+B0pop	kinase partition residue_class: n-weighted M5 recombines	1.11022e-16
+B0pop	kinase partition train_bin: n-weighted M1 recombines	1.11022e-16
+B0pop	kinase partition train_bin: n-weighted M5 recombines	0
+B0pop	kinase partition priming: n-weighted M1 recombines	0
+B0pop	kinase partition priming: n-weighted M5 recombines	1.11022e-16
+B0pop	kinase partition priming_cantley: n-weighted M1 recombines	0
+B0pop	kinase partition priming_cantley: n-weighted M5 recombines	1.11022e-16
+B0pop	kinase partition pikk: n-weighted M1 recombines	1.11022e-16
+B0pop	kinase partition pikk: n-weighted M5 recombines	0
+B0pop	kinase partition secretory: n-weighted M1 recombines	0
+B0pop	kinase partition secretory: n-weighted M5 recombines	1.11022e-16
+B0pop	site partition evidence: per-kinase n-weighted auroc_hard recombines (339 kinases)	2.22045e-16
+B0pop	site partition evidence: per-kinase n-weighted hit5 recombines (339 kinases)	1.38778e-17
+B0pop	site partition evidence: per-kinase n-weighted top1_recall recombines (339 kinases)	0
+B0pop	site partition hub: per-kinase n-weighted auroc_hard recombines (339 kinases)	2.22045e-16
+B0pop	site partition hub: per-kinase n-weighted hit5 recombines (339 kinases)	1.38778e-17
+B0pop	site partition hub: per-kinase n-weighted top1_recall recombines (339 kinases)	0
+B0pop	site partition primed: per-kinase n-weighted auroc_hard recombines (12 kinases)	5.55112e-17
+B0pop	site partition primed: per-kinase n-weighted hit5 recombines (12 kinases)	1.73472e-18
+B0pop	site partition primed: per-kinase n-weighted top1_recall recombines (12 kinases)	0
+B0pop	site partition primed_cantley: per-kinase n-weighted auroc_hard recombines (19 kinases)	1.11022e-16
+B0pop	site partition primed_cantley: per-kinase n-weighted hit5 recombines (19 kinases)	1.73472e-18
+B0pop	site partition primed_cantley: per-kinase n-weighted top1_recall recombines (19 kinases)	0
+B0pop	B0 floor: max |M1-0.5| over non-small kinase strata (23)	0.0919313
+B0pop	B0 floor: |M1(all)-0.5|	0.051797
+B0pop	runtime_s total	516.2
+B0miss	full-run M1/M2/M3 = leaderboard metrics_a24.json	0
+B0miss	stratum 'all' M1 CI = ksp.eval.bootstrap M1 CI	5.55112e-16
+B0miss	kinase partition manning_group: n-weighted M1 recombines	1.11022e-16
+B0miss	kinase partition manning_group: n-weighted M5 recombines	0
+B0miss	kinase partition residue_class: n-weighted M1 recombines	1.11022e-16
+B0miss	kinase partition residue_class: n-weighted M5 recombines	1.11022e-16
+B0miss	kinase partition train_bin: n-weighted M1 recombines	0
+B0miss	kinase partition train_bin: n-weighted M5 recombines	1.11022e-16
+B0miss	kinase partition priming: n-weighted M1 recombines	1.11022e-16
+B0miss	kinase partition priming: n-weighted M5 recombines	2.22045e-16
+B0miss	kinase partition priming_cantley: n-weighted M1 recombines	1.11022e-16
+B0miss	kinase partition priming_cantley: n-weighted M5 recombines	0
+B0miss	kinase partition pikk: n-weighted M1 recombines	0
+B0miss	kinase partition pikk: n-weighted M5 recombines	0
+B0miss	kinase partition secretory: n-weighted M1 recombines	0
+B0miss	kinase partition secretory: n-weighted M5 recombines	0
+B0miss	site partition evidence: per-kinase n-weighted auroc_hard recombines (339 kinases)	1.11022e-16
+B0miss	site partition evidence: per-kinase n-weighted hit5 recombines (339 kinases)	1.38778e-17
+B0miss	site partition evidence: per-kinase n-weighted top1_recall recombines (339 kinases)	1.38778e-17
+B0miss	site partition hub: per-kinase n-weighted auroc_hard recombines (339 kinases)	1.11022e-16
+B0miss	site partition hub: per-kinase n-weighted hit5 recombines (339 kinases)	1.38778e-17
+B0miss	site partition hub: per-kinase n-weighted top1_recall recombines (339 kinases)	6.93889e-18
+B0miss	site partition primed: per-kinase n-weighted auroc_hard recombines (12 kinases)	1.11022e-16
+B0miss	site partition primed: per-kinase n-weighted hit5 recombines (12 kinases)	0
+B0miss	site partition primed: per-kinase n-weighted top1_recall recombines (12 kinases)	0
+B0miss	site partition primed_cantley: per-kinase n-weighted auroc_hard recombines (19 kinases)	1.11022e-16
+B0miss	site partition primed_cantley: per-kinase n-weighted hit5 recombines (19 kinases)	0
+B0miss	site partition primed_cantley: per-kinase n-weighted top1_recall recombines (19 kinases)	0
+B0miss	B0 floor: max |M1-0.5| over non-small kinase strata (23)	0.106004
+B0miss	B0 floor: |M1(all)-0.5|	0.0389918
+B0miss	runtime_s total	758.2
+R2_kmB1	kinase partition manning_group: n-weighted M1 recombines	0
+R2_kmB1	kinase partition manning_group: n-weighted M5 recombines	1.11022e-16
+R2_kmB1	kinase partition residue_class: n-weighted M1 recombines	1.11022e-16
+R2_kmB1	kinase partition residue_class: n-weighted M5 recombines	1.11022e-16
+R2_kmB1	kinase partition train_bin: n-weighted M1 recombines	0
+R2_kmB1	kinase partition train_bin: n-weighted M5 recombines	1.11022e-16
+R2_kmB1	kinase partition priming: n-weighted M1 recombines	0
+R2_kmB1	kinase partition priming: n-weighted M5 recombines	0
+R2_kmB1	kinase partition priming_cantley: n-weighted M1 recombines	1.11022e-16
+R2_kmB1	kinase partition priming_cantley: n-weighted M5 recombines	0
+R2_kmB1	kinase partition pikk: n-weighted M1 recombines	0
+R2_kmB1	kinase partition pikk: n-weighted M5 recombines	1.11022e-16
+R2_kmB1	kinase partition secretory: n-weighted M1 recombines	1.11022e-16
+R2_kmB1	kinase partition secretory: n-weighted M5 recombines	1.11022e-16
+R2_kmB1	site partition evidence: per-kinase n-weighted auroc_hard recombines (318 kinases)	1.11022e-16
+R2_kmB1	site partition evidence: per-kinase n-weighted hit5 recombines (318 kinases)	0
+R2_kmB1	site partition evidence: per-kinase n-weighted top1_recall recombines (318 kinases)	0
+R2_kmB1	site partition hub: per-kinase n-weighted auroc_hard recombines (318 kinases)	1.11022e-16
+R2_kmB1	site partition hub: per-kinase n-weighted hit5 recombines (318 kinases)	1.11022e-16
+R2_kmB1	site partition hub: per-kinase n-weighted top1_recall recombines (318 kinases)	5.55112e-17
+R2_kmB1	site partition primed: per-kinase n-weighted auroc_hard recombines (12 kinases)	1.11022e-16
+R2_kmB1	site partition primed: per-kinase n-weighted hit5 recombines (12 kinases)	0
+R2_kmB1	site partition primed: per-kinase n-weighted top1_recall recombines (12 kinases)	0
+R2_kmB1	site partition primed_cantley: per-kinase n-weighted auroc_hard recombines (19 kinases)	2.22045e-16
+R2_kmB1	site partition primed_cantley: per-kinase n-weighted hit5 recombines (19 kinases)	0
+R2_kmB1	site partition primed_cantley: per-kinase n-weighted top1_recall recombines (19 kinases)	0
+R2_kmB1	runtime_s total	664.6
+B1ii_kmB1	kinase partition manning_group: n-weighted M1 recombines	0
+B1ii_kmB1	kinase partition manning_group: n-weighted M5 recombines	1.11022e-16
+B1ii_kmB1	kinase partition residue_class: n-weighted M1 recombines	0
+B1ii_kmB1	kinase partition residue_class: n-weighted M5 recombines	1.11022e-16
+B1ii_kmB1	kinase partition train_bin: n-weighted M1 recombines	0
+B1ii_kmB1	kinase partition train_bin: n-weighted M5 recombines	1.11022e-16
+B1ii_kmB1	kinase partition priming: n-weighted M1 recombines	0
+B1ii_kmB1	kinase partition priming: n-weighted M5 recombines	1.11022e-16
+B1ii_kmB1	kinase partition priming_cantley: n-weighted M1 recombines	0
+B1ii_kmB1	kinase partition priming_cantley: n-weighted M5 recombines	1.11022e-16
+B1ii_kmB1	kinase partition pikk: n-weighted M1 recombines	0
+B1ii_kmB1	kinase partition pikk: n-weighted M5 recombines	0
+B1ii_kmB1	kinase partition secretory: n-weighted M1 recombines	1.11022e-16
+B1ii_kmB1	kinase partition secretory: n-weighted M5 recombines	1.11022e-16
+B1ii_kmB1	site partition evidence: per-kinase n-weighted auroc_hard recombines (318 kinases)	1.11022e-16
+B1ii_kmB1	site partition evidence: per-kinase n-weighted hit5 recombines (318 kinases)	0
+B1ii_kmB1	site partition evidence: per-kinase n-weighted top1_recall recombines (318 kinases)	0
+B1ii_kmB1	site partition hub: per-kinase n-weighted auroc_hard recombines (318 kinases)	2.22045e-16
+B1ii_kmB1	site partition hub: per-kinase n-weighted hit5 recombines (318 kinases)	1.38778e-17
+B1ii_kmB1	site partition hub: per-kinase n-weighted top1_recall recombines (318 kinases)	5.55112e-17
+B1ii_kmB1	site partition primed: per-kinase n-weighted auroc_hard recombines (12 kinases)	1.11022e-16
+B1ii_kmB1	site partition primed: per-kinase n-weighted hit5 recombines (12 kinases)	0
+B1ii_kmB1	site partition primed: per-kinase n-weighted top1_recall recombines (12 kinases)	0
+B1ii_kmB1	site partition primed_cantley: per-kinase n-weighted auroc_hard recombines (19 kinases)	1.11022e-16
+B1ii_kmB1	site partition primed_cantley: per-kinase n-weighted hit5 recombines (19 kinases)	2.77556e-17
+B1ii_kmB1	site partition primed_cantley: per-kinase n-weighted top1_recall recombines (19 kinases)	2.77556e-17
+B1ii_kmB1	runtime_s total	562.9
