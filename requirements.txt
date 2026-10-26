@@ -1,0 +1,18 @@
+--extra-index-url https://download.pytorch.org/whl/cu124
+torch==2.6.0+cu124
+transformers==4.57.1
+numpy
+pandas
+pyarrow
+scipy
+scikit-learn
+lightgbm
+xgboost
+biopython
+matplotlib
+seaborn
+networkx
+pypdf
+requests
+tqdm
+statsmodels

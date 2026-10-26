@@ -1,0 +1,15 @@
+# Restricted / large data: never commit (see DATA.md)
+data/
+external/
+cache/
+*.parquet
+*.npy
+*.npz
+*.pt
+*.h5
+*.pkl
+.venv/
+env/
+__pycache__/
+*.log
+!results/**/*.log.txt
