@@ -4,6 +4,24 @@ Legend: [ ] planned · [~] in progress · [x] done · [-] abandoned/negative · 
 
 ## Status summary (latest first)
 
+### 2026-10-27 00:10 — M3: CV closed, FREEZE committed (5fc7870), TEST batch running
+Decision note: the final model is the **R2 LightGBM (5 seeds) + R3 neural late fusion**, the best M1-CV (§8.6). It uses L2 labels (human plus mouse/rat) and a global model.
+- Regime and label comparisons (A33): per-kinase −0.012, per-group −0.007, partial pooling ≈ global, L1/L2_vitro/L2_vivo worse on M2, L2+ext not robust across seeds and pre-registered as ablation only.
+- Nothing else beat the noise floor: R5, knn_sim, F9, A32 priming and prior-debiased M2.
+- Decisions made after the independent reviews: A29 (TEST-batch integrity), A30 (B1 single-residue kinases unscored), A31 (raw score for M2; isotonic ST/Y recalibration of assignment; pooled canary gate kept).
+- FREEZE.json (sha 721dc197) has 12 configs and the 9 pre-declared primary tests. All baselines are retrained and verified; Phosformer's training pipeline reproduces 0.888 vs 0.885 on its own split.
+
+Status, pooled 5-fold DEV CV (K_cv = 203), final vs Cantley: M1 0.786 vs 0.717, M2 0.263 vs 0.171, M3 0.361 vs 0.133. Retrained baselines score M1 0.679 (Phosformer) and 0.708 (SELPHI2.0, matched universe); LKO T2 0.749.
+- Audits r1 and r2 reproduce every headline number and find no leakage.
+- Known weaknesses:
+  - Tyr kinases: 0.63 vs 0.81 for S/T.
+  - No reliable ≥0.8 assignment tier.
+  - M2 for 5–19-label kinases: 0.142 vs Cantley 0.162.
+  - Primed sites: below priming-aware Cantley (0.893 vs 0.945).
+  - Downstream: parity with PSP, not superiority, and a gap on unseen drugs.
+  - Phosphoproteomics features add ≈0 to CV M1.
+- Next: TEST batch results → independent result review → deployment model (DEV+TEST) and U_obs coverage → REPORT.md final. G5 09:20, G6 12:20.
+
 ### 2026-10-26 — M0: project start
 Project initialised: git repo, PROMPT.md (verbatim), DATA.md, LESSONS.md, env (.venv, requirements.txt). Provided data: PhosphoSitePlus Kinase_Substrate_Dataset (23,904 rows; 14,724 human kinase–human substrate rows; 421 human kinases; 10,224 human sites; highly skewed: top kinase CDK1 694 rows, 146 kinases with <5 rows), a perturbation phosphoproteomics compendium (1,937 conditions × 189,962 phosphopeptides, long-format log2FC), Hijazi et al. inhibitor→kinase target matrix, and two papers (Phosformer; Petsalaki-lab integrative method).
 Hardware: 64 CPU cores, 375 GB RAM, 4× RTX 4090 (24 GB). Internet available. Next: parallel literature review (methods/benchmarks, KS annotation sources, phosphoproteomics sources, other modalities) + data profiling, then DESIGN.md and up to 3 review rounds.
