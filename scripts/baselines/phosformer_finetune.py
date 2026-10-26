@@ -47,7 +47,7 @@ from ksp.crossfit import outer_split
 from ksp.manifest import RunManifest
 
 ap = argparse.ArgumentParser()
-ap.add_argument("--fold", type=int, required=True)
+ap.add_argument("--fold", type=int, required=True, help="CV fold 0-4, or -1 = train on ALL DEV (TEST model; no OOF scoring)")
 ap.add_argument("--neg-ratio", type=int, default=16, help="negatives per positive (total)")
 ap.add_argument("--hard-frac", type=float, default=0.5, help="fraction of negatives that are hard")
 ap.add_argument("--init", required=True, help="MLM checkpoint (.pt with 'model'), 'released' or 'random'")
@@ -69,7 +69,7 @@ ap.add_argument("--threads", type=int, default=6)
 args = ap.parse_args()
 torch.set_num_threads(args.threads)
 dev = "cuda"
-rng = np.random.default_rng([args.seed, args.fold, args.neg_ratio])
+rng = np.random.default_rng([args.seed, args.fold if args.fold >= 0 else 99, args.neg_ratio])
 torch.manual_seed(args.seed)
 name = args.name or f"b3a_phosformer_f{args.fold}_r{args.neg_ratio}" + ("_noaug" if args.no_aug else "")
 init_tag = args.init if args.init in ("released", "random") else Path(args.init).name
@@ -105,7 +105,7 @@ def class_mask(cls):
 
 
 # ------------------------------------------------------------------------------------------------ fold data
-tr_lab, train_prot, eval_prot = outer_split(args.fold, "L2")
+tr_lab, train_prot, eval_prot = outer_split(args.fold if args.fold >= 0 else None, "L2")
 tr_lab = tr_lab[tr_lab.kinase_acc.isin(kidx) & tr_lab.site_id.isin(spos.index)]
 ums = S.in_U_ms.values.astype(bool)
 in_train_prot = S.acc.isin(train_prot).values
@@ -297,6 +297,9 @@ if not args.skip_train:
                                                           "args": vars(args)}, indent=1))
 model.load_state_dict(torch.load(ckdir / "best.pt", map_location=dev, weights_only=True))
 model.eval()
+if args.fold < 0:  # all-DEV model for TEST: training only; TEST scoring by phosformer_test.py
+    log(f"all-DEV training done: best inner-val {best:.4f}, train_s {train_s:.0f}; checkpoint {ckdir / 'best.pt'}")
+    sys.exit(0)
 
 # ------------------------------------------------------------------------------------------------ OOF scoring
 data = E.prepare("cv", fold=args.fold, with_canaries=False)

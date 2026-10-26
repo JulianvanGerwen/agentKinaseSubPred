@@ -143,3 +143,32 @@ Per-fold M1: 0.693 / 0.698 / 0.688 / 0.703 / 0.671.
   - Best inner-val 0.710, train_wall_s = 3152.
   - Checkpoint: `cache/phosformer/finetune/b3_retrained_devfull_s0/best.pt`.
 - Scoring: `scripts/baselines/phosformer_test.py`, sharded by kinase (all-or-nothing per kinase), over all 25,922,452 `ksp.eval_test.test_candidate_pairs()`.
+
+## TEST deliverable delivered (23:25)
+- **Run:** `results/runs/b3_retrained_test__20261026-232229__s0`. Predictions: `cache/runs/<run_id>/test_predictions.parquet`.
+- **Size:** 25,922,452 rows, all 503 kinases fully scored.
+- **Pre-flight:** `--check-predictions` returns ok:true.
+- **SHA-256:** a468cdbc8d57cfabcef58b7880dcb985f9ab2fa9ee54d44f61458dee3bc464a3
+- **Runtime:** train_wall_s 3152; inference_wall_s 6479 (sum of 2 GPU shards; about 54 min elapsed).
+- **FREEZE entry:** `results/baselines/phosformer/FREEZE_entry_B3_retrained.json`. t3 is null (B3 has no LKO variant).
+
+## Training-pipeline fidelity check (PI 22:35)
+**Setup.**
+- Our TEST-filtered MLM checkpoint, plus our fine-tuning objective and loop: focal γ=2, lr 2e-5, batch 64, bf16.
+- Trained on **their** published train split, used as given. Their augmentations and 1:16 multilevel negatives are already applied in that file.
+- **Uniform 60% subsample** of positives and of negatives (1.45M of 2.41M rows), one epoch, linear decay. Early stopping used their val split.
+- 0.80 GPU-h on GPU 2. Script: `scripts/baselines/phosformer_fidelity.py`. Results: `results/baselines/phosformer/fidelity_check.json`.
+
+| Their test split | Ours, retrained | Paper | Released weights (our scorer) |
+|---|---|---|---|
+| AUROC (pos vs hard neg) | **0.888** | 0.885 | 0.8855 |
+| Per-kinase mean AUROC (106 kinases) | 0.858 | 0.860 | — |
+| AUPRC | 0.873 | — | 0.877 |
+| Easy-negative FPR@0.5 | 0.010 | — | 0.023 |
+
+**Conclusion.** Our pretraining and fine-tuning pipeline reproduces the published number, within +0.003 AUROC, on 60% of their data. B3a's lower score on our benchmark (M1-CV 0.679) is therefore attributable to the split, labels and negatives, not to an undertrained or broken reimplementation:
+- leakage-free, cluster-grouped protein split, versus their random pair split in which 51% of test peptides are training positives of other kinases;
+- harder masked E-hard negatives;
+- no ortholog labels.
+
+Validation AUROC was still rising slightly at the end (0.8924 at the last evaluation, best 0.8925), so full data would likely add a little more.
