@@ -115,6 +115,8 @@ Status: literature (4 reviews), data profiling, two acquisition waves (~12.6 GB)
     - [x] Audit round 2 → docs/audit/audit_cv_r2.md: all headline numbers reproduce; no leakage; fusion-weight optimism ≈0 for M1/M3 (M2 0.263→0.259 nested); ~90 configs tried (~55 selectable), CV→TEST optimism ≲0.005. NOT trusted: assignment ≥0.8 tier (Y 0/41) → A31 isotonic per-residue fix. LKO on unlabelled-elsewhere sites 0.703. Canary pooled pass, 2/5 folds >0.57.
     - [x] R3 TEST+T3 delivered (pinned; 503 kinases full). Simple baselines delivered (B1 386 kinases per A30). R2 TEST/T3 started 22:12 on L2.
     - [x] No-phospho variant: CV M1 0.771 (F6 ≈ 0 on CV); downstream unseen-drug gap NOT explained by same-compound data (nophospho worse: −0.08 top100).
-    - [~] TEST deliverables (runbook): R3 TEST+T3 (R3 agent); B1 i/ii, B2, B7, B0 (simple-baselines); B4 (SELPHI2); B3 (Phosformer); R2 TEST+T3 after 01:00 decision. Due 03:30.
+    - [x] TEST deliverables all pinned by 23:24 (results/freeze_entries/, build_freeze.py): final (R2+R3), R2, R3, B1 i/ii (386 kinases), B2, B7, B0×3, B3 (503 kinases), B4 (503; 66.6% pairs SELPHI-imputed — on CV fold 0 imputing costs ~0.01 M1 vs covered-only, far better than unscored). Draft FREEZE validates with all 9 primaries.
   - [x] 5.15 Downstream final (docs/downstream.md §7): on matched kinases the clean R2 library ≈ PSP (perturbation −0.013…−0.019, tumour +0.011…+0.029, CIs include 0); ours ∪ PSP tumour top-100 +0.034 (CI>0); ours vs Cantley +0.11…+0.18; coverage 50–65 vs 41 perturbed kinases, 149–274 vs 73 tumour. Ours-minus-PSP worse on perturbation.
     - [!] Unseen-drug experiments (114, 88 Hijazi): ours trails PSP by 0.04–0.06 → parity partly relies on same-compound response data. Test: no-phospho variant library (R2, queued).
+
+  - [~] REPORT.md draft with TEST placeholders (report agent, 23:25)
