@@ -182,7 +182,15 @@ An intermediate v2 draft that drew a labelled site uniformly and then took its p
 ## 7. Manifests and TEST
 
 - **`ksp.manifest.RunManifest(name, config, seed, inputs)`** is a context manager. It records the git hash (read-only), input SHA-256, runtime, n_rows, fallback counters and status. Predictions go to `cache/runs/<id>/predictions.parquet`, metrics to `results/runs/<id>/metrics.json`, and existing runs are never overwritten.
-- **`ksp.eval_test`** refuses to run unless FREEZE.json is tracked (`git ls-files`) and unmodified (`git diff --quiet`), the seal hashes match, and that FREEZE.json has not already been scored. It scores every config in one batch with B from FREEZE (default 10,000), plus paired comparisons with Holm correction, and appends to `results/test/LEDGER.md`.
+- **`ksp.eval_test` (G4; see `docs/G4_RUNBOOK.md`):**
+  - **Guards:** FREEZE.json must be git-tracked and unmodified and must pass the schema; there must be exactly 9 primary tests; every config must carry runtime fields; seal hashes must match; and the single-batch rule holds via the LEDGER.
+  - **Batch:** `run_batch` evaluates every config, computes cluster-bootstrap CIs (B from FREEZE, default 10,000), writes all strata and T3 results, runs the 9 primary paired tests on matched universes (Holm over the 9; secondary tests Holm separately), and writes `summary.md` plus a LEDGER block.
+  - **Strata (§6.4 + A26):** these subset the frozen `evaluate` outputs and need no harness edits (A28).
+    - Kinase-level: kinase group, residue class, training-label bins (M4 over K_any), priming, PIKK, FAM20C.
+    - Pair-level: evidence class, new since 2021, hub sites (≥5 paralog-collapsed labelled kinases), external curated.
+    - Stratum definitions are imported from `src/ksp/strata.py` (canonical; built-ins are a fallback). This adds primed / primed_cantley, pikk_sq and secretory.
+  - **Pre-flight:** `--check-predictions` checks a predictions file for exhaustiveness (all-or-nothing per kinase) without reading labels.
+  - **Rehearsal:** `--dry-run` uses DEV fold 0 as a fake TEST, with every path under `cache/eval_test_dryrun/`.
 
 ## 8. Tests (`tests/`, pytest added to requirements.txt)
 
