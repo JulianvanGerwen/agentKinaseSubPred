@@ -546,3 +546,81 @@ they must be rebuilt first: about 25 min for final and about 60 min for T3.
 The manifests record `train_wall_s` and `inference_wall_s`.
 
 (further results appended below)
+
+
+## 7. G5 deployment (prepared 00:15; waiting for "GO deploy")
+The frozen final configuration (v3 R2, 5 seeds, + R3, fusion weights 0.6 / 0.5) is retrained on DEV+TEST labels
+through `ksp.deploy.load_deploy_labels`. That loader refuses until the TEST batch is COMPLETED; it has not been called.
+
+Canary pseudo-kinases stay in R2 training, as in the frozen code path (`with_canaries=True`). Only the 503 real
+kinases are scored and released.
+
+1. `PYTHONPATH=src .venv/bin/python scripts/models/r2_deploy.py --stage xfit --families <fam>`, once per family:
+   f2a_sep, f3nb, f6a, each in parallel at 4 threads, about 6 min each. These are the cross-fitted stores with tag
+   `deploy`: rows = all 350,736 U_obs sites; inner folds over substrate clusters of DEV+TEST proteins.
+2. `PYTHONPATH=src R2_THREADS=16 .venv/bin/python scripts/models/r2_deploy.py --stage train --seeds 0 1 2 3 4`
+   writes `cache/release/<run>/r2_uobs_scores.parquet` (131 M rows, kinase-chunked), with train/inference wall-clock
+   in the manifest. It takes about 5 × (4 min train + 5 min inference).
+3. `PYTHONPATH=src .venv/bin/python scripts/models/r2_release.py --r2 <run> --r3 <R3 deploy parquet>` does the
+   following:
+   - fusion: z-score per model over all rows;
+   - `prob`, the per-kinase calibrated probability;
+   - `pct`, the within-kinase percentile;
+   - `assignment_prob`, from DEV-OOF calibrators, T and the ST/Y isotonic map. Limitation: there is no OOF for
+     DEV+TEST;
+   - outputs in `cache/release/<run>/release_scores.parquet`;
+   - coverage in `results/release/coverage.tsv`: Coverage@0.5/0.8 over all U_obs sites and over no-PSP sites, plus
+     the number of sites in some kinase's top 1%; for the model, random scores and Cantley-only, the last with its
+     own DEV-OOF recipe;
+   - release files `results/release/kinase_top200.tsv.gz` and `site_top5.tsv.gz`, plus `RELEASE_MANIFEST.json`
+     (SHA-256, licence: PSP-derived, CC BY-NC-SA, **non-commercial**, limitations).
+
+Smoke-tested end to end on DEV labels with 6 kinases (`r2_deploy_smoke__20261027-000833__s0`,
+`r2r3_release_smoke__20261027-001416__s0`; outputs under cache/release/, not results/). Expected memory is about
+20 GB at peak, under the 50 GB cap.
+
+
+### 7.1 G5 deployment: DONE (01:29)
+Inputs: `load_deploy_labels` (DEV+TEST, L2, FREEZE 721dc197 COMPLETED), giving 15,202 training label pairs including
+canaries (code path as frozen). Only the 503 real kinases are released.
+
+| step | run | wall-clock |
+|---|---|---|
+| cross-fitted stores `deploy` (rows = all 350,736 U_obs sites) | `cache/r2/xfit/deploy/all/{f2a_sep,f3nb,f6a}` | 322 / 208 / 297 s, in parallel (≈ 5.4 min) |
+| R2, 5 seeds, U_obs × 503 kinases | `r2_deploy__20261027-010348__s0` | train 310 s, inference 985 s (131,144,410 rows) |
+| R3 (R3 agent) | `r3_deploy__20261027-005817__s0` (sha 2f62988c…, verified) | train 447 s, inference 12 s |
+| fusion + calibration + assignment + coverage + release files | `r2r3_release__20261027-012616__s0` | 169 s, peak RSS 18.7 GB |
+
+Early stopping chose 53 / 235 / 249 / 543 / 299 rounds for seeds 0–4. Seed 0 stopped at the minimum-rounds floor
+(inner validation 0.830 vs 0.85–0.86 for the others). This is the frozen procedure, and the other seeds dominate the
+ensemble mean.
+
+**Release files**, licensed CC BY-NC-SA (PSP-derived, non-commercial):
+
+| file | sha256 | size |
+|---|---|---|
+| `cache/release/r2r3_release__20261027-012616__s0/release_scores.parquet` (kinase_idx, site_idx, score, score_site, prob, pct, assignment_prob; 131 M rows) | `cceb32c73be9c092923e8d123bf8dd74a676afe2bea845e002f33f296de839f5` | 4.1 GB; not for commit, the manifest pins it |
+| `results/release/kinase_top200.tsv.gz` (503 × 200) | `98f348ed330784c8dbe52f9d327a14226975a74ab07b1e7612ebb6cf58d64567` | 1.9 MB |
+| `results/release/site_top5.tsv.gz` (350,736 × 5) | `61e20f51b4eb043365ef492a0f20c31168f30bc6bacd637d40154fd0a8c3729f` | 34.8 MB |
+| `results/release/RELEASE_MANIFEST.json`, `results/release/coverage.tsv` | | |
+
+**Coverage** (`results/release/coverage.tsv`). U_obs = 350,736 sites, of which 338,525 have no PSP kinase.
+
+| method | Cov@0.5 (no-PSP) | Cov@0.8 (no-PSP) | sites in some kinase's top 1% (no-PSP) |
+|---|---|---|---|
+| R2+R3 final (deployment) | 29,886 (26,762) | **0** (0) | 162,783 (152,377) |
+| random scores | 6 (6) | 0 | 329,349 (318,032) |
+| Cantley-only (B1, own DEV-OOF recipe) | 30,258 (29,220) | 1,828 (1,780) | 170,065 (162,611) |
+
+Limitations:
+- All maps are fitted on DEV OOF; there is no OOF for the DEV+TEST model.
+- Probabilities are PU lower bounds.
+- assignment_prob is conditional on the site being a target of one of the 503 modelled kinases.
+- The model has no ≥ 0.8 tier, and no Y-site assignment reaches 0.5.
+- Cantley's ≥ 0.8 tier comes from the tail of its own isotonic map, fitted on few labelled sites: only 152 labelled
+  sites reached p ≥ 0.5 on CV. It is not evidence of higher precision.
+- Coverage counts compare candidate sets of equal size here (503 kinases for both), but they are not
+  precision-verified on unlabelled sites.
+
+Spot checks of site_top5: TP53 S15 → ATM (0.70) ✓; AKT1 S473 → PDPK1 (0.51), AKT1, MTOR (3rd);
+EIF4EBP1 T37 → GSK3B, CDK1, MTOR (3rd); EIF2S1 S52 → PKC family (a miss: the true kinases are EIF2AK1–4).

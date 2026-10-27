@@ -1,0 +1,96 @@
+{
+ "run_id": "r2_deploy_smoke__20261027-000833__s0",
+ "name": "r2_deploy_smoke",
+ "git_hash": "c3e2a1448eb78e4a030d4498dadbd82db827676e",
+ "config": {
+  "groups": [
+   "F1",
+   "F0",
+   "F2a",
+   "F3",
+   "F4",
+   "F6a",
+   "F6b",
+   "F6c",
+   "F5",
+   "F7"
+  ],
+  "ratio": 50,
+  "hard": 0.5,
+  "alpha": 0.5,
+  "objective": "binary",
+  "num_leaves": 127,
+  "learning_rate": 0.03,
+  "min_data_in_leaf": 100,
+  "feature_fraction": 0.8,
+  "bagging_fraction": 0.8,
+  "lambda_l2": 1.0,
+  "max_bin": 255,
+  "max_rounds": 3000,
+  "es_rounds": 100,
+  "refit": true,
+  "clean": false,
+  "comp_know": false,
+  "seed": 0,
+  "variant": "L2",
+  "miss_only": false,
+  "min_rounds": 50,
+  "es_metric": "mixed",
+  "es_real_only": true,
+  "f2a_family": "f2a_sep",
+  "desc_v": 2,
+  "seeds": [
+   0
+  ],
+  "xfit_tag": "final"
+ },
+ "seed": 0,
+ "split": "smoke",
+ "notes": "SMOKE: DEV labels, toy size",
+ "inputs": [],
+ "host": "eu-g6-076",
+ "python": "3.12.3",
+ "platform": "Linux-5.15.0-198-generic-x86_64-with-glibc2.39",
+ "argv": [
+  "scripts/models/r2_deploy.py",
+  "--stage",
+  "train",
+  "--smoke",
+  "--seeds",
+  "0"
+ ],
+ "pid": 467921,
+ "started": "2026-10-27 00:08:33 CET",
+ "n_rows": {
+  "r2_uobs_scores": 1829046
+ },
+ "outputs": {
+  "r2_uobs_scores": {
+   "path": "cache/release/r2_deploy_smoke__20261027-000833__s0/r2_uobs_scores.parquet",
+   "sha256": "ba6de2bea779f0996ed97a6cc555e1c1d25e546af01d2f463cf267892e353a47"
+  }
+ },
+ "fallbacks": {},
+ "n_label_rows_loaded": 12223,
+ "n_positive_pairs": 12223,
+ "n_train_sites": 347354,
+ "train_wall_s": 212.8,
+ "inference_wall_s": 6.4,
+ "seed_logs": {
+  "0": {
+   "n_train_rows": 623373,
+   "n_pos": 12223,
+   "n_val_rows": 124675,
+   "best_iteration": 303,
+   "inner_val_metric": 0.8357837315409342,
+   "t_gather_train_s": 148.0,
+   "t_train_es_s": 38.6,
+   "t_refit_s": 23.8,
+   "n_features": 172
+  }
+ },
+ "status": "ok",
+ "error": null,
+ "runtime_s": 228.38,
+ "finished": "2026-10-27 00:12:21 CET"
+}

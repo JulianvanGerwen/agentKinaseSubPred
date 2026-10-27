@@ -1,6 +1,6 @@
 # REPORT: Predicting direct kinase–substrate sites across the human proteome
 
-**Status: v2 (2026-10-27 01:22 CET).** The single TEST batch ran once (FREEZE 721dc197) and was independently reproduced (`docs/audit/audit_test.md`). Coverage (§9) is pending the deployment model. Each number cites the committed file it comes from.
+**Status: v2 (2026-10-27 01:22 CET).** The single TEST batch ran once (FREEZE 721dc197) and was independently reproduced (`docs/audit/audit_test.md`). Deployment model and coverage (§9) done. Each number cites the committed file it comes from.
 
 **Conventions.** All CV metrics use the frozen harness `ksp.eval`, commit 974d520, with A24 within-(fold, kinase) rank normalisation, unless a row says otherwise. Where a document gives both a pre-A24 and an A24 value, this report uses the A24/audited value and says so. Square brackets are 95% cluster-bootstrap CIs.
 
@@ -895,23 +895,52 @@ Matched-kinase comparisons (z-score, U_obs, ours − reference; unadjusted CIs; 
 
 ---
 
-## 9. Coverage: PLACEHOLDER (deployment model over U_obs)
+## 9. Coverage: deployment model over U_obs (`results/release/coverage.tsv`, `RELEASE_MANIFEST.json`, `docs/model_r2.md` §7.1)
 
-**Not yet run.** The deployment model (retrained on DEV+TEST with the frozen configuration, §8.6) and its U_obs predictions are G5 items.
+**What the deployment model is.**
+- It uses the frozen final configuration (R2 5 seeds + R3 5 seeds, fused with the same weights), retrained on DEV+TEST labels (15,202 training pairs, L2) through `ksp.deploy.load_deploy_labels`. That loader refuses until the TEST ledger is COMPLETED.
+- It scores all 350,736 U_obs sites × the 503 kinases of matching class: 131,144,410 pairs, in `cache/release/…/release_scores.parquet`, sha256 `cceb32c7…`, pinned in the manifest.
+- Calibrators, the temperature and the ST/Y isotonic maps are the ones fitted on DEV OOF. No OOF predictions exist for DEV+TEST.
 
-| | Coverage@0.5 | Coverage@0.8 | Sites in some kinase's top 1% |
+| Method | Coverage@0.5 (no-PSP sites) | Coverage@0.8 (no-PSP) | Sites in some kinase's top 1% (no-PSP) |
 |---|---|---|---|
-| Deployment model, all U_obs (350,736) | [[COVERAGE: U_obs @0.5]] | [[COVERAGE: U_obs @0.8]] | [[COVERAGE]] |
-| … of which sites with no PSP kinase | [[COVERAGE]] | [[COVERAGE]] | [[COVERAGE]] |
-| Random-score baseline | [[COVERAGE]] | [[COVERAGE]] | |
-| Cantley-only baseline | [[COVERAGE]] | [[COVERAGE]] | |
+| **Final (deployment)** | **29,886** (26,762) | 0 (0) | 162,783 (152,377) |
+| Cantley-only (B1 imputed-universe percentile, its own DEV-OOF calibration recipe) | 30,258 (29,220) | 1,828 (1,780) | 170,065 (162,611) |
+| Random scores (same softmax, no isotonic map) | 6 (6) | 0 (0) | 329,349 (318,032) |
 
-**Expectation from CV under A31.** DEV coverage@0.5 = 21,115 sites, all ST; coverage@0.8 = 9.
+U_obs has 350,736 sites; 338,525 of them have no PSP kinase.
 
-Three caveats apply to any coverage number:
-- These are model-based estimates, conditional on the site being a target of a modelled kinase.
-- Under PU labelling they are lower-bound precision statements.
-- Counts are comparable across methods only when the methods share a candidate set (`model_r2.md` §6.1).
+**Reading.**
+- **Coverage@τ counts are not precision.** Final and Cantley-only reach about 30k sites at 0.5. But on labelled sites the final model's ≥0.5 tier is calibrated on TEST (S/T: 0.615 claimed vs 0.603 observed, §7.7), and its top-1 accuracy is 0.365 against 0.282 for Cantley (CV, §4.5).
+- **Cantley's ≥0.8 tier is not evidence of higher precision.** It comes from the tail of an isotonic map fitted on very few labelled sites: only 152 Cantley sites reached ≥0.5 on CV.
+- **"Top-1%" coverage is uninformative as a precision measure.** Random scores spread their top 1% over the most sites.
+- **The model has no ≥0.8 tier and no Y-site assignment ≥0.5** (A31b). The "which kinase?" output should be used as a ranked shortlist; M2 Hit@5 on TEST is 0.363.
+- **Coverage on unlabelled sites cannot be precision-verified.** All coverage numbers are model-based and conditional on the site being a substrate of a modelled kinase.
+
+**Spot checks.**
+- TP53 S15 → ATM, assignment probability 0.70 (correct).
+- AKT1 S473 → PDPK1, AKT1, then MTOR third (MTOR/mTORC2 is the known kinase, ranked 3).
+- EIF2S1 S52 → PKC family: a miss; the known kinases are EIF2AK1–4.
+
+**Release files**, PSP-derived, so CC BY-NC-SA and non-commercial:
+- `results/release/kinase_top200.tsv.gz`: 100,600 rows, the top-200 sites for each of the 503 kinases.
+- `results/release/site_top5.tsv.gz`: 1,753,680 rows, the top-5 kinases for each of the 350,736 sites, with assignment_prob.
+- `RELEASE_MANIFEST.json`: SHA-256 pins, licence and limitations.
+
+**Runtime.**
+
+| Step | Wall-clock |
+|---|---|
+| Deployment cross-fit stores | 208–322 s, in parallel |
+| R2 training | 310 s |
+| R2 inference (131 M rows) | 985 s |
+| R3 training | 447 s |
+| R3 inference | 12 s |
+| Fusion, calibration, assignment and files | 169 s |
+
+Peak RSS was 18.7 GB.
+
+**Note.** In the deployment run, seed 0's early stopping hit its 53-round floor, against 235–543 rounds for seeds 1–4. That is the frozen procedure, and the 5-seed mean is dominated by the other seeds.
 
 ---
 

@@ -1,0 +1,94 @@
+{
+ "run_id": "r2r3_release_smoke__20261027-001416__s0",
+ "name": "r2r3_release_smoke",
+ "git_hash": "c3e2a1448eb78e4a030d4498dadbd82db827676e",
+ "config": {
+  "r2": "r2_deploy_smoke__20261027-000833__s0",
+  "r3": "/tmp/claude-588982/-workspace/f2c6b342-58ef-4e11-b665-a8c647ff9a45/scratchpad/fake_r3.parquet",
+  "cv_run": "r2_fusion_r3__20261026-191901__s0",
+  "b1_run": "simple_b1_imputed_universe__20261026-150833__s0",
+  "w": 0.6,
+  "w_site": 0.5,
+  "smoke": true
+ },
+ "seed": 0,
+ "split": "smoke",
+ "notes": "G5 release: fusion + calibration + assignment + coverage",
+ "inputs": [
+  {
+   "path": "/workspace/cache/release/r2_deploy_smoke__20261027-000833__s0/r2_uobs_scores.parquet",
+   "type": "file",
+   "bytes": 16903272,
+   "sha256": "ba6de2bea779f0996ed97a6cc555e1c1d25e546af01d2f463cf267892e353a47"
+  },
+  {
+   "path": "/tmp/claude-588982/-workspace/f2c6b342-58ef-4e11-b665-a8c647ff9a45/scratchpad/fake_r3.parquet",
+   "type": "file",
+   "bytes": 16719372,
+   "sha256": "63cdfa3f07b9255d0989394ed68697081d8284af7217d119fa3dcc1181d862e7"
+  }
+ ],
+ "host": "eu-g6-076",
+ "python": "3.12.3",
+ "platform": "Linux-5.15.0-198-generic-x86_64-with-glibc2.39",
+ "argv": [
+  "scripts/models/r2_release.py",
+  "--smoke",
+  "--r2",
+  "r2_deploy_smoke__20261027-000833__s0",
+  "--r3",
+  "/tmp/claude-588982/-workspace/f2c6b342-58ef-4e11-b665-a8c647ff9a45/scratchpad/fake_r3.parquet"
+ ],
+ "pid": 469450,
+ "started": "2026-10-27 00:14:16 CET",
+ "n_rows": {
+  "release_scores": 1829046
+ },
+ "outputs": {
+  "release_scores": {
+   "path": "cache/release/r2r3_release_smoke__20261027-001416__s0/release_scores.parquet",
+   "sha256": "5b0c13dc617c3a297561ac2def5986f351da17351035de7f78b905b74b744ca7"
+  }
+ },
+ "fallbacks": {},
+ "release": {
+  "run_id": "r2r3_release_smoke__20261027-001416__s0",
+  "r2_deploy_run": "r2_deploy_smoke__20261027-000833__s0",
+  "r3_deploy_predictions": "/tmp/claude-588982/-workspace/f2c6b342-58ef-4e11-b665-a8c647ff9a45/scratchpad/fake_r3.parquet",
+  "release_scores": {
+   "path": "cache/release/r2r3_release_smoke__20261027-001416__s0/release_scores.parquet",
+   "sha256": "5b0c13dc617c3a297561ac2def5986f351da17351035de7f78b905b74b744ca7",
+   "rows": 1829046,
+   "bytes": 56228456
+  },
+  "kinase_top200": {
+   "path": "results/release_smoke/kinase_top200.tsv.gz",
+   "sha256": "521dbb3b4dc722eea4db08674a8311788663f1da5c574a95e8cf22abe652fdd6",
+   "bytes": 23422
+  },
+  "site_top5": {
+   "path": "results/release_smoke/site_top5.tsv.gz",
+   "sha256": "a72e60f13852911726b644f63c403f85eace9f879e8f925943f22c016f9293a2",
+   "bytes": 26759661
+  },
+  "coverage": "results/release_smoke/coverage.tsv",
+  "licence": "Derived from PhosphoSitePlus (CC BY-NC-SA 3.0) labels: NON-COMMERCIAL use only, share-alike, attribution to PhosphoSitePlus.",
+  "limitations": [
+   "calibrators, temperature and ST/Y isotonic maps were fitted on DEV OOF predictions of the DEV-trained CV models; the deployment model is trained on DEV+TEST and has no OOF",
+   "probabilities estimate P(curated PSP-type positive | score) under PU labels: lower bounds",
+   "assignment_prob is conditional on the site being a substrate of one of the 503 modelled kinases; no reliable >= 0.8 tier and no Y-site assignment reaches 0.5 (audit r2)"
+  ],
+  "index_files": [
+   "cache/index/kinases.parquet (kinase_idx)",
+   "cache/index/sites.parquet (site_idx)"
+  ],
+  "runtime_s": {
+   "fusion_calibration_assignment": 1.1,
+   "total": 17.1
+  }
+ },
+ "status": "ok",
+ "error": null,
+ "runtime_s": 16.96,
+ "finished": "2026-10-27 00:14:33 CET"
+}

@@ -1,0 +1,51 @@
+{
+ "run_id": "r2r3_release_smoke__20261027-001408__s0",
+ "name": "r2r3_release_smoke",
+ "git_hash": "c3e2a1448eb78e4a030d4498dadbd82db827676e",
+ "config": {
+  "r2": "r2_deploy_smoke__20261027-000833__s0",
+  "r3": "/tmp/claude-588982/-workspace/f2c6b342-58ef-4e11-b665-a8c647ff9a45/scratchpad/fake_r3.parquet",
+  "cv_run": "r2_fusion_r3__20261026-191901__s0",
+  "b1_run": "simple_b1_imputed_universe__20261026-150833__s0",
+  "w": 0.6,
+  "w_site": 0.5,
+  "smoke": true
+ },
+ "seed": 0,
+ "split": "smoke",
+ "notes": "G5 release: fusion + calibration + assignment + coverage",
+ "inputs": [
+  {
+   "path": "/workspace/cache/release/r2_deploy_smoke__20261027-000833__s0/r2_uobs_scores.parquet",
+   "type": "file",
+   "bytes": 16903272,
+   "sha256": "ba6de2bea779f0996ed97a6cc555e1c1d25e546af01d2f463cf267892e353a47"
+  },
+  {
+   "path": "/tmp/claude-588982/-workspace/f2c6b342-58ef-4e11-b665-a8c647ff9a45/scratchpad/fake_r3.parquet",
+   "type": "file",
+   "bytes": 16719372,
+   "sha256": "63cdfa3f07b9255d0989394ed68697081d8284af7217d119fa3dcc1181d862e7"
+  }
+ ],
+ "host": "eu-g6-076",
+ "python": "3.12.3",
+ "platform": "Linux-5.15.0-198-generic-x86_64-with-glibc2.39",
+ "argv": [
+  "scripts/models/r2_release.py",
+  "--smoke",
+  "--r2",
+  "r2_deploy_smoke__20261027-000833__s0",
+  "--r3",
+  "/tmp/claude-588982/-workspace/f2c6b342-58ef-4e11-b665-a8c647ff9a45/scratchpad/fake_r3.parquet"
+ ],
+ "pid": 469336,
+ "started": "2026-10-27 00:14:08 CET",
+ "n_rows": {},
+ "outputs": {},
+ "fallbacks": {},
+ "status": "failed",
+ "error": "Traceback (most recent call last):\n  File \"/workspace/scripts/models/r2_release.py\", line 138, in <module>\n    ap_, site_u, top_k, q = assignment(k, s, lc, T, iso)\n                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/scripts/models/r2_release.py\", line 83, in assignment\n    q[~ry] = iso[\"ST\"].predict(ptop[~ry]); q[ry] = iso[\"Y\"].predict(ptop[ry])\n                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/.venv/lib/python3.12/site-packages/sklearn/isotonic.py\", line 472, in predict\n    return self._transform(T)\n           ^^^^^^^^^^^^^^^^^^\n  File \"/workspace/.venv/lib/python3.12/site-packages/sklearn/isotonic.py\", line 426, in _transform\n    T = check_array(T, dtype=dtype, ensure_2d=False)\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/.venv/lib/python3.12/site-packages/sklearn/utils/validation.py\", line 1113, in check_array\n    raise ValueError(\nValueError: Found array with 0 sample(s) (shape=(0,)) while a minimum of 1 is required.\n",
+ "runtime_s": 0.65,
+ "finished": "2026-10-27 00:14:09 CET"
+}
