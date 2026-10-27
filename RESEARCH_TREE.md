@@ -138,7 +138,7 @@ Status: literature (4 reviews), data profiling, two acquisition waves (~12.6 GB)
   - [x] 5.15 Downstream final (docs/downstream.md §7): on matched kinases the clean R2 library ≈ PSP (perturbation −0.013…−0.019, tumour +0.011…+0.029, CIs include 0); ours ∪ PSP tumour top-100 +0.034 (CI>0); ours vs Cantley +0.11…+0.18; coverage 50–65 vs 41 perturbed kinases, 149–274 vs 73 tumour. Ours-minus-PSP worse on perturbation.
     - [!] Unseen-drug experiments (114, 88 Hijazi): ours trails PSP by 0.04–0.06 → parity partly relies on same-compound response data. Test: no-phospho variant library (R2, queued).
 
-  - [~] REPORT.md draft with TEST placeholders (report agent, 23:25)
+  - [x] REPORT.md draft (23:34) → v2 with TEST + coverage (01:31)
 - [x] 6. G4 TEST batch (FREEZE 721dc197; COMPLETED 00:57, 47 min; results/test/LEDGER.md)
   - [!] All 9 primary tests beat (Holm p ≤0.018, CI>0): final vs B1 ΔM1 +0.075 [0.047, 0.099], ΔM3 +0.205, ΔM2 (vs arm ii) +0.179; vs B3 ΔM1 +0.086 / M2 +0.199 / M3 +0.259; vs B4 ΔM1 +0.089 / M2 +0.130 / M3 +0.059 [0.010, 0.120].
   - TEST standalone: final M1 0.794, M2 0.363, M3 0.363, M4 0.799, T3 M1 0.752; R2 0.778; R3 0.775; B1 0.714; B7 0.725; B3 0.708; B4 0.705; B2 0.685; B0 0.50–0.58.
@@ -147,4 +147,6 @@ Status: literature (4 reviews), data profiling, two acquisition waves (~12.6 GB)
     - [!] M2 TEST≫CV is kinase-set composition: on the 117 common kinases CV M2 is 0.348 vs TEST 0.363 (B0-prior 0.111 both). M1 paired CV→TEST +0.001 ± 0.012 → no optimism.
     - [!] Tyr kinases: final 0.595 vs pop floor 0.585 on TEST (10/23 beat the floor), T3 Y 0.531 → NOT TRUSTED as skill. Cantley Y 0.496.
     - Assignment prob honest on S/T (ECE 0.026; ≥0.5 tier 0.615 claimed vs 0.603 observed). B4 M3 win modest (CI lb 0.010). Part of the margin over Cantley is Cantley dropping on Y.
-  - [~] G5 deployment (R2+R3 on DEV+TEST → U_obs release + coverage), started 00:58
+- [x] 7. G5 (done 01:31): deployment model (frozen config on DEV+TEST, 15,202 pairs) → 131M U_obs scores (cache, pinned) + results/release/{kinase_top200,site_top5}.tsv.gz + coverage.tsv + RELEASE_MANIFEST.json (CC BY-NC-SA).
+  - Coverage@0.5: 29,886 sites (26,762 without a PSP kinase); @0.8: 0. Cantley-only 30,258 / 1,828 (its ≥0.8 tier is an isotonic-tail artefact from 152 sites); random 6 / 0. Coverage ≠ precision; on TEST the S/T ≥0.5 tier is calibrated (0.615 claimed vs 0.603 observed).
+  - REPORT.md v2 has the TEST results (reviewed), the regimes section and coverage; no placeholders left.
