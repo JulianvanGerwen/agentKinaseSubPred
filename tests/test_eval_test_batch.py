@@ -284,7 +284,13 @@ def test_check_predictions_all_or_nothing(tmp_path):
 
 
 def test_real_paths_untouched():
-    assert T.FREEZE == T.ROOT / "FREEZE.json" and not T.FREEZE.exists()
+    # Pre-G4 this asserted FREEZE.json did not exist. Since the G4 batch (FREEZE.json committed 5fc7870) the
+    # invariant is: dry-run tests never write it, i.e. if present it is byte-identical to the committed version.
+    import subprocess
+    assert T.FREEZE == T.ROOT / "FREEZE.json"
+    if T.FREEZE.exists():
+        r = subprocess.run(["git", "diff", "--quiet", "HEAD", "--", "FREEZE.json"], cwd=T.ROOT)
+        assert r.returncode == 0, "FREEZE.json modified relative to HEAD"
     assert not T.LEDGER.exists() or "DRYRUN" not in T.LEDGER.read_text()
 
 

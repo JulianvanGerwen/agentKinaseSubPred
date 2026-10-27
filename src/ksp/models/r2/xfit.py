@@ -267,7 +267,8 @@ def split_sites(fold: int | None):
 
 def build(family: str, fold: int | None, seed: int = 0, variant: str = "L2", tag: str | None = None,
           eval_site_idx: np.ndarray | None = None, overwrite: bool = False,
-          exclude_kinases: set | None = None, train_site_idx: np.ndarray | None = None) -> Path:
+          exclude_kinases: set | None = None, train_site_idx: np.ndarray | None = None,
+          train_labels_override: pd.DataFrame | None = None) -> Path:
     """exclude_kinases: kinase accessions whose labels are removed from the fitted labels (leave-kinase-out T2/T3)."""
     tag = tag or ("cv" if fold is not None else "final")
     out = XFIT_DIR / tag / (f"fold{fold}" if fold is not None else "all") / f"{family}.npy"
@@ -279,7 +280,12 @@ def build(family: str, fold: int | None, seed: int = 0, variant: str = "L2", tag
     if cols is None and family == "knn":
         cols = _knn_cols()
     inner_cls = cls_factory()
-    train_labels, _, _ = crossfit.outer_split(fold, variant=variant, with_canaries=True)
+    if train_labels_override is not None:          # G5 deployment: DEV+TEST labels from ksp.deploy (fold must be None)
+        if fold is not None:
+            raise ValueError("train_labels_override requires fold=None")
+        train_labels = train_labels_override
+    else:
+        train_labels, _, _ = crossfit.outer_split(fold, variant=variant, with_canaries=True)
     train_labels = train_labels[["kinase_acc", "site_id"]].drop_duplicates().reset_index(drop=True)
     n_excl = 0
     if exclude_kinases:

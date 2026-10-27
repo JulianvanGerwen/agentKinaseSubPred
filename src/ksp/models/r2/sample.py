@@ -33,8 +33,11 @@ def residue_ok(res: np.ndarray, cls: str) -> np.ndarray:
 class FoldData:
     """Everything label-related for one outer CV fold (fold=None: all DEV = final model)."""
 
-    def __init__(self, fold: int | None, variant: str = "L2", exclude_kinases: set | None = None):
-        """exclude_kinases: leave-kinase-out - their label rows are removed from positives AND masks."""
+    def __init__(self, fold: int | None, variant: str = "L2", exclude_kinases: set | None = None,
+                 deploy_loader=None):
+        """exclude_kinases: leave-kinase-out - their label rows are removed from positives AND masks.
+        deploy_loader: G5 deployment only - callable(variant, with_canaries) -> label table over DEV+TEST proteins
+        (ksp.deploy.load_deploy_labels); fold must be None; training sites = U_ms sites on DEV+TEST proteins."""
         self.fold = fold
         excl = set(exclude_kinases or ())
         S = index.load_sites()
@@ -45,7 +48,14 @@ class FoldData:
         folds = splits.load_cv_folds()
         pf = S.acc.map(folds)
         ums = S.in_U_ms.values
-        if fold is None:
+        if deploy_loader is not None:
+            if fold is not None:
+                raise ValueError("deployment uses fold=None")
+            allprot = set(folds.index) | splits.load_test_proteins()
+            self.train_sites = np.where(ums & S.acc.isin(allprot).values)[0]
+            self.eval_sites = np.zeros(0, np.int64)
+            train_prot = allprot
+        elif fold is None:
             self.train_sites = np.where(ums & pf.notna().values)[0]
             self.eval_sites = np.zeros(0, np.int64)
             train_prot = set(folds.index)
@@ -53,7 +63,9 @@ class FoldData:
             self.train_sites = np.where(ums & pf.notna().values & (pf.values != fold))[0]
             self.eval_sites = np.where(ums & (pf.values == fold))[0]
             train_prot = set(folds.index[folds != fold])
-        lab = labels.load_dev(variant, with_canaries=True)
+        lab = labels.load_dev(variant, with_canaries=True) if deploy_loader is None else \
+            deploy_loader(variant, with_canaries=True)
+        self.n_label_rows_loaded = int(len(lab))
         lab = lab[lab.acc.isin(train_prot) & ~lab.kinase_acc.isin(excl)]
         lab = lab[lab.site_id.isin(spos.index)]
         lab = lab.assign(kinase_idx=lab.kinase_acc.map(self.kpos), site_idx=spos[lab.site_id].values)
@@ -67,9 +79,13 @@ class FoldData:
         lab = lab[ok].drop_duplicates(["kinase_idx", "site_idx"]).reset_index(drop=True)
         self.pos = lab[["kinase_acc", "site_id", "kinase_idx", "site_idx", "is_canary"]].copy()
         # masks from TRAINING-fold rows only (all provenances / mask-only rows) + training canaries
-        allp = labels.load_dev("all")
+        allp = labels.load_dev("all") if deploy_loader is None else deploy_loader("all", with_canaries=False)
         allp = allp[allp.acc.isin(train_prot) & ~allp.kinase_acc.isin(excl)]
-        can = canary.canary_labels()
+        if deploy_loader is None:
+            can = canary.canary_labels()
+        else:
+            cl = deploy_loader("all", with_canaries=True)
+            can = cl[cl.is_canary.astype(bool)]
         can = can[can.acc.isin(train_prot)]
         self.mask_pairs = pd.concat([allp, can], ignore_index=True)
         self.masks = labels.NegativeMasks(self.mask_pairs)
