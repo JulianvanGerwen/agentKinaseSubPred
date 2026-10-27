@@ -521,3 +521,11 @@ GPU allocation:
     3. A rebuild of TEST and T3 (about 2.5 h) is not justified by a gain within noise.
   - **Other variants:** L1, L2_vitro and L2_vivo are all worse on M2 (pooling mouse and rat labels helps M2 by +0.029). Per-kinase models (−0.012), per-group models (−0.007) and partial pooling (+0.0002, with λ selected at 300, i.e. essentially global) are not adopted.
   - **Side finding, recorded as a follow-up (not explored, because CV closed at 01:00):** per-kinase ridge intercepts lift R2 M2 to 0.232.
+- **A34. Post-TEST exploration** (2026-10-27 01:33). The sealed TEST set has been spent (LEDGER COMPLETED, FREEZE 721dc197).
+  - Any further experiments run on DEV CV only, with nested selection. They are reported in REPORT §11 as **post-TEST exploratory** findings with CV evidence only.
+  - The released and evaluated model stays the frozen final configuration (LESSONS 14). No TEST re-access, and no use of the TEST labels beyond the deployment retrain.
+  - Pre-declared targets, from the documented weaknesses:
+    - (a) M2 for understudied kinases, via per-kinase intercepts of the site score;
+    - (b) primed sites, via a kinase-gated blend with the priming-aware Cantley arm;
+    - (c) Tyr specificity.
+  - A finding counts as "promising" if its nested-CV gain on its target stratum has a cluster-bootstrap CI above 0 with no loss on overall M1 beyond 0.002.
