@@ -1,0 +1,10 @@
+check	value	pass
+1 base M2 reproduces run metrics.json	0.0	True
+2 intercepts for outer fold f fitted only on folds != f (by construction; asserted)	0.0	True
+3 n-weighted bin M2 recombines to pooled nested M2	0.0	True
+4 bootstrap mean of base M2 within 0.01 of point	0.00020699442288868442	True
+5 placebo (intercepts permuted across kinases): M2 should not beat base	-0.05081942944158735	True
+6 optimism: mean inner M2 at selected lam minus nested outer M2	0.005498064410832393	True
+7 Spearman(b_k, log1p DEV count), fold-0 fit	0.39303401641305646	True
+8 full evaluate: M1 unchanged (M1 uses score, not score_site)	0.0	True
+9 full evaluate M2 equals the site-centric nested M2	0.0	True

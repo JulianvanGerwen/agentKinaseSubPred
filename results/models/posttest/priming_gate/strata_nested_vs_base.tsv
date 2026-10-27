@@ -1,0 +1,6 @@
+stratum	n_kinases	n_pos	M1_base	M1_nested	delta	lo	hi
+priming kinases (all positives)	9	1049	0.84724	0.84830	0.00106	-0.00334	0.00512
+primed=primed	8	231	0.89257	0.91097	0.01840	0.01344	0.02389
+primed=unprimed	9	818	0.82637	0.82069	-0.00567	-0.01037	-0.00139
+primed_cantley=primed	13	245	0.90990	0.91860	0.00870	0.00597	0.01386
+primed_cantley=unprimed	13	742	0.83072	0.82540	-0.00533	-0.00931	-0.00118
