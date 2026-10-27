@@ -1,17 +1,9 @@
-# LESSONS — process rules for running this project efficiently
-(One-line rule + evidence. Pruned at each milestone; last prune M3 2026-10-27 00:06 — see docs/retro/M1_retro.md, M2_retro.md, M3_retro.md.)
+# LESSONS — process rules for a next project
+(Final prune 2026-10-27 09:35, from the fresh-agent retro `docs/retro/final_retro.md` §5; the 14 earlier rules are kept in `docs/retro/LESSONS_pre_final_prune.md`.)
 
-1. Reviewers get read-only data access and must give a measured number per change (r1: 6/7 found quantified leaks).
-2. Key by UniProt accession, never symbol (174/404 Cantley names differ).
-3. Treat label-derived features and "unbiased" resources as leaky until cross-fitted by substrate cluster or audited (68% co-labelled; STRING 34% vs 4%; iKiP 61% of PSP).
-4. Null controls must match positives on every label-free axis (canary v1 AUROC 0.76 by site density alone).
-5. Freeze the eval harness; version every number; log each post-freeze amendment and its reason (A24 made all docs stale).
-6. Pooled-OOF metrics need fold-invariant scores; report per-fold (B0-prior 0.40 vs 0.5; M4 0.821 vs 0.764).
-7. Write the config log, selection rule and adoption threshold before running (A32 8107905, R5 gate); count configs, not rows.
-8. Compare against the strongest comparator with paired CIs, and label contaminated references "reference only" (Phosformer 0.796).
-9. An auditor or the PI recomputes headline numbers from saved predictions; agent claims are untrusted (audit r1 caught 4 majors).
-10. Verify artefacts by mtime/hash before claiming "rebuilt" (R2 folds 0/3 stale).
-11. Fan out implementers only against frozen interfaces; a measured baseline comes before more review (M1: 84 changes, no baseline at T+1.5h).
-12. One owner per path, PI-only git, status per event, timestamps from `date`; delete status columns that aren't maintained (drifted at M1, M2, M3).
-13. Audit PROMPT.md asks against the leaderboard at every milestone (regimes unrun at 20:00), and budget memory against the job cgroup (128 GiB, not the node's 375 GB): ≤60 GB per agent (OOM kills at 17:50 and ~23:00).
-14. After FREEZE, no protocol amendments and no reselection after seeing TEST; deploy only frozen configs (M3 retro: A23–A33 landed ~1/h before the freeze).
+1. **Reserve a second sealed test shard, and never open the first before its scheduled gate.** TEST was spent at T+11.6 h of 24, ~5 h before its own gate, so the last-third experiments (`docs/posttest_*.md`) could only be exploratory. After the freeze: no reselection, no new amendments.
+2. **Run the null/floor controls through the real harness before the first model run.** B0-prior read 0.40 instead of 0.50 (A24) only at T+3.7 h, after 47 runs. Controls must match positives on every label-free axis (canary v1 scored 0.76 on site density alone; a label-free priming flag reproduced a whole "finding").
+3. **Treat label-derived features and "unbiased" resources as leaky until cross-fitted by cluster and overlap-tested**, enforced in code (68% co-labelled; STRING 34% vs 4%; iKiP 61% of PSP). Key by accession, never symbol.
+4. **Before running, write the selection rule, adoption threshold, number of configs and comparator set; include any arm that beats you on any pre-registered stratum.** Honoured, it killed six candidates cleanly. Broken, it gave the one retracted TEST claim (priming-aware Cantley) and a post-hoc variant (A34a).
+5. **Keep a standing independent auditor who recomputes headline numbers from saved predictions, and review the irreversible-path code one gate early.** Audits caught A24, stale fold stores, an overconfident ≥0.8 tier and a bypassable single-batch guard. Reviewers get read-only data and must attach a measured number per change.
+6. **Turn the brief's asks into an owned checklist at T+0 and re-audit at each milestone; one owner per path, PI-only git, timestamps from `date`; delete status fields you will not update; budget memory against the job cgroup (128 GiB), ≤60 GB per agent.** The mandated regime comparison surfaced at T+6.6 h and used 38% of CV compute; the DELEGATION status column was stale at four retros; two OOM kills.

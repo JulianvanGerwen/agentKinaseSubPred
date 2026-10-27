@@ -4,6 +4,11 @@ Legend: [ ] planned · [~] in progress · [x] done · [-] abandoned/negative · 
 
 ## Status summary (latest first)
 
+### 2026-10-27 09:47 — FINAL (G6): REPORT v3 reviewed and committed
+The released model is the frozen R2 + R3 late fusion with a global model on L2 labels. On the single sealed TEST batch it scores M1 0.794, M2 0.363 and M3 0.363. It beats Cantley, our Phosformer retrain and our SELPHI2.0 retrain on all 9 pre-declared primary tests (eight with Holm p ≤ 0.0018; B4 M3 +0.059 [0.010, 0.120], p 0.018). An independent audit reproduced every TEST number. M1 shows no CV→TEST optimism (+0.001 ± 0.012 on matched kinases). The M2 rise over CV is kinase composition, not improvement. Tyrosine kinases are NOT TRUSTED (0.595 vs a popularity floor of 0.585). There is no ≥0.8 assignment tier. Deployment coverage at 0.5 is 29,886 of 350,736 U_obs sites.
+
+Post-TEST work (A34, CV only, released model unchanged) found no clean improvement: Tyr weight and motif repair fail, per-kinase intercepts only trade M2 between kinases, and the priming blend is a rank shift. An independent consistency review of REPORT checked every cited number (7 factual fixes, none changing a scientific claim, all applied: `docs/review_report_v3.md`). The fresh-agent retro (`docs/retro/final_retro.md`) is critical on scheduling: TEST was spent about 5 h before its gate, the model plateaued by about T+6 h, and 12 of 34 amendments landed in the last 8.6 h. LESSONS.md is pruned to 6 rules from it. Remaining ideas are in REPORT §11.
+
 ### 2026-10-27 00:05 — M3: CV closed, FREEZE committed (5fc7870), TEST batch running
 Decision note: the final model is the **R2 LightGBM (5 seeds) + R3 neural late fusion**, the best M1-CV (§8.6). It uses L2 labels (human plus mouse/rat) and a global model.
 - Regime and label comparisons (A33): per-kinase −0.012, per-group −0.007, partial pooling ≈ global, L1/L2_vitro/L2_vivo worse on M2, L2+ext not robust across seeds and pre-registered as ablation only.
@@ -154,4 +159,4 @@ Status: literature (4 reviews), data profiling, two acquisition waves (~12.6 GB)
   - [-] 8.1 M2 for understudied kinases (done 02:23, `docs/posttest_cv.md` (a)): balanced per-kinase intercepts, nested; M2 5–19 bin +0.085 [0.048, 0.116], pooled +0.037, but ≥100 bin −0.124. Audit: pre-declared plain variant alone −0.013 [−0.021, −0.004]; micro Hit@5 0.535→0.465. A reallocation, not adopted.
   - [-] 8.2 Primed sites (done 02:23, `docs/posttest_cv.md` (b)): primed +0.018 [0.013, 0.024] but unprimed −0.006 and priming-kinase all-positive +0.001 [−0.003, +0.005]: a rank shift, not a gain. Audit: a label-free priming-site flag reproduces it; +0.002 vs flag-matched negatives.
   - [-] 8.3 Tyr specificity (done 02:18, `docs/posttest_tyr.md`): Y-specific fusion weight Y M1 −0.0039 [−0.0097, +0.0010]; nested nearest-atlas motif repair +0.0042 [−0.0103, +0.0167]. Neither adopted. Inner-fold gain +0.012…+0.027 shrinks to +0.006 held-out: 38 Y kinases cannot support selecting even one parameter. Audit confirmed; 18 up / 19 down per kinase.
-- [~] 9. G6: REPORT.md final + independent report review + final retro
+- [x] 9. G6 (done 09:47): REPORT.md v3 + independent report review (`docs/review_report_v3.md`) + fresh-agent retro (`docs/retro/final_retro.md`) + LESSONS pruned to 6 rules

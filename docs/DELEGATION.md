@@ -1,6 +1,8 @@
 # DELEGATION — who owns which files (DESIGN §11.8)
 Agents write only in their assigned paths; shared modules are changed only by their owner. Only the PI runs git.
 
+**Final (2026-10-27 09:36):** every owner above has finished; the Status column was not maintained live (see `docs/retro/final_retro.md` §3.4) and is a historical record only. Post-TEST agents (posttest_*, tyr, audit_posttest, review, retro) wrote only under docs/ and results/models/posttest*.
+
 | Agent (task) | Owns (write) | GPU / cores | Status |
 |---|---|---|---|
 | PI | DESIGN.md, RESEARCH_TREE.md, LESSONS.md, DATAINEED.md, DATA.md (shared append), src/ksp/index.py, docs/DELEGATION.md | — | — |

@@ -1,6 +1,6 @@
 # REPORT: Predicting direct kinase–substrate sites across the human proteome
 
-**Status: v3 (2026-10-27 03:17 CET).** The single TEST batch ran once (FREEZE 721dc197) and was independently reproduced (`docs/audit/audit_test.md`). Deployment model and coverage (§9) done. Post-TEST exploratory CV (§11.1) audited (`docs/audit/audit_posttest.md`). Each number cites the committed file it comes from.
+**Status: v3 (2026-10-27 09:46 CET).** The single TEST batch ran once (FREEZE 721dc197) and was independently reproduced (`docs/audit/audit_test.md`). Deployment model and coverage (§9) done. Post-TEST exploratory CV (§11.1) audited (`docs/audit/audit_posttest.md`). Each number cites the committed file it comes from.
 
 **Conventions.** All CV metrics use the frozen harness `ksp.eval`, commit 974d520, with A24 within-(fold, kinase) rank normalisation, unless a row says otherwise. Where a document gives both a pre-A24 and an A24 value, this report uses the A24/audited value and says so. Square brackets are 95% cluster-bootstrap CIs.
 
@@ -66,7 +66,7 @@ The main caveats:
 2. **No reliable high-confidence site assignment.**
    - On labelled TEST S/T sites, the ≥0.5 tier is honest: 0.615 claimed vs 0.603 observed (n = 345).
    - There is no ≥0.8 tier, and no Y site can exceed 0.445.
-   - Coverage is 5,773 TEST sites at 0.5 and 0 at 0.8 (`final_reliability.tsv`; audit §6).
+   - Coverage is 5,773 TEST sites at 0.5 and 0 at 0.8 (`results/test/721dc1977366/summary.json`; audit §6).
 3. **M2 is still weak for understudied kinases.** TEST includes only 13 kinases with 5–19 labels, and they are the best-labelled of that bin. The CV finding (Hit@5 0.142 against 0.162 for Cantley) is therefore not refuted (audit §2).
 4. **B3 and B4 are our faithful retrains on this benchmark.**
    - The B3 fidelity check passed.
@@ -179,11 +179,10 @@ The comparator rules follow A19 and A23, which uses the stronger Cantley arm for
 
 **Current state.**
 - Every TEST deliverable was pinned by 23:24 (`results/freeze_entries/`, `scripts/build_freeze.py`).
-- The draft FREEZE validates with all 9 primaries.
-- FREEZE.json is not yet committed.
+- The FREEZE validated with all 9 primaries and was committed (5fc7870, sha 721dc197…) before the single TEST batch ran (00:10–00:57; §7, `results/test/LEDGER.md`).
 
 **Selection discipline.**
-- Exploration on CV closed at 01:00 (A28).
+- Model-selection exploration on CV closed at 01:00 (A28). Post-TEST exploratory CV analyses (§11.1, A34) did not change the model.
 - Selection rule: best M1-CV, with M2-CV as tie-break.
 - About 90 configurations were evaluated on CV, about 55 of them selectable.
 
@@ -325,7 +324,7 @@ Source: `model_r2.md` §6.
 | Per-Manning-group LightGBM | 0.761 | −0.007 | 0.170 | −0.022 | 0.298 | 0.776 / 0.625 | 0.728 / 0.735 / 0.772 / 0.803 |
 
 **Findings.**
-- **One global model is best.**
+- **One global model is best on CV, within the tested regimes.**
   - Per-kinase models lose 0.012 M1. On the 78 kinases that reached N ≥ 20 in every fold, the global model still wins (0.805 vs 0.779).
   - Partial pooling selects λ = 300, which is effectively the global model.
   - Per-group models are in between.
@@ -397,14 +396,14 @@ On Y sites the Platt slope was negative in 4 of 5 folds.
 
 - Arms (i) and (ii) tie on M1 (difference 9e-7). Arm (ii) is better on M2 by +0.0135 [0.007, 0.020], hence A23.
 - **TEST (A30).** The 10 STY kinases with a single-residue matrix are left unscored, so 386 of 503 kinases are scored. This can only help the baseline.
-- `model_r2.md` and `RESEARCH_TREE.md` 5.14 quote B1 M1 = 0.719. That is the stale pre-15:31 REGISTRY value (audit r1, m-6). This report uses the re-evaluated 0.717.
+- `model_r2.md` quotes B1 M1 = 0.719 (RESEARCH_TREE 5.14 quotes 0.717 and flags 0.719 as stale). 0.719 is the stale pre-15:31 REGISTRY value (audit r1, m-6). This report uses the re-evaluated 0.717.
 
 ### 5.2 B3 Phosformer (`docs/baseline_phosformer.md`)
 
 | Arm | M1 | M2 | M3 | M4-CV | Note |
 |---|---|---|---|---|---|
 | B3-pub, released weights | 0.796 (A24; 0.793 in the doc) | 0.248 | n/a | 0.804 | **contaminated**: trained on PSP including our positives; positives + E-hard only; contrast only |
-| **B3a retrained** (our MLM pretraining on the TEST-filtered corpus, then fine-tuned on our folds) | **0.677** (fold mean 0.689; leaderboard re-evaluation — the doc gives 0.679) | 0.132 | 0.104 | 0.657 | 339 kinases, E-all complete |
+| **B3a retrained** (our MLM pretraining on the TEST-filtered corpus, then fine-tuned on our folds) | **0.677** (fold mean 0.689; leaderboard re-evaluation — the doc gives 0.679) | 0.132 | 0.104 | 0.655 (LEADERBOARD; `baseline_phosformer.md` gives 0.657) | 339 kinases, E-all complete |
 | Cantley B1 (i), same CV | 0.717 | 0.157 | 0.133 | 0.690 | |
 
 **How B3a was built.**
@@ -415,7 +414,7 @@ On Y sites the Platt slope was negative in 4 of 5 folds.
 
 **Result.** Retrained fairly on cluster splits, Phosformer is **below the label-free Cantley atlas on every endpoint**.
 
-**Fidelity check: passed.** Our MLM checkpoint and fine-tuning code, trained on Phosformer's own published train split (60% uniform subsample, one epoch), give AUROC **0.888** on their test split. The paper reports 0.885 and the released weights give 0.8855 through our scorer. Per-kinase mean AUROC is 0.858 against the paper's 0.860 (`results/baselines/phosformer/fidelity_check.json`). B3a's shortfall on our benchmark therefore reflects the split, labels and negatives, not the implementation.
+**Fidelity check: passed.** Our MLM checkpoint and fine-tuning code, trained on Phosformer's own published train split (60% uniform subsample, one epoch), give AUROC **0.888** on their test split. The paper reports 0.885 and the released weights give 0.8855 through our scorer. Per-kinase mean AUROC is 0.858 against the paper's 0.860 (`results/baselines/phosformer/fidelity_check.json`). B3a's shortfall on our benchmark therefore is consistent with the split, labels and negatives rather than the implementation; the fidelity check removes the obvious implementation errors but cannot exclude all of them.
 
 ### 5.3 B4 SELPHI2.0 (`docs/baseline_selphi2.md`)
 
@@ -452,18 +451,18 @@ On Y sites the Platt slope was negative in 4 of 5 folds.
 |---|---|---|---|---|---|---|---|---|
 | **Final: R2+R3 fusion** | **0.786** | 0.781 | **0.263** | **0.361** | 0.774 | — | 0.539 / 1.000 | `model_r2.md` §6; audit r2 |
 | R2, 5-seed ensemble | 0.776 | 0.771 | 0.200 | 0.312 | 0.767 | — | 0.548 / 0.999 | `model_r2.md` §6 |
-| R2 full (seed 0, pre-v3) | 0.773 | 0.768 | 0.207 | 0.312 | 0.770 | 0.797 / 0.644 | 0.544 / 0.998 | LEADERBOARD #5 |
+| R2 full (seed 0, pre-v3) | 0.773 | 0.768 | 0.207 | 0.312 | 0.770 | 0.797 / 0.644 | 0.544 / 0.998 | LEADERBOARD #15 |
 | R2 clean (no benchmark PMIDs, no CPTAC) | 0.771 | — | 0.189 | 0.300 | 0.768 | — | 0.551 / 0.999 | `model_r2.md` §6.2 |
 | R2 no-phospho (no F6) | 0.771 | 0.767 | 0.187 | 0.296 | 0.761 | — | 0.549 / 0.999 | REGISTRY |
-| R3 final (distilled) | 0.754 | 0.749 | 0.223 | 0.294 | 0.731 | 0.761 / 0.586 | 0.524 / 0.929 | LEADERBOARD #11 |
-| B7 simple-strong | 0.726 | 0.731 | 0.196 | 0.179 | 0.708 | 0.744 / 0.540 | — | LEADERBOARD #19 |
-| B1 Cantley (i) / (ii) | 0.717 | 0.721 | 0.157 / 0.171 | 0.136 (full-cov, 196 kinases) | 0.690 | 0.732 / 0.534 | — | LEADERBOARD #26–27 |
+| R3 final (distilled) | 0.754 | 0.749 | 0.223 | 0.294 | 0.731 | 0.761 / 0.586 | 0.524 / 0.929 | LEADERBOARD #42 |
+| B7 simple-strong | 0.726 | 0.731 | 0.196 | 0.179 | 0.708 | 0.744 / 0.540 | — | LEADERBOARD #53 |
+| B1 Cantley (i) / (ii) | 0.717 | 0.721 | 0.157 / 0.171 | 0.136 (full-cov, 196 kinases) | 0.690 | 0.732 / 0.534 | — | LEADERBOARD #60/#63 |
 | B4 SELPHI2.0 (matched) | 0.708 | — | 0.176 | 0.316 | 0.714 | — | not run | `baseline_selphi2.md` |
-| B3a Phosformer retrained | 0.677 | 0.689 | 0.132 | 0.104 | 0.657 | — | not run | LEADERBOARD.md (A24 re-eval) |
-| B2 learned PSSM | 0.660 | 0.673 | 0.118 | 0.109 | 0.638 | 0.659 / 0.529 | — | LEADERBOARD #38 |
+| B3a Phosformer retrained | 0.677 | 0.689 | 0.132 | 0.104 | 0.655 | — | not run | LEADERBOARD.md (A24 re-eval) |
+| B2 learned PSSM | 0.660 | 0.673 | 0.118 | 0.109 | 0.638 | 0.659 / 0.529 | — | LEADERBOARD #74/#75 |
 | B0-pop / B0-miss | 0.552 / 0.539 | | 0.020 / 0.040 | 0.142 / 0.053 | | | — | LEADERBOARD |
 
-`results/cv/LEADERBOARD.md` was regenerated at 2026-10-27 01:23 (135 runs) and now includes every run listed here.
+`results/cv/LEADERBOARD.md` was regenerated at 2026-10-27 01:23 (135 runs) and includes the runs cited here (it does not list every historical run).
 
 ### 6.2 Ablation curve (R2, seed 0, pooled, A24; `model_r2.md` §5; `results/models/r2/cv_table.tsv`)
 
@@ -594,7 +593,7 @@ T2 M1 split by whether the held-out site is labelled to another kinase:
 | Feature builds | ESM-2 650M 2.8 min (0.09 GPU-h), 3B 7.9 min; AFDB structure 15.7 min (15 CPU); F1 151 s; context ≈2 min; F6a 17 s per full fit (GPU); knn dense pass 29 s | | | feature docs |
 | TEST batch, B = 10k | rehearsal on fold 0: 21 min; TEST estimated 45–60 min | | | `docs/G4_RUNBOOK.md` |
 
-**Cost–accuracy.** The final model is both the most accurate and among the cheapest to score. It infers about 20× faster than B3 and about 6× faster than B4, measured on the same candidate set.
+**Cost–accuracy.** The final model is the most accurate and cheaper to score than B3 and B4. It infers about 20× faster than B3 and about 6× faster than B4, measured on the same candidate set.
 
 ---
 
@@ -719,9 +718,9 @@ T3 M2 is not reported, because it mixes LKO models.
 | FAM20C (M4, K_any) | 1 | 0.999 | 0.969 | 0.855 | 0.766 | 0.371 |
 | hub sites (A26) | 85 / 272 | 0.863 | 0.712 | 0.731 | 0.802 | **0.788** |
 | non-hub | 117 / 1,932 | 0.784 | 0.721 | 0.707 | 0.682 | 0.544 |
-| in vivo only | 88 / 535 | 0.788 | 0.713 | 0.713 | 0.706 | 0.589 |
-| in vitro only | 96 / 807 | 0.827 | 0.730 | 0.715 | 0.751 | 0.615 |
-| both | 107 / 862 | 0.779 | 0.718 | 0.701 | 0.676 | 0.539 |
+| in vivo only | 88 / 468 | 0.788 | 0.713 | 0.713 | 0.706 | 0.589 |
+| in vitro only | 96 / 721 | 0.827 | 0.730 | 0.715 | 0.751 | 0.615 |
+| both | 107 / 771 | 0.779 | 0.718 | 0.701 | 0.676 | 0.539 |
 
 Source: `results/test/721dc1977366/{final,B1_i,B3,B4,B0_pop}_strata.tsv`.
 
@@ -764,8 +763,8 @@ Hub-site gains are mostly popularity (B0-pop 0.788 on hub positives).
 
 | Set | K_eval kinases / pairs | final | R2 | R3 | B1 (i) | B3 | B4 | B0-pop |
 |---|---|---|---|---|---|---|---|---|
-| new since 2021 | 61 / 262 | **0.766** | — | — | 0.710 | 0.660 | 0.696 | 0.556 |
-| pre-2021 | 118 / 1,942 | 0.800 | — | — | 0.719 | 0.721 | 0.711 | 0.580 |
+| new since 2021 | 61 / 215 | **0.766** | — | — | 0.710 | 0.660 | 0.696 | 0.556 |
+| pre-2021 | 118 / 1,745 | 0.800 | — | — | 0.719 | 0.721 | 0.711 | 0.580 |
 | external tier A | 41 / 134 | **0.788** | 0.771 | 0.766 | 0.684 | 0.721 | 0.679 | 0.531 |
 | external tier B (popularity-heavy) | 19 / 49 | 0.804 | 0.752 | 0.842 | 0.661 | 0.778 | 0.754 | **0.724** |
 | external, all (M1 / M4) | 49 / 130 (K_any 75 / 183) | 0.800 / 0.800 | | | 0.699 / 0.691 | 0.734 / 0.710 | 0.696 / 0.726 | 0.577 / 0.589 |
@@ -916,7 +915,7 @@ Matched-kinase comparisons (z-score, U_obs, ours − reference; unadjusted CIs; 
 U_obs has 350,736 sites; 338,525 of them have no PSP kinase.
 
 **Reading.**
-- **Coverage@τ counts are not precision.** Final and Cantley-only reach about 30k sites at 0.5. But on labelled sites the final model's ≥0.5 tier is calibrated on TEST (S/T: 0.615 claimed vs 0.603 observed, §7.7), and its top-1 accuracy is 0.365 against 0.282 for Cantley (CV, §4.5).
+- **Coverage@τ counts are not precision.** The denominator is the 350,736-site U_obs, so 29,886 sites at 0.5 is 8.5% of it, and 0 at 0.8. Final and Cantley-only reach about 30k sites at 0.5. The TEST reliability check (§7.7) applies to the frozen DEV-trained model; the DEV+TEST deployment model's calibrators were not re-tested. On labelled sites the final model's ≥0.5 tier is calibrated on TEST (S/T: 0.615 claimed vs 0.603 observed, §7.7), and its top-1 accuracy is 0.365 against 0.282 for Cantley (CV, §4.5).
 - **Cantley's ≥0.8 tier is not evidence of higher precision.** It comes from the tail of an isotonic map fitted on very few labelled sites: only 152 Cantley sites reached ≥0.5 on CV.
 - **"Top-1%" coverage is uninformative as a precision measure.** Random scores spread their top 1% over the most sites.
 - **The model has no ≥0.8 tier and no Y-site assignment ≥0.5** (A31b). The "which kinase?" output should be used as a ranked shortlist; M2 Hit@5 on TEST is 0.363.
@@ -964,7 +963,7 @@ Peak RSS was 18.7 GB.
    - The S/T ≥0.5 tier is honest on labelled TEST sites (0.615 claimed vs 0.603 observed, n = 345).
    - Y probabilities are mildly overconfident (0.41 vs 0.34 in [0.2, 0.5)).
    - These are precisions on labelled sites only (PU); they do not transfer to unlabelled sites.
-   - Sources: `final_reliability.tsv`; `audit_test.md` §6.
+   - Sources: `final_reliability.tsv`, `summary.json` (coverage counts); `audit_test.md` §6.
 3. **M2 favours well-studied kinases.**
    - CV Hit@5 is 0.142 at 5–19 labels against Cantley's 0.162. A32(b) debiasing failed.
    - TEST cannot refute this: it holds only 13 such kinases, the best-labelled of the bin.
@@ -1007,7 +1006,7 @@ Peak RSS was 18.7 GB.
 14. **Label noise and PU.** In-vivo-only labels are enriched for indirect events. All precision and probability statements are lower bounds.
 15. **Unbuilt items.**
     - F8 (Sugiyama), docking motifs, F6d and U_all (unobserved S/T/Y).
-    - The deployment model is still running (§9).
+    - The deployment model is done (§9).
     - `scripts/run_all.sh`, promised in DESIGN §11.8, does not exist.
 16. **Data gaps** (DATAINEED): the SIGNOR direct export, decryptM curve fits, CPTAC plex/ischemia confounders and PTB matrices were unavailable; workarounds are in use.
 
@@ -1064,9 +1063,14 @@ B0-pop on the Y stratum is 0.592, so the fusion's lead over popularity on Y is m
 
 ## 12. Reproducibility
 
+**Process notes (not elsewhere in this report).**
+- **Design review.** DESIGN.md and LITERATURE.md went through two independent review rounds (`docs/reviews/r1_*.md`, `r2_*.md`), within the ≤3 allowed.
+- **Cantley is not retrained.** B1 is the published kinase-library atlas used as-is (`ksp` reproduces kinase-library 1.8.0 within 1e-3); its matrices are not fitted on our labels, so it has no fold-dependent training.
+- **Time.** Run timings are in `results/runs/*/manifest.json`; `docs/retro/final_retro.md` analyses where the 24 h went.
+
 **Commit and harness.**
 - Harness commit: `974d520` (A28), covering `eval.py`, `labels.py`, `splits.py`, `crossfit.py` and `canary.py`.
-- Repository HEAD at drafting time: `be635d1`.
+- Repository HEAD at first drafting: `be635d1` ("tree: all TEST deliverables pinned; report draft started"); the final commit is in `git log`.
 - TEST deliverables are pinned by SHA-256 in `results/freeze_entries/*.json` and `results/baselines/*/freeze_entr*`.
 
 **Seeds.**
