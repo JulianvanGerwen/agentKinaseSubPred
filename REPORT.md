@@ -399,7 +399,7 @@ On Y sites the Platt slope was negative in 4 of 5 folds.
 | Arm | M1 | M2 | M3 | M4-CV | Note |
 |---|---|---|---|---|---|
 | B3-pub, released weights | 0.796 (A24; 0.793 in the doc) | 0.248 | n/a | 0.804 | **contaminated**: trained on PSP including our positives; positives + E-hard only; contrast only |
-| **B3a retrained** (our MLM pretraining on the TEST-filtered corpus, then fine-tuned on our folds) | **0.679** (fold mean 0.690) | 0.132 | 0.104 | 0.657 | 339 kinases, E-all complete |
+| **B3a retrained** (our MLM pretraining on the TEST-filtered corpus, then fine-tuned on our folds) | **0.677** (fold mean 0.689; leaderboard re-evaluation — the doc gives 0.679) | 0.132 | 0.104 | 0.657 | 339 kinases, E-all complete |
 | Cantley B1 (i), same CV | 0.717 | 0.157 | 0.133 | 0.690 | |
 
 **How B3a was built.**
@@ -454,11 +454,11 @@ On Y sites the Platt slope was negative in 4 of 5 folds.
 | B7 simple-strong | 0.726 | 0.731 | 0.196 | 0.179 | 0.708 | 0.744 / 0.540 | — | LEADERBOARD #19 |
 | B1 Cantley (i) / (ii) | 0.717 | 0.721 | 0.157 / 0.171 | 0.136 (full-cov, 196 kinases) | 0.690 | 0.732 / 0.534 | — | LEADERBOARD #26–27 |
 | B4 SELPHI2.0 (matched) | 0.708 | — | 0.176 | 0.316 | 0.714 | — | not run | `baseline_selphi2.md` |
-| B3a Phosformer retrained | 0.679 | 0.690 | 0.132 | 0.104 | 0.657 | — | not run | `baseline_phosformer.md` |
+| B3a Phosformer retrained | 0.677 | 0.689 | 0.132 | 0.104 | 0.657 | — | not run | LEADERBOARD.md (A24 re-eval) |
 | B2 learned PSSM | 0.660 | 0.673 | 0.118 | 0.109 | 0.638 | 0.659 / 0.529 | — | LEADERBOARD #38 |
 | B0-pop / B0-miss | 0.552 / 0.539 | | 0.020 / 0.040 | 0.142 / 0.053 | | | — | LEADERBOARD |
 
-**`results/cv/LEADERBOARD.md` is stale.** It was generated at 18:54, so it lacks the ensemble, the fusion, B3a, R2 LKO, clean, no-phospho, F9 and A32 runs. Those rows come from the cited docs and REGISTRY.
+`results/cv/LEADERBOARD.md` was regenerated at 2026-10-27 01:23 (135 runs) and now includes every run listed here.
 
 ### 6.2 Ablation curve (R2, seed 0, pooled, A24; `model_r2.md` §5; `results/models/r2/cv_table.tsv`)
 
