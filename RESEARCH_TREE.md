@@ -143,5 +143,8 @@ Status: literature (4 reviews), data profiling, two acquisition waves (~12.6 GB)
   - [!] All 9 primary tests beat (Holm p ≤0.018, CI>0): final vs B1 ΔM1 +0.075 [0.047, 0.099], ΔM3 +0.205, ΔM2 (vs arm ii) +0.179; vs B3 ΔM1 +0.086 / M2 +0.199 / M3 +0.259; vs B4 ΔM1 +0.089 / M2 +0.130 / M3 +0.059 [0.010, 0.120].
   - TEST standalone: final M1 0.794, M2 0.363, M3 0.363, M4 0.799, T3 M1 0.752; R2 0.778; R3 0.775; B1 0.714; B7 0.725; B3 0.708; B4 0.705; B2 0.685; B0 0.50–0.58.
   - Final beats both components on every endpoint (secondary Holm).
-  - [~] Independent TEST review (M2 TEST≫CV for learned models needs explaining) → docs/audit/audit_test.md
+  - [x] Independent TEST review → docs/audit/audit_test.md: every number reproduces exactly (pins, bootstrap at B=10k); no leak.
+    - [!] M2 TEST≫CV is kinase-set composition: on the 117 common kinases CV M2 is 0.348 vs TEST 0.363 (B0-prior 0.111 both). M1 paired CV→TEST +0.001 ± 0.012 → no optimism.
+    - [!] Tyr kinases: final 0.595 vs pop floor 0.585 on TEST (10/23 beat the floor), T3 Y 0.531 → NOT TRUSTED as skill. Cantley Y 0.496.
+    - Assignment prob honest on S/T (ECE 0.026; ≥0.5 tier 0.615 claimed vs 0.603 observed). B4 M3 win modest (CI lb 0.010). Part of the margin over Cantley is Cantley dropping on Y.
   - [~] G5 deployment (R2+R3 on DEV+TEST → U_obs release + coverage), started 00:58
