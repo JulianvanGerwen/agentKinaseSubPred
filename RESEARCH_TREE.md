@@ -150,3 +150,8 @@ Status: literature (4 reviews), data profiling, two acquisition waves (~12.6 GB)
 - [x] 7. G5 (done 01:31): deployment model (frozen config on DEV+TEST, 15,202 pairs) → 131M U_obs scores (cache, pinned) + results/release/{kinase_top200,site_top5}.tsv.gz + coverage.tsv + RELEASE_MANIFEST.json (CC BY-NC-SA).
   - Coverage@0.5: 29,886 sites (26,762 without a PSP kinase); @0.8: 0. Cantley-only 30,258 / 1,828 (its ≥0.8 tier is an isotonic-tail artefact from 152 sites); random 6 / 0. Coverage ≠ precision; on TEST the S/T ≥0.5 tier is calibrated (0.615 claimed vs 0.603 observed).
   - REPORT.md v2 has the TEST results (reviewed), the regimes section and coverage; no placeholders left.
+- [~] 8. Post-TEST exploration (A34; CV only, nested; released model unchanged; reported as exploratory)
+  - [~] 8.1 M2 for understudied kinases: per-kinase intercepts on the fusion score_site (strata agent, due 04:30)
+  - [~] 8.2 Primed sites: kinase-gated blend with priming-aware Cantley (strata agent, due 04:30)
+  - [~] 8.3 Tyr specificity: atlas imputation / Y-specific model or fusion weight (tyr agent, due 05:00)
+- [ ] 9. G6: REPORT.md final + independent report review + final retro
