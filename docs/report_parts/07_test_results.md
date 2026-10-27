@@ -49,7 +49,7 @@ Sources: `results/test/LEDGER.md` and `results/test/721dc1977366/<config>_ci.tsv
 | 5 | final − B3 | M2 | +0.199 [0.151, 0.229] | < 0.0002 (floor) | 0.0018 | yes | — | — |
 | 6 | final − B3 | M3 | +0.259 [0.213, 0.291] | < 0.0002 (floor) | 0.0018 | yes | — | — |
 | 7 | final − B4 | M1 | +0.089 [0.063, 0.117] | < 0.0002 (floor) | 0.0018 | yes | [0.069, 0.111] | 98 / 20 |
-| 8 | final − B4 | M2 | +0.130 [0.091, 0.157] | < 0.0002 (floor) | 0.0018 | yes | [0.089, 0.172] | 70 / 16 |
+| 8 | final − B4 | M2 | +0.130 [0.091, 0.156] | < 0.0002 (floor) | 0.0018 | yes | [0.089, 0.172] | 70 / 16 |
 | 9 | final − B4 | M3 | **+0.059 [0.010, 0.120], modest** | 0.0178 | 0.0178 | yes | [0.021, 0.097] | 52 / 27 (40 ties) |
 
 Sources: `results/test/721dc1977366/superiority.tsv`; `docs/audit/audit_test.md` §3. The audit re-ran tests 1, 2 and 7–9 at B = 10,000 and reproduced the batch to the last digit.
