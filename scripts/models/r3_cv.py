@@ -216,6 +216,94 @@ def cmd_assemble_test(a):
                           "inference_wall_s": tf["inference_wall_s"]}, indent=1, default=str), flush=True)
 
 
+def cmd_deploy(a):
+    """G5 deployment (DESIGN §8.6): the frozen final config (BASE + w7_nce05_cpt_aux, 5 seeds) retrained on DEV+TEST
+    labels (ksp.deploy.load_deploy_labels; canaries off) on U_ms rows, then scoring U_obs x real kinases of matching
+    class (~131M pairs) from the U_obs window cache (identical ESM settings). Output (chunked parquet):
+    cache/release/r3_deploy_<ts>/uobs_predictions.parquet [kinase_idx int32, site_idx int32, score float32 = raw
+    5-seed mean logit]. --smoke: DEV labels (ksp.labels.load_dev), DEV rows, written under --out (never cache/release)."""
+    import hashlib
+    import pyarrow as pa
+    import pyarrow.parquet as pq
+    import torch
+    from ksp import labels as klabels
+    from ksp.models.r3 import train as r3train
+    FROZEN = "w7_nce05_cpt_aux"                     # r3_final_distill (FREEZE)
+    if not a.smoke and (a.max_steps or a.n_seeds or a.pretrain_steps is not None):
+        raise SystemExit("real deployment uses the frozen config only (no overrides)")
+    a.config = FROZEN
+    cfg = {**r3train.DEFAULT, **BASE, **CONFIGS[a.config], "seed": a.seed, "esm": "650m_uobs"}
+    if a.max_steps:
+        cfg["max_steps"] = a.max_steps
+    if a.n_seeds:
+        cfg["n_seeds"] = a.n_seeds
+    if a.pretrain_steps is not None:
+        cfg["pretrain_steps"] = a.pretrain_steps
+    ts = time.strftime("%Y%m%d-%H%M%S")
+    if a.smoke:
+        loader = lambda v: klabels.load_dev(v, with_canaries=False)  # noqa: E731
+        rows_mode, out_dir = "dev", Path(a.out) / f"r3_deploy_smoke_{ts}"
+    else:
+        from ksp import deploy
+        deploy.check_test_completed()               # refuse early (before any GPU work) if TEST is not COMPLETED
+        loader = lambda v: deploy.load_deploy_labels(v)  # noqa: E731
+        rows_mode, out_dir = "all", ROOT / "cache" / "release" / f"r3_deploy_{ts}"
+    name = "r3_deploy_smoke" if a.smoke else "r3_deploy"
+    with manifest.RunManifest(name, config=cfg, seed=a.seed, inputs=inputs_list() + [ROOT / "cache/r3/uobs/win_embed_meta.json"],
+                              split="deploy_dev_test" if not a.smoke else "deploy_smoke_dev",
+                              notes="R3 deployment model (frozen r3_final_distill config)") as run:
+        um = json.loads((ROOT / "cache/r3/uobs/win_embed_meta.json").read_text())
+        run.set("input_cache_note", {
+            "what": "U_obs window-embedding cache cache/r3/uobs (rebuilt for deployment; PI-accepted 00:58): the U_ms "
+                    "cache cache/r3 lacks the 3,382 non-U_ms U_obs sites. Identical ESM-2 650M settings "
+                    "(scripts/models/r3_window_embed.py --variant 650m_uobs); input cache change only, config unchanged; "
+                    "training rows remain U_ms; phospho channel = flanking U_ms sites only.",
+            "n_sites": um["n_sites"], "n_residues": um["n_residues"],
+            "centre_cos_vs_sty_cache": um["centre_cos_vs_sty_cache"],
+            "window_residue_mismatches": um["window_residue_mismatches"], "gpu_minutes": um["gpu_minutes"]})
+        res, info, _ = r3train.run(cfg, deploy=True, label_loader=loader, deploy_train_rows=rows_mode,
+                                   log=lambda s: print(s, flush=True))
+        t0 = time.time()
+        S, sidx, ok = res["S"], res["site_idx"], res["ok"]
+        if not np.isfinite(S[ok]).all():
+            raise RuntimeError("non-finite deployment scores")
+        out_dir.mkdir(parents=True, exist_ok=True)
+        f = out_dir / "uobs_predictions.parquet"
+        tmp = f.with_suffix(".tmp.parquet")
+        schema = pa.schema([("kinase_idx", pa.int32()), ("site_idx", pa.int32()), ("score", pa.float32())])
+        order = np.argsort(sidx)                   # rows ordered by site_idx, then kinase_idx
+        n = 0
+        with pq.ParquetWriter(tmp, schema, compression="zstd") as w:
+            for c0 in range(0, len(order), 20000):
+                rr = order[c0:c0 + 20000]
+                ri, kk = np.nonzero(ok[rr])
+                tb = pa.table({"kinase_idx": kk.astype(np.int32), "site_idx": sidx[rr][ri].astype(np.int32),
+                               "score": S[rr][ri, kk].astype(np.float32)}, schema=schema)
+                w.write_table(tb)
+                n += len(kk)
+        tmp.replace(f)
+        h = hashlib.sha256()
+        with open(f, "rb") as fh:
+            for b in iter(lambda: fh.read(1 << 22), b""):
+                h.update(b)
+        t_write = time.time() - t0
+        out = {"path": str(f.relative_to(ROOT)) if str(f).startswith(str(ROOT)) else str(f), "sha256": h.hexdigest(),
+               "n_rows": n, "n_sites": int(len(sidx)), "n_kinases": int(ok.any(0).sum()),
+               "train_wall_s": info["t_train_wall_s"], "inference_wall_s": round(info["t_score_s"] + t_write, 1),
+               "score_s": info["t_score_s"], "write_s": round(t_write, 1), "peak_gpu_mem_gb": info["peak_gpu_mem_gb"],
+               "gpu": torch.cuda.get_device_name(0), "train_rows": rows_mode, "targets": info["targets"],
+               "ensemble_val_auroc_hard": info.get("ensemble_val_auroc_hard"), "best_step": info["best_step"]}
+        run.set("train_info", {k: v for k, v in info.items() if k != "history"})
+        run.set("history", info["history"])
+        run.set("train_wall_s", out["train_wall_s"])
+        run.set("inference_wall_s", out["inference_wall_s"])
+        run.set("deploy_output", out)
+        run.m["n_rows"]["uobs_predictions"] = n
+        (out_dir / "README.json").write_text(json.dumps(out | {"run_id": run.run_id, "config": cfg}, indent=1,
+                                                         default=str))
+        print(json.dumps(out | {"run_id": run.run_id}, indent=1, default=str), flush=True)
+
+
 def _seen(cfg_name) -> bool:
     if not REGISTRY.exists():
         return False
@@ -270,7 +358,11 @@ def cmd_pool(a, lko=False):
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
-    ap.add_argument("cmd", choices=["train", "pool", "pool-lko", "test", "assemble-test"])
+    ap.add_argument("cmd", choices=["train", "pool", "pool-lko", "test", "assemble-test", "deploy"])
+    ap.add_argument("--smoke", action="store_true", help="deploy: DEV labels + DEV rows, output under --out")
+    ap.add_argument("--out", default=str(ROOT / "cache" / "r3" / "deploy_smoke"))
+    ap.add_argument("--n-seeds", type=int, default=0)
+    ap.add_argument("--pretrain-steps", type=int, default=None)
     ap.add_argument("--final", help="assemble-test: final component run id")
     ap.add_argument("--lko-runs", nargs=5, default=[], help="assemble-test: T3 component run ids for LKO folds 0..4")
     ap.add_argument("--fold", type=int)
@@ -292,5 +384,7 @@ if __name__ == "__main__":
         cmd_test(a)
     elif a.cmd == "assemble-test":
         cmd_assemble_test(a)
+    elif a.cmd == "deploy":
+        cmd_deploy(a)
     else:
         cmd_pool(a, lko=a.cmd == "pool-lko")

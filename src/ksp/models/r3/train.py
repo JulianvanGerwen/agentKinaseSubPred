@@ -137,16 +137,37 @@ def inner_val_metric(model, G, val_rows, eval_k):
 
 
 def run(cfg: dict, fold: int | None = None, lko_fold: int | None = None, device: str = "cuda", log=print,
-        score: bool = True):
-    """Train one R3 model; return (predictions DataFrame[kinase_idx, site_idx, kinase_acc, site_id, score], info)."""
+        score: bool = True, test: bool = False, deploy: bool = False, label_loader=None,
+        deploy_train_rows: str = "all"):
+    """Train one R3 model; return (predictions DataFrame[kinase_idx, site_idx, kinase_acc, site_id, score], info).
+    test=True (final model, DESIGN §8.6): train on ALL DEV rows and score the TEST-protein U_ms sites (cv_fold == -1;
+    sites only, no TEST labels are read) for real (non-canary) kinases; with lko_fold=j the kinases of LKO fold j are
+    removed from training and only they are scored (T3). fold must be None when test=True."""
     cfg = {**DEFAULT, **cfg}
     t_start = time.time()
     si, ki, par = inputs(cfg["esm"])
     K = len(ki.kinases)
-    if (fold is None) == (lko_fold is None):
+    if deploy and (fold is not None or lko_fold is not None or test):
+        raise ValueError("deploy=True: no fold / lko_fold / test")
+    if test and fold is not None:
+        raise ValueError("test=True trains on all DEV: fold must be None")
+    if not test and not deploy and (fold is None) == (lko_fold is None):
         raise ValueError("give exactly one of fold / lko_fold")
-    dev_rows = si.cv_fold >= 0
-    if fold is not None:
+    in_ums = si.in_ums if si.in_ums is not None else np.ones(len(si.site_ids), bool)
+    dev_rows = (si.cv_fold >= 0) & in_ums          # training/eval rows are always U_ms (A6)
+    if deploy:
+        # DESIGN §8.6 deployment: train on DEV+TEST U_ms rows ('all'; labels via label_loader = ksp.deploy) or on
+        # DEV rows only ('dev'; smoke test with DEV labels); score every site of the cache (U_obs) for real kinases
+        train_mask = in_ums.copy() if deploy_train_rows == "all" else dev_rows.copy()
+        score_mask = np.ones(len(si.site_ids), bool)
+        train_k = None
+        score_k = ~ki.is_canary
+    elif test and lko_fold is None:
+        train_mask = dev_rows
+        score_mask = si.cv_fold == -1
+        train_k = None
+        score_k = ~ki.is_canary
+    elif fold is not None:
         train_mask = dev_rows & (si.cv_fold != fold)
         score_mask = si.cv_fold == fold
         train_k = None
@@ -156,14 +177,15 @@ def run(cfg: dict, fold: int | None = None, lko_fold: int | None = None, device:
         held = set(kf.kinase_acc[kf.lko_fold == lko_fold])
         is_held = ki.kinases.uniprot_acc.isin(held).values
         train_mask = dev_rows
-        score_mask = dev_rows
+        score_mask = (si.cv_fold == -1) if test else dev_rows
         train_k = ~is_held
-        score_k = is_held
-    info = {"fold": fold, "lko_fold": lko_fold, "cfg": cfg, "n_train_rows": int(train_mask.sum()),
+        score_k = is_held & ~ki.is_canary
+    info = {"fold": fold, "lko_fold": lko_fold, "test": test, "cfg": cfg, "n_train_rows": int(train_mask.sum()),
             "n_score_rows": int(score_mask.sum())}
     tlog: dict = {}
     t0 = time.time()
-    T = r3data.build_targets(si, ki, train_mask, train_k, variant=cfg["variant"], par=par, log=tlog)
+    T = r3data.build_targets(si, ki, train_mask, train_k, variant=cfg["variant"], par=par, log=tlog,
+                             loader=label_loader)
     info["targets"] = tlog
     info["t_targets_s"] = round(time.time() - t0, 1)
     tr_idx = np.where(train_mask)[0]
@@ -213,10 +235,19 @@ def run(cfg: dict, fold: int | None = None, lko_fold: int | None = None, device:
         torch.cuda.empty_cache()
         return None, info, models
     t0 = time.time()
+    info["t_train_wall_s"] = round(t0 - t_start, 1)      # data/targets/GPU load + all seeds' training
     srows = np.where(score_mask)[0]
     S = sum(score_rows(m, G, srows) for m in models) / len(models)     # mean logit over seeds (n, K)
     S = S.cpu().numpy()
     ok = ki.class_ok[si.res_code[srows]] & score_k[None]
+    if deploy:
+        info["t_score_s"] = round(time.time() - t0, 1)
+        info["n_pred_rows"] = int(ok.sum())
+        info["t_total_s"] = round(time.time() - t_start, 1)
+        info["peak_gpu_mem_gb"] = round(torch.cuda.max_memory_allocated() / 2**30, 2)
+        del G
+        torch.cuda.empty_cache()
+        return {"S": S, "site_idx": si.site_idx[srows], "ok": ok}, info, models
     ri, kk = np.nonzero(ok)
     preds = pd.DataFrame({"kinase_idx": kk.astype(np.int64), "site_idx": si.site_idx[srows[ri]],
                           "score": S[ri, kk].astype(np.float32)})

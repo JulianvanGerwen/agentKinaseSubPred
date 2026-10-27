@@ -230,3 +230,50 @@ The five T3 trainings sum to 3,446 s of training and 9.4 s of inference.
 **Runtimes** are wall-clock times on GPUs 2 and 3, which were shared with other agents' jobs: up to 20.7 GB of 24.5 GB in use, at 100% utilisation. They are inflated about 2× against an idle GPU (≈ 6 min per training). `train_wall_s` includes data loading, target building, the GPU upload, pretraining and fine-tuning for all 5 seeds.
 
 **FREEZE entry draft:** `results/models/r3/FREEZE_entry_r3_final_distill.json`. Its role is "secondary"; the PI sets the role. Code: `scripts/models/r3_cv.py test|assemble-test`, `scripts/models/r3_test_queue.sh`.
+
+## 10. G5 deployment (prepared and smoke-tested 2026-10-27 00:15; the real run waits for the PI's "GO deploy")
+
+**Command** (one GPU, about 15 GB RAM):
+
+    CUDA_VISIBLE_DEVICES=<g> OMP_NUM_THREADS=4 /workspace/.venv/bin/python -I scripts/models/r3_cv.py deploy
+
+**What it does.**
+- **Config:** the frozen `r3_final_distill` config (`reg1x5:w7_nce05_cpt_aux`, seeds 0–4). Overrides are refused.
+- **Labels:** `ksp.deploy.load_deploy_labels("L2")` for positives and `("all")` for the KP/Par/Hamming masks. Canaries are off, the module default. `deploy.check_test_completed()` is called before any GPU work, and the command was verified to refuse while the ledger has no COMPLETED block.
+- **Training rows:** DEV+TEST **U_ms** sites (A6). Distillation pretraining uses the same rows. Early stopping uses an inner-validation 20% of substrate clusters.
+- **Scoring:** every **U_obs** site × every real kinase of matching residue class, 131,144,410 pairs.
+
+**U_obs window embeddings.** The U_ms cache lacks the 3,382 non-U_ms U_obs sites, so the windows were rebuilt with identical ESM-2 650M settings in `cache/r3/uobs/`:
+- 350,736 sites and 3,691,633 residues;
+- 5.8 GPU-min;
+- centre cosine against the S/T/Y cache ≥ 0.99999, and 0 residue mismatches.
+
+The phospho channel still marks flanking **U_ms** sites only.
+
+**Output:** `cache/release/r3_deploy_<ts>/uobs_predictions.parquet`.
+- Columns: kinase_idx int32, site_idx int32, score float32 (raw 5-seed mean logit).
+- Written in chunks of 20k sites (zstd), ordered by site_idx and then kinase_idx.
+- A `README.json` sits next to it with the SHA-256, `train_wall_s` and `inference_wall_s`. The manifest goes to `results/runs/r3_deploy__<ts>__s0/`.
+
+**Smoke test** (`--smoke`: DEV labels and DEV rows, 1 seed, 200+200 steps; output in the scratchpad; run `r3_deploy_smoke__20261027-001319__s0`):
+- 131,144,410 rows over 503 kinases;
+- unique keys, all finite, residue class correct, and the count equals the expected U_obs × class total;
+- train 32 s, inference (score plus write) 6.5 s;
+- peak RSS 14.0 GB, peak GPU memory 12.6 GB.
+
+**Real deployment run** (GO from the PI at 00:58; TEST batch COMPLETED for FREEZE 721dc197):
+
+| Item | Value |
+|---|---|
+| Run | `r3_deploy__20261027-005817__s0`, git hash `37a3e6a…` |
+| Output | `cache/release/r3_deploy_20261027-005816/uobs_predictions.parquet` |
+| SHA-256 | `2f62988cf798f15ace6cd9925dce77e45ca2c6cf297549203734d256e9d002ba` |
+| Rows | 131,144,410: 350,736 U_obs sites × 503 kinases |
+| Checks | unique keys, all finite, residue class correct |
+| Training labels | DEV+TEST L2, 14,747 positives on 347,354 U_ms training rows |
+| Inner-validation ensemble AUROC (hard negatives) | 0.795 |
+| `train_wall_s` | 446.6 |
+| `inference_wall_s` | 11.8 (score 4.7 + write 7.1) |
+| Peak memory | 13.6 GB RSS, 13.3 GB GPU |
+
+The U_obs input-cache rebuild is recorded in the manifest under `input_cache_note`.

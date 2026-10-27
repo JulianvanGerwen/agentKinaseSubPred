@@ -23,7 +23,9 @@ from ksp import canary, index, labels, splits, store
 ROOT = Path(__file__).resolve().parents[4]
 R3CACHE = ROOT / "cache" / "r3"
 FLANK_MAX = 10
-ESM_CACHES = {"650m": (ROOT / "cache" / "r3", 10), "3b": (ROOT / "cache" / "r3" / "esm3b", 7)}
+ESM_CACHES = {"650m": (ROOT / "cache" / "r3", 10), "3b": (ROOT / "cache" / "r3" / "esm3b", 7),
+              # G5 deployment: identical 650M settings, windows for all U_obs sites (training rows stay U_ms)
+              "650m_uobs": (ROOT / "cache" / "r3" / "uobs", 10)}
 AA = "ACDEFGHIKLMNPQRSTVWY"
 AA_IDX = {a: i + 1 for i, a in enumerate(AA)}      # 0 = pad / unknown(X etc. -> 21)
 N_AA_TOK = 22                                       # pad, 20 aa, other
@@ -43,6 +45,7 @@ class SiteInputs:
     prot_row: np.ndarray        # (N,) row into prot_mean
     prot_mean: np.ndarray       # (P, 1280) float32
     info: dict
+    in_ums: np.ndarray | None = None   # (N,) bool; all True except for the '650m_uobs' deployment cache
 
 
 def load_sites(esm: str = "650m") -> SiteInputs:
@@ -64,11 +67,15 @@ def load_sites(esm: str = "650m") -> SiteInputs:
         raise KeyError(f"{sidx.isna().sum()} R3 window sites not in canonical site index")
     sidx = sidx.values.astype(np.int64)
     Sx = S.iloc[sidx]
-    if not Sx.in_U_ms.all():
-        raise RuntimeError("R3 window sites must all be U_ms")
-    n_ums = int(S.in_U_ms.sum())
-    if len(ws) != n_ums:
-        raise RuntimeError(f"R3 window cache has {len(ws)} sites but U_ms has {n_ums}; rebuild")
+    if esm.endswith("_uobs"):
+        if len(ws) != len(S) or len(np.unique(sidx)) != len(S):
+            raise RuntimeError(f"U_obs window cache has {len(ws)} sites but U_obs has {len(S)}; rebuild")
+    else:
+        if not Sx.in_U_ms.all():
+            raise RuntimeError("R3 window sites must all be U_ms")
+        n_ums = int(S.in_U_ms.sum())
+        if len(ws) != n_ums:
+            raise RuntimeError(f"R3 window cache has {len(ws)} sites but U_ms has {n_ums}; rebuild")
     res_code = Sx.res.map({"S": 0, "T": 1, "Y": 2}).values.astype(np.int64)
     acc = Sx.acc.values
     folds = splits.load_cv_folds()
@@ -77,7 +84,8 @@ def load_sites(esm: str = "650m") -> SiteInputs:
     if ((cvf == -1) != pd.Series(acc).isin(test_prot).values).any():
         raise RuntimeError("protein without CV fold that is not a TEST protein")
     res_aa = np.array([AA_IDX.get(a, 21) for a in res.aa.values], dtype=np.int64)
-    ums_key = set(zip(Sx.acc.values, Sx.pos.values))
+    Su = S[S.in_U_ms]                           # phospho channel = flanking U_ms phosphosites (not U_obs)
+    ums_key = set(zip(Su.acc.values, Su.pos.values))
     res_phos = np.fromiter(((a, p) in ums_key for a, p in zip(res.acc.values, res.pos.values)), bool,
                            len(res)).astype(np.int64)
     pm, desc = store.load_matrix("esm2_650m/protein_mean", mmap=False)
@@ -91,7 +99,8 @@ def load_sites(esm: str = "650m") -> SiteInputs:
                       prow.values.astype(np.int64), np.nan_to_num(np.asarray(pm, np.float32)),
                       {"n_sites": len(ws), "n_residues": len(res), "embed_meta": meta, "esm": esm,
                        "flank_max": flank_max,
-                       "protein_mean_nan_rows": int(np.isnan(np.asarray(pm)).any(1).sum())})
+                       "protein_mean_nan_rows": int(np.isnan(np.asarray(pm)).any(1).sum())},
+                      Sx.in_U_ms.values.astype(bool))
 
 
 # ------------------------------------------------------------------------------------------------ kinase descriptors
@@ -196,7 +205,8 @@ def load_kinases() -> KinaseInputs:
 
 # ------------------------------------------------------------------------------------------------ targets
 def build_targets(si: SiteInputs, ki: KinaseInputs, train_sites_mask: np.ndarray, train_kinases: np.ndarray | None,
-                  variant: str = "L2", par: dict | None = None, log: dict | None = None) -> np.ndarray:
+                  variant: str = "L2", par: dict | None = None, log: dict | None = None,
+                  loader=None) -> np.ndarray:
     """int8 target matrix (N_sites, K) for one training run.
     train_sites_mask: bool (N,) rows usable for training (incl. inner validation rows).
     train_kinases: bool (K,) kinases whose labels may be used (LKO); None = all.
@@ -207,7 +217,8 @@ def build_targets(si: SiteInputs, ki: KinaseInputs, train_sites_mask: np.ndarray
     K = ki.kinases
     kpos = pd.Series(np.arange(len(K)), index=K.uniprot_acc.values)
     train_prot = set(si.acc[train_sites_mask])
-    allp = labels.load_dev("all", with_canaries=True)
+    loader = loader or (lambda v: labels.load_dev(v, with_canaries=True))
+    allp = loader("all")
     allp = allp[allp.acc.isin(train_prot)]
     if train_kinases is not None:
         keep_k = set(K.uniprot_acc.values[train_kinases])
@@ -219,7 +230,7 @@ def build_targets(si: SiteInputs, ki: KinaseInputs, train_sites_mask: np.ndarray
     to_r3[si.site_idx] = np.arange(len(si.site_idx))
     T = np.where(ki.class_ok[si.res_code], 0, -1).astype(np.int8)          # (N, K)
     T[~train_sites_mask] = -1
-    pos = labels.load_dev(variant, with_canaries=True)
+    pos = loader(variant)
     pos = pos[pos.acc.isin(train_prot)]
     if train_kinases is not None:
         pos = pos[pos.kinase_acc.isin(keep_k)]

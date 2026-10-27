@@ -35,18 +35,25 @@ from ksp.features import esm_embed  # noqa: E402
 VARIANTS = {  # name -> (out dir, flank, HF model, S/T/Y reference cache for the consistency check, token budget)
     "650m": (ROOT / "cache" / "r3", 10, "facebook/esm2_t33_650M_UR50D", ROOT / "cache" / "esm2_650m", 16384),
     "3b": (ROOT / "cache" / "r3" / "esm3b", 7, "facebook/esm2_t36_3B_UR50D", ROOT / "cache" / "esm2_3b", 8192),
+    # G5 deployment: same 650M settings, windows for ALL U_obs sites (deployment scores U_obs; training stays U_ms)
+    "650m_uobs": (ROOT / "cache" / "r3" / "uobs", 10, "facebook/esm2_t33_650M_UR50D", ROOT / "cache" / "esm2_650m",
+                  16384),
 }
+ALL_UOBS = False
 OUT, FLANK, MODEL, REFCACHE, TOKBUD = VARIANTS["650m"]
 
 
 def set_variant(v: str):
-    global OUT, FLANK, MODEL, REFCACHE, TOKBUD
+    global OUT, FLANK, MODEL, REFCACHE, TOKBUD, ALL_UOBS
     OUT, FLANK, MODEL, REFCACHE, TOKBUD = VARIANTS[v]
+    ALL_UOBS = v.endswith("_uobs")
 
 
 def ums_sites() -> pd.DataFrame:
+    """Sites whose windows are embedded: U_ms (default) or all U_obs (variant *_uobs)."""
     s = index.load_sites()
-    return s[s.in_U_ms][["site_id", "acc", "res", "pos"]].reset_index(drop=True)
+    keep = np.ones(len(s), bool) if ALL_UOBS else s.in_U_ms.values
+    return s[keep][["site_id", "acc", "res", "pos"]].reset_index(drop=True)
 
 
 def run(args):
