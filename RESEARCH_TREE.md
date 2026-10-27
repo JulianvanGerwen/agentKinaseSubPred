@@ -153,5 +153,5 @@ Status: literature (4 reviews), data profiling, two acquisition waves (~12.6 GB)
 - [~] 8. Post-TEST exploration (A34; CV only, nested; released model unchanged; reported as exploratory)
   - [~] 8.1 M2 for understudied kinases: per-kinase intercepts on the fusion score_site (strata agent, due 04:30)
   - [~] 8.2 Primed sites: kinase-gated blend with priming-aware Cantley (strata agent, due 04:30)
-  - [~] 8.3 Tyr specificity: atlas imputation / Y-specific model or fusion weight (tyr agent, due 05:00)
+  - [-] 8.3 Tyr specificity (done 02:18, `docs/posttest_tyr.md`): Y-specific fusion weight Y M1 −0.0039 [−0.0097, +0.0010]; nested nearest-atlas motif repair +0.0042 [−0.0103, +0.0167]. Neither adopted. Inner-fold gain +0.012…+0.027 shrinks to +0.006 held-out: 38 Y kinases cannot support selecting even one parameter. Pending independent review.
 - [ ] 9. G6: REPORT.md final + independent report review + final retro
