@@ -1,5 +1,11 @@
 # Post-TEST exploratory CV (DESIGN §17 A34): per-kinase site intercepts (a) and priming gate (b)
 
+> **Audit note (PI, 2026-10-27 03:16; `docs/audit/audit_posttest.md`).** Numbers reproduce exactly and nesting is real. Required readings:
+> - **(a):** the gain belongs only to the kinase-balanced variant, which was added after the plain variant's first grid point had been seen. The pre-declared plain variant alone gives 5–19 bin −0.013 [−0.021, −0.004] and pooled −0.006. The balanced intercepts reallocate top-5 slots: ≥100-label bin −0.124 (28/31 worse), micro Hit@5 0.535 → 0.465, and the 0-label kinases' share of top-5 falls from 14 % to 2.3 %. The +0.39 intercept–label-count correlation is driven by the 0-label kinases; within K_cv it is −0.79.
+> - **(b):** a label-free "priming position is an observed phosphosite" flag with no Cantley term reproduces the primed gain (0.909–0.917). Against flag-matched negatives the gain is +0.002.
+>
+> Treat both as trade-offs or rank shifts, not improvements. REPORT §11.1 has the audited wording.
+
 Owner: strata analyst. Run 2026-10-27 01:34–02:34 CET.
 
 Scope:

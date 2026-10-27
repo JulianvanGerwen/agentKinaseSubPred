@@ -1,5 +1,13 @@
 # Post-TEST exploratory: tyrosine-kinase specificity (DESIGN A34, target (c))
 
+> **Audit note (PI, 2026-10-27 03:16; `docs/audit/audit_posttest.md`).** Numbers reproduce exactly and nesting is real. Corrections:
+> - Motif repair improves 18 and worsens 19 of the 38 Y kinases. Two of the predicted families lose: TAM/Axl −0.053 and Tec −0.031.
+> - "~+0.019 without nesting" was not measured; it is the mean inner-fold gain on the 42-kinase selection set.
+> - γ = 0.5 (top of the grid) was chosen in all 5 folds.
+> - For variant A, w_Y = 0.6 was re-chosen in 3 folds and gave Δ < 0 in the other 2.
+>
+> REPORT §11.1 has the audited wording.
+
 Owner: feat-tyr. **DEV CV only.** The released/evaluated model is unchanged (the frozen final
 configuration, LESSONS 14); nothing here touches `sealed/`, `FREEZE.json`, the ledger or any existing
 run artefact. These results belong in REPORT §11 as post-TEST exploratory, CV evidence only.
