@@ -330,7 +330,7 @@ Source: `model_r2.md` §6.
   - Per-group models are in between.
 - **Pooling mouse and rat labels helps the site-centric endpoint** (M2 +0.029 over human-only) at no M1 cost.
 - **In vitro vs in vivo.**
-  - In-vivo-only labels are clearly worse on every endpoint, consistent with their enrichment for indirect events.
+  - In-vivo-only labels are clearly worse on every endpoint. That label set is about three times smaller than the in-vitro set (2,808 vs 8,987 pairs), so the comparison mainly measures label count, not label quality.
   - In-vitro-only training raises AUROC on in-vitro-only test positives slightly (0.781 vs 0.772) but lowers M2 sharply.
 - **External curated labels (L2+ext).** The seed-0 M1 gain does not replicate (3-seed mean +0.001). They were pre-registered as ablation-only, to keep the external TEST stratum independent, so they were not adopted (A33).
 - **Side finding.** Per-kinase ridge intercepts (λ = 3–10) lift R2-alone M2 from 0.192 to 0.232 for 0.001–0.003 M1. CV had closed, so this was not explored (§11).
@@ -474,10 +474,10 @@ On Y sites the Platt slope was negative in 4 of 5 folds.
 | + F3 PPI | 0.748 | 0.143 | 0.260 |
 | + F4 localisation | 0.753 | 0.141 | 0.269 |
 | + F6a co-regulation | 0.755 | 0.149 | 0.274 |
-| + F6b inhibitor | 0.755 | 0.154 | 0.281 |
+| + F6b inhibitor | 0.755 | 0.153 | 0.281 |
 | + F6c CPTAC (= G2 model) | 0.754 | 0.146 | 0.272 |
 | + F5 co-expression | 0.759 | 0.160 | 0.283 |
-| + F7 kinase descriptors (= full) | **0.773** [0.755, 0.785] | 0.208 | 0.312 |
+| + F7 kinase descriptors (= full) | **0.773** [0.755, 0.785] | 0.207 | 0.312 |
 
 **Reading.**
 - F0 drives M3 (0.125 → 0.236).
@@ -524,7 +524,7 @@ The B0-prior floor alone reaches 0.367 in the ≥100 bin. Final-fusion values ar
 - Y kinases sit barely above the B0-pop floor (0.592) for every method.
 - About 1/4 of the raw gap is macro dilution: 42% of Y kinases have ≤3 positives.
 - The rest has two sources:
-  - an E-hard pool dominated by promiscuous pTyr hubs (GLO1 Y136 is labelled to 15 TKs) and probable indirect in-vivo events;
+  - an E-hard pool rich in promiscuous pTyr hubs (GLO1 Y136 is labelled to 15 TKs). Later CV analyses showed that excluding hubs leaves the model's Y M1 unchanged (0.627 vs 0.629) and that in-vivo-only Y labels are not harder than in-vitro ones (0.596 vs 0.603), so neither explains the model's Y gap (`docs/strata_cv.md`, `docs/features_tyr.md` §1.3);
   - Tyr atlas matrices that are anti-correlated with their own labels for FGFR1, BTK, Eph, VEGFR and TAM.
 - Excluding hub sites does not change R2 (0.627). F9 did not help.
 - **The gap is unresolved.**
@@ -956,7 +956,7 @@ Peak RSS was 18.7 GB.
    - T3 on Y kinases is 0.531.
    - Y-kinase M1 fell from CV to TEST: 0.667 → 0.595 (paired Δ −0.072 ± 0.033). SYK, IGF1R and LYN collapse.
    - No Y site can receive an assignment probability above 0.445.
-   - On CV the Y gap was already large (0.63 vs 0.81). F9 did not help. Part of the gap is endpoint composition (hubs, indirect in-vivo labels).
+   - On CV the Y gap was already large (0.63 vs 0.81). F9 did not help. The cause is unknown: excluding hub sites did not change the CV Y M1, and in-vivo-only Y labels were not harder than in-vitro ones (`docs/strata_cv.md`); the hub-excluded TEST stratum was not computed.
    - Sources: `docs/audit/audit_test.md` §0 #10, §4; `results/test/721dc1977366/final_t3_per_kinase.tsv`; `docs/strata_cv.md`.
 2. **No high-confidence assignment tier.**
    - After A31 there is no ≥0.8 tier. TEST coverage@0.8 is 0, and coverage@0.5 is 5,773 sites, all S/T.
@@ -1003,7 +1003,7 @@ Peak RSS was 18.7 GB.
 13. **Optimism and post-freeze changes.**
     - About 90 configurations were tried on CV. TEST confirms no M1 optimism: paired Δ on common kinases +0.001 ± 0.012.
     - A24 was a post-freeze metric correction applied to all methods; it widened learned-vs-Cantley CV margins by about 0.01.
-14. **Label noise and PU.** In-vivo-only labels are enriched for indirect events. All precision and probability statements are lower bounds.
+14. **Label noise and PU.** Some PSP labels, especially in-vivo-only ones, may reflect indirect events; the training-regime comparison cannot separate this from label count. All precision and probability statements are lower bounds.
 15. **Unbuilt items.**
     - F8 (Sugiyama), docking motifs, F6d and U_all (unobserved S/T/Y).
     - The deployment model is done (§9).
