@@ -37,7 +37,7 @@ Standalone values use missing = 'worst', with 95% cluster-bootstrap CIs (B = 1,0
 | Endpoint | Final | Cantley B1 | B3 Phosformer (our retrain) | B4 SELPHI2.0 (our retrain) |
 |---|---|---|---|---|
 | M1 | **0.794** [0.774, 0.811] | 0.714 (arm i); Δ **+0.075** [0.046, 0.099] | 0.708; Δ **+0.086** [0.059, 0.105] | 0.705; Δ **+0.089** [0.063, 0.117] |
-| M2 Hit@5 | **0.363** [0.324, 0.397] | 0.189 (arm ii); Δ **+0.179** [0.147, 0.213] | 0.163; Δ **+0.199** [0.151, 0.229] | 0.233; Δ **+0.130** [0.091, 0.157] |
+| M2 Hit@5 | **0.363** [0.324, 0.397] | 0.189 (arm ii); Δ **+0.179** [0.147, 0.213] | 0.163; Δ **+0.199** [0.151, 0.229] | 0.233; Δ **+0.130** [0.091, 0.156] |
 | M3 top-1% recall | **0.363** [0.309, 0.401] | 0.161 (arm i); Δ **+0.205** [0.165, 0.235] | 0.104; Δ **+0.259** [0.213, 0.291] | 0.304; Δ +0.059 [0.010, 0.120] (modest) |
 
 Sources: `results/test/LEDGER.md`; `results/test/721dc1977366/{final,B1_i,B1_ii,B3,B4}_ci.tsv`; `superiority.tsv`.
@@ -648,7 +648,7 @@ Sources: `results/test/LEDGER.md` and `results/test/721dc1977366/<config>_ci.tsv
 | 5 | final − B3 | M2 | +0.199 [0.151, 0.229] | < 0.0002 (floor) | 0.0018 | yes | — | — |
 | 6 | final − B3 | M3 | +0.259 [0.213, 0.291] | < 0.0002 (floor) | 0.0018 | yes | — | — |
 | 7 | final − B4 | M1 | +0.089 [0.063, 0.117] | < 0.0002 (floor) | 0.0018 | yes | [0.069, 0.111] | 98 / 20 |
-| 8 | final − B4 | M2 | +0.130 [0.091, 0.157] | < 0.0002 (floor) | 0.0018 | yes | [0.089, 0.172] | 70 / 16 |
+| 8 | final − B4 | M2 | +0.130 [0.091, 0.156] | < 0.0002 (floor) | 0.0018 | yes | [0.089, 0.172] | 70 / 16 |
 | 9 | final − B4 | M3 | **+0.059 [0.010, 0.120], modest** | 0.0178 | 0.0178 | yes | [0.021, 0.097] | 52 / 27 (40 ties) |
 
 Sources: `results/test/721dc1977366/superiority.tsv`; `docs/audit/audit_test.md` §3. The audit re-ran tests 1, 2 and 7–9 at B = 10,000 and reproduced the batch to the last digit.
