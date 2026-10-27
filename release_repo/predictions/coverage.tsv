@@ -1,0 +1,4 @@
+method	n_sites	n_sites_no_psp	note	coverage@0.5	coverage@0.5_no_psp	coverage@0.8	coverage@0.8_no_psp	sites_in_some_kinase_top1pct	sites_in_some_kinase_top1pct_no_psp
+R2+R3 final (deployment)	350736	338525	assignment via DEV-OOF calibrators + ST/Y isotonic; 503 kinases	29886	26762	0	0	162783	152377
+random scores	350736	338525	raw softmax of N(0,1) logits at the same T (no isotonic map); random top-1%	6	6	0	0	329349	318032
+Cantley-only (B1 imputed-universe pct)	350736	338525	assignment over the 503 kinases B1 was calibrated on (own DEV-OOF calibrators/T/isotonic); top-1% over all kinases with an own or imputed matrix	30258	29220	1828	1780	170065	162611

@@ -1,0 +1,69 @@
+NOTICE: third-party data, models and attributions
+
+This work was produced as an exercise in testing whether AI agents can run a bioinformatics research
+project. A lead AI agent (the 'PI', Claude Opus 5.5) directed sub-agents (Claude Opus 5.5 and Sonnet 5.5)
+under a human-written brief. The human researcher supplied the brief, the data and PhosphoSitePlus access;
+they did not write the code, run the analyses, or write the text. All results should be checked before use.
+
+Code in this repository: MIT licence (LICENSE). Copyright [authors to be added by the publishing researcher].
+
+No third-party data files, model weights or third-party code are included in this repository. The
+pipeline reads the resources below; you must obtain them yourself (DATA_SOURCES.md). Their licences
+govern your use of them and, where stated, of the outputs derived from them.
+
+1. PhosphoSitePlus (Cell Signaling Technology, Inc.; www.phosphosite.org), release 2025-05-19.
+   Licence: CC BY-NC-SA 3.0. All labels (training, validation, TEST) come from PhosphoSitePlus.
+   The released predictions (predictions/) and metric tables (results_summary/) are derived from these
+   labels and are therefore released under CC BY-NC-SA 3.0: non-commercial use, share-alike, attribution
+   to PhosphoSitePlus. See predictions/LICENSE-PREDICTIONS.md.
+   References: Hornbeck et al. 2012 Nucleic Acids Res. doi:10.1093/nar/gkr1122; Hornbeck et al. 2015
+   Nucleic Acids Res. doi:10.1093/nar/gku1267; Hornbeck et al. 2019 Nucleic Acids Res. doi:10.1093/nar/gky1159.
+
+2. Cantley kinase atlas (baseline B1 and motif features).
+   - kinase-library 1.8.0 (PyPI sdist; matrices read as data, the package is not installed or run).
+     Licence: CC BY-NC-SA 3.0 (non-commercial).
+   - Johnson et al. 2023 Nature, doi:10.1038/s41586-022-05575-3 (Ser/Thr atlas) and Yaron-Barir et al.
+     2024 Nature, doi:10.1038/s41586-024-07407-y (Tyr atlas): publisher supplementary data, academic use, cite.
+   The ksp code computes atlas scores from these matrices; it reproduces kinase-library 1.8.0 within 1e-3.
+
+3. Phosformer (baseline B3). Zhou et al. 2023 Bioinformatics, doi:10.1093/bioinformatics/btad046.
+   Code and released weights (https://github.com/esbgkannan/phosformer; https://huggingface.co/waylandy/phosformer):
+   CC BY-NC-ND 4.0 (non-commercial, no derivatives). This repository does not include or modify their
+   code or weights. src/ksp/baselines/phosformer/ is an independent re-implementation of the published
+   architecture, built on transformers.RobertaModel. The released weights were used for inference only, as
+   a fidelity check. B3 itself was pre-trained and fine-tuned from scratch on our splits. The curated
+   Phosformer dataset (Hugging Face waylandy/phosformer_curated) states no licence; it was treated as
+   non-commercial.
+
+4. SELPHI2.0 (baseline B4). Maier et al. 2025 Mol Cell Proteomics, doi:10.1016/j.mcpro.2025.100994.
+   Code (https://gitlab.ebi.ac.uk/petsalakilab/selphi_2.0): Apache-2.0, read as a reference and not
+   executed or copied. src/ksp/baselines/selphi2/ re-implements the published scheme on our splits.
+   Zenodo record 10.5281/zenodo.13821321: CC BY 4.0.
+
+5. ESM-2 protein language models (facebook/esm2_t33_650M_UR50D; facebook/esm2_t36_3B_UR50D),
+   Lin et al. 2023 Science. Licence: MIT. Weights are downloaded by transformers and are not included.
+
+6. AlphaFold Protein Structure Database v6 (EMBL-EBI / Google DeepMind). Licence: CC BY 4.0.
+   Cite Jumper et al. 2021 and Varadi et al. 2024 [verify full references].
+
+7. UniProt release 2026_03 (CC BY 4.0); HGNC (CC0); Gene Ontology (CC BY 4.0); STRING v12.0 (CC BY 4.0).
+
+8. Protein interaction and localisation resources used as features: BioPlex 3.0, HuRI, OpenCell, Human Cell
+   Map, Hein et al. 2025 (Zenodo 14000085), COMPARTMENTS, DepMap 26Q1 (CC BY 4.0 unless noted);
+   Human Protein Atlas v25 (CC BY-SA 4.0); Buljan et al. 2020 Mol Cell supplement (CC BY-NC-ND,
+   non-commercial).
+
+9. Phosphoproteomics and inhibitor data: CPTAC pan-cancer data (LinkedOmics freeze v1.2; NCI PDC
+   harmonised v1; open access under the CPTAC data use policy); Klaeger et al. 2017 Science
+   (doi:10.1126/science.aan4368), Reinecke et al. 2024 Nat Chem Biol, Davis et al. 2011 Nat Biotechnol
+   (publisher supplements); CurveCurator Zenodo 8399823 (CC BY 4.0); Hijazi et al. 2020 inhibitor matrix;
+   a perturbation phosphoproteomics compendium supplied by the human researcher (compiled from published
+   studies; provenance in docs/DATAINEED.md).
+
+10. Other label and evaluation sources: OmniPath (academic licence set; mixed per-resource terms, including
+    non-commercial resources), iPTMnet 6.2 (CC BY-NC-SA 4.0), KinCore, KinHub, Manning et al. 2002 (terms
+    not stated; cite), benchmarKIN (Muller-Dott et al. 2025 Nat Commun, doi:10.1038/s41467-025-59779-y;
+    Zenodo 12566560, CC BY 4.0; GitHub data files GPL-3), GTEx v8 (open access), Ochoa et al. 2020
+    Nat Biotechnol supplement.
+
+Versions, URLs and checksums for every item: DATA_SOURCES.md and docs/DATA_internal.md.

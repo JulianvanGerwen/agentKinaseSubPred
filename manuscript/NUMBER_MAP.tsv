@@ -1,0 +1,157 @@
+claim	value	source_file
+Abstract: kinases scored	503	results/labels/kinase_list.tsv; REPORT.md §2.1
+Abstract: CV kinases (K_cv)	203	results/splits/split_report.md; REPORT.md §2.3
+Abstract: CV macro AUROC (M1) of final fusion	0.786	results/cv/LEADERBOARD.md row 2; docs/model_r2.md §6
+Abstract: sealed TEST clusters	2,353	results/splits/split_report.md; REPORT.md §2.2
+Abstract: TEST M1 [95% CI]	0.794 [0.774, 0.811]	results/test/721dc1977366/final_ci.tsv
+Abstract: TEST M2 Hit@5	0.363	results/test/721dc1977366/final_ci.tsv
+Abstract: TEST M3 top-1% recall	0.363	results/test/721dc1977366/final_ci.tsv
+Abstract: nine pre-registered tests all 'beats'	9 of 9	results/test/721dc1977366/superiority.tsv
+Abstract: final - B4 on M3 [CI]	+0.059 [0.010, 0.120]	results/test/721dc1977366/superiority.tsv
+Abstract: T3 M1 (unseen family + unseen protein)	0.752	results/test/721dc1977366/final_t3.json; results/test/LEDGER.md
+Abstract: Tyr-kinase TEST M1	0.595	results/test/721dc1977366/final_strata.tsv (residue_class=Y)
+Abstract: B0-pop Tyr-kinase TEST M1	0.585	results/test/721dc1977366/B0_pop_strata.tsv; REPORT.md §7.5
+Abstract: no site reaches assignment_prob 0.8	coverage@0.8 = 0	results/test/721dc1977366/summary.json (A17_coverage)
+Intro: share of known phosphosites with no kinase	~95%	docs/lit/02_ks_annotation_sources.md l.182
+Intro: top-20 kinases share of PSP annotations	~50%	docs/lit/02_ks_annotation_sources.md l.182; LITERATURE.md §1
+Intro: PSP kinases with <5 annotations	146 of 421	docs/lit/02_ks_annotation_sources.md l.182
+Intro: Cantley atlas kinases	303 S/T, 93 Y	LITERATURE.md §1
+Intro: Phosformer test positives also training positives	51%	LITERATURE.md §1
+Intro: SELPHI2.0 CV AUC and external	0.97; 0.75-0.83	LITERATURE.md §1
+Intro: LinkPhinder random vs independent	0.97 -> 0.53	LITERATURE.md §1
+Intro: KolossuS S/T AUROC	0.755	LITERATURE.md §1
+Intro: KS pairs with co-labelled site on same protein	68%	RESEARCH_TREE.md (M1 note); REPORT.md §2.2
+Results: L2 pairs / kinases	18,638 / 401; 14,747 after U_ms restriction	REPORT.md §2.1; results/splits/split_report.md
+Results: substrate clusters	11,609	results/splits/split_report.md
+Results: TEST clusters (share)	2,353 (20.3%)	results/splits/split_report.md
+Results: TEST proteins	3,957	results/splits/split_report.md; REPORT.md §2.2
+Results: TEST positives	2,205	results/splits/split_report.md; REPORT.md §2.1
+Results: K_cv / K_eval / K_any	203 / 119 / 256 (criteria: >=5 DEV pos on >=2 clusters; >=3 TEST pos on >=2 clusters; >=1 TEST pos; pseudokinases >=3 labels)	results/splits/split_report.md l.37
+CV: final M1 / M2 / M3 / M4	0.786 / 0.263 / 0.361 / 0.774	results/cv/LEADERBOARD.md row 2; docs/model_r2.md §6
+CV: per-fold M1 range	0.767-0.794	docs/model_r2.md §6
+CV: R2 ensemble M1/M2/M3/M4	0.776 / 0.200 / 0.312 / 0.767	results/cv/LEADERBOARD.md row 4
+CV: R3 M1/M2/M3/M4	0.754 / 0.223 / 0.294 / 0.731	REPORT.md §6.1 (LEADERBOARD #42, A24)
+CV: paired final - B1 (ii) M1/M2/M3	+0.063 [0.048, 0.074]; +0.105 [0.082, 0.125]; +0.227 [0.189, 0.251]	results/models/r2/compare__r2_fusion_r3__vs__simple_b1_universe.tsv; docs/model_r2.md §6
+CV: fusion gain over R2 ensemble	dM1 +0.010 [0.005, 0.016]; dM2 +0.063 [0.051, 0.078]	results/models/r2/compare__r2_fusion_r3__vs__r2_final_ens5.tsv; REPORT.md §4.3
+CV: nested fusion weight / M1 optimism / nested M2	0.6 every fold / 0.000 / 0.259	docs/audit/audit_cv_r2.md §3; REPORT.md §4.3
+Table 1: B7 M1/M2/M3/M4	0.726 / 0.196 / 0.179 / 0.708	results/cv/LEADERBOARD.md #53; REPORT.md §6.1
+Table 1: B1 M1 / M2 (i)/(ii) / M3 / M4	0.717 / 0.157 / 0.171 / 0.133 / 0.690	results/baselines/simple/summary.md; REPORT.md §5.1 (LEADERBOARD gives B1 M3 0.136 on 196 full-coverage kinases)
+Table 1: B4 matched M1/M2/M3/M4 (34% of pairs)	0.708 / 0.176 / 0.316 / 0.714	docs/baseline_selphi2.md; REPORT.md §5.3, §6.1
+Table 1: B3a M1/M2/M3/M4	0.677 / 0.132 / 0.104 / 0.655	results/cv/LEADERBOARD.md (A24 re-eval); REPORT.md §5.2
+Table 1: B2 M1/M2/M3/M4	0.660 / 0.118 / 0.109 / 0.638	results/cv/LEADERBOARD.md #74/#75; REPORT.md §6.1
+Table 1: B0-pop M1/M2/M3	0.552 / 0.020 / 0.142; M4 0.562	results/cv/LEADERBOARD.md row 81
+Table 1: M4-CV kinase count	339	REPORT.md §2.4, §5.1
+Table 2: ablation rows M1/M2/M3	see table (0.723 ... 0.773); F6b M2 0.153, full M2 0.207	results/models/r2/cv_table.tsv; results/cv/LEADERBOARD.md rows 15, 40 (A24); REPORT.md §6.2 gives 0.154/0.208 (pre-rounding drift)
+CV: no-phospho variant M1	0.771 vs 0.768 with F6 (final config, seed 0); 5-seed mean with F6 0.7711	results/cv/LEADERBOARD.md row 21; docs/model_r2.md §6 (seeds table); docs/regimes_labels.md (0.768153)
+CV: phosphoproteomics families total gain	~+0.002 M1	docs/model_r2.md §5
+CV: F6-clean (18 label-source PMIDs removed) M1	0.773	docs/model_r2.md §5 alarm (ii)
+CV: B0-miss inside R2 pipeline M1	0.522	docs/model_r2.md §5 alarm (iii)
+CV: knn_sim effect	+0.003 M1; dM2 -0.018 [-0.030, -0.006]	docs/model_r2.md §6
+CV: F9 Tyr/SH2 effect	+0.0017 M1	docs/model_r2.md §6
+CV: count of failed candidates	6	REPORT.md §6.3
+B3 fidelity: our pipeline on Phosformer split / paper	0.888 / 0.885	results/baselines/phosformer/fidelity_check.json
+B3 fidelity: subsample / epochs	60% / 1	docs/review_report_v3.md B1; results/baselines/phosformer/fidelity_check.json
+B3-pub (contaminated) CV M1	0.796 on 2% of required pairs (coverage 0.020)	results/cv/LEADERBOARD.md row 1
+B4: regenerated columns	39 of 44	docs/baseline_selphi2.md; REPORT.md §5.3
+B4: grid size	72 configurations	docs/baseline_selphi2.md; REPORT.md §5.3
+B4 vs Cantley on B4 pairs (CV M1)	0.708 vs 0.728	docs/baseline_selphi2.md; REPORT.md §5.3
+B4: positives vs random pairs metric on cluster split	0.947	docs/baseline_selphi2.md; REPORT.md §5.3
+TEST: configurations / pairs	12 / 25.9 M (25,922,452)	results/test/LEDGER.md
+TEST: final M1/M2/M3/M4 with CIs	0.794 [0.774,0.811] / 0.363 [0.324,0.397] / 0.363 [0.309,0.401] / 0.799	results/test/721dc1977366/final_ci.tsv
+TEST: final - B1(i) M1	+0.075 [0.046, 0.099]	results/test/721dc1977366/superiority.tsv
+TEST: matched kinases favouring final on M1 vs B1	97 of 116 (audit re-cut)	docs/audit/audit_test.md §3 (audit diagnostic)
+TEST: bootstrap p floor / Holm p	<0.0002 / <=0.0018	results/test/721dc1977366/superiority.tsv
+TEST: final - B4 M3, Holm p	+0.059 [0.010, 0.120], 0.018	results/test/721dc1977366/superiority.tsv
+TEST: kinases favouring final / B4 on M3	52 / 27 (40 ties) (audit re-cut)	docs/audit/audit_test.md §3; results/test/721dc1977366/final_per_kinase.tsv, B4_per_kinase.tsv
+TEST: final - R3 M2 (weakest secondary)	+0.040 [0.007, 0.060], Holm p 0.013	results/test/721dc1977366/secondary.tsv (0.040451)
+Table 3: all rows (M1-M4, CIs, runtimes)	see table	results/test/721dc1977366/<config>_ci.tsv; results/test/LEDGER.md
+Table 3: B1 kinases scored	386 of 503; 19.2 M pairs (19,215,814)	results/test/LEDGER.md pre-flight
+Table 3: B3 MLM pretraining time	~4.3 h	docs/baseline_phosformer.md; REPORT.md §6.8
+Fig 2D: nine paired differences with CIs and Holm p	see figure	results/test/721dc1977366/superiority.tsv
+TEST caveat: common kinases	117	docs/audit/audit_test.md §2, §4
+TEST caveat: CV vs TEST M1 on common kinases	0.792 vs 0.793; +0.001 +/- 0.012	docs/audit/audit_test.md §4
+TEST caveat: optimism bound / configurations	~0.005 / ~90	docs/audit/audit_cv_r2.md; REPORT.md §2.5, §7.8
+TEST caveat: CV M2 on common kinases	0.348	docs/audit/audit_test.md §2
+TEST caveat: B0-prior M2 CV -> TEST	0.064 -> 0.109	docs/audit/audit_test.md §2; REPORT.md §7.8
+TEST caveat: Cantley CV->TEST on 115 kinases	0.741 -> 0.717 (-0.025 +/- 0.013); final -0.003	docs/audit/audit_test.md §3
+TEST caveat: B4 pairs with NA-default features / imputation cost	66.6% / ~0.013 M1	docs/baseline_selphi2.md; docs/audit/audit_test.md §0 #4
+T2 (CV LKO): R2 / fusion M1	0.751 / 0.749	docs/model_r2.md §6.3
+T3: final / R2 / B7 / R3 / B2 M1	0.752 / 0.744 / 0.708 / 0.703 / 0.616	results/test/LEDGER.md; results/test/721dc1977366/<config>_t3.json
+T3 vs Cantley T1 M1	0.714	results/test/721dc1977366/B1_i_ci.tsv
+T2 split: no-other-label sites share / M1 / control	55% / 0.703 / 0.757	docs/audit/audit_cv_r2.md R2-m2; REPORT.md §6.6
+T2 split: other-label sites M1 / control	0.798 / 0.799	REPORT.md §6.6
+Fig 3A: Tyr kinases above own B0-pop AUROC	10 of 23	results/test/721dc1977366/final_per_kinase.tsv, B0_pop_per_kinase.tsv; docs/audit/audit_test.md §0 #10
+Table 4: all stratum values	see table	results/test/721dc1977366/{final,B1_i,B3,B4,B0_pop}_strata.tsv; <config>_ext_tiers.tsv; REPORT.md §7.5-7.6
+Tyr: B1 TEST M1	0.496	results/test/721dc1977366/B1_i_strata.tsv
+Tyr: T3 M1	0.531	results/test/721dc1977366/final_t3_per_kinase.tsv; REPORT.md §7.4
+Tyr: CV->TEST same kinases	0.667 -> 0.595; -0.072 +/- 0.033	docs/audit/audit_test.md §4
+ST: CV->TEST same kinases	0.827 -> 0.841	docs/audit/audit_test.md §4
+Tyr gap: macro dilution share / kinases with <=3 positives	~1/4 / 42%	docs/features_tyr.md §1; REPORT.md §6.4
+Tyr: GLO1 hub site TK labels	15	docs/features_tyr.md; REPORT.md §6.4
+Understudied: M4 bin 0 (16 kinases)	0.807	results/test/721dc1977366/final_strata.tsv (train_bin=0, M4); REPORT.md §7.5
+Understudied: CV M2 5-19 bin final / Cantley / >=100	0.142 / 0.162 / 0.621	docs/strata_cv.md §9; REPORT.md §6.4
+Understudied: TEST M2 5-19 final / B1(ii); kinases	0.208 / 0.165; 13	results/test/721dc1977366/final_strata.tsv, B1_ii_strata.tsv; REPORT.md §7.5
+Priming: TEST primed final / B1(i)	0.897 / 0.704	results/test/721dc1977366/final_strata.tsv, B1_i_strata.tsv
+Priming: CV primed positives priming-aware Cantley / R2	0.945 / 0.893	docs/strata_cv.md; REPORT.md §6.5
+Priming: TEST unprimed final / B1(i)	0.740 / 0.725	results/test/721dc1977366/final_strata.tsv, B1_i_strata.tsv
+Popularity: hub final / B0-pop	0.863 / 0.788	results/test/721dc1977366/final_strata.tsv, B0_pop_strata.tsv
+Popularity: external tier B B0-pop	0.724	results/test/721dc1977366/B0_pop_ext_tiers.tsv; REPORT.md §7.6
+Temporal: margin over Cantley (standalone)	+0.056 (0.766 vs 0.710)	results/test/721dc1977366/final_strata.tsv, B1_i_strata.tsv
+Regimes: per-kinase LightGBM dM1	-0.012	docs/regimes_labels.md; REPORT.md §4.4
+Regimes: 78 kinases N>=20 global vs per-kinase	0.805 vs 0.779	docs/regimes_labels.md; REPORT.md §4.4
+Regimes: partial pooling lambda	300	docs/regimes_labels.md
+Regimes: L2 vs L1 dM2	+0.029	docs/regimes_labels.md
+Regimes: L2+ext seed-0 dM1 / 3-seed mean	+0.006 / +0.001	docs/regimes_labels.md; DESIGN.md A33
+Table 5: all rows	see table	docs/regimes_labels.md; REPORT.md §4.4
+Assignment: labelled TEST sites / ECE / top-1 accuracy	1,458 / 0.026 / 0.353	results/test/721dc1977366/final_reliability.tsv
+Assignment: ST >=0.5 claimed / observed / n	0.615 / 0.603 / 345 (audit re-cut; tier is S/T only)	results/test/721dc1977366/final_reliability.tsv (bins 0.5-0.8 merged: 0.61550 / 0.60290 / 345); docs/audit/audit_test.md §6
+Assignment: Y maximum	0.445	docs/audit/audit_test.md §6; docs/model_r2.md §6.1
+Assignment: Y [0.2,0.5) claimed / observed	0.41 / 0.34 (n = 195)	docs/audit/audit_test.md §6
+Assignment (CV, before fix): top tier claimed / observed; Y sites	0.87 / 0.54; 0 of 41	docs/model_r2.md §6.1; DESIGN.md A31b
+Fig 4A: reliability bins	see figure	results/test/721dc1977366/final_reliability.tsv
+Deployment: training pairs	15,202 (incl. canaries)	docs/model_r2.md §7.1; REPORT.md §9
+Deployment: sites / pairs	350,736 / 131,144,410	results/release/RELEASE_MANIFEST.json; REPORT.md §9
+Deployment: coverage@0.5 (no-PSP) / @0.8	29,886 (26,762) / 0	results/release/coverage.tsv
+Deployment: coverage@0.5 share of U_obs	8.5%	derived: 29,886 / 350,736 (REPORT.md §9)
+Coverage: Cantley-only @0.5 / random @0.5	30,258 / 6	results/release/coverage.tsv
+Coverage: U_obs share of proteome S/T/Y	~19%	docs/review_report_v3.md (C); docs/features_structure_esm.md l.38
+Released files: top sites per kinase / top kinases per site	200 / 5	results/release/RELEASE_MANIFEST.json
+Spot check: TP53 S15 -> ATM assignment_prob	0.70; TP53 is a TEST protein (labels entered only the deployment refit)	REPORT.md §9; results/splits/test_proteins.tsv
+Spot check: AKT1 S473 MTOR rank	3; AKT1 S473 and EIF2S1 S52 carry DEV training labels	REPORT.md §9; results/splits/cv_folds.tsv; ksp.labels.load_dev() (checked, not reproduced)
+Downstream: PSP perturbation AUROC ours / paper	0.782 / 0.79	docs/downstream.md; REPORT.md §8
+Downstream: PSP tumour AUROC ours / paper	0.664 / 0.662	docs/downstream.md; REPORT.md §8
+Downstream: benchmark studies removed / clean CV M1	22 / 0.771	docs/downstream.md; REPORT.md §8
+Downstream: top50 vs PSP perturbation / tumour	-0.013 [-0.043, 0.012] / +0.011 [-0.027, 0.046]	docs/downstream.md; REPORT.md §8
+Downstream: unseen-drug gap range / top50	0.04-0.06 / -0.050 [-0.096, -0.001]	docs/downstream.md; REPORT.md §8
+Downstream: top100 vs Cantley top100 perturbation	+0.176 [0.091, 0.263]	docs/downstream.md; REPORT.md §8
+Downstream: evaluable kinases perturbation / tumour	50-65 vs 41 / 149-274 vs 73	docs/downstream.md; REPORT.md §8
+Downstream: top100 union PSP tumour	+0.034 [0.005, 0.068]	docs/downstream.md; REPORT.md §8
+Runtime: final train / infer	1,136.6 s / 316.9 s	results/test/LEDGER.md; results/freeze_entries/final.json
+Runtime: B3 / B4 inference	6,478.8 s / 2,043.4 s	results/test/LEDGER.md
+Runtime: speed ratio vs B3 / B4	~20x / ~6x	derived from LEDGER (6478.8/316.9, 2043.4/316.9)
+Runtime: B7 / B2 / Cantley inference	287.0 s / 39.7 s / 1.0-4.4 s	results/test/LEDGER.md
+Runtime: cross-fitted features per fold	~21 CPU-min	REPORT.md §6.8; docs/model_r2.md §3
+Runtime: deployment R2+R3 inference / peak RSS	985 s + 12 s / 18.7 GB	REPORT.md §9; results/runs/r2_deploy*/manifest.json
+Hardware	64 cores, 4x RTX 4090	REPORT.md §6.8
+Post-TEST: Y-specific fusion weight	-0.0039 [-0.0097, +0.0010]	docs/posttest_tyr.md; docs/audit/audit_posttest.md
+Post-TEST: nested motif repair	+0.0042 [-0.0103, +0.0167]	docs/posttest_tyr.md; docs/audit/audit_posttest.md
+Abstract: CV M2 on the same 117 kinases	0.348	docs/audit/audit_test.md §2
+Abstract/Results: Tyr CV->TEST fall	0.667 -> 0.595	docs/audit/audit_test.md §4
+Tyr (R2, CV): hub sites excluded vs all	0.627 vs 0.629	docs/strata_cv.md; REPORT.md §6.4
+Tyr (Cantley diagnosis, CV): in-vitro vs in-vivo-only within 17 Y kinases	0.603 vs 0.596	docs/features_tyr.md §1.3
+Tyr diagnosis was on Cantley B1 arm	header of §1	docs/features_tyr.md (header: 'using the official B1 arm')
+Regimes: L2_vivo vs L2_vitro pair counts	2,808 vs 8,987	docs/regimes_labels.md; supplement.md §1.2
+Understudied: TEST 5-19 bin kinases (M1)	13; 0.759	results/test/721dc1977366/final_strata.tsv
+Coverage: Cantley-only @0.5 does not separate	30,258 vs 29,886	results/release/coverage.tsv
+Post-TEST: pre-declared intercepts, 5-19 bin M2	-0.013 [-0.021, -0.004]	docs/audit/audit_posttest.md; REPORT.md §11.1
+Post-TEST: unlabelled kinases' top-5 share / per-site Hit@5	14% -> 2.3% / 0.535 -> 0.465	REPORT.md §11.1; docs/posttest_cv.md
+Post-TEST: priming blend primed gain / flag-matched gain	+0.018 / +0.002	REPORT.md §11.1; docs/audit/audit_posttest.md
+Discussion: uncross-fitted vs cross-fitted label-feature AUROC	0.93-1.00 vs 0.59-0.76	REPORT.md §3.2; docs/features_knn.md
+Discussion: T2 fusion vs R2	0.749 vs 0.751 (LEADERBOARD A24 gives R2 0.750)	docs/model_r2.md §6.3; results/cv/LEADERBOARD.md row 45
+Methods: R2 hyperparameters	min_data_in_leaf 100, feature_fraction 0.8, bagging 0.8, lambda_l2 1.0, max_bin 255, <=3000 rounds, patience 100	src/ksp/models/r2/train.py l.44-45; results/runs/r2_final_test__20261026-221039__s0/manifest.json
+Methods: R2 TEST refit rounds / rows / positives / features	477/200/180/392/303; 623,373; 12,223; 172	results/runs/r2_final_test__20261026-221039__s0/manifest.json
+Methods: F7 dimensions	ESM PCA-16; Cantley PCA 8 (S/T) + 8 (Y)	src/ksp/models/r2/assemble.py l.16-17, l.248
+Methods: R3 hyperparameters	d 192, h 128, d_kin 256, 4 heads, lr 3e-4, wd 0.05, warm-up 200, <=6000 steps, patience 10 (every 100), dropout 0.2, ESM dropout 0.3, p_lab 0.25, batch 1024; pretrain lr 1e-3	src/ksp/models/r3/train.py l.27-30; model.py l.23; scripts/models/r3_cv.py l.46
+Methods: R3 Cantley descriptor	32 PCs per residue type; 3,000 S/T + 1,000 Y reference sites	src/ksp/models/r3/data.py l.125
+Methods: B3 fine-tuning	focal gamma 2, lr 2e-5, batch 64, 1:16 with 50% hard	docs/baseline_phosformer.md l.116, l.157
+Methods: R2 fold-0 negative mix	base 1:50/50% M1 0.7537; best alternative 0.7507	docs/model_r2.md §4 stage (c)

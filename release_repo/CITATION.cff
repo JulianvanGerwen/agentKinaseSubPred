@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+message: "If you use this software or the released predictions, please cite it as below, and cite PhosphoSitePlus (see NOTICE)."
+title: "ksp: kinase-substrate site prediction across the human proteome (AI-agent research exercise; MVP release)"
+abstract: "Code, released predictions and design record for a kinase-substrate site predictor (late fusion of a LightGBM pair model and a neural model with Cantley-atlas distillation) built and evaluated by AI agents under a human-written brief. Predictions are derived from PhosphoSitePlus labels and are licensed CC BY-NC-SA 3.0."
+type: software
+authors:
+  - name: "[authors to be added by the publishing researcher]"
+version: "0.1.0"
+date-released: "2026-10-27"
+license: MIT
+keywords:
+  - kinase
+  - phosphorylation
+  - kinase-substrate prediction
+  - positive-unlabelled learning
+  - AI agents
+# preferred-citation: to be added when the manuscript is published (PLOS Computational Biology).

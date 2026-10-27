@@ -1,0 +1,57 @@
+# --- project data and pipeline outputs: never commit (licensed / restricted / large) ---
+data/
+external/
+cache/
+sealed/
+logs/
+results/
+FREEZE.json
+*.parquet
+*.npy
+*.npz
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+*.h5
+*.feather
+*.tar
+*.zip
+*.rda
+*.Rds
+# label-level evaluation tables list labelled (incl. sealed TEST) pairs: never commit
+*_site_level.tsv
+# predictions/ and results_summary/ ARE committed (small derived files); do not add patterns that match them.
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+.coverage
+htmlcov/
+
+# --- environments and secrets ---
+.venv/
+venv/
+env/
+.env
+.env.*
+*.key
+*.pem
+
+# --- editors and OS ---
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+desktop.ini
