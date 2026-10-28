@@ -1,5 +1,7 @@
 # B4 — SELPHI2.0 retrained on our splits
 
+> This work was produced as an exercise in testing whether AI agents can run a bioinformatics research project. A lead AI agent (the 'PI', Claude Opus 5.5) directed sub-agents (Claude Opus 5.5 and Sonnet 5.5) under a human-written brief. The human researcher supplied the brief, the data and PhosphoSitePlus access; they did not write the code, run the analyses, or write the text. All results should be checked before use.
+
 Owner: B4-selphi2 agent. DESIGN v2 §8.1 B4, §6.8 (matched-universe rule), PRIOR-4 (`docs/reviews/r1_prior_work.md`).
 Reference: Maier, Petursson, Lussana & Petsalaki, *MCP* 2025 24(8):100994 (`data/paper1.pdf`; the brief calls this paper2, but paper2.pdf is Phosformer). Code: `external/selphi2/selphi_2.0` (Apache-2.0). I read it as a reference and ported its logic; none of it was executed.
 

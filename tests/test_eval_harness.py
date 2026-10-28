@@ -5,8 +5,13 @@ import pandas as pd
 import pytest
 
 from ksp import canary, eval as E, eval_test, manifest
+from ksp.paths import has_project_data
 
-pytestmark = pytest.mark.skipif(not (E.splits.SPLIT_DIR / "SEAL.json").exists(), reason="split not frozen")
+# The frozen split files (results/splits/) are tracked, but the index and label tables under cache/ are not.
+pytestmark = pytest.mark.skipif(not ((E.splits.SPLIT_DIR / "SEAL.json").exists() and has_project_data(
+    "cache/index/kinases.parquet", "cache/index/sites.parquet", "cache/index/proteins.parquet", "cache/labels/dev_pairs.parquet")),
+    reason="needs project data that is not part of this repository (frozen splits, index and DEV labels under "
+           "KSP_DATA_DIR); see DATA_SOURCES.md")
 
 
 @pytest.fixture(scope="module")

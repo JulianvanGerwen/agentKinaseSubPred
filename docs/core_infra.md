@@ -1,15 +1,17 @@
 # Core infrastructure (splits, labels API, eval harness, canaries, manifests, TEST seal)
 
+> This work was produced as an exercise in testing whether AI agents can run a bioinformatics research project. A lead AI agent (the 'PI', Claude Opus 5.5) directed sub-agents (Claude Opus 5.5 and Sonnet 5.5) under a human-written brief. The human researcher supplied the brief, the data and PhosphoSitePlus access; they did not write the code, run the analyses, or write the text. All results should be checked before use.
+
 Owner: core-infra. Frozen at G1 (split frozen 2026-10-26 14:34 CET, seed 0; label tables relabelled 14:50 after the
 v2 label amendments, with the split unchanged). Every number below comes from `results/splits/split_numbers.json`
 and `split_report.md`.
 
 ```
-/workspace/.venv/bin/python -I scripts/build_kinase_list.py      # residue-class overrides (config/kinase_curation.tsv)
-/workspace/.venv/bin/python -I scripts/build_labels.py           # -> cache/labels/ks_pairs.parquet (pre-split, full)
-/workspace/.venv/bin/python -I scripts/build_splits.py           # FREEZE (refuses if SEAL.json exists; --force = PI only)
-/workspace/.venv/bin/python -I scripts/build_splits.py --relabel # after a label change: same split, new tables, re-seal
-/workspace/.venv/bin/python -m pytest -q tests/                  # 63 tests, ~45 s
+.venv/bin/python -I scripts/build_kinase_list.py      # residue-class overrides (config/kinase_curation.tsv)
+.venv/bin/python -I scripts/build_labels.py           # -> cache/labels/ks_pairs.parquet (pre-split, full)
+.venv/bin/python -I scripts/build_splits.py           # FREEZE (refuses if SEAL.json exists; --force = PI only)
+.venv/bin/python -I scripts/build_splits.py --relabel # after a label change: same split, new tables, re-seal
+.venv/bin/python -m pytest -q tests/                  # 63 tests, ~45 s
 ```
 
 ## 1. Residue classes (DESIGN §2) and kinase list

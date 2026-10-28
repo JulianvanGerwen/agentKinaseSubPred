@@ -1,5 +1,7 @@
 # Tyrosine-kinase features (F9) and the diagnosis of the Y E-hard gap
 
+> This work was produced as an exercise in testing whether AI agents can run a bioinformatics research project. A lead AI agent (the 'PI', Claude Opus 5.5) directed sub-agents (Claude Opus 5.5 and Sonnet 5.5) under a human-written brief. The human researcher supplied the brief, the data and PhosphoSitePlus access; they did not write the code, run the analyses, or write the text. All results should be checked before use.
+
 Owner: feat-tyr. DEV CV only; no TEST access. Labels read exclusively through `ksp.labels.load_dev()`;
 every feature below is **non-label-derived** and saved through `ksp.store`, so no `ksp.crossfit` family was
 needed.

@@ -1,5 +1,7 @@
 # F0 site-intrinsic features: AlphaFold structure and ESM-2 embeddings
 
+> This work was produced as an exercise in testing whether AI agents can run a bioinformatics research project. A lead AI agent (the 'PI', Claude Opus 5.5) directed sub-agents (Claude Opus 5.5 and Sonnet 5.5) under a human-written brief. The human researcher supplied the brief, the data and PhosphoSitePlus access; they did not write the code, run the analyses, or write the text. All results should be checked before use.
+
 Owner: structure/ESM agent, 2026-10-26. DESIGN §7 F0 (site) and F7 (kinase descriptors). No feature here is derived from labels.
 
 ## Scope

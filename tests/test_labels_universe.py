@@ -1,13 +1,15 @@
 """Real-data checks of the built kinase list, site universe and labels (hand-checked PSP rows -> expected site_ids).
 Requires the outputs of scripts/build_kinase_list.py, build_site_universe.py and build_labels.py; tests are skipped
-when they are missing. Run: /workspace/.venv/bin/python tests/test_labels_universe.py"""
+when they are missing. Run: python tests/test_labels_universe.py"""
 import sys
 from pathlib import Path
 
 import pandas as pd
+import pytest
 
-ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / "src"))
+REPO_ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(REPO_ROOT / "src"))
+from ksp.paths import ROOT  # noqa: E402  project data/working dir ($KSP_DATA_DIR, default: repo root)
 from ksp import ids, kinases, labels  # noqa: E402
 
 KL = ROOT / "results/labels/kinase_list.tsv"
@@ -17,8 +19,8 @@ KS = ROOT / "cache/labels/ks_pairs.parquet"
 
 def _skip(p):
     if not p.exists():
-        print(f"SKIP: {p} missing")
-        return True
+        pytest.skip(f"needs project data that is not part of this repository ({p} missing; set KSP_DATA_DIR); "
+                    "see DATA_SOURCES.md")
     return False
 
 

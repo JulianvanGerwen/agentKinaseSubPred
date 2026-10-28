@@ -1,11 +1,11 @@
 """The ONE AND ONLY reader of sealed TEST labels (DESIGN §4.3, AIFM-2, §6, §16-17). Owner: core-infra.
 
 G4 (PI): commit FREEZE.json, then
-    /workspace/.venv/bin/python -I src/ksp/eval_test.py --real [--override-completed "<reason>"]
+    python -I src/ksp/eval_test.py --real [--override-completed "<reason>"]
 Rehearsal (never touches sealed/, FREEZE.json or results/test/LEDGER.md; toy "TEST" = DEV CV fold 0):
-    /workspace/.venv/bin/python -I src/ksp/eval_test.py --dry-run [--fold 0] [--B 1000] [--freeze cfg.json]
+    python -I src/ksp/eval_test.py --dry-run [--fold 0] [--B 1000] [--freeze cfg.json]
 Owner pre-flight (no labels):
-    /workspace/.venv/bin/python -I src/ksp/eval_test.py --check-predictions <file>
+    python -I src/ksp/eval_test.py --check-predictions <file>
 Without --real / --dry-run / --check-predictions the script prints usage and exits. --B/--fold only with --dry-run.
 
 Order of operations in the real batch (main):
@@ -94,9 +94,10 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-ROOT = Path(__file__).resolve().parents[2]
-if str(ROOT / "src") not in sys.path:
-    sys.path.insert(0, str(ROOT / "src"))
+REPO_ROOT = Path(__file__).resolve().parents[2]
+if str(REPO_ROOT / "src") not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT / "src"))
+from ksp.paths import ROOT  # noqa: E402  project data/working dir ($KSP_DATA_DIR, default: repo root)
 if not __package__:                       # executed as a script (python src/ksp/eval_test.py): enable `from . import`
     import ksp  # noqa: F401
     __package__ = "ksp"
@@ -131,7 +132,7 @@ def _sha(p: Path) -> str:
     return h.hexdigest()
 
 
-def _git(*args, cwd=ROOT) -> subprocess.CompletedProcess:
+def _git(*args, cwd=REPO_ROOT) -> subprocess.CompletedProcess:
     return subprocess.run(["git", *args], cwd=cwd, capture_output=True, text=True)
 
 
@@ -246,7 +247,7 @@ def check_real_policy(cfg: dict) -> None:
     b = _git("rev-parse", "--verify", f"{A28_COMMIT}^{{commit}}")
     if a.returncode != 0 or b.returncode != 0 or a.stdout.strip() != b.stdout.strip():
         raise FreezeError(f"harness_commit {hc!r} must be the A28 harness commit {A28_COMMIT}")
-    r = subprocess.run(["git", "diff", "--quiet", hc, "--", *FROZEN_FILES], cwd=ROOT)
+    r = subprocess.run(["git", "diff", "--quiet", hc, "--", *FROZEN_FILES], cwd=REPO_ROOT)
     if r.returncode != 0:
         raise FreezeError(f"frozen harness files differ from {hc} (A28): {FROZEN_FILES}")
 
@@ -262,7 +263,7 @@ def check_seal(seal: Path = SEAL, sealed_dir: Path = SEALED_DIR) -> dict:
 
 # ================================================================================================ ledger
 def code_hashes() -> dict:
-    return {p.name: _sha(p) for p in sorted((ROOT / "src" / "ksp").glob("*.py"))}
+    return {p.name: _sha(p) for p in sorted((REPO_ROOT / "src" / "ksp").glob("*.py"))}
 
 
 def identity_hash(ch: dict) -> str:

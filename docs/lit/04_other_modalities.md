@@ -1,5 +1,7 @@
 # 04 — Non-phosphoproteomics modalities for kinase–substrate (KS) prediction
 
+> This work was produced as an exercise in testing whether AI agents can run a bioinformatics research project. A lead AI agent (the 'PI', Claude Opus 5.5) directed sub-agents (Claude Opus 5.5 and Sonnet 5.5) under a human-written brief. The human researcher supplied the brief, the data and PhosphoSitePlus access; they did not write the code, run the analyses, or write the text. All results should be checked before use.
+
 Author: literature/data agent (modalities review). Date: 2026-10-26.
 Scope: data that can tell us *which kinase* phosphorylates *which S/T/Y site*, other than phosphoproteomics: PPIs, localisation, co-expression/co-dependency, site-level sequence/structure, kinase-side descriptors, kinase activity context, and structure-based (AlphaFold-type) KS modelling. For each source: content, size, URL, version, license, identifier type, **leakage risk** relative to PSP-derived labels, expected value.
 
@@ -11,7 +13,7 @@ Things verified in this session are marked **[verified]**; numbers quoted from m
 
 ## 0. Key empirical finding: a PPI leakage audit (new, reproducible)
 
-Script: `/workspace/scripts/audit_ppi_ks_leakage.py` (run: `python -I scripts/audit_ppi_ks_leakage.py --seed S`, ~40 s). Results: `/workspace/results/leakage/ppi_ks_leakage_seed{0..4}.tsv`. Inputs (already in `external/`, downloaded by another agent): STRING v12.0 human `protein.links.detailed` and `protein.physical.links.detailed`, BioGRID 5.0.262 human tab3, BioPlex 3.0 (293T, HCT116), HuRI, OpenCell interactions. Labels: PSP Kinase_Substrate_Dataset (2025-05-19), human kinase × human substrate, protein-level, autophosphorylation removed → **7,711 KS protein pairs, 406 kinases, 2,915 substrate proteins** (7,653 after requiring STRING mapping).
+Script: `scripts/audit_ppi_ks_leakage.py` (run: `python -I scripts/audit_ppi_ks_leakage.py --seed S`, ~40 s). Results: `results/leakage/ppi_ks_leakage_seed{0..4}.tsv`. Inputs (already in `external/`, downloaded by another agent): STRING v12.0 human `protein.links.detailed` and `protein.physical.links.detailed`, BioGRID 5.0.262 human tab3, BioPlex 3.0 (293T, HCT116), HuRI, OpenCell interactions. Labels: PSP Kinase_Substrate_Dataset (2025-05-19), human kinase × human substrate, protein-level, autophosphorylation removed → **7,711 KS protein pairs, 406 kinases, 2,915 substrate proteins** (7,653 after requiring STRING mapping).
 
 For each source we compute the fraction of KS pairs with evidence, vs. two backgrounds of equal size per kinase: RAND (kinase × random proteome protein) and SHUF (kinase × PSP substrate of *another* kinase; controls for substrate study bias/degree). Mean over seeds 0–4 (SD of ratios ≤ 10 % except the sparse screens):
 
@@ -126,11 +128,11 @@ HF availability checked live (2026-10-26) **[verified]**:
 
 | Model | Params / dim | HF repo | Status here | License | Notes |
 |---|---|---|---|---|---|
-| ESM-2 8M / 35M | 320 / 480 | facebook/esm2_t6_8M_UR50D, esm2_t12_35M_UR50D | **cached** in `/home/.cache/huggingface/hub` (31 MB, 131 MB) | MIT | quick tests only |
+| ESM-2 8M / 35M | 320 / 480 | facebook/esm2_t6_8M_UR50D, esm2_t12_35M_UR50D | **cached** in `$HF_HOME/hub` (31 MB, 131 MB) | MIT | quick tests only |
 | ESM-2 650M | 1280 | facebook/esm2_t33_650M_UR50D | downloadable, not gated; not cached | MIT | default workhorse; native `transformers` |
 | ESM-2 3B | 2560 | facebook/esm2_t36_3B_UR50D | downloadable (2 shards, ~11 GB fp32); not cached | MIT | fits a 4090 in fp16 |
 | ESM-2 15B | 5120 | facebook/esm2_t48_15B_UR50D | downloadable (7 shards, ~60 GB) | MIT | does **not** fit one 24 GB GPU in fp16. Needs sharding/8-bit. Transfer-learning gains over 650M–3B are small (Vieira et al. Sci Rep 2025, doi:10.1038/s41598-025-05674-x **[verified]**). Not recommended |
-| **ESM-C 300M / 600M / 6B** | 960 / 1152 / 2560 *(6B verify)*; context 2048 | **biohub/ESMC-300M, biohub/ESMC-600M, biohub/ESMC-6B** (EvolutionaryScale repos now redirect to `biohub/*`) | downloadable, not gated. 600M = 2.3 GB fp32; 6B ≈ 29 GB fp32 (≈ 12 GB bf16) | **Now MIT** (Chan Zuckerberg Biohub, 2026; README tags `mit`+`other`, LICENSE.md is MIT) **[verified]**. *Earlier: Cambrian Open (300M/600M), Cambrian Non-Commercial (6B)* | Repos ship `modeling_esmc_remote.py` (custom code, loaded via `trust_remote_code`). **Rule: do not run downloaded code.** `transformers` ≥ 5.x has a **native ESMC port** used when `trust_remote_code` is off: `/home/plm_env` (transformers 5.17.0) supports `model_type=esmc` **[verified]**; `/workspace/.venv` (4.57.1) does not. So use `/home/plm_env` without `trust_remote_code`, or `pip install esm` (PyPI) |
+| **ESM-C 300M / 600M / 6B** | 960 / 1152 / 2560 *(6B verify)*; context 2048 | **biohub/ESMC-300M, biohub/ESMC-600M, biohub/ESMC-6B** (EvolutionaryScale repos now redirect to `biohub/*`) | downloadable, not gated. 600M = 2.3 GB fp32; 6B ≈ 29 GB fp32 (≈ 12 GB bf16) | **Now MIT** (Chan Zuckerberg Biohub, 2026; README tags `mit`+`other`, LICENSE.md is MIT) **[verified]**. *Earlier: Cambrian Open (300M/600M), Cambrian Non-Commercial (6B)* | Repos ship `modeling_esmc_remote.py` (custom code, loaded via `trust_remote_code`). **Rule: do not run downloaded code.** `transformers` ≥ 5.x has a **native ESMC port** used when `trust_remote_code` is off: `<plm-env>` (transformers 5.17.0) supports `model_type=esmc` **[verified]**; `.venv` (4.57.1) does not. So use `<plm-env>` without `trust_remote_code`, or `pip install esm` (PyPI) |
 | ESM-3 small open | 1.4B | biohub/esm3-sm-open-v1 | downloadable | MIT (card) **[verified]** | generative multimodal; as an embedder no better than ESM-C. Skip |
 | ProtT5-XL-U50 (encoder, half) | 1024 | Rostlab/prot_t5_xl_half_uniref50-enc | downloadable | MIT (ProtTrans GitHub) **[verified]** | strong per-residue embeddings, 1.2B encoder. STRING ships precomputed ProtT5 *protein-level* embeddings (sequence-only → leakage-free, unlike STRING network embeddings) |
 | SaProt 650M (AF2) | 1280 | westlake-repl/SaProt_650M_AF2 | downloadable | MIT **[verified]** | needs Foldseek 3Di tokens from AFDB structures (Foldseek not installed; it is a binary from GitHub: request/approve before installing) |
@@ -240,7 +242,7 @@ Recommendation: run a **pilot** (≤ 1 GPU-day) measuring whether iLIS/ipSAE/ipT
 **Tier 1 (implement first)**
 1. **Cantley PSSMs** (Johnson 2023 + Yaron-Barir 2024) as site scores and as kinase descriptors/similarities (no label leakage; ~396 kinases).
 2. **Site structure features** from AFDB + structuremap (pLDDT, pPSE, IDR, DSSP) plus PLM pseudo-conservation. Compare against KinoPlex scores if their data are obtainable.
-3. **PLM embeddings**: ESM-2 650M per-site + kinase-domain embeddings (native transformers, MIT). Then test ESM-C 600M (MIT now, native port in `/home/plm_env`) and ESM-2 3B; choose by validation. Skip 15B and ESM-3.
+3. **PLM embeddings**: ESM-2 650M per-site + kinase-domain embeddings (native transformers, MIT). Then test ESM-C 600M (MIT now, native port in `<plm-env>`) and ESM-2 3B; choose by validation. Skip 15B and ESM-3.
 4. **Screens-only PPI graph** (BioPlex 3.0 ∪ HuRI ∪ OpenCell ∪ Buljan 2020 ∪ Human Cell Map) with RWR/shared-neighbour features; fold-internal label-propagation features only.
 5. **Localisation co-occurrence**: HPA v25.1 IF + OpenCell + Hein 2025 + COMPARTMENTS knowledge/experiments (not textmining/integrated), with missingness flags.
 6. **Priming/docking features**: three-level priming representation; ELM DOC/LIG class regexes (never instances).

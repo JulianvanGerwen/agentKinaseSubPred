@@ -32,7 +32,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-ROOT = Path(__file__).resolve().parents[3]
+from ksp.paths import ROOT  # noqa: E402  project data/working dir ($KSP_DATA_DIR, default: repo root)
 KL_DB = ROOT / "external/kinase_library/src/kinase_library-1.8.0/src/kinase_library/databases"
 
 AA23 = "PGACSTVILMFYWHKRQNDEsty"          # kinase-library column order (aa_phos)

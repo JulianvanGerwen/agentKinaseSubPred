@@ -1,5 +1,9 @@
 # F6 phosphoproteomics features (feat-phospho, 2026-10-26)
 
+> This work was produced as an exercise in testing whether AI agents can run a bioinformatics research project. A lead AI agent (the 'PI', Claude Opus 5.5) directed sub-agents (Claude Opus 5.5 and Sonnet 5.5) under a human-written brief. The human researcher supplied the brief, the data and PhosphoSitePlus access; they did not write the code, run the analyses, or write the text. All results should be checked before use.
+
+> *v1.0.0 note:* the condition tables `conditions_meta.tsv`, `f6b_conditions*.tsv`, `f6b_unmapped_or_dropped_drug_conditions.tsv`, `label_source_studies.tsv` and `benchmarkin_studies.tsv` (in `results/features/phospho/`) copy condition metadata of the provided compendium and are no longer tracked. Regenerate them from `data/` with `scripts/features/phospho_build_blocks.py`, `scripts/features/phospho_f6b.py` (variants as below) and `scripts/features/phospho_study_lists.py`; no committed script writes the unmapped/dropped table; it lists the drug-like conditions of `f6b_conditions.tsv` that were unmapped or dropped (`docs/PUBLISHING.md` §3).
+
 DESIGN §7 F6, §6.7, §16 (A6, A11, A12). Code: `src/ksp/features/phospho.py` (blocks, GPU masked correlation, F6a +
 crossfit family), `phospho_inhib.py` (F6b), `phospho_cptac.py` (CPTAC residualisation, A-loop, F6c).
 Scripts (all `CUDA_VISIBLE_DEVICES=1 PYTHONPATH=src .venv/bin/python -I scripts/features/<x>`; GPU 1, ≤10 cores):

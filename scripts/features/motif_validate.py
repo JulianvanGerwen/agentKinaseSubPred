@@ -13,8 +13,9 @@ import numpy as np
 import pandas as pd
 from sklearn.metrics import roc_auc_score
 
-ROOT = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(ROOT / "src"))
+REPO_ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(REPO_ROOT / "src"))
+from ksp.paths import ROOT  # noqa: E402  project data/working dir ($KSP_DATA_DIR, default: repo root)
 from ksp.index import load_kinases, load_sites  # noqa: E402
 from ksp.store import load_matrix  # noqa: E402
 from ksp.features import motif_cantley as mc  # noqa: E402

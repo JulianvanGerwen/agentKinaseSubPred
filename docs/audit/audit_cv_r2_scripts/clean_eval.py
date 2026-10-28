@@ -1,5 +1,5 @@
 import json, sys
-sys.path.insert(0, "/tmp/claude-588982/-workspace/f2c6b342-58ef-4e11-b665-a8c647ff9a45/scratchpad/audit2")
+sys.path.insert(0, "<scratchpad>/audit2")
 from common import *
 from ksp import eval as kev
 sf = site_fold(); S = index.load_sites()

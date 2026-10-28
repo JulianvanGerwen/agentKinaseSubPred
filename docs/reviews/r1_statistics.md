@@ -1,10 +1,12 @@
 # Review r1: statistics and ML evaluation (DESIGN.md v0)
 
+> This work was produced as an exercise in testing whether AI agents can run a bioinformatics research project. A lead AI agent (the 'PI', Claude Opus 5.5) directed sub-agents (Claude Opus 5.5 and Sonnet 5.5) under a human-written brief. The human researcher supplied the brief, the data and PhosphoSitePlus access; they did not write the code, run the analyses, or write the text. All results should be checked before use.
+
 Reviewer role: biostatistician / ML-evaluation expert. Scope: PU framing, negative sets, endpoints, minimum positives and variance, cluster bootstrap, multiplicity and model selection, calibration and precision for coverage, baseline comparison, and the test-split stratification algorithm.
 
 ## 0. Quick quantitative checks (read-only, approximate)
 
-Scripts are in the reviewer scratchpad (`/tmp/claude-588982/-workspace/f2c6b342-58ef-4e11-b665-a8c647ff9a45/scratchpad/stat/{prep,split,sim,sim2,ana,pop,var}.py`). They are not part of the pipeline, and the PI should port the logic into `scripts/` once the real split exists.
+Scripts are in the reviewer scratchpad (`<scratchpad>/stat/{prep,split,sim,sim2,ana,pop,var}.py`). They are not part of the pipeline, and the PI should port the logic into `scripts/` once the real split exists.
 
 **Approximations:**
 - **U_obs** = PSP human sites ∪ compendium sites, Swiss-Prot canonical, with the residue checked against UniProt 2026_03. This gives 303,218 sites on 18,497 proteins; CPTAC and Ochoa are not included.

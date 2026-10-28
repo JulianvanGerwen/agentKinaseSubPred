@@ -1,5 +1,7 @@
 # R3: neural kinase–site model (DESIGN §8.4, ALG-4/5, A6/A13/A18/A20)
 
+> This work was produced as an exercise in testing whether AI agents can run a bioinformatics research project. A lead AI agent (the 'PI', Claude Opus 5.5) directed sub-agents (Claude Opus 5.5 and Sonnet 5.5) under a human-written brief. The human researcher supplied the brief, the data and PhosphoSitePlus access; they did not write the code, run the analyses, or write the text. All results should be checked before use.
+
 Owner: R3-neural agent, 2026-10-26.
 
 Status: **round 2 is final**, using canary v2. The best variant is **`reg1x5:w7_nce05_cpt_aux`**. Its out-of-fold predictions (5 CV folds plus T2) for late fusion with R2 are listed in `results/models/r3/FINAL_OOF.json`.
@@ -235,7 +237,7 @@ The five T3 trainings sum to 3,446 s of training and 9.4 s of inference.
 
 **Command** (one GPU, about 15 GB RAM):
 
-    CUDA_VISIBLE_DEVICES=<g> OMP_NUM_THREADS=4 /workspace/.venv/bin/python -I scripts/models/r3_cv.py deploy
+    CUDA_VISIBLE_DEVICES=<g> OMP_NUM_THREADS=4 .venv/bin/python -I scripts/models/r3_cv.py deploy
 
 **What it does.**
 - **Config:** the frozen `r3_final_distill` config (`reg1x5:w7_nce05_cpt_aux`, seeds 0–4). Overrides are refused.

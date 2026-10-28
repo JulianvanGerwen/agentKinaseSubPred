@@ -1,4 +1,4 @@
-"""Toy-sequence tests for src/ksp/ids.py. Run: /workspace/.venv/bin/python -m pytest -q tests/test_ids.py
+"""Toy-sequence tests for src/ksp/ids.py. Run: python -m pytest -q tests/test_ids.py
 (or plain `python tests/test_ids.py`)."""
 import sys
 from pathlib import Path

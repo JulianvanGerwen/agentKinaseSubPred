@@ -10,8 +10,9 @@ Output: results/models/r3/canary_diagnostic.tsv
 """
 import sys
 from pathlib import Path
-ROOT = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(ROOT / "src"))
+REPO_ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(REPO_ROOT / "src"))
+from ksp.paths import ROOT  # noqa: E402  project data/working dir ($KSP_DATA_DIR, default: repo root)
 import numpy as np, pandas as pd  # noqa: E402
 from ksp import eval as kev, index, canary  # noqa: E402
 from ksp.labels import _canonical_seqs  # noqa: E402

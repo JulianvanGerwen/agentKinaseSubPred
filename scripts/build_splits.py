@@ -6,7 +6,7 @@ Inputs : cache/index/*, cache/labels/ks_pairs.parquet (scripts/build_labels.py),
 Outputs: results/splits/{substrate_clusters,test_proteins,cv_folds,kinase_folds,eval_kinase_sets,
          canary_ppi_partners}.tsv, split_report.md, SEAL.json; cache/labels/{dev_pairs,canary_dev}.parquet,
          results/labels/kinase_label_counts_dev.tsv; sealed/{test_labels,ks_pairs_full,...} (moved, not copied).
-Usage  : /workspace/.venv/bin/python -I scripts/build_splits.py [--threads 12] [--force]
+Usage  : python -I scripts/build_splits.py [--threads 12] [--force]
 Refuses to overwrite a frozen split (results/splits/SEAL.json exists) unless --force.
 """
 import argparse
@@ -20,8 +20,9 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / "src"))
+REPO_ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(REPO_ROOT / "src"))
+from ksp.paths import ROOT  # noqa: E402  project data/working dir ($KSP_DATA_DIR, default: repo root)
 from ksp import canary, index, labels, sites, splits  # noqa: E402
 
 SEALED = ROOT / "sealed"
@@ -216,7 +217,7 @@ def main():
     es.to_csv(out / "eval_kinase_sets.tsv", sep="\t", index=False)
 
     # ------------------------------------------------------------------ bio controls
-    bc_path = ROOT / "config" / "bio_controls.tsv"
+    bc_path = REPO_ROOT / "config" / "bio_controls.tsv"
     if bc_path.exists() and not a.dry_run:
         lines = bc_path.read_text().splitlines()
         com = [x for x in lines if x.startswith("#")]

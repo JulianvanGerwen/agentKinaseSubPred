@@ -1,5 +1,9 @@
 # Data profile — provided data + UniProt reference (2026-10-26)
 
+> This work was produced as an exercise in testing whether AI agents can run a bioinformatics research project. A lead AI agent (the 'PI', Claude Opus 5.5) directed sub-agents (Claude Opus 5.5 and Sonnet 5.5) under a human-written brief. The human researcher supplied the brief, the data and PhosphoSitePlus access; they did not write the code, run the analyses, or write the text. All results should be checked before use.
+
+> *v1.0.0 note:* `compendium_per_condition_coverage.tsv`, `compendium_conditions_by_pmid.tsv`, `kinhib_hijazi_conditions.tsv` and `kinhib_condition_matches.tsv` (in `results/data_profile/`) copy condition metadata of the provided compendium and are no longer tracked. Regenerate them from `data/` with `scripts/profile_compendium.py` (`docs/PUBLISHING.md` §3).
+
 All numbers are produced by scripts (re-run order below); tables in `results/data_profile/` (aggregates only —
 row-level PSP-derived tables go to `cache/`, gitignored, because PSP is CC BY-NC-SA).
 

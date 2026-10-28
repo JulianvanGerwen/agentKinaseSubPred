@@ -1,5 +1,7 @@
 # Independent audit of the single TEST batch (721dc1977366)
 
+> This work was produced as an exercise in testing whether AI agents can run a bioinformatics research project. A lead AI agent (the 'PI', Claude Opus 5.5) directed sub-agents (Claude Opus 5.5 and Sonnet 5.5) under a human-written brief. The human researcher supplied the brief, the data and PhosphoSitePlus access; they did not write the code, run the analyses, or write the text. All results should be checked before use.
+
 **Auditor:** an independent results reviewer. I produced none of the audited work.
 **When:** 2026-10-27, 01:00–02:00 CET, after the COMPLETED ledger block (00:57:29).
 **Scope:** `results/test/LEDGER.md`, `results/test/721dc1977366/`, `FREEZE.json`, DESIGN §6 and §16–17,

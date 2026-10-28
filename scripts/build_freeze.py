@@ -1,6 +1,6 @@
 """Assemble FREEZE.json from the owners' pinned FREEZE entries and validate it (PI, G4; DESIGN §4.3, A19, A23, A29).
 
-Usage: /workspace/.venv/bin/python -I scripts/build_freeze.py [--out FREEZE.json] [--unavailable B4_retrained:"reason"]
+Usage: python -I scripts/build_freeze.py [--out FREEZE.json] [--unavailable B4_retrained:"reason"]
 Reads only entry JSONs listed in ENTRY_FILES (no labels). Re-verifies every pin and runs ksp.eval_test.validate_freeze.
 """
 from __future__ import annotations
@@ -10,8 +10,9 @@ import json
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / "src"))
+REPO_ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(REPO_ROOT / "src"))
+from ksp.paths import ROOT  # noqa: E402  project data/working dir ($KSP_DATA_DIR, default: repo root)
 from ksp import eval_test as ET  # noqa: E402
 
 # Owner-delivered entry files (paths relative to ROOT). Each holds one config dict or {"configs": [...]}.

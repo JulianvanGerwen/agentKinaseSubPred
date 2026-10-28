@@ -1,5 +1,7 @@
 # Review r1: AI-agent failure modes (DESIGN.md v0, §11 focus)
 
+> This work was produced as an exercise in testing whether AI agents can run a bioinformatics research project. A lead AI agent (the 'PI', Claude Opus 5.5) directed sub-agents (Claude Opus 5.5 and Sonnet 5.5) under a human-written brief. The human researcher supplied the brief, the data and PhosphoSitePlus access; they did not write the code, run the analyses, or write the text. All results should be checked before use.
+
 Reviewer role: how autonomous multi-agent research projects fail. Scope: whether §11 is sufficient and enforceable for a ~21 h run with parallel agents sharing one NFS working tree, 64 cores and 4 GPUs.
 
 ## Verdict
@@ -19,7 +21,7 @@ Quick evidence gathered for this review (read-only checks):
   - In kinase-library `kinome_information.tsv`, MATRIX_NAME ≠ GENE_NAME for **174 of 404** kinases (ERK2 vs MAPK1, and so on).
   - Any agent that joins on its own idea of an ID will silently lose rows.
 - **The size of the macro-average denominator depends on the split.** 150 kinases have ≥15 unique human-native sites, so about 3 test positives at a 20% split. 324 kinases have ≥3 sites. Which kinases reach "≥3 test positives" depends on cluster lumpiness, so the set has to be frozen. Cantley covers 148 of these 150 by gene (missing: BCR/ABL, LRRK1). The coverage of Phosformer and NetworKIN is unknown, so a "drop kinases the baseline can't score" rule would change the denominator between rows of the same table.
-- **Leak-detection power of a random-label "canary kinase".** I simulated this (`/tmp/claude-588982/-workspace/f2c6b342-58ef-4e11-b665-a8c647ff9a45/scratchpad/canary_sim.py`) using real S/T 15-mers from the compendium and a per-kinase PSSM like F2a. I compared a PSSM built on all labels (the leaky case) with 5-fold out-of-fold scoring (the clean case):
+- **Leak-detection power of a random-label "canary kinase".** I simulated this (`<scratchpad>/canary_sim.py`) using real S/T 15-mers from the compendium and a per-kinase PSSM like F2a. I compared a PSSM built on all labels (the leaky case) with 5-fold out-of-fold scoring (the clean case):
 
   | Canary positives | Leaky AUROC | Clean AUROC |
   |---|---|---|
@@ -36,7 +38,7 @@ Quick evidence gathered for this review (read-only checks):
   - These are fine for profiling, but the same patterns in feature code would be invisible.
 - **Repo and infrastructure hazards.**
   - `.gitignore` excludes `*.parquet`, so any split or label artefact written as parquet is silently uncommitted.
-  - `/workspace` is NFS (`10.205.1.59:/beltrao/...`), where `flock` is unreliable and concurrent `git` from several agents will collide on `index.lock`.
+  - `<project root>` is NFS (`<internal-file-server>:<share>`), where `flock` is unreliable and concurrent `git` from several agents will collide on `index.lock`.
   - `agents/` exists but is empty, so there is no delegation registry yet.
 
 Estimated cost of everything proposed: **about 3 agent-hours**, mostly inside work already planned in §12 step 1–2 (labels, splits, harness), and **under 1 h on the critical path** if one agent builds it. That is about 5% of the budget, and it buys protection against the failures that would invalidate the headline result.

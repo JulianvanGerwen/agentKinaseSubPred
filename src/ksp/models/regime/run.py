@@ -15,7 +15,7 @@ import pandas as pd
 
 from ksp import eval as kev
 from ksp import manifest
-from ksp.index import ROOT
+from ksp.paths import ROOT  # project data/working dir ($KSP_DATA_DIR, default: repo root)
 from ksp.models.regime import variants as V
 
 REGISTRY = ROOT / "results" / "cv" / "REGISTRY.tsv"

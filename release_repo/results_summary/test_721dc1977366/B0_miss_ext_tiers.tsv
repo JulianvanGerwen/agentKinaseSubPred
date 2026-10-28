@@ -1,3 +1,0 @@
-config	stratum	value	n_kinases_K_eval	n_kinases_K_any	n_pairs	M1	M4
-B0_miss	external_curated	tier_A	41	60	134	0.5825601180324039	0.6192859472379091
-B0_miss	external_curated	tier_B	19	28	49	0.4969809274601789	0.5474716036218649

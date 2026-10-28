@@ -3,15 +3,16 @@
 Outputs (cache/selphi2/): ochoa_moesm4_5.parquet, site_features.parquet (Ochoa-covered sites),
 site_features_all.parquet (every index site, SELPHI NA defaults), expr.npz + expr_info.json, cantley_norm.npz;
 results/baselines/selphi2/feature_build.json (counts).
-Usage: /workspace/.venv/bin/python -I scripts/baselines/selphi2_build_features.py
+Usage: python -I scripts/baselines/selphi2_build_features.py
 """
 import json
 import sys
 import time
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(ROOT / "src"))
+REPO_ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(REPO_ROOT / "src"))
+from ksp.paths import ROOT  # noqa: E402  project data/working dir ($KSP_DATA_DIR, default: repo root)
 
 from ksp.baselines.selphi2 import features as F  # noqa: E402
 from ksp.index import load_sites  # noqa: E402

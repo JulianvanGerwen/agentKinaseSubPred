@@ -1,5 +1,7 @@
 # Independent audit, CV round 1: R3 neural, simple baselines, R2 (in progress)
 
+> This work was produced as an exercise in testing whether AI agents can run a bioinformatics research project. A lead AI agent (the 'PI', Claude Opus 5.5) directed sub-agents (Claude Opus 5.5 and Sonnet 5.5) under a human-written brief. The human researcher supplied the brief, the data and PhosphoSitePlus access; they did not write the code, run the analyses, or write the text. All results should be checked before use.
+
 Auditor: independent results-auditor agent. I produced none of these results. Date: 2026-10-26, 16:45–17:30 CET.
 Scope: (A) R3 (`docs/model_r3.md`, `src/ksp/models/r3/`, `scripts/models/r3_*.py`, `results/models/r3/FINAL_OOF.json` and its runs); (B) simple baselines (`results/baselines/simple/summary.md`, `src/ksp/baselines/simple.py`, `scripts/baselines/simple_*.py`); (C) R2 as of 16:55 (`docs/model_r2.md`, `src/ksp/models/r2/`, runs `r2_full_cv5*` and `r2_g2_main_cv5*`).
 Constraints I kept to: read-only on every agent's files, ≤8 cores, no GPU, no git, `sealed/` never touched.

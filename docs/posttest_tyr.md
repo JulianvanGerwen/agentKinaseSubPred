@@ -1,5 +1,7 @@
 # Post-TEST exploratory: tyrosine-kinase specificity (DESIGN A34, target (c))
 
+> This work was produced as an exercise in testing whether AI agents can run a bioinformatics research project. A lead AI agent (the 'PI', Claude Opus 5.5) directed sub-agents (Claude Opus 5.5 and Sonnet 5.5) under a human-written brief. The human researcher supplied the brief, the data and PhosphoSitePlus access; they did not write the code, run the analyses, or write the text. All results should be checked before use.
+
 > **Audit note (PI, 2026-10-27 03:16; `docs/audit/audit_posttest.md`).** Numbers reproduce exactly and nesting is real. Corrections:
 > - Motif repair improves 18 and worsens 19 of the 38 Y kinases. Two of the predicted families lose: TAM/Axl −0.053 and Tec −0.031.
 > - "~+0.019 without nesting" was not measured; it is the mean inner-fold gain on the 42-kinase selection set.
@@ -184,7 +186,7 @@ loss on overall M1 beyond 0.002.
 ## 5. Reproduction, cost, limits
 
 ```
-/workspace/.venv/bin/python -I scripts/models/posttest_tyr/tyr_fusion_explore.py --threads 8
+.venv/bin/python -I scripts/models/posttest_tyr/tyr_fusion_explore.py --threads 8
 ```
 693 s wall, peak ~16 GB RSS, 8 threads (within the ≤8 thread / ≤30 GB budget). Nothing was
 committed; no frozen artefact, `FREEZE.json`, ledger or `sealed/` file was read or written.

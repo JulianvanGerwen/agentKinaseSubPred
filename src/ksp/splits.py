@@ -31,10 +31,9 @@ import pandas as pd
 from scipy.sparse import coo_matrix
 from scipy.sparse.csgraph import connected_components
 
-ROOT = Path(__file__).resolve().parents[2]
+from ksp.paths import MMSEQS, ROOT  # noqa: E402  ROOT = project data/working dir ($KSP_DATA_DIR)
 SPLIT_DIR = ROOT / "results" / "splits"
 CACHE = ROOT / "cache" / "splits"
-MMSEQS = "/home/tools/mmseqs/bin/mmseqs"
 N_FOLDS = 5
 
 

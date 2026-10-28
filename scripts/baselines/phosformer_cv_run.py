@@ -19,8 +19,9 @@ import sys
 import time
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(ROOT / "src"))
+REPO_ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(REPO_ROOT / "src"))
+from ksp.paths import ROOT  # noqa: E402  project data/working dir ($KSP_DATA_DIR, default: repo root)
 
 import pandas as pd
 
@@ -31,8 +32,8 @@ ap.add_argument("--ratios", default="16,50")
 ap.add_argument("--eall", action="store_true")
 ap.add_argument("--folds", default="0,1,2,3,4")
 args = ap.parse_args()
-PY = str(ROOT / ".venv/bin/python")
-FT = str(ROOT / "scripts/baselines/phosformer_finetune.py")
+from ksp.paths import PYTHON as PY  # noqa: E402  $KSP_PYTHON or the running interpreter
+FT = str(REPO_ROOT / "scripts/baselines/phosformer_finetune.py")
 state_f = ROOT / "results/baselines/phosformer/cv_state.json"
 state = json.loads(state_f.read_text()) if state_f.exists() else {"runs": {}}
 

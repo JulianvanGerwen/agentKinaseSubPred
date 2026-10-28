@@ -1,11 +1,13 @@
 import sys
 from pathlib import Path
 import numpy as np
+import pytest
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 from ksp import store
 from ksp.index import load_kinases
 
 
+@pytest.mark.requires_data("cache/index/kinases.parquet", "cache/index/sites.parquet")
 def test_roundtrip_and_reorder(tmp_path, monkeypatch):
     monkeypatch.setattr(store, "STORE", tmp_path)
     k = load_kinases().uniprot_acc.to_numpy()
@@ -19,6 +21,7 @@ def test_roundtrip_and_reorder(tmp_path, monkeypatch):
     assert np.array_equal(np.asarray(arr)[:, 0], vals)
 
 
+@pytest.mark.requires_data("cache/index/kinases.parquet", "cache/index/sites.parquet")
 def test_unknown_id_raises():
     import pytest
     with pytest.raises(KeyError):

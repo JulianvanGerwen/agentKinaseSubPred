@@ -12,7 +12,7 @@ Two parts:
       pooled per-kinase E-hard AUROC is taken.
 
 Outputs -> results/features/tyr/{eval_single_feature.tsv, eval_lgbm_per_kinase.tsv, eval_lgbm.json}
-Run: /workspace/.venv/bin/python -I scripts/features/tyr_eval.py [--threads 6]
+Run: python -I scripts/features/tyr_eval.py [--threads 6]
 """
 import argparse
 import json
@@ -24,8 +24,9 @@ import numpy as np
 import pandas as pd
 from sklearn.metrics import roc_auc_score
 
-ROOT = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(ROOT / "src"))
+REPO_ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(REPO_ROOT / "src"))
+from ksp.paths import ROOT  # noqa: E402  project data/working dir ($KSP_DATA_DIR, default: repo root)
 from ksp import index, labels, splits, store  # noqa: E402
 
 RES = ROOT / "results/features/tyr"

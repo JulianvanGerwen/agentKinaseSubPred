@@ -10,7 +10,7 @@ from ksp import deploy as D
 from ksp import eval_test as ET
 from ksp import index, labels, splits
 
-pytestmark = pytest.mark.skipif(not labels.DEV_PAIRS.exists(), reason="split not frozen")
+pytestmark = pytest.mark.skipif(not labels.DEV_PAIRS.exists(), reason="needs project data that is not part of this repository (frozen splits under KSP_DATA_DIR); see DATA_SOURCES.md")
 
 
 @pytest.fixture()

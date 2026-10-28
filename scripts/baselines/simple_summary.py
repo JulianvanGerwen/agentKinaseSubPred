@@ -3,12 +3,14 @@ All numbers are read from ksp.eval outputs (endpoints, bootstrap, strata); nothi
 from __future__ import annotations
 
 import json
+import sys
 import time
 from pathlib import Path
 
 import pandas as pd
 
-ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
+from ksp.paths import ROOT  # noqa: E402  project data/working dir ($KSP_DATA_DIR, default: repo root)
 OUT = ROOT / "results" / "baselines" / "simple"
 
 ORDER = [("b0_prior", "B0-prior (kinase training count)"),

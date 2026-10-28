@@ -1,7 +1,7 @@
 import json, pandas as pd, numpy as np, sys
 sys.path.insert(0,'/workspace/src')
 from ksp import splits
-SP='/tmp/claude-588982/-workspace/f2c6b342-58ef-4e11-b665-a8c647ff9a45/scratchpad'
+SP='<scratchpad>'
 B='/workspace/results/test/721dc1977366'
 ks=splits.load_eval_kinase_sets()
 print(ks.columns.tolist()); 

@@ -8,7 +8,7 @@ Single-fold runs and per-LKO-fold runs (name '..._lko<k>') are skipped (A24 does
 Evaluation: missing='worst' (unscored required pairs ranked last and counted -> coverage column); A24 fold
 rank-normalisation ON, except leave-kinase-out pooled runs (one model per kinase): fold_normalise=False.
 Writes ONLY results/runs/<run_id>/metrics_a24.json in other agents' run dirs (old metrics kept).
-Usage: /workspace/.venv/bin/python scripts/reeval_cv_runs.py [--force] [--only REGEX] [--list] [--board-only]
+Usage: python scripts/reeval_cv_runs.py [--force] [--only REGEX] [--list] [--board-only]
 """
 import argparse
 import json
@@ -24,8 +24,9 @@ for v in ("OMP_NUM_THREADS", "OPENBLAS_NUM_THREADS", "MKL_NUM_THREADS", "NUMEXPR
 import numpy as np  # noqa: E402
 import pandas as pd  # noqa: E402
 
-ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / "src"))
+REPO_ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(REPO_ROOT / "src"))
+from ksp.paths import ROOT  # noqa: E402  project data/working dir ($KSP_DATA_DIR, default: repo root)
 from ksp import eval as E  # noqa: E402
 from ksp import canary, index, labels, splits  # noqa: E402
 

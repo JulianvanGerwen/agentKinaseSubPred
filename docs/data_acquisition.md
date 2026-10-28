@@ -1,8 +1,10 @@
 # Data acquisition, wave 1 (access date 2026-10-26)
 
-Per-file URL, version, licence, size and SHA-256 are in /workspace/DATA.md (section "Downloaded (external/)"). Raw hashes: /workspace/logs/dl/sha256_wave1.txt. Scripts: /workspace/scripts/dl.sh (generic curl), dl_pdc_pancancer.py (PDC pan-cancer), make_data_rows.py (DATA.md rows). Nothing downloaded was executed; only the kinase-library sdist was untarred (as data) to external/kinase_library/src/. Excel files were inspected via stdlib zip/XML only.
+> This work was produced as an exercise in testing whether AI agents can run a bioinformatics research project. A lead AI agent (the 'PI', Claude Opus 5.5) directed sub-agents (Claude Opus 5.5 and Sonnet 5.5) under a human-written brief. The human researcher supplied the brief, the data and PhosphoSitePlus access; they did not write the code, run the analyses, or write the text. All results should be checked before use.
 
-## Obtained (path under /workspace/external/; key identifiers; quick counts)
+Per-file URL, version, licence, size and SHA-256 are in DATA.md (section "Downloaded (external/)"). Raw hashes: logs/dl/sha256_wave1.txt. Scripts: scripts/dl.sh (generic curl), dl_pdc_pancancer.py (PDC pan-cancer), make_data_rows.py (DATA.md rows). Nothing downloaded was executed; only the kinase-library sdist was untarred (as data) to external/kinase_library/src/. Excel files were inspected via stdlib zip/XML only.
+
+## Obtained (path under external/; key identifiers; quick counts)
 | Item | Dir | Contents / IDs / rows |
 |---|---|---|
 | 1 Cantley Ser/Thr (Johnson 2023) | cantley_johnson2023/ | MOESM3 (T1 kinase info), MOESM4 (T2: raw/norm/norm-scaled PSSMs, 303 S/T kinases), MOESM5 (T3: precomputed phosphosite scores/percentiles, 370 MB xlsx, ~89,785 rows x ~630 cols, Ochoa sites), MOESM6 (T4), 2 PDFs |
@@ -40,9 +42,9 @@ Per-file URL, version, licence, size and SHA-256 are in /workspace/DATA.md (sect
 
 # Data acquisition, wave 2 (access date 2026-10-26)
 
-Per-file URL/version/licence/size/SHA-256: /workspace/DATA.md section "wave 2" (raw hashes logs/dl/sha256_wave2.txt; git commits logs/dl/wave2_git_commits.txt). Scripts: scripts/dl_w2.sh, dl_w2b.sh, make_data_rows_w2.py. Nothing downloaded was executed; git clones/sdist are data only. Useful routes that worked: Europe PMC `.../rest/<PMCID>/supplementaryFiles` (open-access papers only), `media.springernature.com/original/springer-static/esm/art%3A<doi>/MediaObjects/<file>` (links scraped from the nature.com article page), Zenodo via `zenodo.org/api/records?q=recid:<id>` (metadata) and `.../api/records/<id>/files/<name>/content` (data; Zenodo rate-limits bursts with 403 "unusual traffic", wait several minutes).
+Per-file URL/version/licence/size/SHA-256: DATA.md section "wave 2" (raw hashes logs/dl/sha256_wave2.txt; git commits logs/dl/wave2_git_commits.txt). Scripts: scripts/dl_w2.sh, dl_w2b.sh, make_data_rows_w2.py. Nothing downloaded was executed; git clones/sdist are data only. Useful routes that worked: Europe PMC `.../rest/<PMCID>/supplementaryFiles` (open-access papers only), `media.springernature.com/original/springer-static/esm/art%3A<doi>/MediaObjects/<file>` (links scraped from the nature.com article page), Zenodo via `zenodo.org/api/records?q=recid:<id>` (metadata) and `.../api/records/<id>/files/<name>/content` (data; Zenodo rate-limits bursts with 403 "unusual traffic", wait several minutes).
 
-## Obtained (dirs under /workspace/external/)
+## Obtained (dirs under external/)
 | # | Item | Dir | Notes |
 |---|---|---|---|
 | 1 | Buljan 2020 Mol Cell | buljan2020/ | supp zip (PMC7427327): mmc3 = Table S2 final AP-MS interactome (Bait_id, Protein_id, wdscore, gfpratio, spectral counts; ~7.3k rows), mmc4 S3 co-purified pairs (1.7k), mmc7 S6 predicted regulatory phosphosites (NetPhorest), mmc2 S1 kinase classification, mmc8-10 disease/neighbourhood/exp info |

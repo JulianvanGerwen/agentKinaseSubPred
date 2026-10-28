@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 """Append wave-1 download rows to DATA.md from logs/dl/sha256_wave1.txt (one row per directory-source, file hashes listed)."""
 import os,collections
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
+from ksp.paths import ROOT  # noqa: E402  project data/working dir ($KSP_DATA_DIR, default: repo root)
 src={ # dir: (URL, version, license)
 'string':('https://stringdb-downloads.org/download/ (protein.*.v12.0, 9606)','STRING v12.0','CC BY 4.0'),
 'hpa':('https://www.proteinatlas.org/download/ (tsv/subcellular_location, rna_tissue_consensus, rna_celline; proteinatlas.tsv.zip)','HPA current release as of 2026-10-26 (version not stated in file)','CC BY-SA 4.0'),
@@ -26,14 +30,14 @@ src={ # dir: (URL, version, license)
 'benchmarkin':('https://zenodo.org/records/12566560','Zenodo 10.5281/zenodo.12566560 (2024-06-27; Muller-Dott et al.)','CC BY 4.0'),
 }
 sizes={}; rows=collections.defaultdict(list)
-for l in open('/workspace/logs/dl/sha256_wave1.txt'):
+for l in open(ROOT / 'logs/dl/sha256_wave1.txt'):
     h,p=l.strip().split('  ',1); p=p[2:]; d=os.path.dirname(p).split('/')[0]
-    rows[d].append((p,h,os.path.getsize('/workspace/external/'+p)))
-out=['\n## Downloaded (external/) -- wave 1, access date 2026-10-26\nAll under /workspace/external/<dir>/. Per-file SHA-256 below each source; full list in logs/dl/sha256_wave1.txt (kinase_library extracted tree: logs/dl/sha256_kinase_library_extracted.txt).\n']
+    rows[d].append((p,h,os.path.getsize(ROOT / 'external' / p)))
+out=['\n## Downloaded (external/) -- wave 1, access date 2026-10-26\nAll under external/<dir>/. Per-file SHA-256 below each source; full list in logs/dl/sha256_wave1.txt (kinase_library extracted tree: logs/dl/sha256_kinase_library_extracted.txt).\n']
 for d in sorted(rows):
     u,v,lic=src[d]; tot=sum(r[2] for r in rows[d])
     out.append(f'### {d}\n- URL: {u}\n- Version/release: {v}\n- Accessed: 2026-10-26; License: {lic}; total size: {tot/1e6:.1f} MB\n')
     out.append('| file | bytes | SHA-256 |\n|---|---|---|')
     for p,h,s in sorted(rows[d]): out.append(f'| {p.split("/",1)[1]} | {s} | {h} |')
     out.append('')
-open('/workspace/DATA.md','a').write('\n'.join(out)+'\n')
+open(ROOT / 'DATA.md','a').write('\n'.join(out)+'\n')

@@ -7,7 +7,7 @@ from pathlib import Path
 from ksp import eval as E, eval_test as T
 
 ROOT = Path('/workspace')
-OUT = Path('/tmp/claude-588982/-workspace/f2c6b342-58ef-4e11-b665-a8c647ff9a45/scratchpad/recomp')
+OUT = Path('<scratchpad>/recomp')
 cfg = json.load(open(ROOT / 'FREEZE.json'))
 by = {c['name']: c for c in cfg['configs']}
 boot = set(sys.argv[1].split(',')) if len(sys.argv) > 1 else set()

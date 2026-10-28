@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 """Append wave-2 download rows to DATA.md from logs/dl/sha256_wave2.txt (+ git clone commits)."""
 import os,collections
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
+from ksp.paths import ROOT  # noqa: E402  project data/working dir ($KSP_DATA_DIR, default: repo root)
 Z='https://zenodo.org/api/records/'
 src={ # key: (URL, version, license)
 'hgnc':('https://storage.googleapis.com/public-download-files/hgnc/tsv/tsv/hgnc_complete_set.txt','HGNC complete set, current as of 2026-10-26','CC0'),
@@ -27,15 +31,15 @@ src={ # key: (URL, version, license)
 'zenodo_meta':('Zenodo search API JSON (q=recid:ID) for the records above, incl. decryptM 2.0 17533475 (restricted, no files)','2026-10-26','n/a'),
 }
 rows=collections.defaultdict(list)
-for l in open('/workspace/logs/dl/sha256_wave2.txt'):
+for l in open(ROOT / 'logs/dl/sha256_wave2.txt'):
     h,p=l.strip().split('  ',1); p=p[2:]; parts=p.split('/')
     k='/'.join(parts[:2]) if '/'.join(parts[:2]) in src else parts[0]
-    rows[k].append((p,h,os.path.getsize('/workspace/external/'+p),len(k)+1))
-out=['\n## Downloaded (external/) -- wave 2, access date 2026-10-26\nAll under /workspace/external/<dir>/. Full hash list: logs/dl/sha256_wave2.txt. Git clones (data only, not executed): phosformer/github = https://github.com/esbgkannan/phosformer (waylandy/phosformer) commit 6e7c019ba5a4c4f6cf7e44c5359c6115afc14c16, CC BY-NC-ND 4.0; kolossus/github = https://github.com/rohitsinghlab/KolossuS commit e8f3013a9736be07a1ff17a79ca7c9529daec63b; selphi2/selphi_2.0 = https://gitlab.ebi.ac.uk/petsalakilab/selphi_2.0 commit f9822f90f174e09e392d789698d8c5ec33baf1d2, Apache-2.0 (commits: logs/dl/wave2_git_commits.txt). Scripts: scripts/dl_w2.sh, scripts/dl_w2b.sh, scripts/make_data_rows_w2.py.\n']
+    rows[k].append((p,h,os.path.getsize(ROOT / 'external' / p),len(k)+1))
+out=['\n## Downloaded (external/) -- wave 2, access date 2026-10-26\nAll under external/<dir>/. Full hash list: logs/dl/sha256_wave2.txt. Git clones (data only, not executed): phosformer/github = https://github.com/esbgkannan/phosformer (waylandy/phosformer) commit 6e7c019ba5a4c4f6cf7e44c5359c6115afc14c16, CC BY-NC-ND 4.0; kolossus/github = https://github.com/rohitsinghlab/KolossuS commit e8f3013a9736be07a1ff17a79ca7c9529daec63b; selphi2/selphi_2.0 = https://gitlab.ebi.ac.uk/petsalakilab/selphi_2.0 commit f9822f90f174e09e392d789698d8c5ec33baf1d2, Apache-2.0 (commits: logs/dl/wave2_git_commits.txt). Scripts: scripts/dl_w2.sh, scripts/dl_w2b.sh, scripts/make_data_rows_w2.py.\n']
 for d in sorted(rows):
     u,v,lic=src[d]; tot=sum(r[2] for r in rows[d])
     out.append(f'### {d}\n- URL: {u}\n- Version/release: {v}\n- Accessed: 2026-10-26; License: {lic}; total size: {tot/1e6:.1f} MB\n')
     out.append('| file | bytes | SHA-256 |\n|---|---|---|')
     for p,h,s,n in sorted(rows[d]): out.append(f'| {p[len(d)+1:] if p.startswith(d+"/") else p} | {s} | {h} |')
     out.append('')
-open('/workspace/DATA.md','a').write('\n'.join(out)+'\n')
+open(ROOT / 'DATA.md','a').write('\n'.join(out)+'\n')

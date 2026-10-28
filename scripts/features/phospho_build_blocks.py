@@ -20,9 +20,10 @@ import numpy as np
 import pandas as pd
 import pyarrow.parquet as pq
 
-ROOT = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(ROOT / "src"))
-sys.path.insert(0, str(ROOT / "scripts"))
+REPO_ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(REPO_ROOT / "src"))
+sys.path.insert(0, str(REPO_ROOT / "scripts"))
+from ksp.paths import ROOT  # noqa: E402  project data/working dir ($KSP_DATA_DIR, default: repo root)
 from ksp.features import phospho as ph  # noqa: E402
 from ksp.features import phospho_cptac as pc  # noqa: E402
 from profile_compendium import classify_condition  # noqa: E402

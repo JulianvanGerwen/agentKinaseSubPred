@@ -4,7 +4,7 @@ results/labels/{label_summary,label_funnel,kinase_label_counts}.tsv.
 
 Requires results/labels/kinase_list.tsv + kinase_synonyms.tsv (scripts/build_kinase_list.py) and
 cache/sites/universe.parquet (scripts/build_site_universe.py). Rules: src/ksp/labels.py, docs/labels_universe.md.
-Usage: /workspace/.venv/bin/python -I scripts/build_labels.py [--min-identity 11] [--omnipath-include-aggregators]
+Usage: python -I scripts/build_labels.py [--min-identity 11] [--omnipath-include-aggregators]
 """
 import argparse
 import sys
@@ -14,8 +14,9 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / "src"))
+REPO_ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(REPO_ROOT / "src"))
+from ksp.paths import ROOT  # noqa: E402  project data/working dir ($KSP_DATA_DIR, default: repo root)
 from ksp import io_psp, kinases, labels, sites  # noqa: E402
 
 

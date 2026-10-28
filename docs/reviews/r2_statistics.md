@@ -1,10 +1,12 @@
 # Review r2: statistics (checking DESIGN.md v1)
 
+> This work was produced as an exercise in testing whether AI agents can run a bioinformatics research project. A lead AI agent (the 'PI', Claude Opus 5.5) directed sub-agents (Claude Opus 5.5 and Sonnet 5.5) under a human-written brief. The human researcher supplied the brief, the data and PhosphoSitePlus access; they did not write the code, run the analyses, or write the text. All results should be checked before use.
+
 Reviewer role: biostatistics / ML evaluation. Scope as briefed: §4–§6 and §8.5. I checked endpoints M1–M5, the superiority rule, the matched-universe rule, prior correction, tiered calibration and the coverage estimate. I read r1_statistics.md and compared v1 against it.
 
 ## 0. Quick checks on the actual labels (read-only, approximate)
 
-Scripts are in `/tmp/claude-588982/-workspace/f2c6b342-58ef-4e11-b665-a8c647ff9a45/scratchpad/r2stat/` (`dom.py`, `ehard.py`, `more.py`, `keval.py`). Per-kinase output is in `ehard_per_kinase.tsv` in the same folder.
+Scripts are in `<scratchpad>/r2stat/` (`dom.py`, `ehard.py`, `more.py`, `keval.py`). Per-kinase output is in `ehard_per_kinase.tsv` in the same folder.
 
 **Inputs:**
 - `cache/labels/ks_pairs.parquet` (31,605 rows).

@@ -6,7 +6,7 @@ these orders. Build once with scripts/build_index.py; never re-sort elsewhere.
 from pathlib import Path
 import pandas as pd
 
-ROOT = Path(__file__).resolve().parents[2]
+from ksp.paths import ROOT  # noqa: E402  project data/working dir ($KSP_DATA_DIR, default: repo root)
 INDEX_DIR = ROOT / "cache" / "index"
 
 

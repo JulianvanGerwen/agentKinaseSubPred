@@ -18,8 +18,9 @@ import sys
 import time
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(ROOT / "src"))
+REPO_ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(REPO_ROOT / "src"))
+from ksp.paths import ROOT  # noqa: E402  project data/working dir ($KSP_DATA_DIR, default: repo root)
 
 import numpy as np  # noqa: E402
 import pandas as pd  # noqa: E402
@@ -143,7 +144,7 @@ def frame(cand, r):
 
 
 def preflight(path) -> dict:
-    r = subprocess.run([sys.executable, "-I", str(ROOT / "src" / "ksp" / "eval_test.py"), "--check-predictions",
+    r = subprocess.run([sys.executable, "-I", str(REPO_ROOT / "src" / "ksp" / "eval_test.py"), "--check-predictions",
                         str(path)], capture_output=True, text=True, cwd=ROOT)
     txt = r.stdout.strip()
     try:

@@ -1,5 +1,7 @@
 # Independent review of REPORT.md (v3, 1,113 lines)
 
+> This work was produced as an exercise in testing whether AI agents can run a bioinformatics research project. A lead AI agent (the 'PI', Claude Opus 5.5) directed sub-agents (Claude Opus 5.5 and Sonnet 5.5) under a human-written brief. The human researcher supplied the brief, the data and PhosphoSitePlus access; they did not write the code, run the analyses, or write the text. All results should be checked before use.
+
 **Reviewer:** independent results reviewer. I wrote none of the audited work.
 **When:** 2026-10-27, 09:29:28–09:45:59 CET (`date`). Wall time **16.5 min**, single session, ≤8 threads, peak RSS well under 60 GB (largest job was a TSV/JSON scan; no model was run).
 **Scope:** REPORT.md against the committed artefacts it cites, plus PROMPT.md for completeness.

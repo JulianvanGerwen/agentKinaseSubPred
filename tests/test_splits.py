@@ -7,8 +7,13 @@ import pandas as pd
 import pytest
 
 from ksp import index, labels, splits
+from ksp.paths import has_project_data
 
-pytestmark = pytest.mark.skipif(not (splits.SPLIT_DIR / "SEAL.json").exists(), reason="split not frozen")
+# The frozen split files (results/splits/) are tracked, but the index and label tables under cache/ are not.
+pytestmark = pytest.mark.skipif(not ((splits.SPLIT_DIR / "SEAL.json").exists() and has_project_data(
+    "cache/index/kinases.parquet", "cache/index/sites.parquet", "cache/index/proteins.parquet", "cache/labels/dev_pairs.parquet")),
+    reason="needs project data that is not part of this repository (frozen splits, index and DEV labels under "
+           "KSP_DATA_DIR); see DATA_SOURCES.md")
 
 
 @pytest.fixture(scope="module")
@@ -46,6 +51,7 @@ def test_no_identical_window_overlap(tabs):
     assert (g == 1).all(), f"{(g > 1).sum()} identical 15-mers shared between TEST/DEV or CV folds"
 
 
+@pytest.mark.requires_data("cache/splits/allvsall.m8")
 def test_mmseqs_edges_within_clusters(tabs):
     cl, _, _ = tabs
     m = splits.read_m8(splits.CACHE / "allvsall.m8")

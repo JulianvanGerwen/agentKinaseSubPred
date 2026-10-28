@@ -1,5 +1,7 @@
 # G4 runbook: FREEZE.json and the single TEST batch
 
+> This work was produced as an exercise in testing whether AI agents can run a bioinformatics research project. A lead AI agent (the 'PI', Claude Opus 5.5) directed sub-agents (Claude Opus 5.5 and Sonnet 5.5) under a human-written brief. The human researcher supplied the brief, the data and PhosphoSitePlus access; they did not write the code, run the analyses, or write the text. All results should be checked before use.
+
 Owner: core-infra. The PI commits FREEZE.json and runs one command. TEST labels are read only by `src/ksp/eval_test.py`, once.
 
 ## Deadline: 04:30 CET (G4 at ~05:20)
@@ -26,7 +28,7 @@ By 04:30, each model owner delivers the items below for **every frozen config an
 
 **Pre-flight:** run this before you report the file. It reads no labels, and `"ok": true` is required.
 
-    /workspace/.venv/bin/python -I src/ksp/eval_test.py --check-predictions cache/runs/<run_id>/test_predictions.parquet
+    .venv/bin/python -I src/ksp/eval_test.py --check-predictions cache/runs/<run_id>/test_predictions.parquet
 
 ### 2. T3 predictions (final model, and any baseline with an LKO variant): `cache/runs/<run_id>/test_t3_predictions.parquet`
 
@@ -79,12 +81,12 @@ There are exactly **9 primary tests**, each with B = 10,000 paired cluster-boots
    - Optionally set `"B_secondary": 1000`, the B used for standalone, strata and sensitivity CIs.
 2. Validate it without touching sealed/. This checks the schema, the primary family and the file pins:
 
-       /workspace/.venv/bin/python -I -c "import sys,json; sys.path.insert(0,'src'); from ksp import eval_test as T; T.validate_freeze(json.load(open('FREEZE.json')))"
+       .venv/bin/python -I -c "import sys,json; sys.path.insert(0,'src'); from ksp import eval_test as T; T.validate_freeze(json.load(open('FREEZE.json')))"
 
 3. Commit FREEZE.json.
 4. Run the batch:
 
-       /workspace/.venv/bin/python -I src/ksp/eval_test.py --real
+       .venv/bin/python -I src/ksp/eval_test.py --real
 
    Without `--real` it only prints usage. What the run does, in order:
    - **Refuses** if:
@@ -105,6 +107,6 @@ Runtime: the B = 10,000 rehearsal on DEV fold 0 (8.5M required pairs) took about
 
 ## Rehearsal (any time; never reads sealed/)
 
-    /workspace/.venv/bin/python -I src/ksp/eval_test.py --dry-run --fold 0 --B 1000
+    .venv/bin/python -I src/ksp/eval_test.py --dry-run --fold 0 --B 1000
 
 `--B` and `--fold` are allowed only with `--dry-run`. B3/B4 have no fold-0 runs, so the rehearsal exercises the unavailable_primary contingency. The rehearsal uses DEV CV fold 0 as a fake TEST, with existing fold-0 / pooled-OOF runs as configs, under `cache/eval_test_dryrun/`. `tests/test_eval_test_batch.py` runs the same path on synthetic scorers with known answers.

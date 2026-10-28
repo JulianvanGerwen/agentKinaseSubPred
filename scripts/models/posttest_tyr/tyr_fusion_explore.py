@@ -26,7 +26,7 @@ substrate-cluster bootstrap restricted to the Y stratum (the same `_boot_matrix`
 docs/strata_cv.md uses for stratum CIs).
 
 Outputs -> results/models/posttest_tyr/{explore.json, per_kinase_Y.tsv, selection_trace.tsv}
-Run: /workspace/.venv/bin/python -I scripts/models/posttest_tyr/tyr_fusion_explore.py --threads 8
+Run: python -I scripts/models/posttest_tyr/tyr_fusion_explore.py --threads 8
 """
 import argparse
 import json
@@ -37,8 +37,9 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-ROOT = Path(__file__).resolve().parents[3]
-sys.path.insert(0, str(ROOT / "src"))
+REPO_ROOT = Path(__file__).resolve().parents[3]
+sys.path.insert(0, str(REPO_ROOT / "src"))
+from ksp.paths import ROOT  # noqa: E402  project data/working dir ($KSP_DATA_DIR, default: repo root)
 from ksp import eval as kev  # noqa: E402
 from ksp import index, labels, splits, store  # noqa: E402
 

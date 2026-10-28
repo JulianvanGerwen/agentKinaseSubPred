@@ -1,5 +1,7 @@
 # Context features: PPI (F3), localisation (F4), co-expression (F5)
 
+> This work was produced as an exercise in testing whether AI agents can run a bioinformatics research project. A lead AI agent (the 'PI', Claude Opus 5.5) directed sub-agents (Claude Opus 5.5 and Sonnet 5.5) under a human-written brief. The human researcher supplied the brief, the data and PhosphoSitePlus access; they did not write the code, run the analyses, or write the text. All results should be checked before use.
+
 Owner: feat-context agent. Date: 2026-10-26. DESIGN v1 §7 F3/F4/F5.
 Code: `src/ksp/features/{ppi_idmap,ppi,ppi_label,loc,coexpr}.py`; build scripts `scripts/features/context_{ppi,ppi_label,loc,coexpr,sanity}.py`.
 Matrices are written only through `ksp.store.save_matrix` (store names `context/<module>/<name>`, files in `cache/features/context/<module>/`, each with a `.json` holding the index hashes). Each module also has an aggregate `descriptor.json` (copied to `results/features/context/<module>_descriptor.json`).

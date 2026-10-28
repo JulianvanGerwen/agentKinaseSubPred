@@ -1,5 +1,7 @@
 # R5: fine-tuned ESM-2 late-interaction kinase–site model
 
+> This work was produced as an exercise in testing whether AI agents can run a bioinformatics research project. A lead AI agent (the 'PI', Claude Opus 5.5) directed sub-agents (Claude Opus 5.5 and Sonnet 5.5) under a human-written brief. The human researcher supplied the brief, the data and PhosphoSitePlus access; they did not write the code, run the analyses, or write the text. All results should be checked before use.
+
 Owner: R5 agent, 2026-10-26. Harness frozen at commit 974d520 (DESIGN A28); every metric on this page comes from
 `ksp.eval`. Labels only through `ksp.labels.load_dev()`.
 

@@ -1,5 +1,5 @@
 """Toy-data tests for src/ksp/features/{structure,esm_embed}.py.
-Run: /workspace/.venv/bin/python tests/test_features_structure_esm.py"""
+Run: python tests/test_features_structure_esm.py"""
 import sys
 from pathlib import Path
 

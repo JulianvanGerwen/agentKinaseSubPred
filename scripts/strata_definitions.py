@@ -5,15 +5,16 @@
   cantley_phospho_preference.tsv per S/T Cantley matrix: max pS/pT log2, qualifying offsets (priming_cantley rule)
   dev_hub_sites.tsv              DEV hub sites (A26): site, n non-paralogous kinase groups, kinases
   dev_site_strata_counts.tsv     DEV evaluable positives per site/pair stratum (CV-side counts only)
-Usage: /workspace/.venv/bin/python -I scripts/strata_definitions.py
+Usage: python -I scripts/strata_definitions.py
 """
 import sys
 from pathlib import Path
 
 import pandas as pd
 
-ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / "src"))
+REPO_ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(REPO_ROOT / "src"))
+from ksp.paths import ROOT  # noqa: E402  project data/working dir ($KSP_DATA_DIR, default: repo root)
 from ksp import index, labels, splits  # noqa: E402
 from ksp import strata as ST  # noqa: E402
 

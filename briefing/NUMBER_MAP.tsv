@@ -1,0 +1,179 @@
+claim	value	source_file
+In brief / §6: TEST M1 final model	0.794 [0.774, 0.811]	results/test/721dc1977366/final_ci.tsv; the accompanying paper Table 3
+In brief / §6: TEST M1 Cantley arm (i)	0.714 [0.685, 0.743]	results/test/721dc1977366/B1_i_ci.tsv; manuscript Table 3
+In brief / §6: primary tests met "beats" rule	9 of 9	results/test/721dc1977366/superiority.tsv
+In brief / §6 Tyr: TEST M1 S/T kinases (94)	0.841	results/test/721dc1977366/final_strata.tsv (residue_class=ST); manuscript Table 4
+In brief / §6 Tyr: TEST M1 Tyr kinases (23)	0.595	results/test/721dc1977366/final_strata.tsv (residue_class=Y); manuscript Table 4
+In brief / §6 Tyr: popularity floor on Tyr kinases	0.585	results/test/721dc1977366/B0_pop_strata.tsv (residue_class=Y)
+In brief / §6 calibration: top-1 accuracy on labelled TEST sites	0.353 (35%, 35.3%)	results/test/721dc1977366/final_reliability.tsv (accuracy_overall)
+In brief / §6 / §10: no site at assignment probability >=0.8	0.8	results/test/721dc1977366/final_reliability.tsv (no bin >=0.8); results/release/coverage.tsv coverage@0.8 = 0
+Glossary: about 500 human protein kinases	~500	the accompanying paper Author summary
+Glossary: AUROC coin flip / perfect	0.5 / 1	definition
+§1: share of known sites with no assigned kinase	95%	the accompanying paper Introduction (docs/lit/02_ks_annotation_sources.md)
+§1: top 20 kinases hold about half of PSP annotations	20; about half	manuscript Introduction; LITERATURE.md §1
+§1: annotated kinases with fewer than five annotations	146 of 421	manuscript Introduction; RESEARCH_TREE.md M0
+§1: kinases scored	503	manuscript Abstract; results/labels/kinase_list.tsv (via the accompanying paper's number map)
+§1: known pairs with another labelled site on the same protein	68%	manuscript Introduction; RESEARCH_TREE.md M1
+§1: Phosformer test-positive peptides that are training positives	51%	LITERATURE.md §1; manuscript Introduction
+§1: SELPHI2.0 CV AUC and external range	0.97; 0.75–0.83	LITERATURE.md §1; manuscript Introduction
+§1: LinkPhinder random vs independent	0.97; 0.53	LITERATURE.md §1; manuscript Introduction
+§1: KolossuS phylogeny-aware S/T AUROC	0.755	LITERATURE.md §1; manuscript Introduction
+Fig 1 / §6 coverage: observed sites scored	350,736	results/release/coverage.tsv (n_sites)
+§2: PSP release used	2025-05-19	manuscript Methods (Data and site universe)
+§2: L2 labels (human + mouse/rat)	18,638 pairs, 401 kinases	manuscript Methods (Labels); RESEARCH_TREE.md M1
+§2: 15-residue identity for species transfer	15	manuscript Methods (Labels)
+§2: paralog mask kinase-domain identity	60%	manuscript Methods (Negatives)
+§2: SRC-family hard negatives that were paralog substrates	more than half	manuscript Methods (Negatives); RESEARCH_TREE.md M1
+§2: positives vs unlabelled sites lacking MS evidence	18% vs 0.4%	manuscript Methods (Data and site universe)
+§2: substrate homology clusters	11,609	manuscript Results (Benchmark design); results/splits/split_report.md
+§2: mmseqs2 thresholds	>=40% identity, >=50% coverage	manuscript Methods (Splits)
+§2: label feature AUROC without / with cross-fitting	0.93–1.00 / 0.59–0.76	manuscript Discussion; supplement §1.5
+§2 / Fig 2: TEST clusters	2,353 (20.3%; ~20%)	manuscript Results (Benchmark design); results/splits/split_report.md
+§2: TEST proteins and positives	3,957 proteins; 2,205 positives	manuscript Results (Benchmark design)
+§2 / Fig 2: CV folds	5	manuscript Methods (Splits)
+§2: kinase clusters for unseen-family tiers	120	manuscript Methods (Splits)
+§2: number of planned primary comparisons	9	FREEZE.json; manuscript Methods (Evaluation)
+§2: negative canaries and gate	12; <=0.57	manuscript Methods (Evaluation)
+§2: positive canary gate	>=0.90	manuscript Methods (Evaluation)
+§2: final model canary values (pooled)	0.539; 1.000	manuscript Methods (Evaluation); results/cv/LEADERBOARD.tsv (r2_fusion_r3 row: 0.5391 / 0.9996)
+§2: folds exceeding canary gate	2 of 5	supplement §4.2
+§3: illustrative label counts for macro averaging	5 vs 600	illustrative (CDK1 has 694 PSP rows: RESEARCH_TREE.md M0)
+§3 / Fig 3: toy M1 example AUROC	0.88 (88%); 4 true, 8 negatives	briefing/figures/make_figures.py fig3 (toy data)
+§3 / Fig 3: candidate sites for a typical S/T kinase	about 60,000; top 1% about 600	results/test/721dc1977366/final_per_kinase.tsv (n_neg_all ~60,200 for S/T kinases)
+§3: M2 top-5 cut-off	5	manuscript Results (Benchmark design)
+§3: M1 kinase set K_eval	119 kinases (>=3 TEST positives on >=2 clusters)	manuscript Results (Benchmark design)
+§3: M4 kinase set K_any	256 kinases (>=1 TEST positive)	manuscript Results (Benchmark design)
+§3: TEST popularity floor M1	0.578	results/test/721dc1977366/B0_pop_ci.tsv
+§3: Holm "beats" threshold	p < 0.05	manuscript Methods (Evaluation)
+§4: Cantley atlas matrices	303 S/T; 93 Tyr	manuscript Introduction; LITERATURE.md §1
+§4: dual-specificity kinases with one matrix, left unscored on TEST	10	manuscript Methods (Baselines); DESIGN.md A30
+§4: Phosformer fidelity check ours vs paper	0.888 vs 0.885	manuscript Results (Retrained baselines); RESEARCH_TREE.md M3
+§4: Phosformer peptide length	11 residues	manuscript Methods (Baselines)
+§4: B3 limits	1 seed; 1:16 negatives; <=3 epochs	manuscript Limitation 5
+§4: B4 bags	10 of 100	manuscript Methods (Baselines)
+§4: TEST pairs without SELPHI site features; CV cost	66.6%; ~0.013 M1	manuscript Results (TEST caveats); docs/audit/audit_test.md verdict 4
+§4: CV M1 Phosformer retrain	0.677	results/cv/LEADERBOARD.tsv (b3a_phosformer_cv_pooled, 0.6774)
+§4: CV M1 SELPHI2.0 retrain on its 34% of pairs vs Cantley same pairs	0.708 vs 0.728; 34%	manuscript Results (Retrained baselines); RESEARCH_TREE.md M2
+§4: CV M1 Cantley	0.717	results/cv/LEADERBOARD.tsv (simple_b1_published_reeval, 0.7166)
+§4: SELPHI2.0 random-pair metric on our split	0.947	manuscript Results (Retrained baselines)
+§4: released Phosformer weights (contaminated)	0.796	results/cv/LEADERBOARD.tsv (b3pub row, 0.7960)
+§5: evidence kinds	7	briefing grouping of manuscript feature families F0–F7
+§5: STRING score share PSP pairs vs controls	34% vs ~4%	manuscript Methods (Features F3); LITERATURE.md §4
+§5: inhibitor conditions	692	manuscript Methods (Features F6b)
+§5: iKiP-DB overlap with PSP pairs	61%	manuscript Methods (Features); supplement §1.5
+§5: R2 features	172	manuscript Methods (R2)
+§5: negatives per positive; hard share	50; half	manuscript Methods (R2)
+§5: seeds per model	5	manuscript Methods (R2, R3)
+§5: distillation gain for R3	+0.019 [0.010, 0.033]	manuscript Methods (R3)
+§5: fusion weights	0.6 / 0.4	manuscript Methods (Late fusion)
+§5: neural trainings, late fusion vs stacking	6 vs 36	manuscript Methods (Late fusion)
+§5 / Fig 4: CV M1 global L2 default (seed 0)	0.768	results/cv/LEADERBOARD.tsv (regime_L2_L2fixed_s0, 0.7682); docs/regimes_labels.md
+§5 / Fig 4: CV M1 per-kinase LightGBM / logistic	0.756 / 0.755	results/cv/LEADERBOARD.tsv (regime_perkinase_lgb_N20_qmap 0.7563; regime_perkinase_lr_N20_qmap 0.7553)
+§5 / Fig 4: CV M1 per-group LightGBM	0.761	results/cv/LEADERBOARD.tsv (regime_pergroup_raw, 0.7607)
+§5: data-rich kinases (>=20 labels in every fold); global vs per-kinase	78; 0.805 vs 0.779	docs/regimes_labels.md; supplement §3.1 (0.8046 vs 0.7788)
+§5: human-only labels lower M2 by	0.029	docs/regimes_labels.md (ΔM2 −0.0294)
+§5: in-vivo-only set about three times smaller	~3x (2,808 vs 8,987 pairs)	docs/regimes_labels.md table of variants
+§5: external labels gain seed 0 / 3-seed mean	+0.006 / +0.001	docs/regimes_labels.md (+0.0058 / +0.0013)
+§5 Fig 4 caption: R2 seed SD	~0.003	supplement §1.1 (R2 seed SD 0.0028)
+§5 Fig 4: other plotted values (partial pooling 0.768/0.199; L1 0.771/0.163; in vitro 0.765/0.145; in vivo 0.739/0.103; M2 global 0.192)	see figure	results/cv/LEADERBOARD.tsv regime_* rows
+§6: CV kinases K_cv	203	manuscript Results (CV)
+§6: CV final fusion M1 / M2 / M3	0.786 / 0.263 / 0.361	results/cv/LEADERBOARD.tsv (r2_fusion_r3__20261026-191901: 0.7864 / 0.2626 / 0.3609)
+§6: CV R2 ensemble / R3 M1	0.776 / 0.754	results/cv/LEADERBOARD.tsv (r2_final_ens5 0.7760; r3_final_distill 0.754)
+§6: CV paired gains over Cantley M1 / M2 / M3	+0.063 [0.048, 0.074] / +0.105 / +0.227	manuscript Results (CV); docs/model_r2.md §6
+§6: TEST configurations; pairs	12; 25.9 million	results/test/LEDGER.md; manuscript Table 3
+§6: TEST final M2	0.363 [0.324, 0.397]	results/test/721dc1977366/final_ci.tsv
+§6: TEST final M3	0.363 [0.309, 0.401]	results/test/721dc1977366/final_ci.tsv
+§6: bootstrap p floor; resamples	0.0002; 10,000	results/test/721dc1977366/superiority.tsv; docs/audit/audit_test.md verdict 6
+§6: TEST M1 gain over Cantley	+0.075 [0.046, 0.099]	results/test/721dc1977366/superiority.tsv (0.0745 [0.0465, 0.0991])
+§6: matched kinases better than Cantley	97 of 116	docs/audit/audit_test.md verdict 2
+§6: M3 vs SELPHI2.0	+0.059 [0.010, 0.120]; 52 better, 27 worse, 40 ties	results/test/721dc1977366/superiority.tsv; docs/audit/audit_test.md verdict 5
+§6: kinases in both CV and TEST sets; CV vs TEST M1	117; 0.792 vs 0.793	docs/audit/audit_test.md verdict 8; manuscript Results (TEST caveats)
+§6: CV vs TEST M2 on same kinases	0.348 vs 0.363	docs/audit/audit_test.md verdict 7
+§6: Cantley CV vs TEST on common kinases	0.741 vs 0.717	manuscript Results (TEST caveats)
+§6 ablation: M3 before/after site structure + ESM-2	0.125 to 0.236	manuscript Table 2; docs/model_r2.md §5
+§6 ablation: kinase descriptors M1 gain	+0.014	manuscript Results (CV)
+§6 ablation: phosphoproteomics families M1 gain	~+0.002	manuscript Results (CV); supplement §2.4
+§6 ablation: studies removed; M1 unchanged	18; 0.773	manuscript Results (CV)
+§6: TEST M1 for 5–19 and >=100 training labels	0.759 / 0.795	results/test/721dc1977366/final_strata.tsv (train_bin); manuscript Table 4
+§6: M4 for kinases without DEV labels	0.807 (16 kinases)	manuscript Results (Understudied kinases)
+§6: CV Hit@5 5–19 bin, Cantley, >=100 bin	0.142 / 0.162 / 0.621	manuscript Results (Understudied kinases); supplement §3.6
+§6: unseen families CV T2 / TEST T3 fusion	0.749 / 0.752	manuscript Results (Generalisation); results/test/721dc1977366/final_t3.json
+§6 / Fig 6: Tyr kinases above own floor; S/T	10 of 23; 91 of 94	results/test/721dc1977366/final_per_kinase.tsv vs B0_pop_per_kinase.tsv (printed by make_figures.py)
+§6 / Fig 6: Tyr M1 Cantley / Phosformer / SELPHI2.0	0.496 / 0.534 / 0.575	results/test/721dc1977366/{B1_i,B3,B4}_strata.tsv (residue_class=Y)
+§6: Tyr CV to TEST same kinases	0.667 to 0.595	manuscript Results (Tyrosine kinases)
+§6: Tyr unseen families (T3)	0.531	manuscript Results (Tyrosine kinases); results/test/721dc1977366/final_t3_per_kinase.tsv
+§6: primed positives final vs Cantley (i)	0.897 vs 0.704	manuscript Table 4; results/test/721dc1977366/{final,B1_i}_strata.tsv
+§6: unprimed positives of priming kinases	0.740 vs 0.725	manuscript Table 4
+§6: CV primed sites priming-aware Cantley vs model	0.945 vs 0.893	manuscript Results (Priming kinases); docs/strata_cv.md §9
+§6: hub sites definition; final vs floor	>=5 kinases; 0.863 vs 0.788	manuscript Table 4
+§6: margin over Cantley on pairs new since 2021	+0.056	manuscript Results (Popularity)
+§6 / Fig 7: labelled TEST sites; ECE	1,458; 0.026	results/test/721dc1977366/final_reliability.tsv (ECE 0.0257)
+§6: >=0.5 tier n; claimed; observed	345; 0.615; 0.603	REPORT.md §7 (0.615 vs 0.603); final_reliability.tsv recomputes 0.6155 / 0.6029
+§6: top Tyr kinase ceiling	0.445	manuscript Results (Calibration); REPORT.md §10
+§6: Tyr 0.2–0.5 tier claimed vs observed	0.41 vs 0.34	docs/audit/audit_test.md verdict 13
+§6 downstream: benchmarKIN PSP reproduction	0.782 vs 0.79	manuscript Results (Downstream); docs/downstream.md
+§6 downstream: perturbation / tumours top-50 vs PSP	−0.013 [−0.043, 0.012] / +0.011 [−0.027, 0.046]	manuscript Results (Downstream); docs/downstream.md
+§6 downstream: unseen drugs	−0.050 [−0.096, −0.001]	manuscript Results (Downstream)
+§6 downstream: vs Cantley top-100 library	+0.176 [0.091, 0.263]	manuscript Results (Downstream)
+§6 downstream: top N per kinase	50	manuscript Results (Downstream)
+§6 coverage: deployment pairs	131 million (131,144,410)	manuscript Results (Coverage)
+§6 coverage: sites >=0.5; without PSP kinase	29,886 (8.5%); 26,762	results/release/coverage.tsv
+§6 coverage: Cantley-only; random	30,258; 6	results/release/coverage.tsv
+§6 coverage: observed sites share of all S/T/Y residues	~19%	manuscript Results (Coverage); docs/features_structure_esm.md
+§6 site table: top assignment_prob kinase differs from top score	25,532 of 350,736 (7.3%)	manuscript Methods (Calibration)
+§6 site table: Tyr sites with non-top kinase at 0.55	19; 0.55	manuscript Methods (Calibration)
+§7: ideas listed in supplement	about 30	docs/SUPPLEMENT_failed_approaches.md summary table (33 rows)
+§7: per-kinase / per-group M1 loss	−0.012 / −0.007	supplement §3.1–3.2; docs/regimes_labels.md
+§7: cross-encoder scoring cost per fold	3.6–14.3 GPU-h	supplement §3.5
+§7: R5 M1 vs gate	0.725 vs 0.751	supplement §3.5
+§7: priming features primed Δ vs rule	−0.006 vs +0.02	supplement §2.3
+§7: Tyr kinases and positives on CV	38; ~1,150	supplement §5.4
+§7: canary v1 label-free AUROC	0.76	supplement §4.2
+§7: random-score coverage of S/T sites (first coverage metric)	98.5%	supplement §4.3
+§8: 24 h window	2026-10-26 13:20 to 2026-10-27 13:20 CET	manuscript Methods (Agent setup); RESEARCH_TREE.md time plan
+§8: amendments	34	DESIGN.md; manuscript Methods (Roles)
+§8: literature agents	4	manuscript Methods (Roles)
+§8: round-1 reviewers; changes accepted of requested	7; ~80 of 84	manuscript Methods (Roles); RESEARCH_TREE.md M1
+§8: round-2 reviewers	4	manuscript Methods (Roles)
+§8: data requests resolved; open	2; 10	manuscript Methods (The human's role)
+§8 / Fig 8: design phase incl. 11 reviews	1.2 h	docs/retro/final_retro.md §1.1
+§8: pipeline running	~T+3 h (G2 met 16:27)	docs/retro/final_retro.md §1.1; RESEARCH_TREE.md 5
+§8 / Fig 8: final model run	19:19 (T+6.0 h)	docs/retro/final_retro.md §1.2; results/cv/LEADERBOARD.tsv (started)
+§8 / Fig 8: timed CV runs; started after 20:00; best of them	135; 62; 0.774	docs/retro/final_retro.md §1.2; results/cv/LEADERBOARD.tsv (started; recounted by make_figures.py)
+§8: serial CV compute	11.8 h	docs/retro/final_retro.md §1.2
+§8 / Fig 8: FREEZE commit; TEST run	00:04; 00:10–00:57	docs/retro/final_retro.md §1.2; results/test/LEDGER.md
+§8 / Fig 8: report draft; idle gap; final retro and review	03:17; ~6 h; 09:27–09:47	docs/retro/final_retro.md; docs/review_report_v3.md; RESEARCH_TREE.md G6
+§8: A24 defect: control score; time; runs re-scored	0.40 vs 0.50; T+3.7 h; 47	supplement §4.1; docs/retro/final_retro.md §1.3
+§8: overconfident tier claimed vs observed; Tyr	0.87 vs 0.54; 0 of 41	supplement §4.4
+§8: report review factual fixes	7	docs/review_report_v3.md; RESEARCH_TREE.md G6
+§8: amendments late; six within 40 min	12 of 34 in last 8.6 h; 6	docs/retro/final_retro.md §3.2
+§8: M2 score column change	0.263 vs 0.205	supplement §4.5
+§8: priming arm known before freeze	~3 h	manuscript What went wrong; docs/retro/final_retro.md §3.3
+§8: regime comparison delegated; compute share	T+6.6 h; 38%	docs/retro/final_retro.md §1.3
+§8: out-of-memory kills (at least)	2	docs/retro/final_retro.md §3.4; supplement §6 item 10
+§8: stale "in progress" markers	11 (8 finished)	docs/retro/final_retro.md §2
+§8: rule against post-freeze changes written after freeze	1 min	docs/retro/final_retro.md §2
+§8: negative results accepted without re-arguing	6	docs/retro/final_retro.md §2, §3.5
+§8 do differently: checklist within	30 min	docs/retro/final_retro.md §4 item 2
+§9 / §10: no number beyond those above	—	—
+§10: >=0.5 tier precision on labelled S/T sites	about 60%	results/test/721dc1977366/final_reliability.tsv (0.603)
+Fig 3 caption: toy example values	0.88	briefing/figures/make_figures.py (toy)
+Fig 5: plotted TEST values and CIs	see figure	results/test/721dc1977366/{final,B1_i,B1_ii,B3,B4,B0_pop}_ci.tsv; CV markers from results/cv/LEADERBOARD.tsv
+Fig 8 caption: planned TEST gate	T+16 h (05:20)	docs/retro/final_retro.md §1.2
+In brief / §8 / Fig 8: FREEZE committed before planned gate	5.3 h (00:04 = T+10.7 h; gate 05:20 = T+16 h)	docs/retro/final_retro.md §1.2 item 3; FREEZE.json mtime 00:04
+In brief / §8 / Fig 8: TEST run finished; gap to gate	T+11.6 h (00:57:29); 4.4 h before the gate	results/test/LEDGER.md (COMPLETED 00:57:29); docs/retro/final_retro.md §1.2
+In brief: CV margin over Cantley quoted in caveat	+0.063	manuscript Results (CV); docs/audit/audit_test.md §0
+Glossary: Holm keeps family-wise false-win chance below	5%	standard definition (Holm 1979); "beats" rule p < 0.05 in manuscript Methods
+§3: M2 candidate kinases per positive	few hundred (345.7)	docs/audit/audit_test.md §2 (cands.py)
+§3: CV kinase set K_cv definition	203 kinases (>=5 DEV positives on >=2 clusters)	manuscript Results (Benchmark design)
+§4: share of pairs that released Phosformer weights could score	2%	manuscript Results (Retrained baselines); results/cv/LEADERBOARD.tsv (b3pub coverage 0.0198)
+§5: site-score (M2) fusion weights	0.5 / 0.5	manuscript Methods (Late fusion); docs/audit/audit_test.md §1
+§6: Holm-adjusted p for eight primary tests	0.0018	results/test/721dc1977366/superiority.tsv (p_holm)
+§6: kinases scored by both final model and Cantley in M1 comparison	116	results/test/721dc1977366/superiority.tsv (B_M1_n_kinases_defined); docs/audit/audit_test.md verdict 2
+§6: kinases scored by Cantley in both CV and TEST	115	manuscript Results (TEST caveats)
+§6: priming kinases fixed in advance	GSK3, CK1, CK2α, PLK1	manuscript Methods (Priming-dependent kinases)
+§6 downstream: Cantley comparison library size	top 100 per kinase	REPORT.md §8 table (ours top100 vs Cantley top100)
+§7: ideas listed in the briefing	6	docs/SUPPLEMENT_failed_approaches.md summary table (selection)
+§8: report review findings	7 factual errors; 6 overstatements	docs/review_report_v3.md §A, §B
+§8: M2 score change: raw equal-weight score vs calibrated probability	0.263 vs 0.205	supplement §4.5; manuscript Methods (Calibration)
+Discrepancy note: design-review changes accepted	about 80 of 84 (RESEARCH_TREE.md M1); final_retro.md says 84 accepted	RESEARCH_TREE.md M1; docs/retro/final_retro.md §1.1

@@ -1,5 +1,7 @@
 # 02 — Sources of experimentally verified kinase–substrate (site-level) annotations, and their quality
 
+> This work was produced as an exercise in testing whether AI agents can run a bioinformatics research project. A lead AI agent (the 'PI', Claude Opus 5.5) directed sub-agents (Claude Opus 5.5 and Sonnet 5.5) under a human-written brief. The human researcher supplied the brief, the data and PhosphoSitePlus access; they did not write the code, run the analyses, or write the text. All results should be checked before use.
+
 Author: literature agent (KS-sources), 2026-10-26. Scope: human (+ mouse/rat orthologous) **site-level** kinase→phosphosite (KS) annotations usable as labels, test sets or auxiliary features for the project (see `docs/AGENT_BRIEF.md`).
 Project rule recap: *labels (train/val/test) must be literature-derived, experimentally verified KS annotations.* High-throughput (HT) screens, predictions and text-mining output are treated below as candidate **features** or **external sanity checks**, never as gold labels, unless explicitly argued otherwise.
 
@@ -210,7 +212,7 @@ Downloaded human phosphorylation rows (`https://omnipathdb.org/enzsub?genesymbol
 
 ## 9. Reproducibility notes (transient query inputs, not project data)
 
-Computed with `/workspace/scripts/lit/ks_source_overlap_stats.py` on 2026-10-26. Inputs were fetched to a scratch directory and are not stored under `external/` (no project data derived from them yet); a data agent should re-acquire them into `external/<source>/` and record them in DATA.md before any modelling use.
+Computed with `scripts/lit/ks_source_overlap_stats.py` on 2026-10-26. Inputs were fetched to a scratch directory and are not stored under `external/` (no project data derived from them yet); a data agent should re-acquire them into `external/<source>/` and record them in DATA.md before any modelling use.
 - OmniPath enzsub (URL in §2.6), 4,868,762 bytes, SHA-256 `db90dc41315d73fef5b8276b9cdeb91a6da51745e98750e25203496774c9e8e4`.
 - UniProt human reviewed MOD_RES "by" (URL in §2.2), 1,627,793 bytes, SHA-256 `16f15905cb48d1cdcbe2e49e96e57f68fbb1233e4a1d4fa78ca163886396407b`.
 - iPTMnet `ptm.txt`: only byte-range samples inspected (source codes).

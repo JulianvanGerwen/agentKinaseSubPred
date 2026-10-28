@@ -28,7 +28,7 @@ import pandas as pd
 from . import io_psp
 from .ids import CanonicalStore, map_table
 
-ROOT = Path(__file__).resolve().parents[2]
+from ksp.paths import ROOT  # noqa: E402  project data/working dir ($KSP_DATA_DIR, default: repo root)
 DATA = ROOT / "data"
 EXT = ROOT / "external"
 CACHE = ROOT / "cache"

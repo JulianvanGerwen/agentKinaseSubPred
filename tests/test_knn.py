@@ -17,7 +17,11 @@ import numpy as np
 import pandas as pd
 import pytest
 
-ROOT = Path(__file__).resolve().parents[2]
+# Optional dependencies (pip install -e ".[gpu,full]"): the kNN engine needs torch, the BLOSUM metric Biopython.
+pytest.importorskip("torch", reason="needs torch (optional 'gpu' extra)")
+pytest.importorskip("Bio", reason="needs biopython (optional 'full' extra)")
+
+ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 from ksp import crossfit  # noqa: E402
 from ksp.eval import auroc  # noqa: E402

@@ -23,7 +23,7 @@ import numpy as np
 import pandas as pd
 
 from ksp import labels
-from ksp.index import ROOT
+from ksp.paths import ROOT  # project data/working dir ($KSP_DATA_DIR, default: repo root)
 
 EXTRA = ("L2_vivo", "L2ext")
 ALL_VARIANTS = ("L2", "L1", "L2_vitro", "L2_vivo", "L2ext")

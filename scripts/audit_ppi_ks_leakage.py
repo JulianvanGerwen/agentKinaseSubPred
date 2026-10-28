@@ -16,12 +16,16 @@ pairs (kinase == substrate) excluded; STRING mapping via UniProt_AC aliases (man
 a pair has evidence if any mapped ENSP pair does).
 """
 import argparse, collections, csv, gzip, io, os, random, sys, zipfile
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
+from ksp.paths import ROOT  # noqa: E402  project data/working dir ($KSP_DATA_DIR, default: repo root)
 
 p = argparse.ArgumentParser()
-p.add_argument("--psp", default="/workspace/data/Kinase_Substrate_Dataset")
-p.add_argument("--ext", default="/workspace/external")
+p.add_argument("--psp", default=str(ROOT / "data" / "Kinase_Substrate_Dataset"))
+p.add_argument("--ext", default=str(ROOT / "external"))
 p.add_argument("--seed", type=int, default=0)
-p.add_argument("--out", default="/workspace/results/leakage/ppi_ks_leakage.tsv")
+p.add_argument("--out", default=str(ROOT / "results" / "leakage" / "ppi_ks_leakage.tsv"))
 a = p.parse_args()
 rng = random.Random(a.seed)
 E = a.ext

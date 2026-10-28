@@ -1,5 +1,7 @@
 # r1 review — prior work & baselines (role: prior_work_baselines)
 
+> This work was produced as an exercise in testing whether AI agents can run a bioinformatics research project. A lead AI agent (the 'PI', Claude Opus 5.5) directed sub-agents (Claude Opus 5.5 and Sonnet 5.5) under a human-written brief. The human researcher supplied the brief, the data and PhosphoSitePlus access; they did not write the code, run the analyses, or write the text. All results should be checked before use.
+
 Reviewer: independent agent, round r1, 2026-10-26.
 Scope: are B1–B6 the right set; are the retraining plans fair and faithful; are we comparing on the same
 pairs/coverage; what we must be able to show to claim we "beat" each.

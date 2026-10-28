@@ -25,7 +25,7 @@ from pathlib import Path
 
 import pandas as pd
 
-ROOT = Path(__file__).resolve().parents[2]
+from ksp.paths import REPO_ROOT, ROOT  # noqa: E402  ROOT = project data/working dir ($KSP_DATA_DIR)
 RESULTS = ROOT / "results" / "runs"
 CACHE = ROOT / "cache" / "runs"
 
@@ -40,7 +40,7 @@ def _rel(p: Path) -> str:
 def git_hash() -> str:
     """Read-only `git rev-parse HEAD` (+ '-dirty' flag is NOT computed: agents never run git status)."""
     try:
-        return subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True,
+        return subprocess.run(["git", "rev-parse", "HEAD"], cwd=REPO_ROOT, capture_output=True, text=True,
                               timeout=20).stdout.strip() or "unknown"
     except Exception as e:  # recorded, not hidden
         return f"unavailable:{type(e).__name__}"

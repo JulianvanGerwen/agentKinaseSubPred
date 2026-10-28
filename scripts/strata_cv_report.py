@@ -33,8 +33,9 @@ for v in ("OMP_NUM_THREADS", "OPENBLAS_NUM_THREADS", "MKL_NUM_THREADS", "NUMEXPR
 import numpy as np  # noqa: E402
 import pandas as pd  # noqa: E402
 
-ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / "src"))
+REPO_ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(REPO_ROOT / "src"))
+from ksp.paths import ROOT  # noqa: E402  project data/working dir ($KSP_DATA_DIR, default: repo root)
 from ksp import eval as E  # noqa: E402
 from ksp import labels  # noqa: E402
 from ksp import strata as ST  # noqa: E402

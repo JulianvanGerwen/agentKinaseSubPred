@@ -1,5 +1,7 @@
 # R2 — global kinase–site pair model (LightGBM)
 
+> This work was produced as an exercise in testing whether AI agents can run a bioinformatics research project. A lead AI agent (the 'PI', Claude Opus 5.5) directed sub-agents (Claude Opus 5.5 and Sonnet 5.5) under a human-written brief. The human researcher supplied the brief, the data and PhosphoSitePlus access; they did not write the code, run the analyses, or write the text. All results should be checked before use.
+
 Owner: R2 agent. Status (21:25): CV work done; final DEV/TEST runs are prepared (§6.4) and waiting for the G4 go.
 
 **Headline.** Pooled 5-fold DEV CV, ksp.eval A24 (harness 974d520), K_cv = 203 kinases.

@@ -7,6 +7,7 @@ from ksp import canary, index, labels, splits
 from ksp import eval as E
 
 
+@pytest.mark.requires_data("cache/index/kinases.parquet", "cache/index/sites.parquet", "cache/labels/dev_pairs.parquet", "cache/labels/canary_dev.parquet", "results/splits/SEAL.json")
 def test_canary_kinases_and_descriptors():
     k = canary.kinases_with_canaries()
     assert len(k) == len(index.load_kinases()) + 13
@@ -15,6 +16,7 @@ def test_canary_kinases_and_descriptors():
     assert np.array_equal(d1.values, d2.values)
 
 
+@pytest.mark.requires_data("cache/index/kinases.parquet", "cache/index/sites.parquet", "cache/labels/dev_pairs.parquet", "cache/labels/canary_dev.parquet", "results/splits/SEAL.json")
 def test_canary_labels_structure():
     c = canary.canary_labels()
     assert set(c.kinase_acc) == set(canary.CANARY_IDS)
@@ -42,6 +44,7 @@ def test_canary_labels_structure():
     assert not set(c.acc) & splits.load_test_proteins()
 
 
+@pytest.mark.requires_data("cache/index/kinases.parquet", "cache/index/sites.parquet", "cache/labels/dev_pairs.parquet", "cache/labels/canary_dev.parquet", "results/splits/SEAL.json")
 def test_load_dev_with_canaries_flag():
     a = labels.load_dev("L2")
     b = labels.load_dev("L2", with_canaries=True)

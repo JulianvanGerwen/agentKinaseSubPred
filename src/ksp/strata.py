@@ -47,7 +47,7 @@ import pandas as pd
 
 from . import index
 
-ROOT = Path(__file__).resolve().parents[2]
+from ksp.paths import ROOT  # noqa: E402  project data/working dir ($KSP_DATA_DIR, default: repo root)
 KL_MATRICES = ROOT / "external/kinase_library/src/kinase_library-1.8.0/src/kinase_library/databases"
 
 TRAIN_BINS = [-1, 0, 4, 19, 99, 1e12]                      # identical to ksp.eval.TRAIN_BINS

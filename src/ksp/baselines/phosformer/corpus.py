@@ -20,7 +20,7 @@ import numpy as np
 
 from .tokens import encode_seq
 
-ROOT = Path(__file__).resolve().parents[4]
+from ksp.paths import ROOT  # noqa: E402  project data/working dir ($KSP_DATA_DIR, default: repo root)
 CORPUS_SRC = ROOT / "external" / "phosformer" / "hf_dataset_curated" / "corpus"
 CORPUS_DIR = ROOT / "cache" / "phosformer" / "corpus"
 

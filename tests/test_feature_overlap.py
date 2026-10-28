@@ -35,6 +35,7 @@ def check_feature_overlap(pairs: pd.DataFrame, max_ratio: float = MAX_RATIO) -> 
     return r
 
 
+@pytest.mark.requires_data("cache/index/kinases.parquet", "cache/index/sites.parquet", "cache/labels/dev_pairs.parquet", "results/splits/SEAL.json")
 def test_helper_flags_label_copy_and_passes_random():
     d = labels.load_dev("L2")
     with pytest.raises(AssertionError):

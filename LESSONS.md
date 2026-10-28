@@ -1,4 +1,7 @@
 # LESSONS — process rules for a next project
+
+> This work was produced as an exercise in testing whether AI agents can run a bioinformatics research project. A lead AI agent (the 'PI', Claude Opus 5.5) directed sub-agents (Claude Opus 5.5 and Sonnet 5.5) under a human-written brief. The human researcher supplied the brief, the data and PhosphoSitePlus access; they did not write the code, run the analyses, or write the text. All results should be checked before use.
+
 (Final prune 2026-10-27 09:35, from the fresh-agent retro `docs/retro/final_retro.md` §5; the 14 earlier rules are kept in `docs/retro/LESSONS_pre_final_prune.md`.)
 
 1. **Reserve a second sealed test shard, and never open the first before its scheduled gate.** TEST was spent at T+11.6 h of 24, ~5 h before its own gate, so the last-third experiments (`docs/posttest_*.md`) could only be exploratory. After the freeze: no reselection, no new amendments.

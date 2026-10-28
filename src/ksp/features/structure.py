@@ -48,8 +48,9 @@ import numpy as np
 import pandas as pd
 from scipy.spatial import cKDTree
 
-ROOT = Path(__file__).resolve().parents[3]
-sys.path.insert(0, str(ROOT / "src"))
+REPO_ROOT = Path(__file__).resolve().parents[3]
+sys.path.insert(0, str(REPO_ROOT / "src"))
+from ksp.paths import ROOT  # noqa: E402  project data/working dir ($KSP_DATA_DIR, default: repo root)
 from ksp.features.esm_embed import canonical_swissprot  # noqa: E402
 
 TAR = ROOT / "external/alphafold/UP000005640_9606_HUMAN_v6.tar"

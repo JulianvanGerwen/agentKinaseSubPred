@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
 """Download selected CPTAC pan-cancer (Li et al. 2023) open files from PDC via its public signed-URL endpoint. Data only."""
 import json,sys,os,urllib.request,subprocess
-out='/workspace/external/cptac_pancancer_pdc'; os.makedirs(out,exist_ok=True)
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'src'))
+from ksp.paths import ROOT  # noqa: E402
+out=str(ROOT / 'external' / 'cptac_pancancer_pdc'); os.makedirs(out,exist_ok=True)
 def post(query,variables):
     r=urllib.request.Request('https://pdc.cancer.gov/graphql',json.dumps({'query':query,'variables':variables}).encode(),{'Content-Type':'application/json'})
     return json.load(urllib.request.urlopen(r,timeout=120))

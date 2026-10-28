@@ -1,5 +1,7 @@
 # Review r1 — external PI (computational signaling biology)
 
+> This work was produced as an exercise in testing whether AI agents can run a bioinformatics research project. A lead AI agent (the 'PI', Claude Opus 5.5) directed sub-agents (Claude Opus 5.5 and Sonnet 5.5) under a human-written brief. The human researcher supplied the brief, the data and PhosphoSitePlus access; they did not write the code, run the analyses, or write the text. All results should be checked before use.
+
 Reviewer role: external PI. I judged the overall strategy: whether this design is likely to produce the most accurate, broadly useful human kinase–substrate (KS) predictor with ≈21 h left on 64 cores and 4×RTX 4090. I also checked whether the endpoints match the three user needs (signaling exploration, phosphoproteomics interpretation, kinase activity estimation).
 Documents read: PROMPT.md, DESIGN.md v0, LITERATURE.md, docs/data_profile.md, docs/data_acquisition.md, docs/lit/01 (skimmed the others).
 

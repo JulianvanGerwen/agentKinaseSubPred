@@ -10,7 +10,7 @@ type or the site residue is outside the kinase's residue class:
   cantley_imputed_distance.npy    (n_kinases, 2) 1 - identity to the neighbour, columns [ST, Y].
   cantley_meta.json               description of every array.
 Kinase-level table: results/features/motif/cantley_kinase_map.tsv.
-Run: /workspace/.venv/bin/python -I scripts/features/motif_cantley_build.py
+Run: python -I scripts/features/motif_cantley_build.py
 """
 import hashlib, json, sys, time
 from pathlib import Path
@@ -18,8 +18,9 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-ROOT = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(ROOT / "src"))
+REPO_ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(REPO_ROOT / "src"))
+from ksp.paths import ROOT  # noqa: E402  project data/working dir ($KSP_DATA_DIR, default: repo root)
 from ksp.index import load_kinases, load_sites  # noqa: E402
 from ksp.features import motif_cantley as mc  # noqa: E402
 from ksp.uniprot import read_fasta  # noqa: E402

@@ -41,7 +41,9 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-DEFAULT_PATH = Path(os.environ.get("KSP_DATA", Path(__file__).resolve().parents[2] / "data")) / "Kinase_Substrate_Dataset"
+from ksp.paths import ROOT as _ROOT  # project data/working dir ($KSP_DATA_DIR, default: repo root)
+
+DEFAULT_PATH = Path(os.environ.get("KSP_DATA", _ROOT / "data")) / "Kinase_Substrate_Dataset"
 N_PREAMBLE = 3
 _RSD = re.compile(r"^([A-Za-z])(\d+)$")
 

@@ -1,7 +1,9 @@
 # Review r1 — algorithms & compute
 
+> This work was produced as an exercise in testing whether AI agents can run a bioinformatics research project. A lead AI agent (the 'PI', Claude Opus 5.5) directed sub-agents (Claude Opus 5.5 and Sonnet 5.5) under a human-written brief. The human researcher supplied the brief, the data and PhosphoSitePlus access; they did not write the code, run the analyses, or write the text. All results should be checked before use.
+
 Reviewer role: ML engineer (PLMs, GBDTs, multitask/metric learning, PU learning, protein–peptide models).
-Target: `/workspace/DESIGN.md` v0 (2026-10-26). Inputs read: `PROMPT.md`, `DESIGN.md`, `LITERATURE.md`,
+Target: `DESIGN.md` v0 (2026-10-26). Inputs read: `PROMPT.md`, `DESIGN.md`, `LITERATURE.md`,
 `docs/lit/01_methods_benchmarks.md`, `docs/lit/04_other_modalities.md`, `docs/data_profile.md`.
 
 Verdict: the design's *evaluation* scaffolding is strong; its *modelling* sections (§5 negatives, §8 regimes,
@@ -13,7 +15,7 @@ materialisation). Everything below is backed by measurements I ran on this machi
 
 ## 0. Measurements I ran (read-only, this box: 4× RTX 4090 24 GB, 64 cores, 375 GB RAM)
 
-Scripts in `/tmp/claude-588982/-workspace/f2c6b342-58ef-4e11-b665-a8c647ff9a45/scratchpad/`
+Scripts in `<scratchpad>/`
 (`bench_esm.py`, `bench_coreg.py`, `bench_lgbm2.py`).
 
 | What | Measured | Implication |
@@ -353,7 +355,7 @@ expected value is.
 **Change.** In §7 F0 and §10:
 - Default: **ESM-2 650M**, frozen, full-length context.
 - One pre-registered alternative: **ESM-C 600M** (1,152-d, MIT, same cost class, better per-parameter quality;
-  note it needs `/home/plm_env` transformers ≥5 for the native port — do not run the repo's `trust_remote_code`
+  note it needs `<plm-env>` transformers ≥5 for the native port — do not run the repo's `trust_remote_code`
   file).
 - **Decision rule, written before running:** promote the alternative only if it improves DEV-CV macro AUROC
   (E-hard) by **> 0.005** with paired cluster-bootstrap p < 0.05 on the same folds and seeds.

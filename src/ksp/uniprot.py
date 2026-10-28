@@ -8,7 +8,9 @@ from pathlib import Path
 
 import pandas as pd
 
-DEFAULT_DIR = Path(os.environ.get("KSP_UNIPROT", Path(__file__).resolve().parents[2] / "external" / "uniprot"))
+from ksp.paths import ROOT as _ROOT  # project data/working dir ($KSP_DATA_DIR, default: repo root)
+
+DEFAULT_DIR = Path(os.environ.get("KSP_UNIPROT", _ROOT / "external" / "uniprot"))
 _HDR = re.compile(r"^>(sp|tr)\|([^|]+)\|(\S+)\s?(.*)$")
 
 

@@ -26,7 +26,7 @@ import pandas as pd
 from ksp import canary, index
 from ksp.models.r3 import data as r3data
 
-ROOT = Path(__file__).resolve().parents[4]
+from ksp.paths import ROOT  # noqa: E402  project data/working dir ($KSP_DATA_DIR, default: repo root)
 R5CACHE = ROOT / "cache" / "r5"
 FLANK = 15                      # +-15 window -> 31 residues
 N_CANARY_TOK = 16               # pseudo-domain tokens per canary

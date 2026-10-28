@@ -1,6 +1,6 @@
 """Leave-one-fold-out selection of fusion weights from per-fold sweeps, then pooled A24 evaluation of the nested blend."""
 import json, sys
-sys.path.insert(0, "/tmp/claude-588982/-workspace/f2c6b342-58ef-4e11-b665-a8c647ff9a45/scratchpad/audit2")
+sys.path.insert(0, "<scratchpad>/audit2")
 from common import *
 from ksp import eval as kev
 SW = pd.concat([pd.read_csv(f"out/sweep_fold{f}.tsv", sep="\t") for f in range(5)])

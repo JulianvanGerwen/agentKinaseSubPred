@@ -28,6 +28,7 @@ def test_hamming_neighbors_exact_vs_bruteforce():
         assert np.array_equal(np.sort(g), np.sort(e))
 
 
+@pytest.mark.requires_data("cache/index/kinases.parquet", "cache/index/sites.parquet", "cache/labels/dev_pairs.parquet")
 def test_paralog_examples():
     k = index.load_kinases()
     a = dict(zip(k.gene, k.uniprot_acc))
@@ -49,6 +50,7 @@ def masks():
     return d, labels.NegativeMasks(d)
 
 
+@pytest.mark.requires_data("cache/index/kinases.parquet", "cache/index/sites.parquet", "cache/labels/dev_pairs.parquet")
 def test_kp_and_masks_semantics(masks):
     d, m = masks
     s = index.load_sites()
@@ -79,6 +81,7 @@ def test_kp_and_masks_semantics(masks):
         assert len(lab[x] - own) > 0
 
 
+@pytest.mark.requires_data("cache/index/kinases.parquet", "cache/index/sites.parquet", "cache/labels/dev_pairs.parquet")
 def test_identical_window_expansion():
     toy = pd.DataFrame({"kinase_acc": ["K"], "site_id": [index.load_sites().site_id.iloc[0]]})
     s = index.load_sites()
@@ -87,6 +90,7 @@ def test_identical_window_expansion():
     assert set(s.site_id[s.window15 == w]) <= kp
 
 
+@pytest.mark.requires_data("cache/index/kinases.parquet", "cache/index/sites.parquet", "cache/labels/dev_pairs.parquet")
 def test_load_dev_variants():
     d = labels.load_dev("L2")
     assert d.in_U_ms.all() and d.L2.all()

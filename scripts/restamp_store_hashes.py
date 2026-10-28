@@ -4,7 +4,8 @@ ID order is identical to the current index (verified: kinases order/inclusion un
 residue_class column changed). Any other hash is left untouched and will fail load_matrix."""
 import json, sys
 from pathlib import Path
-ROOT = Path(__file__).resolve().parents[1]; sys.path.insert(0, str(ROOT / "src"))
+REPO_ROOT = Path(__file__).resolve().parents[1]; sys.path.insert(0, str(REPO_ROOT / "src"))
+from ksp.paths import ROOT  # noqa: E402  project data/working dir ($KSP_DATA_DIR, default: repo root)
 from ksp import store
 KNOWN = {  # axis -> historical whole-file sha256 values with identical ID order
     "kinase": {"c9e3e1731d2dc94b1eeea6b7cb15ace1ff11d779e92d343a11beb27026699aed"},

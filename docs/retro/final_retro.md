@@ -1,5 +1,7 @@
 # Final retro — outside view (fresh agent)
 
+> This work was produced as an exercise in testing whether AI agents can run a bioinformatics research project. A lead AI agent (the 'PI', Claude Opus 5.5) directed sub-agents (Claude Opus 5.5 and Sonnet 5.5) under a human-written brief. The human researcher supplied the brief, the data and PhosphoSitePlus access; they did not write the code, run the analyses, or write the text. All results should be checked before use.
+
 **Author:** a fresh agent with no prior involvement. I read `PROMPT.md`, `RESEARCH_TREE.md`, `LESSONS.md`,
 `DESIGN.md` §0/§15–17, `docs/retro/M{1,2,3}_retro.md`, `docs/DELEGATION.md`, `REPORT.md` §1/§6.8/§7/§11,
 `docs/audit/audit_test.md` §0, `docs/audit/audit_posttest.md`, and `results/cv/LEADERBOARD.md`

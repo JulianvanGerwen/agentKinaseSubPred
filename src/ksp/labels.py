@@ -281,7 +281,7 @@ def variant_counts(df: pd.DataFrame, mask: pd.Series, name: str) -> dict:
 from functools import lru_cache  # noqa: E402
 from pathlib import Path  # noqa: E402
 
-ROOT = Path(__file__).resolve().parents[2]
+from ksp.paths import ROOT  # noqa: E402  project data/working dir ($KSP_DATA_DIR, default: repo root)
 FULL_PAIRS = ROOT / "cache" / "labels" / "ks_pairs.parquet"     # pre-split full table (removed after sealing)
 DEV_PAIRS = ROOT / "cache" / "labels" / "dev_pairs.parquet"     # DEV proteins only (all provenances / flags)
 KINCORE_MSA = ROOT / "external" / "kincore" / "alignment-files_Human-PK-alignment.fasta"

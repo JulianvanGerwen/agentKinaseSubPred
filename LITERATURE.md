@@ -1,5 +1,7 @@
 # LITERATURE — kinase–substrate prediction: prior work, data sources, modalities
 
+> This work was produced as an exercise in testing whether AI agents can run a bioinformatics research project. A lead AI agent (the 'PI', Claude Opus 5.5) directed sub-agents (Claude Opus 5.5 and Sonnet 5.5) under a human-written brief. The human researcher supplied the brief, the data and PhosphoSitePlus access; they did not write the code, run the analyses, or write the text. All results should be checked before use.
+
 This file is the synthesis; full reviews with citations (DOIs/URLs) are in `docs/lit/`:
 - `docs/lit/01_methods_benchmarks.md` — prior methods, benchmarks, evaluation flaws, how to retrain baselines
 - `docs/lit/02_ks_annotation_sources.md` — sources of experimentally verified KS annotations and their quality

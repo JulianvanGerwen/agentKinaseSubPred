@@ -4,6 +4,8 @@ random ~0.5), the 9-test primary family incl. the unavailable-baseline contingen
 STARTED/COMPLETED state machine with a simulated crash (attempt 2, .partial -> atomic rename), single-batch refusal,
 schema / pin / pre-flight / real-policy / CLI guards, and the real prepare('test') branch."""
 import json
+import re
+import subprocess
 
 import numpy as np
 import pandas as pd
@@ -12,8 +14,13 @@ import pytest
 from ksp import eval as E
 from ksp import eval_test as T
 from ksp import splits
+from ksp.paths import has_project_data
 
-pytestmark = pytest.mark.skipif(not (E.splits.SPLIT_DIR / "SEAL.json").exists(), reason="split not frozen")
+# The frozen split files (results/splits/) are tracked, but the index and label tables under cache/ are not.
+pytestmark = pytest.mark.skipif(not ((E.splits.SPLIT_DIR / "SEAL.json").exists() and has_project_data(
+    "cache/index/kinases.parquet", "cache/index/sites.parquet", "cache/index/proteins.parquet", "cache/labels/dev_pairs.parquet")),
+    reason="needs project data that is not part of this repository (frozen splits, index and DEV labels under "
+           "KSP_DATA_DIR); see DATA_SOURCES.md")
 RT = {"train_wall_s": 1.0, "inference_wall_s": 1.0}
 
 
@@ -199,6 +206,35 @@ def test_validate_freeze_primary_structure(toy):
         T.validate_freeze(c)
 
 
+# Lines that v1.0.0 (path configuration, see src/ksp/paths.py) may change in the frozen harness files.
+_PATH_ONLY = [re.compile(r"^ROOT = Path\(__file__\)\.resolve\(\)\.parents\[\d\]$"),
+              re.compile(r"^from ksp\.paths import [A-Z_, ]+(  # .*)?$"),
+              re.compile(r'^MMSEQS = "/[^"]*/mmseqs"$'),      # the old absolute MMseqs2 path
+              re.compile(r"^\s*$")]
+
+
+def _frozen_diff():
+    """Changed lines of the frozen harness files relative to the A28 commit; None if git or the commit is absent."""
+    try:
+        r = subprocess.run(["git", "diff", "-U0", T.A28_COMMIT, "--", *T.FROZEN_FILES], cwd=T.REPO_ROOT,
+                           capture_output=True, text=True)
+    except OSError:
+        return None
+    if r.returncode != 0:
+        return None
+    return [ln[1:] for ln in r.stdout.splitlines()
+            if ln[:1] in "+-" and not ln.startswith(("+++", "---"))]
+
+
+def test_frozen_files_changed_only_paths():
+    """The frozen harness files (A28) may differ from commit 974d520 only in how they locate files."""
+    d = _frozen_diff()
+    if d is None:
+        pytest.skip("needs the git history of the original project (commit 974d520)")
+    bad = [ln for ln in d if not any(p.match(ln) for p in _PATH_ONLY)]
+    assert not bad, f"frozen harness files changed beyond path handling: {bad}"
+
+
 def test_real_policy(toy):
     c = json.loads(json.dumps(toy["cfg"]))
     with pytest.raises(T.FreezeError, match="B == 10000"):
@@ -207,7 +243,17 @@ def test_real_policy(toy):
     with pytest.raises(T.FreezeError, match="A28"):
         T.check_real_policy(c)
     c["harness_commit"] = T.A28_COMMIT
-    T.check_real_policy(c)                                                 # frozen files unchanged since 974d520
+    d = _frozen_diff()
+    if d is None:                                                          # no git history (e.g. a source archive)
+        with pytest.raises(T.FreezeError):
+            T.check_real_policy(c)
+    elif d == []:
+        T.check_real_policy(c)                                             # frozen files unchanged since 974d520
+    else:
+        # v1.0.0 changed only the path handling of the frozen files (see test_frozen_files_changed_only_paths), so
+        # real mode now refuses to run; the TEST batch is spent anyway. At tag v0.9-test-batch this branch is not taken.
+        with pytest.raises(T.FreezeError, match="frozen harness files differ"):
+            T.check_real_policy(c)
     with pytest.raises(T.FreezeError, match="no test hooks"):
         T.main(toy["fz"], mode="real", data_builder=toy["build"])
 
@@ -286,8 +332,10 @@ def test_check_predictions_all_or_nothing(tmp_path):
 def test_real_paths_untouched():
     # Pre-G4 this asserted FREEZE.json did not exist. Since the G4 batch (FREEZE.json committed 5fc7870) the
     # invariant is: dry-run tests never write it, i.e. if present it is byte-identical to the committed version.
-    import subprocess
     assert T.FREEZE == T.ROOT / "FREEZE.json"
+    in_git = subprocess.run(["git", "rev-parse", "--is-inside-work-tree"], cwd=T.ROOT, capture_output=True, text=True)
+    if T.FREEZE.exists() and in_git.returncode != 0:
+        pytest.skip("FREEZE.json check needs a git checkout (this copy has no git history)")
     if T.FREEZE.exists():
         r = subprocess.run(["git", "diff", "--quiet", "HEAD", "--", "FREEZE.json"], cwd=T.ROOT)
         assert r.returncode == 0, "FREEZE.json modified relative to HEAD"

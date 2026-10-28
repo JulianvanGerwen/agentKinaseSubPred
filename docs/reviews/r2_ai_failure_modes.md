@@ -1,5 +1,7 @@
 # Review r2: AI-agent failure modes (DESIGN v1 §0, §4.3, §11, plus the code written so far)
 
+> This work was produced as an exercise in testing whether AI agents can run a bioinformatics research project. A lead AI agent (the 'PI', Claude Opus 5.5) directed sub-agents (Claude Opus 5.5 and Sonnet 5.5) under a human-written brief. The human researcher supplied the brief, the data and PhosphoSitePlus access; they did not write the code, run the analyses, or write the text. All results should be checked before use.
+
 Reviewer role: how autonomous multi-agent research projects fail. I compared v1 against r1 (`r1_ai_failure_modes.md`), and I read every file in `src/ksp/` and `scripts/` as it stood at about 14:20–14:25. That includes the in-progress `splits.py`, `features/ppi*.py` and `baselines/phosformer/`. All checks were read-only.
 
 ## Verdict

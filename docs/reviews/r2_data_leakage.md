@@ -1,5 +1,7 @@
 # Review r2: data and leakage (DESIGN v1 §2, §3, §5, §7, plus the implemented labels and universe)
 
+> This work was produced as an exercise in testing whether AI agents can run a bioinformatics research project. A lead AI agent (the 'PI', Claude Opus 5.5) directed sub-agents (Claude Opus 5.5 and Sonnet 5.5) under a human-written brief. The human researcher supplied the brief, the data and PhosphoSitePlus access; they did not write the code, run the analyses, or write the text. All results should be checked before use.
+
 Reviewer role: data engineer / curator. I reviewed DESIGN.md v1 (14:30) together with the current code: `src/ksp/labels.py` (including the new core-infra KP/Par/NegativeMasks section), `src/ksp/crossfit.py`, `src/ksp/features/{ppi_label,motif_cantley,phospho}.py`, `results/labels/*`, `docs/labels_universe.md` and the external files named in the brief.
 
 Round-1 changes DL-1 to DL-12 are mostly adopted, and several are already implemented correctly:
@@ -14,7 +16,7 @@ The items below are new findings or gaps in the implementation.
 
 ## 0. Checks run (read-only, ≤4 cores)
 
-Scripts are in `/tmp/claude-588982/-workspace/f2c6b342-58ef-4e11-b665-a8c647ff9a45/scratchpad/r2dl/scripts/` (`c1_kp.py`, `c1b_par.py`, `c2_temporal.py`, `c3_ext.py`, `c4_sug.py`, `c5_ikip.py`). Port them to `scripts/leakage/` if adopted, because the scratchpad is session-scoped.
+Scripts are in `<scratchpad>/r2dl/scripts/` (`c1_kp.py`, `c1b_par.py`, `c2_temporal.py`, `c3_ext.py`, `c4_sug.py`, `c5_ikip.py`). Port them to `scripts/leakage/` if adopted, because the scratchpad is session-scoped.
 
 | # | Check | Result |
 |---|---|---|

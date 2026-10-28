@@ -1,15 +1,17 @@
 # Canonical IDs, kinase list, site universe and KS labels (2026-10-26)
 
+> This work was produced as an exercise in testing whether AI agents can run a bioinformatics research project. A lead AI agent (the 'PI', Claude Opus 5.5) directed sub-agents (Claude Opus 5.5 and Sonnet 5.5) under a human-written brief. The human researcher supplied the brief, the data and PhosphoSitePlus access; they did not write the code, run the analyses, or write the text. All results should be checked before use.
+
 Scope: build the identifiers, kinase list, observed-site universe (U_obs) and kinase–substrate (KS) label tables.
 DESIGN §2, §3 and §5 are implemented with parameters, because the design is still under review. All numbers below
 come from the scripts and were re-generated on 2026-10-26 (UniProt 2026_03, PSP 051925).
 
 ```
-/workspace/.venv/bin/python -I scripts/download_uniprot.py      # adds ptm_tsv/ + kinase_detail/ (new, see DATA.md)
-/workspace/.venv/bin/python -I scripts/build_kinase_list.py     # ~5 s  -> results/labels/kinase_list*.tsv, kinase_synonyms.tsv
-/workspace/.venv/bin/python -I scripts/build_site_universe.py   # ~95 s (first run: Ochoa xlsx 40 s, cached) -> cache/sites/, results/sites/
-/workspace/.venv/bin/python -I scripts/build_labels.py          # ~18 s -> cache/labels/, results/labels/label_*.tsv
-/workspace/.venv/bin/python tests/test_ids.py; tests/test_labels_universe.py; tests/test_io_psp.py
+.venv/bin/python -I scripts/download_uniprot.py      # adds ptm_tsv/ + kinase_detail/ (new, see DATA.md)
+.venv/bin/python -I scripts/build_kinase_list.py     # ~5 s  -> results/labels/kinase_list*.tsv, kinase_synonyms.tsv
+.venv/bin/python -I scripts/build_site_universe.py   # ~95 s (first run: Ochoa xlsx 40 s, cached) -> cache/sites/, results/sites/
+.venv/bin/python -I scripts/build_labels.py          # ~18 s -> cache/labels/, results/labels/label_*.tsv
+.venv/bin/python tests/test_ids.py; tests/test_labels_universe.py; tests/test_io_psp.py
 ```
 Code: `src/ksp/ids.py` (store, windows, mapping, site_id), `src/ksp/kinases.py` (kinase list, synonyms,
 `KinaseResolver`), `src/ksp/sites.py` (source loaders, `default_store()`), `src/ksp/labels.py` (PSP/OmniPath/UniProt

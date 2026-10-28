@@ -1,10 +1,12 @@
 # Review r1: data and leakage (labels, universe, clustering, leakage paths, external test)
 
+> This work was produced as an exercise in testing whether AI agents can run a bioinformatics research project. A lead AI agent (the 'PI', Claude Opus 5.5) directed sub-agents (Claude Opus 5.5 and Sonnet 5.5) under a human-written brief. The human researcher supplied the brief, the data and PhosphoSitePlus access; they did not write the code, run the analyses, or write the text. All results should be checked before use.
+
 Reviewer role: data engineer / curator (PSP, UniProt, OmniPath, CPTAC, compendium). Reviewed DESIGN.md v0 (2026-10-26).
 
 ## 0. Quick checks I ran (read-only, 4 cores)
 
-The scripts are in `/tmp/claude-588982/-workspace/f2c6b342-58ef-4e11-b665-a8c647ff9a45/scratchpad/chk/` (c1–c5) plus inline one-liners. The PI should port the ones it adopts to `scripts/leakage/`, because the scratchpad is session-scoped. Inputs: `cache/psp_*.parquet`, `data/0[1-3]*`, `external/omnipath`, UniProt 2026_03, `/home/tools/mmseqs` (v 8cc5ce3…).
+The scripts are in `<scratchpad>/chk/` (c1–c5) plus inline one-liners. The PI should port the ones it adopts to `scripts/leakage/`, because the scratchpad is session-scoped. Inputs: `cache/psp_*.parquet`, `data/0[1-3]*`, `external/omnipath`, UniProt 2026_03, `<tools>/mmseqs` (v 8cc5ce3…).
 
 | # | Check | Result |
 |---|---|---|

@@ -26,7 +26,7 @@ import numpy as np
 import pandas as pd
 import scipy.sparse as sp
 
-ROOT = Path(__file__).resolve().parents[3]
+from ksp.paths import ROOT  # noqa: E402  project data/working dir ($KSP_DATA_DIR, default: repo root)
 PPI = ROOT / "cache" / "features" / "context" / "ppi"
 OUT_NAMES = ["nb_max", "nb_mean", "nb_top3", "nb_n_adj", "nb_frac_adj", "nb_n_used"]
 

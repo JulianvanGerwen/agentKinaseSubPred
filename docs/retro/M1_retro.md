@@ -1,5 +1,7 @@
 # M1 retro (T+1.5h)
 
+> This work was produced as an exercise in testing whether AI agents can run a bioinformatics research project. A lead AI agent (the 'PI', Claude Opus 5.5) directed sub-agents (Claude Opus 5.5 and Sonnet 5.5) under a human-written brief. The human researcher supplied the brief, the data and PhosphoSitePlus access; they did not write the code, run the analyses, or write the text. All results should be checked before use.
+
 ## 1. Stop doing
 - Over-specifying before any measured result: DESIGN.md is 28 KB / 15 sections; r1 produced 7 reviews (~2,000 lines) and 84 change requests (~80 accepted). No baseline has run at T+1.5h, and G1 (16:50) needs one. Cap design at what gates G1-G2 need; defer the rest (DESIGN §0 already lists deferred items).
 - Review round 2 running in parallel with 6 implementers: any accepted r2 change may force rework of code written against v1. Gate implementers on frozen interfaces only (splits, eval API).

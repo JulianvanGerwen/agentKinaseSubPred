@@ -1,6 +1,6 @@
 """Pooled reproduction: fusion (saved), R2 ens5, rebuilt blend equality + alignment, R2 LKO raw vs A24."""
 import json, sys, time
-sys.path.insert(0, "/tmp/claude-588982/-workspace/f2c6b342-58ef-4e11-b665-a8c647ff9a45/scratchpad/audit2")
+sys.path.insert(0, "<scratchpad>/audit2")
 from common import *
 from ksp import eval as kev
 KEYS = ["M1_auroc_hard", "M2_hit5", "M3_top1_recall", "M4_auroc_hard_Kany", "M1_fold_mean", "M1_per_fold",

@@ -20,7 +20,7 @@ import pandas as pd
 
 from ksp import canary, index, labels, splits, store
 
-ROOT = Path(__file__).resolve().parents[4]
+from ksp.paths import ROOT  # noqa: E402  project data/working dir ($KSP_DATA_DIR, default: repo root)
 R3CACHE = ROOT / "cache" / "r3"
 FLANK_MAX = 10
 ESM_CACHES = {"650m": (ROOT / "cache" / "r3", 10), "3b": (ROOT / "cache" / "r3" / "esm3b", 7),

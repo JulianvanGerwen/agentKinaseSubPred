@@ -29,7 +29,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-ROOT = Path(__file__).resolve().parents[3]
+from ksp.paths import ROOT  # noqa: E402  project data/working dir ($KSP_DATA_DIR, default: repo root)
 CANTLEY_PCT = "motif/cantley_unprimed_pct_published"
 CANTLEY_SCORE = "motif/cantley_unprimed_score"
 

@@ -32,9 +32,10 @@ import pandas as pd
 
 from . import uniprot
 
-ROOT = Path(__file__).resolve().parents[2]
+REPO_ROOT = Path(__file__).resolve().parents[2]
+from ksp.paths import ROOT  # noqa: E402  project data/working dir ($KSP_DATA_DIR, default: repo root)
 EXT = ROOT / "external"
-CURATION = ROOT / "config" / "kinase_curation.tsv"
+CURATION = REPO_ROOT / "config" / "kinase_curation.tsv"
 EXCLUDE_CATEGORIES = {"lipid_kinase", "regulatory_subunit", "fusion", "metabolic_enzyme", "glycan_kinase",
                       "disputed_activity", "not_protein_kinase", "pseudogene", "guanylate_cyclase_pseudokinase"}
 _DOM = re.compile(r'DOMAIN (\d+)\.\.(\d+); /note="([^"]+)"')
@@ -427,8 +428,8 @@ def load_resolver(results_dir=ROOT / "results" / "labels") -> KinaseResolver:
 
 
 # ------------------------------------------------------------------------------------------------ strict bulk resolver
-HOMONYMS = ROOT / "config" / "kinase_homonyms.tsv"
-COMPLEX = ROOT / "config" / "complex_subunits.tsv"
+HOMONYMS = REPO_ROOT / "config" / "kinase_homonyms.tsv"
+COMPLEX = REPO_ROOT / "config" / "complex_subunits.tsv"
 
 
 def load_homonyms(path=HOMONYMS) -> pd.DataFrame:

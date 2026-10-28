@@ -26,15 +26,16 @@ import subprocess
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(ROOT / "src"))
+REPO_ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(REPO_ROOT / "src"))
+from ksp.paths import ROOT  # noqa: E402  project data/working dir ($KSP_DATA_DIR, default: repo root)
 
 import pandas as pd
 
 from ksp.baselines.phosformer.corpus import CORPUS_SRC, build_corpus, read_fasta
 from ksp.baselines.phosformer.inputs import canonical_seqs
 
-MMSEQS = "/home/tools/mmseqs/bin/mmseqs"
+from ksp.paths import MMSEQS  # noqa: E402  $KSP_MMSEQS or mmseqs on PATH
 ap = argparse.ArgumentParser()
 ap.add_argument("--test-proteins", default=str(ROOT / "results/splits/test_proteins.tsv"))
 ap.add_argument("--clusters", default=str(ROOT / "results/splits/substrate_clusters.tsv"))

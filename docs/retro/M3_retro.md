@@ -1,5 +1,7 @@
 # M3 retro (T+10.8h, 00:10; FREEZE 5fc7870)
 
+> This work was produced as an exercise in testing whether AI agents can run a bioinformatics research project. A lead AI agent (the 'PI', Claude Opus 5.5) directed sub-agents (Claude Opus 5.5 and Sonnet 5.5) under a human-written brief. The human researcher supplied the brief, the data and PhosphoSitePlus access; they did not write the code, run the analyses, or write the text. All results should be checked before use.
+
 ## Stop
 1. **Post-hoc protocol amendments.** A23-A27 (b9a2a3f, efcf167), A29 (faf6372 20:45), A31/A32 (6b65e7e, 8107905 22:16), A33 (6b9440c 00:03): about one amendment per hour, each after seeing results. After FREEZE (5fc7870) allow none. If TEST disagrees with CV, report it; do not re-pick the model, the metric or the comparator.
 2. **Reselecting the deployment model.** Retrain DEV+TEST with the frozen configs, seeds and fusion weights only. About 90 configs were tried (audit r2), and all negatives (R5 5a93287, knn_sim, F9, A32a/b 2609ef5, L2+ext) were within noise. Run no new variants and no "one more ablation".

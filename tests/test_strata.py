@@ -140,7 +140,7 @@ def test_matches_eval_harness_on_real_index():
     try:
         K = index.load_kinases()
     except FileNotFoundError:
-        pytest.skip("kinase index not built")
+        pytest.skip("needs project data that is not part of this repository (kinase index under KSP_DATA_DIR/cache/index); see DATA_SOURCES.md")
     T = ST.kinase_table(K, train_counts=pd.Series(dtype=float), cantley={})
     ev_prim = K.gene.isin(E.PRIMING) | K.manning_family.eq("CK1")
     assert np.array_equal(T.priming.values, ev_prim.values)

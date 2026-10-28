@@ -1,5 +1,7 @@
 # M2 retro (T+4.7h, 18:00)
 
+> This work was produced as an exercise in testing whether AI agents can run a bioinformatics research project. A lead AI agent (the 'PI', Claude Opus 5.5) directed sub-agents (Claude Opus 5.5 and Sonnet 5.5) under a human-written brief. The human researcher supplied the brief, the data and PhosphoSitePlus access; they did not write the code, run the analyses, or write the text. All results should be checked before use.
+
 ## 1. Stop doing
 - Post-freeze harness/metric amendments reacting to results: A23-A27 landed in ~1 h (A24 changed eval.py at 17:01 mid-audit; every doc number is pre-A24). Batch them; stamp each number with harness version.
 - Unverified bookkeeping: R2 docs claim "all xfit stores rebuilt with v2" but folds 0/3 are stale (audit M-2); R2/R3 docs carry raw pooled M4 now known inflated (0.821 vs 0.764 in 1-4 bin).

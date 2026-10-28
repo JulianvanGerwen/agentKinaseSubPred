@@ -4,6 +4,9 @@ Usage: regime_queue.py --queue logs/regime/xfit.q --max-rss 55"""
 import argparse, os, subprocess, time
 from pathlib import Path
 
+# queue commands use paths relative to the project data/working dir ($KSP_DATA_DIR, default: repo root)
+WORKDIR = os.environ.get("KSP_DATA_DIR") or str(Path(__file__).resolve().parents[2])
+
 ap = argparse.ArgumentParser()
 ap.add_argument("--queue", required=True)
 ap.add_argument("--max-rss", type=float, default=55.0)
@@ -32,7 +35,7 @@ while i < len(lines) or running:
     if i < len(lines) and len(running) < limit and rss_gb() < a.max_rss:
         cmd = lines[i]
         i += 1
-        running[subprocess.Popen(cmd, shell=True, cwd="/workspace")] = cmd
+        running[subprocess.Popen(cmd, shell=True, cwd=WORKDIR)] = cmd
         with open(done_p, "a") as fh:
             fh.write(f"{time.strftime('%H:%M:%S')} START {cmd}\n")
         time.sleep(20)

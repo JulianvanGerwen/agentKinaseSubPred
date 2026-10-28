@@ -2,7 +2,7 @@
 """Build results/labels/kinase_list.tsv and results/labels/kinase_synonyms.tsv (+ kinase_list_summary.tsv).
 
 Rules: src/ksp/kinases.py docstring and docs/labels_universe.md. Manual decisions: config/kinase_curation.tsv.
-Usage: /workspace/.venv/bin/python -I scripts/build_kinase_list.py [--exclude-pseudokinases] [--exclude-uncertain]
+Usage: python -I scripts/build_kinase_list.py [--exclude-pseudokinases] [--exclude-uncertain]
 """
 import argparse
 import sys
@@ -10,8 +10,9 @@ from pathlib import Path
 
 import pandas as pd
 
-ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / "src"))
+REPO_ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(REPO_ROOT / "src"))
+from ksp.paths import ROOT  # noqa: E402  project data/working dir ($KSP_DATA_DIR, default: repo root)
 from ksp import io_psp, kinases  # noqa: E402
 
 

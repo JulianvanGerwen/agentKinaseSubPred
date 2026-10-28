@@ -1,5 +1,7 @@
 # DATA — datasets used (source, version, checksum, license)
 
+> This work was produced as an exercise in testing whether AI agents can run a bioinformatics research project. A lead AI agent (the 'PI', Claude Opus 5.5) directed sub-agents (Claude Opus 5.5 and Sonnet 5.5) under a human-written brief. The human researcher supplied the brief, the data and PhosphoSitePlus access; they did not write the code, run the analyses, or write the text. All results should be checked before use.
+
 Restricted/large data live in `data/` (provided) and `external/` (downloaded); neither is committed. Checksums are SHA-256.
 
 ## Provided by the user (data/)
@@ -33,7 +35,7 @@ Restricted/large data live in `data/` (provided) and `external/` (downloaded); n
 | external/uniprot/kinase_detail/human_kw0418_detail.tsv.gz | Reviewed human KW-0418 entries (625): domains, active site, binding sites, function and caution comments, EC, families — used for kinase domains / pseudokinase flags | https://rest.uniprot.org/uniprotkb/stream?query=organism_id%3A9606+AND+reviewed%3Atrue+AND+keyword%3AKW-0418&format=tsv&fields=accession%2Cid%2Cgene_primary%2Cgene_synonym%2Cprotein_name%2Clength%2Cft_domain%2Cft_act_site%2Cft_binding%2Ccc_function%2Ccc_caution%2Cec%2Cprotein_families%2Ckeyword&compressed=true | 2026_03 (02-September-2026) | 2026-10-26T12:53:08 | 47e895706c9ab304cfc350cd60e9a345de310b068c5c3643467487b0992013b5 | CC BY 4.0 (UniProt) |
 
 ## Downloaded (external/) -- wave 1, access date 2026-10-26
-All under /workspace/external/<dir>/. Per-file SHA-256 below each source; full list in logs/dl/sha256_wave1.txt (kinase_library extracted tree: logs/dl/sha256_kinase_library_extracted.txt).
+All under external/<dir>/. Per-file SHA-256 below each source; full list in logs/dl/sha256_wave1.txt (kinase_library extracted tree: logs/dl/sha256_kinase_library_extracted.txt).
 
 ### benchmarkin
 - URL: https://zenodo.org/records/12566560
@@ -344,7 +346,7 @@ All under /workspace/external/<dir>/. Per-file SHA-256 below each source; full l
 
 
 ## Downloaded (external/) -- wave 2, access date 2026-10-26
-All under /workspace/external/<dir>/. Full hash list: logs/dl/sha256_wave2.txt. Git clones (data only, not executed): phosformer/github = https://github.com/esbgkannan/phosformer (waylandy/phosformer) commit 6e7c019ba5a4c4f6cf7e44c5359c6115afc14c16, CC BY-NC-ND 4.0; kolossus/github = https://github.com/rohitsinghlab/KolossuS commit e8f3013a9736be07a1ff17a79ca7c9529daec63b; selphi2/selphi_2.0 = https://gitlab.ebi.ac.uk/petsalakilab/selphi_2.0 commit f9822f90f174e09e392d789698d8c5ec33baf1d2, Apache-2.0 (commits: logs/dl/wave2_git_commits.txt). Scripts: scripts/dl_w2.sh, scripts/dl_w2b.sh, scripts/make_data_rows_w2.py.
+All under external/<dir>/. Full hash list: logs/dl/sha256_wave2.txt. Git clones (data only, not executed): phosformer/github = https://github.com/esbgkannan/phosformer (waylandy/phosformer) commit 6e7c019ba5a4c4f6cf7e44c5359c6115afc14c16, CC BY-NC-ND 4.0; kolossus/github = https://github.com/rohitsinghlab/KolossuS commit e8f3013a9736be07a1ff17a79ca7c9529daec63b; selphi2/selphi_2.0 = https://gitlab.ebi.ac.uk/petsalakilab/selphi_2.0 commit f9822f90f174e09e392d789698d8c5ec33baf1d2, Apache-2.0 (commits: logs/dl/wave2_git_commits.txt). Scripts: scripts/dl_w2.sh, scripts/dl_w2b.sh, scripts/make_data_rows_w2.py.
 
 ### buljan2020
 - URL: https://www.ebi.ac.uk/europepmc/webservices/rest/PMC7427327/supplementaryFiles (Buljan 2020 Mol Cell, doi 10.1016/j.molcel.2020.07.001; mmc3=Table S2 final AP-MS interactome, mmc4=S3 co-purified pairs, mmc7=S6 predicted regulatory phosphosites, mmc2=S1 kinase classification)
@@ -636,7 +638,7 @@ All under /workspace/external/<dir>/. Full hash list: logs/dl/sha256_wave2.txt. 
 
 - PAE calibration subset: external/alphafold/pae/AF-{acc}-F1-predicted_aligned_error_v6.json.gz for 399 of 400 random (seed 0) Swiss-Prot canonical proteins ≤2700 aa (list cache/structure/pae_calibration_accs.txt; A0A0J9YXA8 404). URL https://alphafold.ebi.ac.uk/files/AF-{acc}-F1-predicted_aligned_error_v6.json (scripts/download_afdb_pae.py; needs a browser User-Agent; the server rate-limits with HTTP 429, so a full-proteome PAE download was abandoned). Per-file SHA-256 (of the uncompressed JSON) in external/alphafold/pae/MANIFEST.tsv. License CC BY 4.0.
 
-### ESM-2 protein language models (HuggingFace cache /home/.cache/huggingface/hub; F0/F7 embeddings)
+### ESM-2 protein language models (HuggingFace cache $HF_HOME/hub; F0/F7 embeddings)
 | model | URL | revision (snapshot) | weight file SHA-256 | License |
 |---|---|---|---|---|
 | facebook/esm2_t33_650M_UR50D | https://huggingface.co/facebook/esm2_t33_650M_UR50D | 08e4846e537177426273712802403f7ba8261b6c | model.safetensors a08adabb949fa67ad3c14b509d04fd60368b35007b0095e3358f81200c4f4db0 | MIT (Lin et al. 2023 Science) |

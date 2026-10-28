@@ -1,5 +1,7 @@
 # Review r2: external PI (computational signaling)
 
+> This work was produced as an exercise in testing whether AI agents can run a bioinformatics research project. A lead AI agent (the 'PI', Claude Opus 5.5) directed sub-agents (Claude Opus 5.5 and Sonnet 5.5) under a human-written brief. The human researcher supplied the brief, the data and PhosphoSitePlus access; they did not write the code, run the analyses, or write the text. All results should be checked before use.
+
 **Reviewer:** fresh external PI. I did not write round 1.
 **Reviewed:** DESIGN.md v1 (14:30), with its §15 change map. I also read PROMPT.md and the r1 reviews (all critical and major items), and checked the current code and data state (`src/ksp/splits.py`, `cache/labels/ks_pairs.parquet`, `cache/sites/universe.parquet`, `external/phosformer/`, docs/DELEGATION.md).
 **Time of review:** about 14:45. G1 is at 16:50.

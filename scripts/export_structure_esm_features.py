@@ -16,8 +16,9 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / "src"))
+REPO_ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(REPO_ROOT / "src"))
+from ksp.paths import ROOT  # noqa: E402  project data/working dir ($KSP_DATA_DIR, default: repo root)
 from ksp.features.esm_embed import load_sty  # noqa: E402
 from ksp.index import load_kinases, load_proteins, load_sites  # noqa: E402
 from ksp.store import reorder_to_index, save_matrix  # noqa: E402

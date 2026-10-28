@@ -1,5 +1,7 @@
 # 01 — Prior methods and benchmarks for kinase–substrate (site-level) prediction
 
+> This work was produced as an exercise in testing whether AI agents can run a bioinformatics research project. A lead AI agent (the 'PI', Claude Opus 5.5) directed sub-agents (Claude Opus 5.5 and Sonnet 5.5) under a human-written brief. The human researcher supplied the brief, the data and PhosphoSitePlus access; they did not write the code, run the analyses, or write the text. All results should be checked before use.
+
 Author: literature agent (methods/benchmarks). Date: 2026-10-26.
 Scope: (1) deep read of the two provided papers; (2) Cantley kinome atlases as a baseline; (3) survey of other methods, emphasis 2020–2026; (4) synthesis + concrete benchmark/baseline recommendations.
 All claims cite DOIs/URLs. Numbers quoted from papers are *as reported by the authors* — most are not comparable across papers because the test sets differ. Criticism is explicit and separated from reporting.
@@ -16,7 +18,7 @@ All claims cite DOIs/URLs. Numbers quoted from papers are *as reported by the au
 
 ## 1. Paper 1 (provided): SELPHI2.0 — Maier, Petursson, Lussana, Petsalaki
 
-Maier BD*, Petursson B*, Lussana A*, Petsalaki E. "Data-Driven Extraction of Human Kinase-Substrate Relationships From Omics Datasets." *Mol Cell Proteomics* 24(8):100994, 2025. doi:[10.1016/j.mcpro.2025.100994](https://doi.org/10.1016/j.mcpro.2025.100994). Local PDF: `/workspace/data/paper1.pdf`.
+Maier BD*, Petursson B*, Lussana A*, Petsalaki E. "Data-Driven Extraction of Human Kinase-Substrate Relationships From Omics Datasets." *Mol Cell Proteomics* 24(8):100994, 2025. doi:[10.1016/j.mcpro.2025.100994](https://doi.org/10.1016/j.mcpro.2025.100994). Local PDF: `data/paper1.pdf`.
 
 ### 1.1 Task and scope
 Site-level probability for every (kinase, phosphosite) pair: **421 kinases × 238,374 phosphosites** (199,262 S/T, 39,112 Y) on 17,469 proteins = 73,207,860 predictions. Sites = PhosphoSitePlus sites that also have an Ochoa 2020 functional score. Dual-specificity handling: 33 kinases annotated for both S/T and Y in PSP (or dual in NCBI gene summaries) are scored on all 238,374 sites; others are restricted by residue type.
@@ -81,7 +83,7 @@ Feasible verdict: **yes, retrainable**, but it is a feature-pipeline project (~1
 
 ## 2. Paper 2 (provided): Phosformer — Zhou, Yeung et al. (Kannan lab)
 
-Zhou Z*, Yeung W*, Gravel N, Salcedo M, Soleymani S, Li S, Kannan N. "Phosformer: an explainable transformer model for protein kinase-specific phosphorylation predictions." *Bioinformatics* 39(2):btad046, 2023. doi:[10.1093/bioinformatics/btad046](https://doi.org/10.1093/bioinformatics/btad046). Local PDF: `/workspace/data/paper2.pdf`.
+Zhou Z*, Yeung W*, Gravel N, Salcedo M, Soleymani S, Li S, Kannan N. "Phosformer: an explainable transformer model for protein kinase-specific phosphorylation predictions." *Bioinformatics* 39(2):btad046, 2023. doi:[10.1093/bioinformatics/btad046](https://doi.org/10.1093/bioinformatics/btad046). Local PDF: `data/paper2.pdf`.
 
 ### 2.1 Inputs / model
 - Inputs: **unaligned kinase domain sequence** + **11-mer substrate peptide** (centre S/T/Y; `<pad>` if within 5 residues of a terminus). No other features at all — no PPI, no family labels, no structure.
@@ -100,7 +102,7 @@ Zhou Z*, Yeung W*, Gravel N, Salcedo M, Soleymani S, Li S, Kannan N. "Phosformer
 ### 2.3 Split and leakage — measured, not assumed
 Stated split: positives 70:15:15 **at random over pairs**, with kinases having <50 positives confined to training; **106 kinases** in val/test.
 
-I downloaded the released splits (<https://huggingface.co/datasets/waylandy/phosformer_curated>, files `splits/test_pos_neg.csv`, `splits/val_pos_neg.csv`, `curated/phosphosites_11mer_kinase_specific.tsv`) and measured the overlap directly (script kept at `/tmp/claude-588982/-workspace/f2c6b342-58ef-4e11-b665-a8c647ff9a45/scratchpad/phosformer_leak.py`):
+I downloaded the released splits (<https://huggingface.co/datasets/waylandy/phosformer_curated>, files `splits/test_pos_neg.csv`, `splits/val_pos_neg.csv`, `curated/phosphosites_11mer_kinase_specific.tsv`) and measured the overlap directly (script kept at `<scratchpad>/phosformer_leak.py`):
 
 - test set: 5,318 rows, 2,659 positives, 106 kinase accessions; test positives are 2,368 human, 176 mouse, 85 rat, 30 bovine → **cross-species orthologue pairs sit in the same split**.
 - **51.1%** of test-positive peptides also occur as a *positive* 11-mer in the training portion (paired with some other kinase).
@@ -285,7 +287,7 @@ Ranked by the evidence available:
 8. **Priming / phospho-residues in the motif** — demonstrably important (129/303 S/T kinases, 47/78 Tyr kinases prefer a phospho-residue at some position) and essentially ignored by every ML method except via the atlas matrices. **This is a concrete differentiation opportunity for us**: encode neighbouring known phosphosites as lowercase s/t/y (or as an extra channel) and evaluate specifically on primed sites.
 
 ### 5.3 Recommendations for our benchmark design
-1. **Split unit**: substrate-protein clusters (mmseqs2, `/home/tools/mmseqs/bin/mmseqs`, e.g. 50% identity / 80% coverage; also merge cross-species orthologues) → assign whole clusters to folds. Sites, never pairs. Seeds [0,1,2,3,4].
+1. **Split unit**: substrate-protein clusters (mmseqs2, `<mmseqs>`, e.g. 50% identity / 80% coverage; also merge cross-species orthologues) → assign whole clusters to folds. Sites, never pairs. Seeds [0,1,2,3,4].
 2. **Three difficulty tiers**, reported separately:
    - T1 **unseen sites** on seen proteins is *excluded* (leaky) — do not report it.
    - T1' **unseen substrate proteins** (protein-cluster holdout), seen kinases.
@@ -302,7 +304,7 @@ Ranked by the evidence available:
 Priority order:
 
 **B1. Cantley Kinase Library (no retraining).**
-- `pip install kinase-library==1.8.0` into `/workspace/.venv` (CC BY-NC-SA 3.0 — academic use fine; cite Johnson 2023 + Yaron-Barir 2024). Or read matrices directly from the repo tree `src/kinase_library/databases/matrices/{ser_thr,tyrosine}/{log2,norm,densitometry}/`.
+- `pip install kinase-library==1.8.0` into `.venv` (CC BY-NC-SA 3.0 — academic use fine; cite Johnson 2023 + Yaron-Barir 2024). Or read matrices directly from the repo tree `src/kinase_library/databases/matrices/{ser_thr,tyrosine}/{log2,norm,densitometry}/`.
 - Arms: (i) log2 score; (ii) percentile vs the shipped Ochoa reference distribution; (iii) priming-aware (lowercase s/t/y for neighbouring known phosphosites) vs priming-naive; (iv) `st_fav` on/off; (v) `non_canonical` Tyr on/off.
 - Sanity check: reproduce Johnson Supplementary Table 3 percentiles for a sample of sites; and reproduce the "PHKG1/PHKG2 top-2 for PYGL S15" and "ATM top for TP53 S15" cases.
 - Record coverage: which of our test kinases have no atlas matrix (expect ~100+ of 421).

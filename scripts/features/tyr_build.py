@@ -27,7 +27,7 @@ Outputs (cache/features/tyr/, loaded with ksp.store.load_matrix("tyr/<stem>")):
   kinase vectors (503 x 6):
     kinase_desc       n_sh2, n_sh3, n_ptb, is_tm, is_receptor, has_sh2_matrix
 
-Run: /workspace/.venv/bin/python -I scripts/features/tyr_build.py
+Run: python -I scripts/features/tyr_build.py
 """
 import json
 import sys
@@ -37,8 +37,9 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-ROOT = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(ROOT / "src"))
+REPO_ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(REPO_ROOT / "src"))
+from ksp.paths import ROOT  # noqa: E402  project data/working dir ($KSP_DATA_DIR, default: repo root)
 from ksp import index  # noqa: E402
 from ksp.features import tyr  # noqa: E402
 from ksp.store import load_matrix, save_matrix  # noqa: E402

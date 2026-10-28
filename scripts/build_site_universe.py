@@ -8,7 +8,7 @@ Outputs
   results/sites/universe_summary.tsv   per-source mapping counts and failure rates; universe totals
   results/sites/universe_overlap.tsv   source-combination counts (UpSet-style) and pairwise overlaps
 Rules: src/ksp/ids.py, src/ksp/sites.py, docs/labels_universe.md.
-Usage: /workspace/.venv/bin/python -I scripts/build_site_universe.py
+Usage: python -I scripts/build_site_universe.py
 """
 import itertools
 import sys
@@ -18,8 +18,9 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / "src"))
+REPO_ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(REPO_ROOT / "src"))
+from ksp.paths import ROOT  # noqa: E402  project data/working dir ($KSP_DATA_DIR, default: repo root)
 from ksp import ids, kinases, sites  # noqa: E402
 
 SOURCES = ["psp", "psp_ks", "compendium", "cptac", "ochoa"]

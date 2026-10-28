@@ -1,5 +1,7 @@
 # Downstream: kinase-activity inference on benchmarKIN (DESIGN §6.7, §16 A21)
 
+> This work was produced as an exercise in testing whether AI agents can run a bioinformatics research project. A lead AI agent (the 'PI', Claude Opus 5.5) directed sub-agents (Claude Opus 5.5 and Sonnet 5.5) under a human-written brief. The human researcher supplied the brief, the data and PhosphoSitePlus access; they did not write the code, run the analyses, or write the text. All results should be checked before use.
+
 Code: `src/ksp/downstream/` (`bench_data`, `libraries`, `inference`, `evaluate`, `api`, `paired`, `ldo`). Scripts: `scripts/downstream/`
 (`run_validation.py`, `run_predictions.py`, `pred_topk.py`, `run_final.py`, `selftest.py`). Results: `results/downstream/`. Caches of the mapped benchmark:
 `cache/downstream/`. Run time: about 6 min for the full validation (4 methods, 22 libraries, 1000 iterations, 1 core).

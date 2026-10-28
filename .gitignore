@@ -1,16 +1,127 @@
-# Restricted / large data: never commit (see DATA.md)
-data/
-external/
-cache/
+# .gitignore for the ksp project (kinase-substrate site prediction).
+#
+# These rules only stop NEW files from being added. Files that are already tracked stay tracked.
+# Some tracked files must stay and must not be matched by any rule here: results/release/*.gz,
+# results/test/**, briefing/, docs/, FREEZE.json, sealed/kinase_label_counts.tsv.
+# Sections 2 and 2b list tracked files that are to be untracked at v1.0.0 (docs/PUBLISHING.md).
+# Check a change with:  python -I scripts/publication/check_publishable.py --check-ignore <paths>
+
+# --- 1. Restricted and large inputs (licensed or confidential; obtain them yourself, see DATA_SOURCES.md) ---
+/data/
+/external/
+/cache/
+/sealed/
+# sealed/kinase_label_counts.tsv (aggregate counts only) was force-added before; it stays tracked.
+
+# Label-level evaluation tables list labelled (including TEST) kinase-site pairs. Never add new ones.
+# The 12 TEST tables of the spent batch are already public in history and stay tracked.
+*_site_level.tsv
+!/results/test/721dc1977366/*_site_level.tsv
+
+# --- 2. Condition tables of the provided compendium: provenance unconfirmed; regenerate with scripts ---
+# Verbatim condition metadata (conditionID, Condition, Control, Sample, PMID, ...) of the perturbation
+# phosphoproteomics compendium in data/ (DATAINEED.md item 5). Untracked at v1.0.0 (git rm --cached).
+# Regenerate them from data/ with the scripts named in docs/PUBLISHING.md section 3.
+/results/data_profile/compendium_per_condition_coverage.tsv
+/results/data_profile/kinhib_hijazi_conditions.tsv
+/results/data_profile/kinhib_condition_matches.tsv
+/results/data_profile/compendium_conditions_by_pmid.tsv
+/results/features/phospho/conditions_meta.tsv
+/results/features/phospho/f6b_conditions.tsv
+/results/features/phospho/f6b_conditions_*.tsv
+/results/features/phospho/f6b_unmapped_or_dropped_drug_conditions.tsv
+/results/features/phospho/label_source_studies.tsv
+/results/features/phospho/benchmarkin_studies.tsv
+
+# --- 2b. Manuscript kept outside the public repo ---
+# The paper draft, its supplement, references, figures, number maps, review and working notes of the publication
+# phase (manuscript/*, including figures/make_figures.py). Untracked at v1.0.0 (git rm -r --cached manuscript);
+# earlier commits still contain it. The supplement's content is public in docs/SUPPLEMENT_failed_approaches.md.
+/manuscript/
+
+# --- 3. Big binary and array formats (pipeline intermediates; they live under cache/) ---
 *.parquet
+*.feather
+*.arrow
 *.npy
 *.npz
-*.pt
 *.h5
+*.hdf5
 *.pkl
+*.pickle
+*.joblib
+*.rda
+*.RData
+*.Rds
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.7z
+*.bz2
+*.xz
+# Plain *.gz is NOT ignored: the released predictions are results/release/*.tsv.gz.
+
+# --- 4. Model weights and checkpoints ---
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+*.onnx
+/models/
+/weights/
+/checkpoints/
+
+# --- 5. Secrets and personal files (never commit) ---
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.token
+id_rsa*
+id_ed25519*
+id_ecdsa*
+.netrc
+.pgpass
+.git-credentials
+.aws/
+.ssh/
+credentials*
+secrets*
+
+# --- 6. Editor, OS and agent-session files ---
+.claude/
+*.jsonl
+scratchpad/
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- 7. Python ---
 .venv/
-env/
+/venv/
+/env/
 __pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+/build/
+/dist/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+.coverage
+htmlcov/
+
+# --- 8. Logs (the checksum lists and small run logs under logs/ that are already tracked stay tracked) ---
 *.log
 !results/**/*.log.txt
-sealed/
+/logs/**/*.out
+!/logs/**/sha256*.txt
