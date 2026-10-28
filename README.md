@@ -1,26 +1,22 @@
-# ksp: kinase–substrate site prediction, run by AI agents
+# Evaluating agentic AI for kinase–substrate prediction
 
-> **This work was produced as an exercise in testing whether AI agents can run a bioinformatics research project. A lead AI agent (the 'PI', Claude Opus 5.5) directed sub-agents (Claude Opus 5.5 and Sonnet 5.5) under a human-written brief. The human researcher supplied the brief, the data and PhosphoSitePlus access; they did not write the code, run the analyses, or write the text. All results should be checked before use.**
+**(Human-written text starts)**
+
+This is an exercise in assessing the bioinformatics capabilities of agentic AI. It is part of a hackathon run by the Beltrao lab at ETH Zurich, where we used Claude to run bioinformatics projects (https://github.com/evocellnet/ai-hackathon/). All results in this project were generated entirely by AI with minimal human intervention. This is not intended to be viewed as a traditional publication and bioinformatics tool.
+
+The goal of this specific project was to create a predictive model for substrates of human protein kinases. It was executed by Claude Opus 5.5 with delegation to Opus 5.5/Sonnet 5.5 subagents, and finished within 24 hours on a computational cluster with 128 Gb RAM and 4 RTX4090 GPUs.
+
+Currently none of the results have been verified by a human. We plan to verify the agent’s methodology and benchmarking, and we will update this section accordingly.
+
+The rest of this repository is entirely AI generated. It is the working directory used by the agent. It also includes code for implementation of the predictive model and a AI-written briefing ([`briefing/briefing.pdf`](briefing/briefing.pdf) or [`briefing/briefing.html`](briefing/briefing.html)) detailing the final method, the path followed to reach it, and benchmarking against other methods.
+
+**(Human-written text ends)**
 
 ## Start here: the research briefing
 
 **[Which kinase phosphorylates which site? A fair test, a modest predictor, and what AI agents did when they ran the study](briefing/briefing.html)**
 (also as Markdown: [`briefing/briefing.md`](briefing/briefing.md); GitHub shows the HTML file as source, so download it
 or open the Markdown version)
-
-The briefing explains the study for scientists outside the field, step by step. The agents built a stricter test
-for kinase–substrate predictors, and on it their predictor beat the Cantley motif atlas and retrained versions of
-Phosformer and SELPHI2.0 on all nine pre-registered comparisons (sealed-test M1 0.794 against 0.714 for the atlas). It works for
-serine/threonine kinases but not for tyrosine kinases, and its outputs are shortlists, not answers.
-
-![The study in six steps: known pairs from PhosphoSitePlus, a fair test with grouped proteins and a sealed test set, evidence for each kinase–site pair, two models, their combination, and the outputs](briefing/figures/fig1_pipeline.png)
-
-*Figure 1 of the briefing: the study in six steps.*
-
-![Cross-validation and sealed-test results of the final model against the Cantley atlas, the SELPHI2.0 and Phosformer retrains and the popularity floor, for the three main metrics](briefing/figures/fig4_results.png)
-
-*Figure 5 of the briefing: cross-validation (open dots) and sealed-test results (filled dots, 95% intervals)
-against the comparison methods.*
 
 ## What this repository is
 
